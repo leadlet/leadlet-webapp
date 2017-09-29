@@ -1,28 +1,18 @@
-// src/components/App/index.js
-import React, { PropTypes, Component } from 'react';
+import React from 'react';
+import {
+    BrowserRouter as Router,
+    Route
+} from 'react-router-dom';
 
-import logo from './logo.svg';
-import './App.css';
+import Login from './login';
+import Register from './register';
 
-class App extends Component {
-    // static propTypes = {}
-    // static defaultProps = {}
-    // state = {}
-
-    render() {
-        return (
-            <div>
-                <div>
-                    <img src={logo} alt="logo" />
-                    <h2>Welcome to React</h2>
-                </div>
-                <p>
-                    To get started, edit <code>src/App.js</code> and save to reload.
-                </p>
-            </div>
-        );
-    }
-}
-
-export default App;
-
+const App = () => (
+    <Router>
+        <div className="full-height">
+            <Route path="/login" component={Login}/>
+            <Route path="/register" component={Register}/>
+        </div>
+    </Router>
+)
+export default App
