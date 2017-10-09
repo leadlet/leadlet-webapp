@@ -120,6 +120,28 @@ h5 {
 .dropdown-menu > li > a.font-bold {
   font-weight: 600;
 }
+
+.dropdown .btn-link{
+  padding: 15px;
+  color: #676a6c;
+  font-weight: 600;
+  border: none;
+  background-color: transparent;
+  outline: none;
+}
+
+.dropdown .btn-link:hover,
+.dropdown .btn-link:focus,
+.dropdown .btn-link:active,
+.dropdown .open .btn-link:hover,
+.dropdown .open .btn-link:focus,
+.dropdown .open .btn-link:active  {
+  border: none !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
 .navbar-top-links .dropdown-menu li {
   display: block;
 }
