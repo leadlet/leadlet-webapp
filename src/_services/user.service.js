@@ -27,7 +27,7 @@ function login(username, password) {
         })
         .then(user => {
             // login successful if there's a jwt token in the response
-            if (user && user.token) {
+            if (user && user.id_token) {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
                 localStorage.setItem('user', JSON.stringify(user));
             }
@@ -90,7 +90,7 @@ function _delete(id) {
 }
 
 function handleResponse(response) {
-    if (response.status !== 201) {
+    if (response.ok !== true) {
         return Promise.reject(response.statusText);
     }
 

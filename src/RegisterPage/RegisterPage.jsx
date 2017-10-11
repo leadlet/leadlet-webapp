@@ -10,10 +10,6 @@ class RegisterPage extends React.Component {
         this.state = {
             user: {
                 login: '',
-                email: '',
-                firstName: '',
-                lastName: '',
-                companyName: '',
                 password: ''
             },
             submitted: false
@@ -40,8 +36,7 @@ class RegisterPage extends React.Component {
         this.setState({ submitted: true });
         const { user } = this.state;
         const { dispatch } = this.props;
-        if (user.firstName && user.lastName && user.login && user.password
-                && user.password && user.companyName ) {
+        if ( user.login && user.password ) {
             dispatch(userActions.register(user));
         }
     }
@@ -62,25 +57,10 @@ class RegisterPage extends React.Component {
                     <p>Create account to see it in action.</p>
                     <form className="m-t" role="form" onSubmit={this.handleSubmit}>
                         <div className="form-group">
-                            <input type="text" className="form-control" name="firstName" placeholder="First Name" required="" onChange={this.handleChange} />
-                        </div>
-                        <div className="form-group">
-                            <input type="text" className="form-control" name="lastName" placeholder="Last Name" required="" onChange={this.handleChange} />
-                        </div>
-                        <div className="form-group">
-                            <input type="text" className="form-control" name="login" placeholder="Login" required="" onChange={this.handleChange} />
-                        </div>
-                        <div className="form-group">
-                            <input type="email" className="form-control" name="email" placeholder="Email" required="" onChange={this.handleChange} />
-                        </div>
-                        <div className="form-group">
-                            <input type="text" className="form-control" name="companyName" placeholder="Company Name" required="" onChange={this.handleChange} />
+                            <input type="email" className="form-control" name="login" placeholder="E-mail" required="" onChange={this.handleChange} />
                         </div>
                         <div className="form-group">
                             <input type="password" className="form-control" name="password" placeholder="Password" required="" onChange={this.handleChange} />
-                        </div>
-                        <div className="form-group">
-                            <div className="checkbox i-checks"><label> <input type="checkbox" /><i></i> Agree the terms and policy </label></div>
                         </div>
                         <button type="submit" className="btn btn-primary block full-width m-b">Register</button>
 
