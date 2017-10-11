@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import './App.css';
-import Minor from "./components/Minor";
+import TopMenuLayout from "./common/TopMenuLayout";
 import { history } from './_helpers';
 import { alertActions } from './_actions';
 import { PrivateRoute } from './_components';
@@ -24,21 +24,17 @@ class App extends React.Component {
     render() {
         const { alert } = this.props;
         return (
-            <div className="jumbotron">
-                <div className="container">
-                    <div className="col-sm-8 col-sm-offset-2">
-                        {alert.message &&
-                        <div className={`alert ${alert.type}`}>{alert.message}</div>
-                        }
-                        <Router history={history}>
-                            <div>
-                                <PrivateRoute exact path="/" component={Minor} />
-                                <Route path="/login" component={LoginPage} />
-                                <Route path="/register" component={RegisterPage} />
-                            </div>
-                        </Router>
+            <div>
+                {alert.message &&
+                <div className={`alert ${alert.type}`}>{alert.message}</div>
+                }
+                <Router history={history}>
+                    <div>
+                        <PrivateRoute exact path="/" component={TopMenuLayout} />
+                        <Route path="/login" component={LoginPage} />
+                        <Route path="/register" component={RegisterPage} />
                     </div>
-                </div>
+                </Router>
             </div>
         );
     }

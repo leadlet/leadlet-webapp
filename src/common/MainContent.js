@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
 
-import { Switch, Route } from 'react-router-dom'
-import Minor from "../components/Minor";
-import Main from "../components/Main";
+import { Switch, Route, Router } from 'react-router-dom'
+import Body1 from "../components/Body1";
+import Body2 from "../components/Body2";
+import { history } from '../_helpers';
 
 const MainContent = () => (
-    <Switch>
-        <Route exact path='/' component={Main}/>
-        <Route path='/main' component={Main}/>
-        <Route path='/minor' component={Minor}/>
-    </Switch>
+    <Router history={history}>
+        <div>
+            <Route exact path="/" component={Body1} />
+            <Route path="/body2" component={Body2} />
+            <Route path="/body1" component={Body1} />
+        </div>
+    </Router>
+
 )
 
 export default MainContent;

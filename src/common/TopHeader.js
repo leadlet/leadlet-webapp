@@ -2,14 +2,32 @@ import React from 'react';
 import { smoothlyMenu } from './Helpers';
 import { DropdownButton,MenuItem } from 'react-bootstrap';
 import $ from 'jquery';
+import {userActions} from "../_actions/user.actions";
+import { connect } from 'react-redux';
 
 class TopHeader extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.handleLogOut = this.handleLogOut.bind(this);
+    }
+
 
     toggleNavigation(e) {
         e.preventDefault();
         $("body").toggleClass("mini-navbar");
         smoothlyMenu();
     }
+
+    handleLogOut(event){
+        event.preventDefault();
+
+        const { dispatch } = this.props;
+
+        dispatch(userActions.logout());
+    }
+
 
     render() {
         return (
@@ -27,15 +45,15 @@ class TopHeader extends React.Component {
                                 <DropdownButton className="btn-link" id="sample-menu" title="Sample Menu">
                                     <MenuItem href="/login">Login</MenuItem>
                                     <MenuItem href="/register">Register</MenuItem>
-                                    <MenuItem href="/main">Main</MenuItem>
-                                    <MenuItem href="/minor">Minor</MenuItem>
+                                    <MenuItem href="/body1">Body1</MenuItem>
+                                    <MenuItem href="/body2">Body2</MenuItem>
                                 </DropdownButton>
                             </li>
 
                         </ul>
                         <ul className="nav navbar-top-links navbar-right">
                             <li>
-                                <a href="login.html">
+                                <a href="#" onClick={this.handleLogOut}>
                                     <i className="fa fa-sign-out"></i> Log out
                                 </a>
                             </li>
@@ -47,4 +65,12 @@ class TopHeader extends React.Component {
     }
 }
 
-export default TopHeader
+function mapStateToProps(state) {
+    const { registering } = state.registration;
+    return {
+        registering
+    };
+}
+
+const connectedTopHeader = connect(mapStateToProps)(TopHeader);
+export { connectedTopHeader as TopHeader };
