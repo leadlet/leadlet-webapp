@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Scrollbars} from "react-custom-scrollbars";
 
 class Clients extends Component {
 
@@ -27,7 +28,7 @@ class Clients extends Component {
                                 </ul>
                                 <div className="tab-content">
                                     <div id="tab-1" className="tab-pane active">
-                                        <div className="full-height-scroll">
+                                        <Scrollbars style={{ height: '100%' }}>
                                             <div className="table-responsive">
                                                 <table className="table table-striped table-hover">
                                                     <tbody>
@@ -202,7 +203,7 @@ class Clients extends Component {
                                                     </tbody>
                                                 </table>
                                             </div>
-                                        </div>
+                                        </Scrollbars>
                                     </div>
                                     <div id="tab-2" className="tab-pane">
                                         <div className="full-height-scroll">
@@ -375,7 +376,8 @@ class Clients extends Component {
                                         </div>
                                     </div>
                                     <div className="client-detail">
-                                        <div className="full-height-scroll">
+
+                                        <Scrollbars style={{ height: '100%' }}>
 
                                             <strong>Last activity</strong>
 
@@ -470,7 +472,7 @@ class Clients extends Component {
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </Scrollbars>
                                     </div>
                                 </div>
                                 <div id="contact-2" className="tab-pane">
@@ -1049,6 +1051,7 @@ class Clients extends Component {
                                         </div>
                                     </div>
                                     <div className="client-detail">
+
                                         <div className="full-height-scroll">
 
                                             <strong>Last activity</strong>
