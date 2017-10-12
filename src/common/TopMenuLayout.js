@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { TopHeader } from "./TopHeader";
-import MainContent from "./MainContent";
 import Footer from "./Footer";
+import { Route } from 'react-router-dom'
+import Body1 from "../components/Body1";
+import Clients from "../Clients/Clients";
+import Dashboard from "../Dashboard/Dashboard";
+import Deals from "../Deals/Deals";
 
 class TopMenuLayout extends Component {
 
@@ -16,7 +20,10 @@ class TopMenuLayout extends Component {
 
                         <div className="wrapper wrapper-content">
                             <div className="container">
-                                <MainContent></MainContent>
+                                <Route exact path="/" component={Dashboard} />
+                                <Route path="/clients" component={Clients} />
+                                <Route path="/deals" component={Deals} />
+                                <Route path="/body1" component={Body1} />
                             </div>
                         </div>
 

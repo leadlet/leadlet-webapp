@@ -33,7 +33,8 @@ class LoginPage extends React.Component {
         const { username, password } = this.state;
         const { dispatch } = this.props;
         if (username && password) {
-            dispatch(userActions.login(username, password));
+            // TODO passing props is workaround
+            dispatch(userActions.login(username, password, this.props));
         }
     }
 
@@ -45,7 +46,7 @@ class LoginPage extends React.Component {
                 <div className="loginColumns animated fadeInDown">
                     <div className="row">
                         <div className="col-md-6">
-                            <h2 className="font-bold">Welcome to IN+</h2>
+                            <h2 className="font-bold">Welcome to Leadlet</h2>
                             <p>
                                 Perfectly designed and precisely prepared admin theme with over 50 pages with extra new web app views.
                             </p>
@@ -78,7 +79,7 @@ class LoginPage extends React.Component {
                                     <p className="text-muted text-center">
                                         <small>Do not have an account?</small>
                                     </p>
-                                    <a className="btn btn-sm btn-white btn-block" href="register.html">Create an account</a>
+                                    <a className="btn btn-sm btn-white btn-block" href="/register">Create an account</a>
                                 </form>
                                 <p className="m-t">
                                     <small>Inspinia we app framework base on Bootstrap 3 &copy; 2014</small>

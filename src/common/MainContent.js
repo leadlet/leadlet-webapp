@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { Switch, Route, Router } from 'react-router-dom'
 import Body1 from "../components/Body1";
-import Body2 from "../components/Body2";
+import Body2 from "../Clients/Clients";
 import { history } from '../_helpers';
 
 const MainContent = () => (

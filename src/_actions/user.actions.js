@@ -11,7 +11,7 @@ export const userActions = {
     delete: _delete
 };
 
-function login(username, password) {
+function login(username, password, props) {
     return dispatch => {
         dispatch(request({ username }));
 
@@ -19,7 +19,7 @@ function login(username, password) {
             .then(
                 user => { 
                     dispatch(success(user));
-                    history.push('/');
+                    props.history.push("/")
                 },
                 error => {
                     dispatch(failure(error));
@@ -38,7 +38,7 @@ function logout() {
     return { type: userConstants.LOGOUT };
 }
 
-function register(user) {
+function register(user, props) {
     return dispatch => {
         dispatch(request(user));
 
@@ -46,7 +46,7 @@ function register(user) {
             .then(
                 user => { 
                     dispatch(success());
-                    history.push('/login');
+                    props.history.push("/login")
                     dispatch(alertActions.success('Registration successful'));
                 },
                 error => {

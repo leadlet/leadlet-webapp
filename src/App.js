@@ -8,7 +8,7 @@ import { alertActions } from './_actions';
 import { PrivateRoute } from './_components';
 import { LoginPage } from './LoginPage';
 import { RegisterPage } from './RegisterPage';
-import { Router, Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 
 class App extends React.Component {
     constructor(props) {
@@ -28,13 +28,12 @@ class App extends React.Component {
                 {alert.message &&
                 <div className={`alert ${alert.type}`}>{alert.message}</div>
                 }
-                <Router history={history}>
-                    <div>
-                        <PrivateRoute exact path="/" component={TopMenuLayout} />
-                        <Route path="/login" component={LoginPage} />
-                        <Route path="/register" component={RegisterPage} />
-                    </div>
-                </Router>
+
+                <Switch>
+                    <Route exact={true} path="/login" component={LoginPage} />
+                    <Route exact={true} path="/register" component={RegisterPage} />
+                    <PrivateRoute path="/" component={TopMenuLayout} />
+                </Switch>
             </div>
         );
     }
@@ -47,5 +46,8 @@ function mapStateToProps(state) {
     };
 }
 
-const connectedApp = connect(mapStateToProps)(App);
+const connectedApp = connect(mapStateToProps, null, null, {
+    pure: false
+})(App);
+
 export { connectedApp as App };

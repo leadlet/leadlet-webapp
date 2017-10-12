@@ -37,10 +37,16 @@ class TopHeader extends React.Component {
                         <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" className="navbar-toggle collapsed" type="button">
                             <i className="fa fa-reorder"></i>
                         </button>
-                        <a href="#" className="navbar-brand">Leadlet</a>
+                        <a href="/" className="navbar-brand">Leadlet</a>
                     </div>
                     <div className="navbar-collapse collapse" id="navbar">
                         <ul className="nav navbar-nav">
+                            <li>
+                                <a aria-expanded="false" role="button" href="/clients">Clients</a>
+                            </li>
+                            <li>
+                                <a aria-expanded="false" role="button" href="/deals">Deals</a>
+                            </li>
                             <li className="dropdown">
                                 <DropdownButton className="btn-link" id="sample-menu" title="Sample Menu">
                                     <MenuItem href="/login">Login</MenuItem>

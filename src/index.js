@@ -9,6 +9,7 @@ import registerServiceWorker from './registerServiceWorker';
 import { App } from './App';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom'
 
 import { store } from './_helpers';
 
@@ -18,21 +19,13 @@ configureFakeBackend();
 
 render(
     <Provider store={store}>
-        <App />
+        <BrowserRouter>
+            <App />
+        </BrowserRouter>
     </Provider>,
     document.getElementById('root')
 );
 
-/*
-ReactDOM.render(
-    <BrowserRouter>
-        <Switch>
-            <Route path='/login' component={LoginPage}/>
-            <Route path='/register' component={Register}/>
-            <Route path='/' component={App}/>
-        </Switch>
-    </BrowserRouter>, document.getElementById('root'));
-    */
 
 
 registerServiceWorker();

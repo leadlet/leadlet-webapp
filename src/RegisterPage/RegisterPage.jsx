@@ -37,7 +37,7 @@ class RegisterPage extends React.Component {
         const { user } = this.state;
         const { dispatch } = this.props;
         if ( user.login && user.password ) {
-            dispatch(userActions.register(user));
+            dispatch(userActions.register(user, this.props));
         }
     }
 
@@ -51,9 +51,9 @@ class RegisterPage extends React.Component {
             <div className="middle-box text-center loginscreen   animated fadeInDown">
                 <div>
                     <div>
-                        <h1 className="logo-name">IN+</h1>
+                        <h2 className="logo-name">Leadlet</h2>
                     </div>
-                    <h3>Register to IN+</h3>
+                    <h3>Register to Leadlet</h3>
                     <p>Create account to see it in action.</p>
                     <form className="m-t" role="form" onSubmit={this.handleSubmit}>
                         <div className="form-group">
@@ -65,7 +65,7 @@ class RegisterPage extends React.Component {
                         <button type="submit" className="btn btn-primary block full-width m-b">Register</button>
 
                         <p className="text-muted text-center"><small>Already have an account?</small></p>
-                        <a className="btn btn-sm btn-white btn-block" href="login.html">Login</a>
+                        <a className="btn btn-sm btn-white btn-block" href="/login">Login</a>
                     </form>
                     <p className="m-t"> <small>Inspinia we app framework base on Bootstrap 3 &copy; 2014</small> </p>
                 </div>
