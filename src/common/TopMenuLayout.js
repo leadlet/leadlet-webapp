@@ -3,7 +3,7 @@ import { TopHeader } from "./TopHeader";
 import Footer from "./Footer";
 import { Route } from 'react-router-dom'
 import Body1 from "../components/Body1";
-import Clients from "../Clients/Clients";
+import Clients from "../ContactsPage/Contacts";
 import Dashboard from "../Dashboard/Dashboard";
 import Deals from "../Deals/Deals";
 
