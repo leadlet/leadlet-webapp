@@ -1,6 +1,6 @@
 import { contactConstants } from '../_constants';
 
-export function persons(state = {}, action) {
+export function contacts(state = {}, action) {
   switch (action.type) {
     case contactConstants.GETALL_REQUEST:
       return {

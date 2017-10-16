@@ -2,21 +2,37 @@ import React, { Component } from 'react';
 import {Scrollbars} from "react-custom-scrollbars";
 import { connect } from 'react-redux';
 import {contactActions} from "../_actions/contact.actions";
+import {contactConstants} from "../_constants/contact.constants";
 
-class PersonList extends Component {
+class ContactList extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.type = props.type ? props.type : contactConstants.CONTACT_TYPE_PERSON;
+
+        this.handleItemClick = this.handleItemClick.bind(this);
+    }
 
     componentDidMount() {
-        this.props.dispatch(contactActions.getAll());
+        this.props.dispatch(contactActions.getAll(this.type));
+    }
+
+    handleItemClick(event){
+        event.preventDefault();
+        this.props.dispatch(contactActions.getById(event.currentTarget.dataset.id));
+
+        console.log(event.currentTarget.dataset.id);
     }
 
     renderList() {
-        return this.props.persons.map((person) => {
+        return this.props.persons.items.map((person) => {
                 return (
-                    <tr>
-                        <td><a data-toggle="tab" href={"/contact/"+ person.id} className="client-link">{person.firstName} {person.lastName}</a></td>
-                        <td> Tellus Institute </td>
+                    <tr key={person.id} >
+                        <td><a data-toggle="tab" onClick={this.handleItemClick} data-id={person.id} className="client-link">{person.name}</a></td>
+                        <td> {person.organization.name} </td>
                         <td className="contact-type"><i className="fa fa-envelope"> </i></td>
-                        <td> gravida@rbisit.com</td>
+                        <td> { person.emails.length > 0 ? person.emails[0].email : '' }</td>
                         <td className="client-status"><span className="label label-primary">Active</span></td>
                     </tr>
 
@@ -46,8 +62,8 @@ class PersonList extends Component {
 
 function mapStateToProps(state){
     return {
-        persons: state.persons
+        persons: state.contacts
     };
 }
 
-export default connect(mapStateToProps)(PersonList);
+export default connect(mapStateToProps)(ContactList);

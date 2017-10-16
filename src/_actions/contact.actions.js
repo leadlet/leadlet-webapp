@@ -2,14 +2,31 @@ import {contactConstants} from "../_constants/contact.constants";
 import {contactService} from "../_services/contact.service";
 
 export const contactActions = {
-    getAll
+    getAll,
+    getById
 };
 
-function getAll() {
+function getById(contactId) {
+    return dispatch => {
+        dispatch(request(contactId));
+
+        contactService.getById(contactId)
+            .then(
+                contact => dispatch(success(contact)),
+                error => dispatch(failure(error))
+            );
+    };
+
+    function request() { return { type: contactConstants.GET_REQUEST } }
+    function success(contact) { return { type: contactConstants.GET_SUCCESS, contact } }
+    function failure(error) { return { type: contactConstants.GET_FAILURE, error } }
+}
+
+function getAll(type) {
     return dispatch => {
         dispatch(request());
 
-        contactService.getAll()
+        contactService.getAll(type)
             .then(
                 contacts => dispatch(success(contacts)),
                 error => dispatch(failure(error))

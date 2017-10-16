@@ -1,10 +1,20 @@
 import { authHeader } from '../_helpers';
 
 export const contactService = {
-    getAll
+    getAll,
+    getById
 };
 
-function getAll() {
+function getById(id) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    return fetch('/api/contacts/' + id, requestOptions).then(handleResponse);
+}
+
+function getAll(type) {
     const requestOptions = {
         method: 'GET',
         headers: authHeader()

@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { TopHeader } from "./TopHeader";
 import Footer from "./Footer";
 import { Route } from 'react-router-dom'
-import Body1 from "../components/Body1";
-import Clients from "../ContactsPage/Contacts";
+import Contacts from "../ContactsPage/Contacts";
 import Dashboard from "../Dashboard/Dashboard";
 import Deals from "../Deals/Deals";
+import ContactEdit from "../ContactsPage/ContactEdit";
+import Switch from "react-router-dom/es/Switch";
 
 class TopMenuLayout extends Component {
 
@@ -20,10 +21,12 @@ class TopMenuLayout extends Component {
 
                         <div className="wrapper wrapper-content">
                             <div className="container">
-                                <Route exact path="/" component={Dashboard} />
-                                <Route path="/clients" component={Clients} />
-                                <Route path="/deals" component={Deals} />
-                                <Route path="/body1" component={Body1} />
+                                <Switch>
+                                    <Route exact path="/" component={Dashboard} />
+                                    <Route path="/contacts/:contactId" component={ContactEdit} />
+                                    <Route path="/contacts" component={Contacts} />
+                                    <Route path="/deals" component={Deals} />
+                                </Switch>
                             </div>
                         </div>
 
