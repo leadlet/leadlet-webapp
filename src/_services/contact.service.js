@@ -14,13 +14,13 @@ function getById(id) {
     return fetch('/api/contacts/' + id, requestOptions).then(handleResponse);
 }
 
-function getAll(type) {
+function getAll(filter = "") {
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
     };
 
-    return fetch('/api/contacts', requestOptions).then(handleResponse);
+    return fetch('/api/contacts' + ( filter ? `?filter=${filter}` : "" ), requestOptions).then(handleResponse);
 }
 
 

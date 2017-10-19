@@ -12,16 +12,19 @@ class Contacts extends Component {
         super(props);
 
         this.state = {
-            selectedContact: null
+            selectedContact: null,
+            term: ""
         };
 
         this.onContactSelect = this.onContactSelect.bind(this);
+        this.onSearchSubmit = this.onSearchSubmit.bind(this);
+        this.onInputChange = this.onInputChange.bind(this);
+
     }
 
     componentDidMount() {
-
-        this.props.dispatch(contactActions.getAll(contactConstants.CONTACT_TYPE_ORGANIZATION));
-        this.props.dispatch(contactActions.getAll(contactConstants.CONTACT_TYPE_PERSON));
+        this.props.dispatch(contactActions.getAllOrganization());
+        this.props.dispatch(contactActions.getAllPerson());
     }
 
     componentWillReceiveProps(nextProps) {
@@ -31,6 +34,18 @@ class Contacts extends Component {
     onContactSelect(contact){
         this.setState({ selectedContact : contact});
     }
+
+    onSearchSubmit(event){
+        event.preventDefault();
+        this.props.dispatch(contactActions.getAllOrganization(`name:${this.state.term}`));
+        this.props.dispatch(contactActions.getAllPerson(`name:${this.state.term}`));
+
+    }
+
+    onInputChange(event){
+        this.setState({term: event.target.value});
+    }
+
     render() {
         return (
             <div className="row">
@@ -42,12 +57,13 @@ class Contacts extends Component {
                             <p>
                                 All clients need to be verified before you can send email and set a project.
                             </p>
-                            <div className="input-group">
-                                <input type="text" placeholder="Search client " className="input form-control" />
+                            <form className="input-group" onSubmit={this.onSearchSubmit}>
+                                <input type="text" placeholder="Search contact..."
+                                       onChange={this.onInputChange} className="input form-control" />
                                 <span className="input-group-btn">
-                                        <button type="button" className="btn btn btn-primary"> <i className="fa fa-search"/> Search</button>
+                                        <button type="submit" className="btn btn btn-primary"> <i className="fa fa-search"/> Search</button>
                                 </span>
-                            </div>
+                            </form>
                             <div className="clients-list">
                                 <p className="pull-right ">
                                     <button className="btn btn-success btn-sm m-r-sm" type="button"><i className="fa fa-upload"></i>&nbsp;Import</button>

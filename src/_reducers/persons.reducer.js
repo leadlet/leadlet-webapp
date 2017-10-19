@@ -2,15 +2,15 @@ import { contactConstants } from '../_constants';
 
 export function persons(state = {}, action) {
   switch (action.type) {
-    case contactConstants.GETALL_REQUEST:
+    case contactConstants.PERSONS_GETALL_REQUEST:
       return {
         loading: true
       };
-    case contactConstants.GETALL_SUCCESS:
+    case contactConstants.PERSONS_GETALL_SUCCESS:
       return {
         items: action.contacts
       };
-    case contactConstants.GETALL_FAILURE:
+    case contactConstants.PERSONS_GETALL_FAILURE:
       return { 
         error: action.error
       };

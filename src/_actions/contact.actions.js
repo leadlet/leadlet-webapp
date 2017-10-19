@@ -2,7 +2,8 @@ import {contactConstants} from "../_constants/contact.constants";
 import {contactService} from "../_services/contact.service";
 
 export const contactActions = {
-    getAll,
+    getAllPerson,
+    getAllOrganization,
     getById
 };
 
@@ -22,11 +23,44 @@ function getById(contactId) {
     function failure(error) { return { type: contactConstants.GET_FAILURE, error } }
 }
 
-function getAll(type) {
+function getAllPerson(filter) {
     return dispatch => {
         dispatch(request());
 
-        contactService.getAll(type)
+        contactService.getAll(filter + ",type:PERSON")
+            .then(
+                contacts => dispatch(success(contacts)),
+                error => dispatch(failure(error))
+            );
+    };
+
+    function request() { return { type: contactConstants.PERSONS_GETALL_REQUEST } }
+    function success(contacts) { return { type: contactConstants.PERSONS_GETALL_SUCCESS, contacts } }
+    function failure(error) { return { type: contactConstants.PERSONS_GETALL_FAILURE, error } }
+
+}
+
+function getAllOrganization(filter) {
+    return dispatch => {
+        dispatch(request());
+
+        contactService.getAll(filter + ",type:ORGANIZATION")
+            .then(
+                contacts => dispatch(success(contacts)),
+                error => dispatch(failure(error))
+            );
+    };
+
+    function request() { return { type: contactConstants.ORGANIZATIONS_GETALL_REQUEST } }
+    function success(contacts) { return { type: contactConstants.ORGANIZATIONS_GETALL_SUCCESS, contacts } }
+    function failure(error) { return { type: contactConstants.ORGANIZATIONS_GETALL_FAILURE, error } }
+}
+
+function getAll(filter) {
+    return dispatch => {
+        dispatch(request());
+
+        contactService.getAll(filter)
             .then(
                 contacts => dispatch(success(contacts)),
                 error => dispatch(failure(error))
