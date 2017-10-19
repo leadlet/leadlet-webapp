@@ -1,12 +1,36 @@
 import React, { Component } from 'react';
 import {Tab, Tabs} from "react-bootstrap";
-import ContactList from "./ContactList";
-import ContactDetail from "./ContactDetail";
 import {contactConstants} from "../_constants/contact.constants";
+import { connect } from 'react-redux';
+import {contactActions} from "../_actions/contact.actions";
+import {ContactList} from "./ContactList";
+import {ContactDetail} from "./ContactDetail";
 
 class Contacts extends Component {
 
+    constructor(props){
+        super(props);
 
+        this.state = {
+            selectedContact: null
+        };
+
+        this.onContactSelect = this.onContactSelect.bind(this);
+    }
+
+    componentDidMount() {
+
+        this.props.dispatch(contactActions.getAll(contactConstants.CONTACT_TYPE_ORGANIZATION));
+        this.props.dispatch(contactActions.getAll(contactConstants.CONTACT_TYPE_PERSON));
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({ selectedContact: nextProps.persons &&  nextProps.persons.items ? nextProps.persons.items[0] : null })
+    }
+
+    onContactSelect(contact){
+        this.setState({ selectedContact : contact});
+    }
     render() {
         return (
             <div className="row">
@@ -26,18 +50,26 @@ class Contacts extends Component {
                             </div>
                             <div className="clients-list">
                                 <p className="pull-right ">
-                                    <button class="btn btn-success btn-sm m-r-sm" type="button"><i class="fa fa-upload"></i>&nbsp;Import</button>
-                                    <button class="btn btn-primary btn-sm" type="button"><i class="fa fa-plus"></i>&nbsp;Create</button>
+                                    <button className="btn btn-success btn-sm m-r-sm" type="button"><i className="fa fa-upload"></i>&nbsp;Import</button>
+                                    <button className="btn btn-primary btn-sm" type="button"><i className="fa fa-plus"></i>&nbsp;Create</button>
                                 </p>
 
                                 <div className="tab-content">
 
                                     <Tabs defaultActiveKey={1} id="uncontrolled-tab-example">
                                         <Tab eventKey={1} title="Person">
-                                            <ContactList type={contactConstants.CONTACT_TYPE_PERSON}/>
+                                            <ContactList
+                                                contacts={this.props.persons}
+                                                type={contactConstants.CONTACT_TYPE_PERSON}
+                                                onContactSelect={this.onContactSelect}
+                                            />
                                         </Tab>
                                         <Tab eventKey={2} title="Organization">
-                                            <ContactList type={contactConstants.CONTACT_TYPE_ORGANIZATION}/>
+                                            <ContactList
+                                                contacts={this.props.organizations}
+                                                type={contactConstants.CONTACT_TYPE_ORGANIZATION}
+                                                onContactSelect={this.onContactSelect}
+                                            />
                                         </Tab>
                                     </Tabs>
                                 </div>
@@ -50,7 +82,7 @@ class Contacts extends Component {
                     <div className="ibox ">
 
                         <div className="ibox-content">
-                            <ContactDetail/>
+                            <ContactDetail contact={ this.state.selectedContact }/>
                         </div>
                     </div>
                 </div>
@@ -60,4 +92,12 @@ class Contacts extends Component {
 
 }
 
-export default Contacts;
+function mapStateToProps(state){
+    return {
+        persons: state.persons,
+        organizations: state.organizations
+    };
+}
+
+
+export default connect(mapStateToProps)(Contacts);

@@ -1,16 +1,15 @@
-import React, { Component } from 'react';
-import {Scrollbars} from "react-custom-scrollbars";
-import { connect } from 'react-redux';
+import React from 'react';
 import Link from "react-router-dom/es/Link";
+import {Scrollbars} from "react-custom-scrollbars";
 
+export const ContactDetail = function(props){
 
-class ContactDetail extends Component {
+    const { contact } = props;
 
-    renderDetail() {
-        const contact = this.props.contact.item;
-
+        if( !contact ){
+            return (<em> Select contact </em> );
+        }
         return (
-
             <div>
                 <div>
                     <div className="text-center">
@@ -134,26 +133,5 @@ class ContactDetail extends Component {
 
         );
 
-    }
 
-    render() {
-        const { contact } = this.props;
-
-        return (
-            <div className="tab-content">
-                {contact.loading && <em>Loading users...</em>}
-                {contact.error && <span className="text-danger">ERROR: {contact.error}</span>}
-                {contact.item && this.renderDetail()}
-            </div>
-
-        );
-    }
 }
-
-function mapStateToProps(state){
-    return {
-        contact: state.contact
-    };
-}
-
-export default connect(mapStateToProps)(ContactDetail);
