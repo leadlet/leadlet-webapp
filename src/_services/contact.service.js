@@ -40,6 +40,7 @@ function handleResponse(response) {
         return Promise.reject(response.statusText);
     }
 
+    // TODO: I had to return new promise combining two values but not sure it is similar to what is done commented line
     return Promise.all([ response.json(), response.headers.get("x-total-count")]);
 //    return response.json();
 }
