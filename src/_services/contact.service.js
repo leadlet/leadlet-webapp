@@ -2,8 +2,19 @@ import { authHeader } from '../_helpers';
 
 export const contactService = {
     getAll,
-    getById
+    getById,
+    createContact
 };
+
+function createContact(contact, callback) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+        body: JSON.stringify(contact)
+    };
+
+    return fetch('/api/contacts/', requestOptions).then(handleResponse);
+}
 
 function getById(id) {
     const requestOptions = {
@@ -29,5 +40,6 @@ function handleResponse(response) {
         return Promise.reject(response.statusText);
     }
 
-    return response.json();
+    return Promise.all([ response.json(), response.headers.get("x-total-count")]);
+//    return response.json();
 }

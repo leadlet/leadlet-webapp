@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import {Tab, Tabs} from "react-bootstrap";
 import {contactConstants} from "../_constants/contact.constants";
 import { connect } from 'react-redux';
-import {contactActions} from "../_actions/contact.actions";
+import {getAllOrganization, getAllPerson} from "../_actions/contact.actions";
 import {ContactList} from "./ContactList";
 import {ContactDetail} from "./ContactDetail";
+import ContactEdit from "./ContactNew";
 
 class Contacts extends Component {
 
@@ -13,18 +14,23 @@ class Contacts extends Component {
 
         this.state = {
             selectedContact: null,
-            term: ""
+            term: "",
+            showEditModal: false,
+            contactSelectedForEdit: null
         };
 
         this.onContactSelect = this.onContactSelect.bind(this);
         this.onSearchSubmit = this.onSearchSubmit.bind(this);
         this.onInputChange = this.onInputChange.bind(this);
+        this.openEditModal = this.openEditModal.bind(this);
+        this.closeEditModal = this.closeEditModal.bind(this);
+
 
     }
 
     componentDidMount() {
-        this.props.dispatch(contactActions.getAllOrganization());
-        this.props.dispatch(contactActions.getAllPerson());
+        this.props.getAllOrganization();
+        this.props.getAllPerson();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -37,8 +43,8 @@ class Contacts extends Component {
 
     onSearchSubmit(event){
         event.preventDefault();
-        this.props.dispatch(contactActions.getAllOrganization(`name:${this.state.term}`));
-        this.props.dispatch(contactActions.getAllPerson(`name:${this.state.term}`));
+        this.props.getAllOrganization(`name:${this.state.term}`);
+        this.props.getAllPerson(`name:${this.state.term}`);
 
     }
 
@@ -46,6 +52,20 @@ class Contacts extends Component {
         this.setState({term: event.target.value});
     }
 
+    openEditModal(contact){
+        this.setState({showEditModal: true});
+        this.setState({contactSelectedForEdit: contact});
+    }
+
+    closeEditModal(){
+        this.setState({showEditModal: false});
+    }
+
+    test() {
+        return (
+            <span> Person <span class="badge">5</span></span>
+        );
+    }
     render() {
         return (
             <div className="row">
@@ -66,25 +86,27 @@ class Contacts extends Component {
                             </form>
                             <div className="clients-list">
                                 <p className="pull-right ">
-                                    <button className="btn btn-success btn-sm m-r-sm" type="button"><i className="fa fa-upload"></i>&nbsp;Import</button>
-                                    <button className="btn btn-primary btn-sm" type="button"><i className="fa fa-plus"></i>&nbsp;Create</button>
+                                    <button className="btn btn-success btn-sm m-r-sm disabled" type="button"><i className="fa fa-upload"></i>&nbsp;Import</button>
+                                    <button className="btn btn-primary btn-sm" type="button" onClick={this.openEditModal}><i className="fa fa-plus"></i>&nbsp;Create</button>
                                 </p>
 
                                 <div className="tab-content">
 
                                     <Tabs defaultActiveKey={1} id="uncontrolled-tab-example">
-                                        <Tab eventKey={1} title="Person">
+                                        <Tab eventKey={1} title={<span> Person <span class="badge"> {this.props.persons.total} </span></span>}>
                                             <ContactList
                                                 contacts={this.props.persons}
                                                 type={contactConstants.CONTACT_TYPE_PERSON}
                                                 onContactSelect={this.onContactSelect}
+                                                onEditClicked={this.openEditModal}
                                             />
                                         </Tab>
-                                        <Tab eventKey={2} title="Organization">
+                                        <Tab eventKey={2} title={<span> Organization <span class="badge"> {this.props.organizations.total} </span></span>}>
                                             <ContactList
                                                 contacts={this.props.organizations}
                                                 type={contactConstants.CONTACT_TYPE_ORGANIZATION}
                                                 onContactSelect={this.onContactSelect}
+                                                onEditClicked={this.openEditModal}
                                             />
                                         </Tab>
                                     </Tabs>
@@ -98,9 +120,15 @@ class Contacts extends Component {
                     <div className="ibox ">
 
                         <div className="ibox-content">
-                            <ContactDetail contact={ this.state.selectedContact }/>
+                            <ContactDetail contact={ this.state.selectedContact } onEditClicked={this.openEditModal}/>
                         </div>
                     </div>
+                </div>
+                <div>
+                    { this.state.showEditModal && <ContactEdit showEditModal={this.state.showEditModal}
+                                 close={this.closeEditModal}
+                                 contact={this.state.contactSelectedForEdit}
+                    /> }
                 </div>
             </div>
         );
@@ -110,10 +138,10 @@ class Contacts extends Component {
 
 function mapStateToProps(state){
     return {
-        persons: state.persons,
-        organizations: state.organizations
+        persons: state.contacts.persons,
+        organizations: state.contacts.organizations
     };
 }
 
 
-export default connect(mapStateToProps)(Contacts);
+export default connect(mapStateToProps, {getAllOrganization, getAllPerson})(Contacts);

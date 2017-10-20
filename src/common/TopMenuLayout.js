@@ -5,7 +5,7 @@ import { Route } from 'react-router-dom'
 import Contacts from "../ContactsPage/Contacts";
 import Dashboard from "../Dashboard/Dashboard";
 import Deals from "../Deals/Deals";
-import ContactEdit from "../ContactsPage/ContactEdit";
+import ContactEdit from "../ContactsPage/ContactNew";
 import Switch from "react-router-dom/es/Switch";
 
 class TopMenuLayout extends Component {
