@@ -29,8 +29,8 @@ class Contacts extends Component {
     }
 
     componentDidMount() {
-        this.props.getAllOrganization();
-        this.props.getAllPerson();
+        this.props.getAllOrganization(`name:${this.state.term}`);
+        this.props.getAllPerson(`name:${this.state.term}`);
     }
 
     componentWillReceiveProps(nextProps) {

@@ -55,9 +55,10 @@ export function contacts(state = { persons: { total: 0}, organizations: { total:
             }
         };
       case contactConstants.CREATE_SUCCESS:
-
+        // TODO check here
         const newState = { ...state };
-        newState.persons.items.push(action.contact);
+        newState.persons.items.push(action.data[0]);
+        newState.persons.total++;
         return newState;
     case contactConstants.CREATE_FAILURE:
         return {

@@ -42,5 +42,9 @@ function handleResponse(response) {
 
     // TODO: I had to return new promise combining two values but not sure it is similar to what is done commented line
     return Promise.all([ response.json(), response.headers.get("x-total-count")]);
-//    return response.json();
+
+    // The response of a fetch() request is a Stream object, which means that when we call the json() method,
+    // a Promise is returned since the reading of the stream will happen asynchronously.
+
+    // return response.json();
 }

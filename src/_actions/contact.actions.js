@@ -74,9 +74,9 @@ export function createContact(contact, successCallback) {
 
         return contactService.createContact(contact)
             .then(
-                contact => {
+                data => {
                     dispatch(successCallback);
-                    dispatch(success(contact));
+                    dispatch(success(data));
                     dispatch(alertActions.success('Contact create successful'));
                 },
                 error => {
@@ -89,7 +89,7 @@ export function createContact(contact, successCallback) {
     };
 
     function request() { return { type: contactConstants.CREATE_REQUEST } }
-    function success(contact) { return { type: contactConstants.CREATE_SUCCESS, contact } }
+    function success(data) { return { type: contactConstants.CREATE_SUCCESS, data } }
     function failure(error) { return { type: contactConstants.CREATE_FAILURE, error } }
 }
 
