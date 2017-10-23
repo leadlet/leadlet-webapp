@@ -36,7 +36,7 @@ class App extends React.Component {
                 <Switch>
                     <Route exact={true} path="/login" component={LoginPage} />
                     <Route exact={true} path="/register" component={RegisterPage} />
-                    <PrivateRoute path="/" component={TopMenuLayout} />
+                    <Route path="/" component={TopMenuLayout} />
                 </Switch>
             </div>
         );

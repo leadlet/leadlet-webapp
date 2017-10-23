@@ -47,8 +47,11 @@ class TopHeader extends React.Component {
                             <li>
                                 <a aria-expanded="false" role="button" href="/deals">Deals</a>
                             </li>
+                            <li>
+                                <a aria-expanded="false" role="button" href="/pipes">Pipes</a>
+                            </li>
                             <li className="dropdown">
-                                <DropdownButton className="btn-link" id="sample-menu" title="Sample Menu">
+                                <DropdownButton className="btn-link" id="sample-menu" title="Pipelines..">
                                     <MenuItem href="/login">Login</MenuItem>
                                     <MenuItem href="/register">Register</MenuItem>
                                     <MenuItem href="/body1">Body1</MenuItem>
