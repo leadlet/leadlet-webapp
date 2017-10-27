@@ -68,6 +68,8 @@ class Contacts extends Component {
     }
     render() {
         return (
+            <div className="wrapper wrapper-content">
+                <div className="container">
             <div className="row">
                 <div className="col-sm-8">
                     <div className="ibox">
@@ -129,6 +131,8 @@ class Contacts extends Component {
                                  close={this.closeEditModal}
                                  contact={this.state.contactSelectedForEdit}
                     /> }
+                </div>
+            </div>
                 </div>
             </div>
         );

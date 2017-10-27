@@ -1,10 +1,21 @@
 import React, { Component } from 'react';
+import {DropdownButton, MenuItem} from "react-bootstrap";
 
 class Deals extends Component {
 
     render() {
         return (
-            <div>
+            <div className="wrapper">
+                <div className="container">
+                    <div className="row" style={{width: '100%'}} >
+                    <div style={{float: 'right'}} >
+                        <DropdownButton className="btn-link" id="sample-menu" title="Pre-Sales Pipeline">
+                            <MenuItem href="/pipes">Pipes & Stages</MenuItem>
+                            <MenuItem href="/register">Profile</MenuItem>
+                            <MenuItem href="/body1">Billing</MenuItem>
+                        </DropdownButton>
+                    </div>
+                </div>
                 <div className="row">
                     <div className="col-lg-3">
                         <div className="ibox">
@@ -277,22 +288,8 @@ class Deals extends Component {
 
                 </div>
 
-                <div className="row">
-                    <div className="col-lg-12">
-
-                        <h4>
-                            Serialised Output
-                        </h4>
-                        <p>
-                            Serializes the sortable's item id's into an array of string.
-                        </p>
-
-                        <div className="output p-m m white-bg" />
-
-
-                    </div>
-                </div>
             </div>
+                </div>
         );
     }
 

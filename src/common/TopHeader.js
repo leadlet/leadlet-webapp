@@ -47,20 +47,15 @@ class TopHeader extends React.Component {
                             <li>
                                 <a aria-expanded="false" role="button" href="/deals">Deals</a>
                             </li>
-                            <li>
-                                <a aria-expanded="false" role="button" href="/pipes">Pipes</a>
-                            </li>
-                            <li className="dropdown">
-                                <DropdownButton className="btn-link" id="sample-menu" title="Pipelines..">
-                                    <MenuItem href="/login">Login</MenuItem>
-                                    <MenuItem href="/register">Register</MenuItem>
-                                    <MenuItem href="/body1">Body1</MenuItem>
-                                    <MenuItem href="/body2">Body2</MenuItem>
-                                </DropdownButton>
-                            </li>
-
                         </ul>
                         <ul className="nav navbar-top-links navbar-right">
+                            <li className="dropdown">
+                                <DropdownButton className="btn-link" id="sample-menu" title="Settings">
+                                    <MenuItem href="/pipelines">Pipelines & Stages</MenuItem>
+                                    <MenuItem href="/register">Profile</MenuItem>
+                                    <MenuItem href="/body1">Billing</MenuItem>
+                                </DropdownButton>
+                            </li>
                             <li>
                                 <a href="#" onClick={this.handleLogOut}>
                                     <i className="fa fa-sign-out"></i> Log out

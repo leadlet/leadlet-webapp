@@ -1,6 +1,7 @@
-import {pipelineConstants} from "../_constants/pipeline.constants";
 
-export function getAll(filter={}) {
+import {stageConstants} from "../_constants/stage.constants";
+
+export function getAllStages(filter={}) {
     return dispatch => {
         dispatch(request());
 
@@ -15,13 +16,13 @@ export function getAll(filter={}) {
 
     };
 
-    function request() { return { type: pipelineConstants.GETALL_REQUEST } }
-    function success(data) { return { type: pipelineConstants.GETALL_SUCCESS } }
-    function failure(error) { return { type: pipelineConstants.GETALL_FAILURE, error } }
+    function request() { return { type: stageConstants.GETALL_REQUEST } }
+    function success(data) { return { type: stageConstants.GETALL_SUCCESS } }
+    function failure(error) { return { type: stageConstants.GETALL_FAILURE, error } }
 
 }
 
-function _delete(id) {
+export function deleteStage(id) {
     return dispatch => {
         dispatch(request(id));
 
@@ -40,7 +41,7 @@ function _delete(id) {
             */
     };
 
-    function request(id) { return { type: pipelineConstants.DELETE_REQUEST, id } }
-    function success(id) { return { type: pipelineConstants.DELETE_SUCCESS, id } }
-    function failure(id, error) { return { type: pipelineConstants.DELETE_FAILURE, id, error } }
+    function request(id) { return { type: stageConstants.DELETE_REQUEST, id } }
+    function success(id) { return { type: stageConstants.DELETE_SUCCESS, id } }
+    function failure(id, error) { return { type: stageConstants.DELETE_FAILURE, id, error } }
 }

@@ -1,4 +1,5 @@
 import { pipelineConstants } from '../_constants';
+import {stageConstants} from "../_constants/stage.constants";
 
 export function pipelines(state = {}, action) {
   switch (action.type) {
@@ -11,12 +12,13 @@ export function pipelines(state = {}, action) {
           items: [
               {
                 id: 1,
-                name: 'PreSales Pipeline',
+                name: 'PreSales',
                 order: 1,
                 stages: [
                     {
                       id: 1,
-                      name: 'Untouched'
+                      name: 'Untouched',
+                        deleting: true
                     },
                     {
                       id: 2,
@@ -39,23 +41,23 @@ export function pipelines(state = {}, action) {
               },
               {
                   id: 2,
-                  name: 'PostSales Pipeline',
+                  name: 'PostSales',
                   order: 2,
                   stages: [
                       {
-                          id: 1,
+                          id: 6,
                           name: 'Visited'
                       },
                       {
-                          id: 2,
+                          id: 7,
                           name: 'Support Contract'
                       },
                       {
-                          id: 3,
+                          id: 8,
                           name: 'License Upgrade'
                       },
                       {
-                          id: 4,
+                          id: 9,
                           name: 'Billed'
                       }
                   ]
@@ -67,6 +69,38 @@ export function pipelines(state = {}, action) {
         return {
           error: action.error
         };
+
+    case stageConstants.DELETE_REQUEST:
+        let _items = state.items;
+
+        for( let i=0; i < _items.length; i++){
+            for(let j=0; j < _items[i].stages.length; j++){
+                if(_items[i].stages[j].id === action.id){
+                    _items[i].stages[j].deleting = true;
+                }
+            }
+        }
+        return {
+            items: _items
+        };
+    case stageConstants.DELETE_SUCCESS:
+        _items = state.items;
+
+        for( let i=0; i < _items.length; i++){
+            for(let j=0; j < _items[i].stages.length; j++){
+                if(_items[i].stages[j].id === action.id){
+                    _items[i].stages.splice(j,1);
+                }
+            }
+        }
+        return {
+            items: _items
+        };
+    case stageConstants.DELETE_FAILURE:
+        return {
+            error: action.error
+        };
+
     default:
       return state
   }

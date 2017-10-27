@@ -19,18 +19,13 @@ class TopMenuLayout extends Component {
                     <div id="page-wrapper" className="gray-bg">
 
                         <TopHeader />
-
-                        <div className="wrapper wrapper-content">
-                            <div className="container">
-                                <Switch>
-                                    <Route exact path="/" component={Dashboard} />
-                                    <Route path="/contacts/:contactId" component={ContactEdit} />
-                                    <Route path="/contacts" component={Contacts} />
-                                    <Route path="/deals" component={Deals} />
-                                    <Route path="/pipes" component={PipelinesPage} />
-                                </Switch>
-                            </div>
-                        </div>
+                         <Switch>
+                            <Route exact path="/" component={Dashboard} />
+                            <Route path="/contacts/:contactId" component={ContactEdit} />
+                            <Route path="/contacts" component={Contacts} />
+                            <Route path="/deals" component={Deals} />
+                            <Route path="/pipelines" component={PipelinesPage} />
+                        </Switch>
 
                         <Footer />
 

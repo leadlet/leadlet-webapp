@@ -2346,7 +2346,6 @@ div.dt-button-info {
   padding: 0;
   min-height: 30px;
   background: #f2fbff;
-  border: 1px dashed #b6bcbf;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
 }
@@ -8571,5 +8570,35 @@ body.md-skin {
   }
   #page-wrapper {
     margin: 0;
+  }
+}
+
+
+.pipeline-config .list-group-item {
+  padding: 0;
+  border-color: #FFFFFF;
+}
+
+.pipeline-config .demo-board {
+background-color: #f3f3f4;
+  padding: 5px;
+}
+
+
+@media (min-width: 992px) {
+  .container-scroll > .row {
+    overflow-x: auto;
+
+    white-space: nowrap;
+  }
+
+  .container-scroll > .row > .col-lg-3 {
+    display: inline-block;
+    float: none;
+    vertical-align: top;
+  }
+
+  .deal-title{
+    white-space: normal ;
   }
 }
