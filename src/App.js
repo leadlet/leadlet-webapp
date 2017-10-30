@@ -28,7 +28,8 @@ class App extends React.Component {
                 {
                     alert.message &&
                     <div className={`alert ${alert.type} alert-dismissable`}>
-                        <button aria-hidden={true} data-dismiss="alert" className="close" type="button">×</button>
+                        <button aria-hidden={true} data-dismiss="alert" className="close" type="button"
+                            onClick={()=> this.props.dispatch(alertActions.clear())}>×</button>
                         {alert.message}
                     </div>
                 }

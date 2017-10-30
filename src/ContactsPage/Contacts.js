@@ -127,10 +127,10 @@ class Contacts extends Component {
                     </div>
                 </div>
                 <div>
-                    { this.state.showEditModal && <ContactEdit showEditModal={this.state.showEditModal}
+                    <ContactEdit showEditModal={this.state.showEditModal}
                                  close={this.closeEditModal}
                                  contact={this.state.contactSelectedForEdit}
-                    /> }
+                    />
                 </div>
             </div>
                 </div>

@@ -7,6 +7,7 @@ import { alert } from './alert.reducer';
 import { reducer as formReducer } from 'redux-form';
 import {contacts} from "./contacts.reducer";
 import {pipelines} from "./pipelines.reducer";
+import {stages} from "./stages.reducer";
 
 const rootReducer = combineReducers({
     authentication,
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
     alert,
     contacts,
     form: formReducer,
-    pipelines
+    pipelines,
+    stages
 });
 
 export default rootReducer;

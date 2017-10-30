@@ -1,22 +1,23 @@
 import {pipelineConstants} from "../_constants/pipeline.constants";
+import {pipelineService} from "../_services/pipeline.service";
 
-export function getAll(filter={}) {
+export function getAll() {
     return dispatch => {
         dispatch(request());
 
-        /*
-        contactService.getAll(filter + ",type:PERSON")
+
+        pipelineService.getAll()
             .then(
-                data => dispatch(success(data)),
+                items => dispatch(success(items)),
                 error => dispatch(failure(error))
             );
-            */
+
         dispatch(success());
 
     };
 
     function request() { return { type: pipelineConstants.GETALL_REQUEST } }
-    function success(data) { return { type: pipelineConstants.GETALL_SUCCESS } }
+    function success(items) { return { type: pipelineConstants.GETALL_SUCCESS, items } }
     function failure(error) { return { type: pipelineConstants.GETALL_FAILURE, error } }
 
 }
