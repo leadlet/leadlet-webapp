@@ -9,7 +9,7 @@ export function pipelines(state = {}, action) {
         };
       case pipelineConstants.GETALL_SUCCESS:
         return {
-            items: action.payload
+            items: action.items
         };
     case pipelineConstants.GETALL_FAILURE:
         return {

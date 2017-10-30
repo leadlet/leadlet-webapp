@@ -12,8 +12,6 @@ export function getAll() {
                 error => dispatch(failure(error))
             );
 
-        dispatch(success());
-
     };
 
     function request() { return { type: pipelineConstants.GETALL_REQUEST } }

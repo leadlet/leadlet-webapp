@@ -15,7 +15,7 @@ function createStage(stage) {
         body: JSON.stringify(stage)
     };
 
-    return fetch('/api/contacts/', requestOptions).then(handleResponse);
+    return fetch('/api/stages/', requestOptions).then(handleResponse);
 }
 
 function updateStage(stage) {
@@ -25,7 +25,7 @@ function updateStage(stage) {
         body: JSON.stringify(stage)
     };
 
-    return fetch('/api/contacts/', requestOptions).then(handleResponse);
+    return fetch('/api/stages/', requestOptions).then(handleResponse);
 }
 
 function getById(id) {

@@ -13,8 +13,6 @@ export function getAllStages() {
                 error => dispatch(failure(error))
             );
 
-        dispatch(success());
-
     };
 
     function request() { return { type: stageConstants.GETALL_REQUEST } }

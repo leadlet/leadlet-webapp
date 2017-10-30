@@ -5,9 +5,9 @@ import {deleteStage} from "../_actions/stage.actions";
 
 import {Tab, Tabs} from "react-bootstrap";
 import StageNewOrEdit from "./StageNewOrEdit";
+import Stages from "./Stages";
 
 class Pipelines extends React.Component {
-
 
     constructor(props){
         super(props);
@@ -17,52 +17,11 @@ class Pipelines extends React.Component {
             selectedStage: null
         }
         this.renderPipelines = this.renderPipelines.bind(this);
-        this.renderStages = this.renderStages.bind(this);
-        this.closeStageModal = this.closeStageModal.bind(this);
 
     }
 
     componentDidMount() {
         this.props.getAllPipelines();
-    }
-
-    onDeleteStage(id){
-        this.props.deleteStage(id);
-    }
-
-    onNewStage(){
-        this.setState({ showStageModal : true});
-    }
-
-    closeStageModal(){
-        this.setState({
-            selectedStage: null,
-            showStageModal : false
-        });    }
-
-    onEditStage(stage){
-        this.setState({
-            selectedStage: stage,
-            showStageModal : true
-        });
-    }
-
-    renderStages(stages){
-        if( !stages ){
-            return ( <em>Loading Stages.. </em>);
-        }else {
-            return stages.map( stage => {
-                return (
-                    <div className="step" style={{"--stage-color": stage.color}}>
-                        {stage.name}
-                        <div class="btn-group btn-group-xs" role="group" aria-label="...">
-                            <i class="btn fa fa-edit"  onClick={() => this.onEditStage(stage)}></i>
-                            <i class="btn fa fa-trash" onClick={() => this.onDeleteStage(stage.id)}></i>
-                        </div>
-                    </div>
-                )
-            })
-        }
     }
 
     renderPipelines(){
@@ -74,12 +33,7 @@ class Pipelines extends React.Component {
             return this.props.pipelines.map( pipeline => {
                 return (
                     <Tab eventKey={pipeline.id} title={pipeline.name}>
-                        <div className="step-indicator">
-                            {this.renderStages(pipeline.stages)}
-                            <div className="step">
-                                <a onClick={() => this.onNewStage()}>New Stage <i class="fa fa-plus" ></i></a>
-                            </div>
-                        </div>
+                        <Stages pipelineId={pipeline.id}/>
                     </Tab>
                 )
             })
@@ -120,9 +74,6 @@ class Pipelines extends React.Component {
                     </div>
                 </div>
                 </div>
-                <StageNewOrEdit showModal={this.state.showStageModal}
-                                close={this.closeStageModal}
-                                initialValues={this.state.selectedStage}/>
             </div>
 
         );
@@ -132,7 +83,7 @@ class Pipelines extends React.Component {
 
 function mapStateToProps(state){
     return {
-        pipelines: state.pipelines.items,
+        pipelines: state.pipelines.items
     };
 }
 
