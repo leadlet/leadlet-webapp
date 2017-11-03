@@ -2,7 +2,7 @@ import React from 'react';
 import { smoothlyMenu } from './Helpers';
 import { DropdownButton,MenuItem } from 'react-bootstrap';
 import $ from 'jquery';
-import {userActions} from "../_actions/user.actions";
+import {userActions} from "../actions/user.actions";
 import { connect } from 'react-redux';
 
 class TopHeader extends React.Component {

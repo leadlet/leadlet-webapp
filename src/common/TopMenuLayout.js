@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { TopHeader } from "./TopHeader";
 import Footer from "./Footer";
 import { Route } from 'react-router-dom'
-import Contacts from "../ContactsPage/Contacts";
+import Contacts from "../components/Contacts/Contacts";
 import Dashboard from "../Dashboard/Dashboard";
-import Deals from "../Deals/Deals";
-import ContactEdit from "../ContactsPage/ContactNew";
+import Deals from "../components/Deals/Deals";
+import ContactEdit from "../components/Contacts/ContactNew";
 import Switch from "react-router-dom/es/Switch";
-import PipelinesPage from "../PipelinesPage/Pipelines";
+import PipelinesPage from "../components/Pipelines/Pipelines";
 
 class TopMenuLayout extends Component {
 

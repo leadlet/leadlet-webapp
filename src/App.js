@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 
 import './App.css';
 import TopMenuLayout from "./common/TopMenuLayout";
-import { history } from './_helpers';
-import { alertActions } from './_actions';
-import { PrivateRoute } from './_components';
-import { LoginPage } from './LoginPage';
-import { RegisterPage } from './RegisterPage';
+import { history } from './helpers';
+import { alertActions } from './actions';
+import { PrivateRoute } from './components';
+import { LoginPage } from './components/Login';
+import { RegisterPage } from './components/Register';
 import { Switch, Route } from 'react-router-dom';
 
 class App extends React.Component {
