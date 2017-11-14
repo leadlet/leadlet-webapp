@@ -15,7 +15,7 @@ export function getAllChats() {
                     },
                     {
                         from: 'yavuz',
-                        message: 'iyilik sen nasılsın?'
+                        message: 'iyilik sen nasılsın?iyilik sen nasılsın?iyilik sen nasılsın?iyilik sen nasılsın?iyilik sen nasılsın?iyilik sen nasılsın?iyilik sen nasılsın?iyilik sen nasılsın?iyilik sen nasılsın?iyilik sen nasılsın?iyilik sen nasılsın?'
                     }
                 ]
             },

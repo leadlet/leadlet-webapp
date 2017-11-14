@@ -8,19 +8,20 @@ export const ChatDetail = function (props) {
         return (<em> Select chat </em>);
     }
 
-    function renderChatList(){
+    function renderChatList() {
         return chat.chatContent.map((chatItem) => {
-           return(
-               <div className="chat-message left">
-                   <img className="message-avatar" src="img/a1.jpg" alt=""/>
-                   <div className="message">
-                       <a className="message-author" href="#">{chatItem.from}</a>
-                       <span
-                           className="message-date"> Mon Jan 26 2015 - 18:39:23 </span>
-                       <span className="message-content">{chatItem.message}</span>
-                   </div>
-               </div>
-           );
+            return (
+                <div className={"chat-bubble-k " + (chatItem.from == 'me'? 'left': 'rigth')}>
+                    <div className={"talk-bubble round tri-right " + (chatItem.from === 'me' ? 'right-in' : 'left-in')}>
+                        <div className="message">
+                            <a className="message-author" href="#">{chatItem.from}</a>
+                            <span className="message-content">{chatItem.message}</span>
+                            <span
+                                className="message-date">18:39:23 </span>
+                        </div>
+                    </div>
+                </div>
+            );
         });
     }
 
