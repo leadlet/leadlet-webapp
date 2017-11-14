@@ -1,8 +1,28 @@
 import React, {Component} from 'react';
-import ChatList from "./ChatList";
-import ChatDetail from "./ChatDetail";
+import { connect } from 'react-redux';
+import {ChatList} from "./ChatList";
+import {getAllChats} from "../../actions/chat.actions";
+import {ChatDetail} from "./ChatDetail";
 
 class Chats extends Component {
+
+    constructor(props){
+        super(props);
+
+        this.state = {
+            selectedChat: null
+        };
+
+        this.onUserSelect = this.onUserSelect.bind(this);
+    }
+
+    onUserSelect(chat){
+        this.setState({ selectedChat : chat});
+    }
+
+    componentDidMount() {
+        this.props.getAllChats();
+    }
 
     render() {
         return (
@@ -30,11 +50,16 @@ class Chats extends Component {
                                 <div className="ibox-content">
                                     <div className="row">
                                         <div className="col-md-9 ">
-                                            <ChatDetail/>
+                                            <ChatDetail
+                                                chat={this.state.selectedChat}
+                                            />
                                         </div>
 
                                         <div className="col-md-3">
-                                            <ChatList/>
+                                            <ChatList
+                                                chats={this.props.chats}
+                                                onUserSelect={this.onUserSelect}
+                                            />
                                         </div>
 
                                     </div>
@@ -57,5 +82,10 @@ class Chats extends Component {
         );
     }
 }
+function mapStateToProps(state){
+    return{
+        chats: state.chats
+    }
+}
 
-export default Chats;
+export default connect(mapStateToProps, {getAllChats})(Chats);

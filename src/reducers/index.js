@@ -8,6 +8,7 @@ import { reducer as formReducer } from 'redux-form';
 import {contacts} from "./contacts.reducer";
 import {pipelines} from "./pipelines.reducer";
 import {stages} from "./stages.reducer";
+import {chats} from './chats.reducer';
 
 const rootReducer = combineReducers({
     authentication,
@@ -17,7 +18,8 @@ const rootReducer = combineReducers({
     contacts,
     form: formReducer,
     pipelines,
-    stages
+    stages,
+    chats
 });
 
 export default rootReducer;
