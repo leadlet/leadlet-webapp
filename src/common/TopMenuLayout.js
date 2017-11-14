@@ -8,6 +8,7 @@ import Deals from "../components/Deals/Deals";
 import ContactEdit from "../components/Contacts/ContactNew";
 import Switch from "react-router-dom/es/Switch";
 import PipelinesPage from "../components/Pipelines/Pipelines";
+import Chats from "../components/Chat/Chats";
 
 class TopMenuLayout extends Component {
 
@@ -25,6 +26,7 @@ class TopMenuLayout extends Component {
                             <Route path="/contacts" component={Contacts} />
                             <Route path="/deals" component={Deals} />
                             <Route path="/pipelines" component={PipelinesPage} />
+                            <Route path="/chats" component={Chats} />
                         </Switch>
 
                         <Footer />
