@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import {ChatList} from "./ChatList";
-import {getAllChats} from "../../actions/chat.actions";
+import {getAllChats, createMessage} from "../../actions/chat.actions";
 import {ChatDetail} from "./ChatDetail";
 
 class Chats extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.state = {
@@ -14,10 +14,25 @@ class Chats extends Component {
         };
 
         this.onUserSelect = this.onUserSelect.bind(this);
+        this.onChatSubmit = this.onChatSubmit.bind(this);
+        this.onTextareaChange = this.onTextareaChange.bind(this);
     }
 
-    onUserSelect(chat){
-        this.setState({ selectedChat : chat});
+    onUserSelect(chat) {
+        this.setState({selectedChat: chat});
+    }
+
+    onChatSubmit(event){
+        event.preventDefault();
+
+        this.props.createMessage({
+            msg: this.state.msg,
+            userName: this.state.selectedChat.userName,
+        });
+    }
+
+    onTextareaChange(event){
+        this.setState({msg: event.target.value});
     }
 
     componentDidMount() {
@@ -67,8 +82,10 @@ class Chats extends Component {
                                         <div className="col-lg-12">
                                             <div className="chat-message-form">
                                                 <div className="form-group">
-                                                    <textarea className="form-control message-input" name="message"
-                                                              placeholder="Enter message text"></textarea>
+                                                    <form className="input-group" onSubmit={this.onChatSubmit}>
+                                                        <input className="form-control input" name="message"
+                                                              placeholder="Enter message text" onChange={this.onTextareaChange}></input>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
@@ -82,10 +99,11 @@ class Chats extends Component {
         );
     }
 }
-function mapStateToProps(state){
-    return{
+
+function mapStateToProps(state) {
+    return {
         chats: state.chats
     }
 }
 
-export default connect(mapStateToProps, {getAllChats})(Chats);
+export default connect(mapStateToProps, {getAllChats, createMessage})(Chats);

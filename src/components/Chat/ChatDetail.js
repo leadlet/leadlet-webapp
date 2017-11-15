@@ -11,7 +11,7 @@ export const ChatDetail = function (props) {
     function renderChatList() {
         return chat.chatContent.map((chatItem) => {
             return (
-                <div className={"chat-bubble-k " + (chatItem.from == 'me'? 'left': 'rigth')}>
+                <div className={"chat-bubble-k " + (chatItem.from === 'me'? 'left': 'rigth')}>
                     <div className={"talk-bubble round tri-right " + (chatItem.from === 'me' ? 'right-in' : 'left-in')}>
                         <div className="message">
                             <a className="message-author" href="#">{chatItem.from}</a>

@@ -38,7 +38,12 @@ export function getAllChats() {
                 ]
             }
         ]
-
     }
+}
 
+export function createMessage(message) {
+    return{
+        type: chatConstants.MESSAGE_CREATE_SUCCESS,
+        payload: message
+    }
 }
