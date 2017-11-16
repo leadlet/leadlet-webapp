@@ -21,9 +21,8 @@ export function chats(state = {}, action) {
                 }
             });
 
-            return{
-                _state
-            }
+            return _state;
+
         default:
             return state
     }

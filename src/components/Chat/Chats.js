@@ -22,16 +22,18 @@ class Chats extends Component {
         this.setState({selectedChat: chat});
     }
 
-    onChatSubmit(event){
+    onChatSubmit(event) {
         event.preventDefault();
 
         this.props.createMessage({
             msg: this.state.msg,
             userName: this.state.selectedChat.userName,
         });
+
+        this.setState({msg: ''});
     }
 
-    onTextareaChange(event){
+    onTextareaChange(event) {
         this.setState({msg: event.target.value});
     }
 
@@ -82,10 +84,19 @@ class Chats extends Component {
                                         <div className="col-lg-12">
                                             <div className="chat-message-form">
                                                 <div className="form-group">
-                                                    <form className="input-group" onSubmit={this.onChatSubmit}>
-                                                        <input className="form-control input" name="message"
-                                                              placeholder="Enter message text" onChange={this.onTextareaChange}></input>
-                                                    </form>
+                                                    {
+                                                        this.state.selectedChat &&
+
+                                                        <form className="form-group" onSubmit={this.onChatSubmit}>
+                                                            <textarea
+                                                                value={this.state.msg}
+                                                                className="form-control text-area"
+                                                                name="message"
+                                                                placeholder="Enter message text"
+                                                                onChange={this.onTextareaChange}></textarea>
+                                                        </form>
+                                                    }
+
                                                 </div>
                                             </div>
                                         </div>
