@@ -4,6 +4,7 @@ import './../node_modules/animate.css/animate.min.css'
 
 
 import React from 'react';
+import './styles/fullcalendar/fullcalendar.css';
 import './styles/index.css';
 import registerServiceWorker from './registerServiceWorker';
 import { App } from './App';
