@@ -39,8 +39,8 @@ const renderField = ({
 )
 
 const renderDateField = ({
-                             handleChange,
-                             startDate,
+                             input,
+                             selected,
                              label,
                              meta: {touched, error}
                          }) => (
@@ -53,8 +53,8 @@ const renderDateField = ({
                 dropdownMode="select"
                 placeholderText="Click to select a date"
                 dateFormat="DD/MM/YYYY"
-                selected={startDate}
-                onChange={handleChange}
+                selected={input.value ? moment(input.value, 'DD/MM/YYYY') : moment()}
+                onChange={input.onChange}
             />
             <span className="help-block m-b-none">{touched &&
             ((error && <span>{error}</span>))}
@@ -62,7 +62,6 @@ const renderDateField = ({
         </div>
     </div>
 )
-
 
 class ActivityDetail extends Component {
 
@@ -73,15 +72,6 @@ class ActivityDetail extends Component {
         this.state = {
             startDate: moment()
         };
-
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange(date) {
-        console.log("Handle Date: ", date);
-        this.setState({
-            startDate: date
-        });
     }
 
     onSubmit = (activity) => {
@@ -93,7 +83,6 @@ class ActivityDetail extends Component {
 
     render() {
         const {handleSubmit} = this.props;
-
         return (
             <Modal show={this.props.showModal} onHide={this.props.close}>
                 <Modal.Header closeButton>
@@ -115,8 +104,7 @@ class ActivityDetail extends Component {
                         />
                         <Field
                             name="date"
-                            startDate={this.state.startDate}
-                            handleChange={this.handleChange}
+                            selected={this.state.startDate}
                             component={renderDateField}
                             label="Date"
                         />
