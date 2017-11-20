@@ -41,6 +41,7 @@ class Chats extends Component {
         this.props.getAllChats();
     }
 
+    //TODO:  input, textarea olarak degistilmeli
     render() {
         return (
             <div className="wrapper wrapper-content">
@@ -88,15 +89,14 @@ class Chats extends Component {
                                                         this.state.selectedChat &&
 
                                                         <form className="form-group" onSubmit={this.onChatSubmit}>
-                                                            <textarea
+                                                            <input
                                                                 value={this.state.msg}
                                                                 className="form-control text-area"
                                                                 name="message"
                                                                 placeholder="Enter message text"
-                                                                onChange={this.onTextareaChange}></textarea>
+                                                                onChange={this.onTextareaChange}></input>
                                                         </form>
                                                     }
-
                                                 </div>
                                             </div>
                                         </div>

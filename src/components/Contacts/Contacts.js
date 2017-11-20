@@ -122,7 +122,7 @@ class Contacts extends Component {
                     <div className="ibox ">
 
                         <div className="ibox-content">
-                            <ContactDetail contact={ this.state.selectedContact } onEditClicked={this.openEditModal}/>
+                            <ContactDetail contact={ this.state.selectedContact } onEditClicked={this.openEditModal(this.state.selectedContact)}/>
                         </div>
                     </div>
                 </div>

@@ -11,7 +11,7 @@ export function chats(state = {}, action) {
             let _state = state;
 
             _state.items.map((chat) => {
-                if (chat.userName == action.payload.userName) {
+                if (chat.userName === action.payload.userName) {
                     chat.chatContent.push(
                         {
                             from: 'me',
