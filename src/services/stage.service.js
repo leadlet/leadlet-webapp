@@ -37,7 +37,8 @@ function getById(id) {
     return fetch('/api/stages/' + id, requestOptions).then(handleResponse);
 }
 
-function getAll() {
+function getAll(pipelineId) {
+    // TODO ygokirmak - add pipelineId filter
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
@@ -52,7 +53,7 @@ function _delete(id) {
         headers: authHeader()
     };
 
-    return fetch('/stages/' + id, requestOptions).then(handleResponse);;
+    return fetch('/api/stages/' + id, requestOptions).then(handleResponse);;
 }
 
 function handleResponse(response) {

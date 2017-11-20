@@ -210,13 +210,13 @@ class Dashboard extends React.Component {
                                     <a className="collapse-link">
                                         <i className="fa fa-chevron-up"></i>
                                     </a>
-                                    <a className="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <a className="dropdown-toggle" data-toggle="dropdown" href="/">
                                         <i className="fa fa-wrench"></i>
                                     </a>
                                     <ul className="dropdown-menu dropdown-user">
-                                        <li><a href="#">Config option 1</a>
+                                        <li><a href="/">Config option 1</a>
                                         </li>
-                                        <li><a href="#">Config option 2</a>
+                                        <li><a href="/">Config option 2</a>
                                         </li>
                                     </ul>
                                     <a className="close-link">
@@ -264,7 +264,7 @@ class Dashboard extends React.Component {
                                             <td><span className="pie">0.52/1.561</span></td>
                                             <td>20%</td>
                                             <td>Jul 14, 2013</td>
-                                            <td><a href="#"><i className="fa fa-check text-navy"></i></a></td>
+                                            <td><a href="/"><i className="fa fa-check text-navy"></i></a></td>
                                         </tr>
                                         <tr>
                                             <td>2</td>
@@ -275,7 +275,7 @@ class Dashboard extends React.Component {
                                             <td><span className="pie">6,9</span></td>
                                             <td>40%</td>
                                             <td>Jul 16, 2013</td>
-                                            <td><a href="#"><i className="fa fa-check text-navy"></i></a></td>
+                                            <td><a href="/"><i className="fa fa-check text-navy"></i></a></td>
                                         </tr>
                                         <tr>
                                             <td>3</td>
@@ -286,7 +286,7 @@ class Dashboard extends React.Component {
                                             <td><span className="pie">3,1</span></td>
                                             <td>75%</td>
                                             <td>Jul 18, 2013</td>
-                                            <td><a href="#"><i className="fa fa-check text-navy"></i></a></td>
+                                            <td><a href="/"><i className="fa fa-check text-navy"></i></a></td>
                                         </tr>
                                         <tr>
                                             <td>4</td>
@@ -297,7 +297,7 @@ class Dashboard extends React.Component {
                                             <td><span className="pie">4,9</span></td>
                                             <td>18%</td>
                                             <td>Jul 22, 2013</td>
-                                            <td><a href="#"><i className="fa fa-check text-navy"></i></a></td>
+                                            <td><a href="/"><i className="fa fa-check text-navy"></i></a></td>
                                         </tr>
                                         <tr>
                                             <td>2</td>
@@ -308,7 +308,7 @@ class Dashboard extends React.Component {
                                             <td><span className="pie">6,9</span></td>
                                             <td>40%</td>
                                             <td>Jul 16, 2013</td>
-                                            <td><a href="#"><i className="fa fa-check text-navy"></i></a></td>
+                                            <td><a href="/"><i className="fa fa-check text-navy"></i></a></td>
                                         </tr>
                                         <tr>
                                             <td>1</td>
@@ -319,7 +319,7 @@ class Dashboard extends React.Component {
                                             <td><span className="pie">0.52/1.561</span></td>
                                             <td>20%</td>
                                             <td>Jul 14, 2013</td>
-                                            <td><a href="#"><i className="fa fa-check text-navy"></i></a></td>
+                                            <td><a href="/"><i className="fa fa-check text-navy"></i></a></td>
                                         </tr>
                                         <tr>
                                             <td>4</td>
@@ -330,7 +330,7 @@ class Dashboard extends React.Component {
                                             <td><span className="pie">4,9</span></td>
                                             <td>18%</td>
                                             <td>Jul 22, 2013</td>
-                                            <td><a href="#"><i className="fa fa-check text-navy"></i></a></td>
+                                            <td><a href="/"><i className="fa fa-check text-navy"></i></a></td>
                                         </tr>
                                         <tr>
                                             <td>1</td>
@@ -341,7 +341,7 @@ class Dashboard extends React.Component {
                                             <td><span className="pie">0.52/1.561</span></td>
                                             <td>20%</td>
                                             <td>Jul 14, 2013</td>
-                                            <td><a href="#"><i className="fa fa-check text-navy"></i></a></td>
+                                            <td><a href="/"><i className="fa fa-check text-navy"></i></a></td>
                                         </tr>
                                         <tr>
                                             <td>2</td>
@@ -352,7 +352,7 @@ class Dashboard extends React.Component {
                                             <td><span className="pie">6,9</span></td>
                                             <td>40%</td>
                                             <td>Jul 16, 2013</td>
-                                            <td><a href="#"><i className="fa fa-check text-navy"></i></a></td>
+                                            <td><a href="/"><i className="fa fa-check text-navy"></i></a></td>
                                         </tr>
                                         <tr>
                                             <td>3</td>
@@ -363,7 +363,7 @@ class Dashboard extends React.Component {
                                             <td><span className="pie">3,1</span></td>
                                             <td>75%</td>
                                             <td>Jul 18, 2013</td>
-                                            <td><a href="#"><i className="fa fa-check text-navy"></i></a></td>
+                                            <td><a href="/"><i className="fa fa-check text-navy"></i></a></td>
                                         </tr>
                                         <tr>
                                             <td>4</td>
@@ -374,7 +374,7 @@ class Dashboard extends React.Component {
                                             <td><span className="pie">4,9</span></td>
                                             <td>18%</td>
                                             <td>Jul 22, 2013</td>
-                                            <td><a href="#"><i className="fa fa-check text-navy"></i></a></td>
+                                            <td><a href="/"><i className="fa fa-check text-navy"></i></a></td>
                                         </tr>
                                         <tr>
                                             <td>2</td>
@@ -385,7 +385,7 @@ class Dashboard extends React.Component {
                                             <td><span className="pie">6,9</span></td>
                                             <td>40%</td>
                                             <td>Jul 16, 2013</td>
-                                            <td><a href="#"><i className="fa fa-check text-navy"></i></a></td>
+                                            <td><a href="/"><i className="fa fa-check text-navy"></i></a></td>
                                         </tr>
                                         <tr>
                                             <td>1</td>
@@ -396,7 +396,7 @@ class Dashboard extends React.Component {
                                             <td><span className="pie">0.52/1.561</span></td>
                                             <td>20%</td>
                                             <td>Jul 14, 2013</td>
-                                            <td><a href="#"><i className="fa fa-check text-navy"></i></a></td>
+                                            <td><a href="/"><i className="fa fa-check text-navy"></i></a></td>
                                         </tr>
                                         <tr>
                                             <td>4</td>
@@ -407,7 +407,7 @@ class Dashboard extends React.Component {
                                             <td><span className="pie">4,9</span></td>
                                             <td>18%</td>
                                             <td>Jul 22, 2013</td>
-                                            <td><a href="#"><i className="fa fa-check text-navy"></i></a></td>
+                                            <td><a href="/"><i className="fa fa-check text-navy"></i></a></td>
                                         </tr>
                                         </tbody>
                                     </table>

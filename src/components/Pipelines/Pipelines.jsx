@@ -32,7 +32,7 @@ class Pipelines extends React.Component {
         }else {
             return this.props.pipelines.map( pipeline => {
                 return (
-                    <Tab eventKey={pipeline.id} title={pipeline.name}>
+                    <Tab eventKey={pipeline.id} key={pipeline.id} title={pipeline.name}>
                         <Stages pipelineId={pipeline.id}/>
                     </Tab>
                 )

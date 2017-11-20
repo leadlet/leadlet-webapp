@@ -21,7 +21,7 @@ class Stages extends React.Component {
     }
 
     componentDidMount() {
-        this.props.getAllStages();
+        this.props.getAllStages(this.props.pipelineId);
     }
 
     onDeleteStage(id){
@@ -52,20 +52,21 @@ class Stages extends React.Component {
             return (
                 <div className="step-indicator">
                 {
-                    this.props.stages.filter(stage => stage.pipelineId === this.props.pipelineId).map( stage => {
+                    this.props.ids.map( stageId => {
+                        const stageItem = this.props.stages[stageId];
                         return (
-                            <div className="step" style={{"--stage-color": stage.color}}>
-                                {stage.name}
-                                <div class="btn-group btn-group-xs" role="group" aria-label="...">
-                                    <i class="btn fa fa-edit"  onClick={() => this.onEditStage(stage)}></i>
-                                    <i class="btn fa fa-trash" onClick={() => this.onDeleteStage(stage.id)}></i>
+                            <div key={stageId} className="step" style={{"--stage-color": stageItem.color}}>
+                                {stageItem.name}
+                                <div className="btn-group btn-group-xs" role="group" aria-label="...">
+                                    <i className="btn fa fa-edit"  onClick={() => this.onEditStage(stageItem)}></i>
+                                    <i className="btn fa fa-trash" onClick={() => this.onDeleteStage(stageItem.id)}></i>
                                 </div>
                             </div>
                         );
-                    })
+                    }, this)
                 }
                     <div className="step">
-                        <a onClick={() => this.onNewStage()}>New Stage <i class="fa fa-plus" ></i></a>
+                        <a onClick={() => this.onNewStage()}>New Stage <i className="fa fa-plus" ></i></a>
                     </div>
                     <StageNewOrEdit showModal={this.state.showStageModal}
                                     close={this.closeStageModal}
@@ -83,6 +84,7 @@ class Stages extends React.Component {
 function mapStateToProps(state){
     return {
         stages: state.stages.items,
+        ids: state.stages.ids,
     };
 }
 
