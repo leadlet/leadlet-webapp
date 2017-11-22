@@ -8,12 +8,12 @@ import moment from 'moment';
 
 const validate = values => {
     const errors = {}
-    if (!values.name) {
-        errors.name = 'Required'
+    if (!values.title) {
+        errors.title = 'Required'
     } else if (!values.description) {
         errors.description = 'Required'
-    } else if (values.name.length > 15) {
-        errors.name = 'Must be 15 characters or less'
+    } else if (values.title.length > 15) {
+        errors.title = 'Must be 15 characters or less'
     } else if (values.description.length < 15 || values.description.length > 300) {
         errors.description = 'Must be between 15 and 300 characters'
     }
@@ -91,10 +91,10 @@ class ActivityDetail extends Component {
                 <Modal.Body>
                     <form onSubmit={handleSubmit(this.onSubmit)}>
                         <Field
-                            name="name"
+                            name="title"
                             type="text"
                             component={renderField}
-                            label="Name"
+                            label="Title"
                         />
                         <Field
                             name="description"
@@ -121,9 +121,15 @@ class ActivityDetail extends Component {
     }
 }
 
+function mapStateToProps(state) {
+    return {
+        activity: state.activity //bu activity'i nerede kullanacagiz?
+    }
+}
+
 export default reduxForm({
     form: 'postNewActivityForm',
     validate // <--- validation function given to redux-form
 })(
-    connect(null, {createActivity})(ActivityDetail)
+    connect(mapStateToProps, {createActivity})(ActivityDetail)
 );

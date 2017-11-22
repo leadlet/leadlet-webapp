@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import $ from 'jquery';
 import draggable from '../../../node_modules/jquery-ui/ui/widgets/draggable';
 import fullCalendar from 'fullcalendar';
 import ActivityDetail from "./ActivityDetail";
+import {getAllActivity} from "../../actions/activity.actions";
 
 class Activity extends Component {
 
@@ -23,7 +25,7 @@ class Activity extends Component {
         this.setState({activitySelectedForEdit: activity});
     }
 
-    closeModal(){
+    closeModal() {
         this.setState({showModal: false});
     }
 
@@ -49,73 +51,34 @@ class Activity extends Component {
 
         });
 
-        var date = new Date();
-        var d = date.getDate();
-        var m = date.getMonth();
-        var y = date.getFullYear();
+        this.props.getAllActivity();
+    }
 
-        $('#calendar').fullCalendar({
-            header: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'month,agendaWeek,agendaDay'
-            },
-            editable: true,
-            droppable: true, // this allows things to be dropped onto the calendar
-            drop: function () {
-                // is the "remove after drop" checkbox checked?
-                if ($('#drop-remove').is(':checked')) {
-                    // if so, remove the element from the "Draggable Events" list
-                    $(this).remove();
-                }
-            },
-            events: [
-                {
-                    title: 'All Day Event',
-                    start: new Date(y, m, 1)
+    componentDidUpdate() {
+
+        const events = this.props.activity.items;
+        console.log("ALL EVENTS: ", events);
+
+        //TODO: fullCalendar her update de render olmamalı.
+        if (events) {
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
                 },
-                {
-                    title: 'Long Event',
-                    start: new Date(y, m, d - 5),
-                    end: new Date(y, m, d - 2)
+                editable: true,
+                droppable: true, // this allows things to be dropped onto the calendar
+                drop: function () {
+                    // is the "remove after drop" checkbox checked?
+                    if ($('#drop-remove').is(':checked')) {
+                        // if so, remove the element from the "Draggable Events" list
+                        $(this).remove();
+                    }
                 },
-                {
-                    id: 999,
-                    title: 'Repeating Event',
-                    start: new Date(y, m, d - 3, 16, 0),
-                    allDay: false
-                },
-                {
-                    id: 999,
-                    title: 'Repeating Event',
-                    start: new Date(y, m, d + 4, 16, 0),
-                    allDay: false
-                },
-                {
-                    title: 'Meeting',
-                    start: new Date(y, m, d, 10, 30),
-                    allDay: false
-                },
-                {
-                    title: 'Lunch',
-                    start: new Date(y, m, d, 12, 0),
-                    end: new Date(y, m, d, 14, 0),
-                    allDay: false
-                },
-                {
-                    title: 'Birthday Party',
-                    start: new Date(y, m, d + 1, 19, 0),
-                    end: new Date(y, m, d + 1, 22, 30),
-                    allDay: false
-                },
-                {
-                    title: 'Click for Google',
-                    start: new Date(y, m, 28),
-                    end: new Date(y, m, 29),
-                    url: 'http://google.com/'
-                }
-            ]
-        });
+                events
+            });
+        }
     }
 
     render() {
@@ -125,7 +88,8 @@ class Activity extends Component {
                     <div>
                         <div>
                             <p className="pull-right ">
-                                <button className="btn btn-primary btn-sm" type="button" onClick={this.openActivityModal}><i
+                                <button className="btn btn-primary btn-sm" type="button"
+                                        onClick={this.openActivityModal}><i
                                     className="fa fa-plus"></i>&nbsp;New Activity
                                 </button>
                             </p>
@@ -158,8 +122,8 @@ class Activity extends Component {
 
                         <div>
                             <ActivityDetail showModal={this.state.showModal}
-                                         close={this.closeModal}
-                                         contact={this.state.activitySelectedForEdit}
+                                            close={this.closeModal}
+                                            contact={this.state.activitySelectedForEdit}
                             />
                         </div>
                     </div>
@@ -169,4 +133,10 @@ class Activity extends Component {
     }
 }
 
-export default Activity;
+function mapStateToProps(state) {
+    return {
+        activity: state.activity
+    }
+}
+
+export default connect(mapStateToProps, {getAllActivity})(Activity);
