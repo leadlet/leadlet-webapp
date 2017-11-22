@@ -2,8 +2,7 @@ import React from 'react';
 import Modal from '../../modal-shim';
 import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux';
-import {GithubPicker} from "react-color";
-import {createStage, updateStage} from "../../actions/stage.actions";
+import {createPipeline, updatePipeline} from "../../actions/pipeline.actions";
 
 const validate = values => {
     const errors = {}
@@ -47,24 +46,7 @@ const renderField = ({
 );
 
 
-const renderColorPickerList = (props) => (
-        <div className="form-group">
-            <label>{props.label} <span style={{display: 'inline-block', backgroundColor:props.input.value , width: '72px', height: '10px'}}></span></label>
-            <div>
-                <GithubPicker width="100%"
-                              color={props.input.value}
-                              onChange={ (color,event)=> props.input.onChange(color.hex)}/>
-                <span className="help-block m-b-none">{props.meta.touched &&
-                ((props.meta.error && <span>{props.meta.error}</span>) ||
-                    (props.meta.warning && <span>{props.meta.warning}</span>))}
-                </span>
-            </div>
-
-
-        </div>
-    );
-
-class StageNewOrEdit extends React.Component {
+class PipelineNewOrEdit extends React.Component {
 
     constructor(props) {
         super(props);
@@ -73,14 +55,11 @@ class StageNewOrEdit extends React.Component {
 
     onSubmit = (values) => {
         // print the form values to the console
-        const stageDto = {
-            ...values,
-            pipelineId: this.props.pipelineId
-        }
-        if( stageDto.id ){
-            return this.props.updateStage(stageDto,this.props.close);
+        console.log(values);
+        if( values.id ){
+            return this.props.updatePipeline(values,this.props.close);
         } else {
-            return this.props.createStage(stageDto,this.props.close);
+            return this.props.createPipeline(values,this.props.close);
         }
 
     }
@@ -88,9 +67,9 @@ class StageNewOrEdit extends React.Component {
 
     render () {
         const { handleSubmit, pristine, reset, submitting, stage } = this.props;
-        let title = "Create New Stage";
+        let title = "Create New Pipeline";
         if( stage !== null ){
-            title = "Edit Stage";
+            title = "Edit Pipeline";
         }
         return (
             <Modal bsSize="small" show={this.props.showModal} onHide={this.props.close}>
@@ -107,9 +86,10 @@ class StageNewOrEdit extends React.Component {
                         />
 
                         <Field
-                            name="color"
-                            component={renderColorPickerList}
-                            label="Color"
+                            name="order"
+                            type="number"
+                            component={renderField}
+                            label="Order"
                         />
 
                         <button className="btn btn-sm btn-primary pull-right"
@@ -126,10 +106,10 @@ class StageNewOrEdit extends React.Component {
 }
 
 export default reduxForm({
-    form: 'stageNewOrEdit', // a unique identifier for this form
+    form: 'pipelineNewOrEdit', // a unique identifier for this form
     validate, // <--- validation function given to redux-form
     warn, // <--- warning function given to redux-form
     enableReinitialize : true // this is needed!!
 })(
-   connect(null, {createStage,updateStage})( StageNewOrEdit)
+   connect(null, {createPipeline,updatePipeline})( PipelineNewOrEdit)
 );

@@ -53,8 +53,8 @@ class Contacts extends Component {
     }
 
     openEditModal(contact){
-        this.setState({showEditModal: true});
-        this.setState({contactSelectedForEdit: contact});
+//        this.setState({showEditModal: true});
+//        this.setState({contactSelectedForEdit: contact});
     }
 
     closeEditModal(){

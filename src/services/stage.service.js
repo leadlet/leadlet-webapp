@@ -37,7 +37,7 @@ function getById(id) {
     return fetch('/api/stages/' + id, requestOptions).then(handleResponse);
 }
 
-function getAll(pipelineId) {
+function getAll() {
     // TODO ygokirmak - add pipelineId filter
     const requestOptions = {
         method: 'GET',
