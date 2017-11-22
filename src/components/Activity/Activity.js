@@ -83,7 +83,13 @@ class Activity extends Component {
                 },
                 events,
                 eventClick: function(event) {
-                    openActivityModal();
+                    openActivityModal(
+                        {
+                            title: event.title,
+                            start: event.start._d,
+                            description: event.description
+                        }
+                    );
                 }
             });
         }
@@ -113,7 +119,7 @@ class Activity extends Component {
                         <div>
                             <ActivityDetail showModal={this.state.showModal}
                                             close={this.closeModal}
-                                            activity={this.state.activitySelectedForEdit}
+                                            initialValues={this.state.activitySelectedForEdit}
                             />
                         </div>
                     </div>

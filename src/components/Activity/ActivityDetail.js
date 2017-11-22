@@ -65,19 +65,6 @@ const renderDateField = ({
 
 class ActivityDetail extends Component {
 
-    componentWillReceiveProps(nextProps) {
-        const {change} = this.props
-        const values = nextProps.initialValues;
-
-        if (values) {
-            values.map(function (value) {
-                change('title', value.title);
-                change('description', value.description);
-                change('start', value.start);
-            });
-        }
-    }
-
     constructor(props) {
         super(props);
         this.onSubmit = this.onSubmit.bind(this);
@@ -139,13 +126,10 @@ class ActivityDetail extends Component {
     }
 }
 
-function mapStateToProps(state) {
-    return { initialValues: state.activity.items};
-}
-
 export default reduxForm({
     form: 'postNewActivityForm',
-    validate // <--- validation function given to redux-form
+    validate, // <--- validation function given to redux-form
+    enableReinitialize: true
 })(
-    connect(mapStateToProps, {createActivity, updateActivity})(ActivityDetail)
+    connect(null, {createActivity, updateActivity})(ActivityDetail)
 );
