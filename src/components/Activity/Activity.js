@@ -61,9 +61,10 @@ class Activity extends Component {
 
         //TODO: fullCalendar her update de render olmamalı.
         if (events) {
+            $('#calendar').fullCalendar('destroy');
+
             $('#calendar').fullCalendar({
                 aspectRatio: 3,
-
                 header: {
                     left: 'prev,next today',
                     center: 'title',

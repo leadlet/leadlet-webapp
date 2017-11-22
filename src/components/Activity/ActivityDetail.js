@@ -77,6 +77,7 @@ class ActivityDetail extends Component {
     onSubmit = (activity) => {
         // print the form values to the console
         console.log("ACTIVITY: ", activity);
+        activity.start = activity.start._d;
         return this.props.createActivity(activity);
 
     }
@@ -103,7 +104,7 @@ class ActivityDetail extends Component {
                             label="Description"
                         />
                         <Field
-                            name="date"
+                            name="start"
                             selected={this.state.startDate}
                             component={renderDateField}
                             label="Date"
@@ -121,15 +122,9 @@ class ActivityDetail extends Component {
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        activity: state.activity //bu activity'i nerede kullanacagiz?
-    }
-}
-
 export default reduxForm({
     form: 'postNewActivityForm',
     validate // <--- validation function given to redux-form
 })(
-    connect(mapStateToProps, {createActivity})(ActivityDetail)
+    connect(null, {createActivity})(ActivityDetail)
 );
