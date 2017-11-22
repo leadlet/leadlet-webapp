@@ -100,7 +100,7 @@ class Contacts extends Component {
                                                 contacts={this.props.persons}
                                                 type={contactConstants.CONTACT_TYPE_PERSON}
                                                 onContactSelect={this.onContactSelect}
-                                                onEditClicked={this.openEditModal}
+                                                onEditClicked={()=>this.openEditModal}
                                             />
                                         </Tab>
                                         <Tab eventKey={2} title={<span> Organization <span class="badge"> {this.props.organizations.total} </span></span>}>
@@ -108,7 +108,7 @@ class Contacts extends Component {
                                                 contacts={this.props.organizations}
                                                 type={contactConstants.CONTACT_TYPE_ORGANIZATION}
                                                 onContactSelect={this.onContactSelect}
-                                                onEditClicked={this.openEditModal}
+                                                onEditClicked={()=>this.openEditModal}
                                             />
                                         </Tab>
                                     </Tabs>
@@ -122,7 +122,7 @@ class Contacts extends Component {
                     <div className="ibox ">
 
                         <div className="ibox-content">
-                            <ContactDetail contact={ this.state.selectedContact } onEditClicked={this.openEditModal(this.state.selectedContact)}/>
+                            <ContactDetail contact={ this.state.selectedContact } onEditClicked={()=>this.openEditModal(this.state.selectedContact)}/>
                         </div>
                     </div>
                 </div>

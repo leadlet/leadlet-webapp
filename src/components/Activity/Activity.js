@@ -57,6 +57,8 @@ class Activity extends Component {
     componentDidUpdate() {
 
         const events = this.props.activity.items;
+        const openActivityModal = this.openActivityModal;
+
         console.log("ALL EVENTS: ", events);
 
         //TODO: fullCalendar her update de render olmamalı.
@@ -79,7 +81,10 @@ class Activity extends Component {
                         $(this).remove();
                     }
                 },
-                events
+                events,
+                eventClick: function(event) {
+                    openActivityModal();
+                }
             });
         }
     }
@@ -108,7 +113,7 @@ class Activity extends Component {
                         <div>
                             <ActivityDetail showModal={this.state.showModal}
                                             close={this.closeModal}
-                                            contact={this.state.activitySelectedForEdit}
+                                            activity={this.state.activitySelectedForEdit}
                             />
                         </div>
                     </div>

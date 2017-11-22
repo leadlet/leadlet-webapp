@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Field, reduxForm} from 'redux-form';
 import Modal from '../../modal-shim';
 import {connect} from 'react-redux';
-import {createActivity} from '../../actions/activity.actions';
+import {createActivity, updateActivity} from '../../actions/activity.actions';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 
@@ -65,6 +65,19 @@ const renderDateField = ({
 
 class ActivityDetail extends Component {
 
+    componentWillReceiveProps(nextProps) {
+        const {change} = this.props
+        const values = nextProps.initialValues;
+
+        if (values) {
+            values.map(function (value) {
+                change('title', value.title);
+                change('description', value.description);
+                change('start', value.start);
+            });
+        }
+    }
+
     constructor(props) {
         super(props);
         this.onSubmit = this.onSubmit.bind(this);
@@ -78,8 +91,12 @@ class ActivityDetail extends Component {
         // print the form values to the console
         console.log("ACTIVITY: ", activity);
         activity.start = activity.start._d;
-        return this.props.createActivity(activity);
 
+        if(this.props.activity){
+            return this.props.updateActivity(activity);
+        }else{
+            return this.props.createActivity(activity);
+        }
     }
 
     render() {
@@ -122,9 +139,13 @@ class ActivityDetail extends Component {
     }
 }
 
+function mapStateToProps(state) {
+    return { initialValues: state.activity.items};
+}
+
 export default reduxForm({
     form: 'postNewActivityForm',
     validate // <--- validation function given to redux-form
 })(
-    connect(null, {createActivity})(ActivityDetail)
+    connect(mapStateToProps, {createActivity, updateActivity})(ActivityDetail)
 );

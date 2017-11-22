@@ -64,3 +64,10 @@ export function getAllActivity() {
         ]
     }
 }
+
+export function updateActivity(activity) {
+    return {
+        type: activityConstants.UPDATE_SUCCESS,
+        payload: activity
+    }
+}

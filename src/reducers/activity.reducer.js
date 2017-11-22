@@ -11,6 +11,10 @@ export function activity(state = {}, action) {
             return {
                 items : [ ...state.items, action.payload]
             };
+        case activityConstants.UPDATE_SUCCESS:
+            return {
+                //guncellenecek data bulunup ardından yeni datalarla güncellenmeli.
+            }
         default:
             return state
     }
