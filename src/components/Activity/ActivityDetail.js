@@ -79,11 +79,12 @@ class ActivityDetail extends Component {
         console.log("ACTIVITY: ", activity);
         activity.start = activity.start._d;
 
-        if(this.props.activity){
-            return this.props.updateActivity(activity);
-        }else{
-            return this.props.createActivity(activity);
+        if (this.props.activity) {
+            this.props.updateActivity(activity);
+        } else {
+            this.props.createActivity(activity);
         }
+        this.props.close();
     }
 
     render() {
