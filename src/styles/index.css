@@ -8579,7 +8579,7 @@ body.md-skin {
 }
 
 .step {
-  --stage-color: #f8ac59;
+  --stage-color: #18a689;
   --text-color: #fff;
 
   display: block;
@@ -8630,14 +8630,7 @@ body.md-skin {
 .step:first-of-type:before {
   display: none;
 }
-.step:last-of-type {
-  border-radius: 0 2px 2px 0;
-  margin-right: 25px;
-  padding-right: 15px;
-}
-.step:last-of-type:after {
-  display: none;
-}
+
 
 .step a {
   color: white;

@@ -5,6 +5,7 @@ import {Tab, Tabs} from "react-bootstrap";
 import Stages from "./Stages";
 import PipelineNewOrEdit from "./PipelineNewOrEdit";
 import {deletePipeline, getAllPipelines} from "../../actions/pipeline.actions";
+import SweetAlert from 'sweetalert-react';
 
 class Pipelines extends React.Component {
 
@@ -13,13 +14,17 @@ class Pipelines extends React.Component {
 
         this.state = {
             showPipelineModal: false,
-            selectedStage: null
+            selectedStage: null,
+            showDeleteDialog: false,
+            deletingPipeline: null
         }
         this.renderPipelines = this.renderPipelines.bind(this);
         this.onEditPipeline = this.onEditPipeline.bind(this);
         this.onDeletePipeline = this.onDeletePipeline.bind(this);
         this.newPipelineTab = this.newPipelineTab.bind(this);
         this.closePipelineModal = this.closePipelineModal.bind(this);
+        this.confirmDeletePipeline = this.confirmDeletePipeline.bind(this);
+        this.cancelDeletePipeline = this.cancelDeletePipeline.bind(this);
 
     }
 
@@ -32,8 +37,27 @@ class Pipelines extends React.Component {
 
     }
 
+    cancelDeletePipeline(id){
+        this.props.deletePipeline(this.state.deletingPipeline);
+        this.setState({
+            showDeleteDialog: false,
+            deletingPipeline: null
+        });
+    }
+
+    confirmDeletePipeline(id){
+        this.props.deletePipeline(this.state.deletingPipeline);
+        this.setState({
+            showDeleteDialog: false,
+            deletingPipeline: null
+        });
+    }
+
     onDeletePipeline(id){
-        this.props.deletePipeline(id);
+        this.setState({
+            showDeleteDialog: true,
+            deletingPipeline: id
+        });
     }
 
     componentDidMount() {
@@ -66,7 +90,8 @@ class Pipelines extends React.Component {
 
     newPipelineTab(){
         return (
-            <span onClick={() => {this.setState({showPipelineModal:true})}}>New Pipeline <i className="fa fa-plus"></i></span>
+            <span onClick={() => {this.setState({showPipelineModal:true})}}>New Pipeline <i className="fa fa-plus"></i>
+            </span>
         );
     }
 
@@ -102,6 +127,20 @@ class Pipelines extends React.Component {
                 <div>
                     <PipelineNewOrEdit showModal={this.state.showPipelineModal}
                                         close={this.closePipelineModal}/>
+                </div>
+                <div>
+                    <SweetAlert
+                        title="Are you sure?"
+                        text="You will not be able to recover this imaginary file!"
+                        type="warning"
+                        showCancelButton="true"
+                        confirmButtonColor="#DD6B55"
+                        confirmButtonText= "Yes, delete it!"
+                        closeOnConfirm={false}
+                        show={this.state.showDeleteDialog}
+                        onConfirm={() => this.confirmDeletePipeline()}
+                        onCancel={() => this.cancelDeletePipeline()}
+                    />
                 </div>
             </div>
 
