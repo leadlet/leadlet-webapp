@@ -62,6 +62,8 @@ class Activity extends Component {
         //TODO: fullCalendar her update de render olmamalı.
         if (events) {
             $('#calendar').fullCalendar({
+                aspectRatio: 3,
+
                 header: {
                     left: 'prev,next today',
                     center: 'title',
@@ -86,33 +88,15 @@ class Activity extends Component {
             <div className="wrapper wrapper-content">
                 <div className="row animated fadeInDown">
                     <div>
-                        <div>
-                            <p className="pull-right ">
-                                <button className="btn btn-primary btn-sm" type="button"
-                                        onClick={this.openActivityModal}><i
-                                    className="fa fa-plus"></i>&nbsp;New Activity
-                                </button>
-                            </p>
-                        </div>
+
                         <div className="ibox float-e-margins">
                             <div className="ibox-title">
                                 <h5>Striped Table </h5>
                                 <div className="ibox-tools">
-                                    <a className="collapse-link">
-                                        <i className="fa fa-chevron-up"></i>
-                                    </a>
-                                    <a className="dropdown-toggle" data-toggle="dropdown" href="#">
-                                        <i className="fa fa-wrench"></i>
-                                    </a>
-                                    <ul className="dropdown-menu dropdown-user">
-                                        <li><a href="#">Config option 1</a>
-                                        </li>
-                                        <li><a href="#">Config option 2</a>
-                                        </li>
-                                    </ul>
-                                    <a className="close-link">
-                                        <i className="fa fa-times"></i>
-                                    </a>
+                                    <button className="btn btn-primary btn-sm" type="button"
+                                            onClick={this.openActivityModal}><i
+                                        className="fa fa-plus"></i>&nbsp;New Activity
+                                    </button>
                                 </div>
                             </div>
                             <div className="ibox-content">
