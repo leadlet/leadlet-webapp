@@ -10,34 +10,39 @@ import { LoginPage } from './components/Login';
 import { RegisterPage } from './components/Register';
 import { Switch, Route } from 'react-router-dom';
 
+var NotificationSystem = require('react-notification-system');
+
 class App extends React.Component {
+    _notificationSystem;
+
     constructor(props) {
         super(props);
-
-        const { dispatch } = this.props;
-        history.listen((location, action) => {
-            // clear alert on location change
-            dispatch(alertActions.clear());
-        });
     }
 
+    componentDidUpdate(){
+        if(this.props.alert.level){
+            this._notificationSystem.addNotification({
+                message: this.props.alert.message,
+                level: this.props.alert.level,
+                position: 'bl',
+                autoDismiss: 5
+            });
+            this.props.dispatch(alertActions.clear());
+        }
+    }
+    componentDidMount(){
+        this._notificationSystem = this.refs.notificationSystem;
+    }
     render() {
         const { alert } = this.props;
         return (
             <div>
-                {
-                    alert.message &&
-                    <div className={`alert ${alert.type} alert-dismissable`}>
-                        <button aria-hidden={true} data-dismiss="alert" className="close" type="button"
-                            onClick={()=> this.props.dispatch(alertActions.clear())}>×</button>
-                        {alert.message}
-                    </div>
-                }
+                <NotificationSystem ref="notificationSystem" />
 
                 <Switch>
                     <Route exact={true} path="/login" component={LoginPage} />
                     <Route exact={true} path="/register" component={RegisterPage} />
-                    <Route path="/" component={TopMenuLayout} />
+                    <PrivateRoute path="/" component={TopMenuLayout} />
                 </Switch>
             </div>
         );

@@ -1,7 +1,8 @@
 import {pipelineConstants} from "../constants/pipeline.constants";
 import {pipelineService} from "../services/pipeline.service";
+import {alertActions} from "./alert.actions";
 
-export function getAll() {
+export function getAllPipelines() {
     return dispatch => {
         dispatch(request());
 
@@ -20,23 +21,66 @@ export function getAll() {
 
 }
 
-function _delete(id) {
+export function updatePipeline(pipeline, successCallback) {
+    return dispatch => {
+        dispatch(request());
+
+        return pipelineService.update(pipeline)
+            .then(
+                pipeline => {
+                    dispatch(successCallback);
+                    dispatch(success(pipeline));
+                    dispatch(alertActions.success('Pipeline successfully updated'));
+                },
+                error => {
+                    dispatch(failure(error));
+                    dispatch(alertActions.error(error));
+                }
+            );
+    };
+
+    function request() { return { type: pipelineConstants.UPDATE_REQUEST } }
+    function success(pipeline) { return { type: pipelineConstants.UPDATE_SUCCESS, pipeline } }
+    function failure(error) { return { type: pipelineConstants.UPDATE_FAILURE, error } }
+}
+
+
+export function createPipeline(pipeline, successCallback) {
+    return dispatch => {
+        dispatch(request());
+
+        return pipelineService.create(pipeline)
+            .then(
+                pipeline => {
+                    dispatch(successCallback);
+                    dispatch(success(pipeline));
+                    dispatch(alertActions.success('Pipeline successfully created'));
+                },
+                error => {
+                    dispatch(failure(error));
+                    dispatch(alertActions.error(error));
+                }
+            );
+    };
+
+    function request() { return { type: pipelineConstants.CREATE_REQUEST } }
+    function success(pipeline) { return { type: pipelineConstants.CREATE_SUCCESS, pipeline } }
+    function failure(error) { return { type: pipelineConstants.CREATE_FAILURE, error } }
+}
+
+export function deletePipeline(id) {
     return dispatch => {
         dispatch(request(id));
 
-        dispatch(success(id));
-
-        /*
-        contactService.delete(id)
+        pipelineService._delete(id)
             .then(
-                contact => {
+                pipeline => {
                     dispatch(success(id));
                 },
                 error => {
                     dispatch(failure(id, error));
                 }
             );
-            */
     };
 
     function request(id) { return { type: pipelineConstants.DELETE_REQUEST, id } }
