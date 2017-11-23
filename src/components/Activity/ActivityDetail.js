@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import {createActivity, updateActivity} from '../../actions/activity.actions';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
+import {ButtonToolbar} from "react-bootstrap";
 
 const validate = values => {
     const errors = {}
@@ -114,8 +115,10 @@ class ActivityDetail extends Component {
                             component={renderDateField}
                             label="Date"
                         />
-                        <button className="btn btn-sm btn-primary pull-right"
-                                type="submit"><strong>Submit</strong></button>
+                        <ButtonToolbar className="pull-right">
+                            <button className="btn btn-sm btn-danger"><strong>Delete</strong></button>
+                            <button className="btn btn-sm btn-primary" type="submit"><strong>Submit</strong></button>
+                        </ButtonToolbar>
 
                     </form>
                 </Modal.Body>
