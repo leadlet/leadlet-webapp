@@ -30,7 +30,7 @@ export function updatePipeline(pipeline, successCallback) {
                 pipeline => {
                     dispatch(successCallback);
                     dispatch(success(pipeline));
-                    dispatch(alertActions.success('Contact create successful'));
+                    dispatch(alertActions.success('Pipeline successfully updated'));
                 },
                 error => {
                     dispatch(failure(error));
@@ -54,7 +54,7 @@ export function createPipeline(pipeline, successCallback) {
                 pipeline => {
                     dispatch(successCallback);
                     dispatch(success(pipeline));
-                    dispatch(alertActions.success('Contact create successful'));
+                    dispatch(alertActions.success('Pipeline successfully created'));
                 },
                 error => {
                     dispatch(failure(error));
