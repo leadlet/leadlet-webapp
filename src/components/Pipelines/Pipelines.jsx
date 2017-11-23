@@ -14,7 +14,7 @@ class Pipelines extends React.Component {
 
         this.state = {
             showPipelineModal: false,
-            selectedStage: null,
+            selectedPipeline: null,
             showDeleteDialog: false,
             deletingPipeline: null
         }
@@ -33,12 +33,14 @@ class Pipelines extends React.Component {
             showPipelineModal: false
         })
     }
-    onEditPipeline(){
-
+    onEditPipeline(pipeline){
+        this.setState({
+            showPipelineModal: true,
+            selectedPipeline: pipeline
+        })
     }
 
     cancelDeletePipeline(id){
-        this.props.deletePipeline(this.state.deletingPipeline);
         this.setState({
             showDeleteDialog: false,
             deletingPipeline: null
@@ -65,23 +67,23 @@ class Pipelines extends React.Component {
     }
 
     renderPipelines(){
-        if( ! this.props.pipelines ){
+        if( this.props.ids && this.props.pipelines.loading ) {
             return ( <em>Loading Pipelines.. </em>);
-        }else if( this.props.pipelines && this.props.pipelines.loading ) {
-            return ( <em>Loading Pipelines.. </em>);
-        }else {
-            return this.props.pipelines.map( pipeline => {
+        }else if(this.props.ids) {
+            return this.props.ids.map( pipelineId => {
+                const pipelineItem = this.props.pipelines[pipelineId];
+
                 return (
-                    <Tab eventKey={pipeline.id} key={pipeline.id}
+                    <Tab eventKey={pipelineId} key={pipelineId}
                          title={
-                             <span>{pipeline.name}
+                             <span>{pipelineItem.name}
                                  <div className="btn-group btn-group-xs" role="group" aria-label="...">
-                                    <i className="btn fa fa-edit"  onClick={() => this.onEditPipeline(pipeline)}></i>
-                                    <i className="btn fa fa-trash" onClick={() => this.onDeletePipeline(pipeline.id)}></i>
+                                    <i className="btn fa fa-edit"  onClick={() => this.onEditPipeline(pipelineItem)}></i>
+                                    <i className="btn fa fa-trash" onClick={() => this.onDeletePipeline(pipelineItem.id)}></i>
                                 </div>
                              </span>
                          }>
-                        <Stages pipelineId={pipeline.id}/>
+                        <Stages pipelineId={pipelineItem.id}/>
                     </Tab>
                 )
             })
@@ -126,17 +128,17 @@ class Pipelines extends React.Component {
 
                 <div>
                     <PipelineNewOrEdit showModal={this.state.showPipelineModal}
+                                       initialValues={this.state.selectedPipeline}
                                         close={this.closePipelineModal}/>
                 </div>
                 <div>
                     <SweetAlert
                         title="Are you sure?"
-                        text="You will not be able to recover this imaginary file!"
+                        text="You will loose all stages, deals and activities related to this pipeline!"
                         type="warning"
-                        showCancelButton="true"
+                        showCancelButton={true}
                         confirmButtonColor="#DD6B55"
                         confirmButtonText= "Yes, delete it!"
-                        closeOnConfirm={false}
                         show={this.state.showDeleteDialog}
                         onConfirm={() => this.confirmDeletePipeline()}
                         onCancel={() => this.cancelDeletePipeline()}
@@ -151,7 +153,8 @@ class Pipelines extends React.Component {
 
 function mapStateToProps(state){
     return {
-        pipelines: state.pipelines.items
+        pipelines: state.pipelines.items,
+        ids: state.pipelines.ids,
     };
 }
 

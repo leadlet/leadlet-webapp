@@ -97,10 +97,9 @@ class Stages extends React.Component {
                         title="Are you sure?"
                         text="You will not be able to recover this imaginary file!"
                         type="warning"
-                        showCancelButton="true"
+                        showCancelButton={true}
                         confirmButtonColor="#DD6B55"
                         confirmButtonText= "Yes, delete it!"
-                        closeOnConfirm={false}
                         show={this.state.showDeleteDialog}
                         onConfirm={() => this.confirmDeleteStage()}
                         onCancel={() => this.cancelDeleteStage()}

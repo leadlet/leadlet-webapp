@@ -53,13 +53,13 @@ class PipelineNewOrEdit extends React.Component {
         this.onSubmit = this.onSubmit.bind(this);
     }
 
-    onSubmit = (values) => {
+    onSubmit = (pipeline) => {
         // print the form values to the console
-        console.log(values);
-        if( values.id ){
-            return this.props.updatePipeline(values,this.props.close);
+        console.log(pipeline);
+        if( pipeline.id ){
+            return this.props.updatePipeline(pipeline,this.props.close);
         } else {
-            return this.props.createPipeline(values,this.props.close);
+            return this.props.createPipeline(pipeline,this.props.close);
         }
 
     }
