@@ -35,7 +35,6 @@ const renderField = ({
             <span className="help-block m-b-none">{touched &&
             ((error && <span>{error}</span>))}
                 </span>
-
         </div>
     </div>
 )
@@ -48,8 +47,9 @@ const renderDateField = ({
                          }) => (
     <div className="form-group">
         <label>{label}</label>
-        <div>
+        <div className="input-group">
             <DatePicker
+                className="form-control"
                 showMonthDropdown
                 showYearDropdown
                 dropdownMode="select"
@@ -58,6 +58,36 @@ const renderDateField = ({
                 selected={input.value ? moment(input.value, 'DD/MM/YYYY') : moment()}
                 onChange={input.onChange}
             />
+            <div class="input-group-addon">
+                <i class="fa fa-calendar"></i>
+            </div>
+
+            <span className="help-block m-b-none">{touched &&
+            ((error && <span>{error}</span>))}
+                </span>
+        </div>
+    </div>
+)
+
+const renderTypeField = ({
+                             input,
+                             label,
+                             meta: {touched, error}
+                         }) => (
+    <div className="form-group">
+        <label>{label}</label>
+        <div>
+            <select
+                className="form-control m-b"
+                value={input.value}
+                onChange={input.onChange}>
+                <option value="CALL">CALL</option>
+                <option value="MEETING">MEETING</option>
+                <option value="TASK">TASK</option>
+                <option value="DEADLINE">DEADLINE</option>
+                <option value="EMAIL">EMAIL</option>
+            </select>
+
             <span className="help-block m-b-none">{touched &&
             ((error && <span>{error}</span>))}
                 </span>
@@ -74,24 +104,26 @@ class ActivityDetail extends Component {
         this.confirmDeleteActivity = this.confirmDeleteActivity.bind(this);
         this.cancelDeleteActivity = this.cancelDeleteActivity.bind(this);
         this.onDeleteActivity = this.onDeleteActivity.bind(this);
+        this.handleTypeChange = this.handleTypeChange.bind(this);
 
         this.state = {
             startDate: moment(),
-            showDeleteDialog: false
+            showDeleteDialog: false,
+            selectValue: null
         };
     }
 
-    confirmDeleteActivity(){
+    confirmDeleteActivity() {
         this.props.deleteActivity(this.props.initialValues.title);
         this.setState({showDeleteDialog: false});
         this.props.close();
     }
 
-    cancelDeleteActivity(){
+    cancelDeleteActivity() {
         this.setState({showDeleteDialog: false});
     }
 
-    onDeleteActivity(activityTitle){
+    onDeleteActivity(activityTitle) {
         //this.setState({deletingStageId: id});
         this.setState({showDeleteDialog: true});
     }
@@ -109,6 +141,10 @@ class ActivityDetail extends Component {
         this.props.close();
     }
 
+    handleTypeChange = (type) =>{
+        this.setState({selectValue: type.target.value});
+    }
+
     render() {
         const {handleSubmit} = this.props;
         return (
@@ -117,7 +153,7 @@ class ActivityDetail extends Component {
                     <Modal.Title>Create New Activity</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <form onSubmit={handleSubmit(this.onSubmit)}>
+                    <form onSubmit={handleSubmit(this.onSubmit)} onChange={this.handleTypeChange}>
                         <Field
                             name="title"
                             type="text"
@@ -136,8 +172,16 @@ class ActivityDetail extends Component {
                             component={renderDateField}
                             label="Date"
                         />
+                        <Field
+                            name="type"
+                            type="text"
+                            component={renderTypeField}
+                            label="Activity Type"
+                            value={this.state.selectValue}
+                        />
                         <ButtonToolbar className="pull-right">
-                            <button className="btn btn-sm btn-danger" onClick={() => this.onDeleteActivity()}><strong>Delete</strong></button>
+                            <button className="btn btn-sm btn-danger" onClick={() => this.onDeleteActivity()}><strong>Delete</strong>
+                            </button>
                             <button className="btn btn-sm btn-primary" type="submit"><strong>Submit</strong></button>
                         </ButtonToolbar>
 
@@ -150,7 +194,7 @@ class ActivityDetail extends Component {
                             type="warning"
                             showCancelButton={true}
                             confirmButtonColor="#DD6B55"
-                            confirmButtonText= "Yes, delete it!"
+                            confirmButtonText="Yes, delete it!"
                             show={this.state.showDeleteDialog}
                             onConfirm={() => this.confirmDeleteActivity()}
                             onCancel={() => this.cancelDeleteActivity()}

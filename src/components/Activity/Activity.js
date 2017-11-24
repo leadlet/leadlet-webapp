@@ -4,7 +4,7 @@ import $ from 'jquery';
 import draggable from '../../../node_modules/jquery-ui/ui/widgets/draggable';
 import fullCalendar from 'fullcalendar';
 import ActivityDetail from "./ActivityDetail";
-import {getAllActivity} from "../../actions/activity.actions";
+import {getAllActivity, getFilterActivity} from "../../actions/activity.actions";
 
 class Activity extends Component {
 
@@ -18,6 +18,7 @@ class Activity extends Component {
 
         this.openActivityModal = this.openActivityModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
+        this.filterActivity = this.filterActivity.bind(this);
     }
 
     openActivityModal(activity) {
@@ -27,6 +28,12 @@ class Activity extends Component {
 
     closeModal() {
         this.setState({showModal: false});
+    }
+
+    filterActivity(activityType){
+        //this.setState({selectedType: activityType});
+        this.props.getAllActivity();
+        this.props.getFilterActivity(activityType);
     }
 
     componentDidMount() {
@@ -59,8 +66,6 @@ class Activity extends Component {
         const events = this.props.activity.items;
         const openActivityModal = this.openActivityModal;
 
-        console.log("ALL EVENTS: ", events);
-
         //TODO: fullCalendar her update de render olmamalı.
         if (events) {
             $('#calendar').fullCalendar('destroy');
@@ -82,12 +87,13 @@ class Activity extends Component {
                     }
                 },
                 events,
-                eventClick: function(event) {
+                eventClick: function (event) {
                     openActivityModal(
                         {
                             title: event.title,
                             start: event.start._d,
-                            description: event.description
+                            description: event.description,
+                            type: event.type
                         }
                     );
                 }
@@ -100,15 +106,26 @@ class Activity extends Component {
             <div className="wrapper wrapper-content">
                 <div className="row animated fadeInDown">
                     <div>
-
                         <div className="ibox float-e-margins">
                             <div className="ibox-title">
-                                <h5>Striped Table </h5>
                                 <div className="ibox-tools">
                                     <button className="btn btn-primary btn-sm" type="button"
                                             onClick={this.openActivityModal}><i
                                         className="fa fa-plus"></i>&nbsp;New Activity
                                     </button>
+                                    <div className="pull-left">
+                                        <button type="button" className="btn btn-sm btn-white" onClick={() => this.props.getAllActivity()}>All</button>
+                                        <button type="button" className="btn btn-sm btn-white" onClick={() => this.filterActivity('CALL')}><i
+                                            className="fa fa-phone"></i></button>
+                                        <button type="button" className="btn btn-sm btn-white" onClick={() => this.filterActivity('MEETING')}><i
+                                            className="fa fa-users"></i></button>
+                                        <button type="button" className="btn btn-sm btn-white" onClick={() => this.filterActivity('TASK')}><i
+                                            className="fa fa-clock-o"></i></button>
+                                        <button type="button" className="btn btn-sm btn-white" onClick={() => this.filterActivity('DEADLINE')}><i
+                                            className="fa fa-flag"></i></button>
+                                        <button type="button" className="btn btn-sm btn-white" onClick={() => this.filterActivity('EMAIL')}><i
+                                            className="fa fa-paper-plane"></i></button>
+                                    </div>
                                 </div>
                             </div>
                             <div className="ibox-content">
@@ -135,4 +152,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, {getAllActivity})(Activity);
+export default connect(mapStateToProps, {getAllActivity, getFilterActivity})(Activity);

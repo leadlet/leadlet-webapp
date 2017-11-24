@@ -18,6 +18,7 @@ export function activity(state = {}, action) {
                 if (activity.title === action.payload.title) {
                     activity.description = action.payload.description;
                     activity.start = action.payload.start;
+                    activity.type = action.payload.type;
                 }
             });
 
@@ -33,6 +34,16 @@ export function activity(state = {}, action) {
             return {
                 ...state,
                 items: _items
+            };
+
+        case activityConstants.FILTER_SUCCES:
+
+            let filter_items = state.items.filter((activity) => {
+                return activity.type === action.payload
+            });
+            return {
+                ...state,
+                items: filter_items
             };
 
         default:
