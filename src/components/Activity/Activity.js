@@ -4,16 +4,17 @@ import $ from 'jquery';
 import draggable from '../../../node_modules/jquery-ui/ui/widgets/draggable';
 import fullCalendar from 'fullcalendar';
 import ActivityDetail from "./ActivityDetail";
-import {getAllActivity, getFilterActivity} from "../../actions/activity.actions";
+import {getAll} from "../../actions/activity.actions";
 
-class Activity extends Component {
+class  Activity extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
             showModal: false,
-            activitySelectedForEdit: null
+            activitySelectedForEdit: null,
+            selectedType: null
         };
 
         this.openActivityModal = this.openActivityModal.bind(this);
@@ -31,9 +32,7 @@ class Activity extends Component {
     }
 
     filterActivity(activityType){
-        //this.setState({selectedType: activityType});
-        this.props.getAllActivity();
-        this.props.getFilterActivity(activityType);
+        this.setState({selectedType: activityType});
     }
 
     componentDidMount() {
@@ -58,13 +57,27 @@ class Activity extends Component {
 
         });
 
-        this.props.getAllActivity();
+        this.props.getAll();
     }
 
     componentDidUpdate() {
 
-        const events = this.props.activity.items;
+        if( !this.props.ids ){
+            return;
+        }
+
+        let events = this.props.ids.map(function(item) {
+            return  this.props.activities[item];
+        }, this);
+
+        if( this.state.selectedType ){
+            events = events.filter( event => (
+                event.type === this.state.selectedType
+            ));
+        }
+
         const openActivityModal = this.openActivityModal;
+
 
         //TODO: fullCalendar her update de render olmamalı.
         if (events) {
@@ -91,8 +104,8 @@ class Activity extends Component {
                     openActivityModal(
                         {
                             title: event.title,
-                            start: event.start._d,
-                            description: event.description,
+                            start: event.start,
+                            description: event.memo,
                             type: event.type
                         }
                     );
@@ -148,8 +161,9 @@ class Activity extends Component {
 
 function mapStateToProps(state) {
     return {
-        activity: state.activity
+        activities: state.activities.items,
+        ids: state.activities.ids,
     }
 }
 
-export default connect(mapStateToProps, {getAllActivity, getFilterActivity})(Activity);
+export default connect(mapStateToProps, {getAll})(Activity);

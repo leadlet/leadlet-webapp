@@ -4,7 +4,9 @@ import {stageService} from "../services/stage.service"
 import {alertActions} from "./alert.actions";
 
 export function getAllStages() {
+
     return dispatch => {
+        // TODO ygokirmak detay ver
         dispatch(request());
 
         stageService.getAll()

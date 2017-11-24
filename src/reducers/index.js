@@ -9,7 +9,7 @@ import {contacts} from "./contacts.reducer";
 import {pipelines} from "./pipelines.reducer";
 import {stages} from "./stages.reducer";
 import {chats} from './chats.reducer';
-import {activity} from './activity.reducer';
+import {activities} from './activities.reducer';
 
 const rootReducer = combineReducers({
     authentication,
@@ -21,7 +21,7 @@ const rootReducer = combineReducers({
     pipelines,
     stages,
     chats,
-    activity
+    activities
 });
 
 export default rootReducer;

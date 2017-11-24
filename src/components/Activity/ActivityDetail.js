@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Field, reduxForm} from 'redux-form';
 import Modal from '../../modal-shim';
 import {connect} from 'react-redux';
-import {createActivity, updateActivity, deleteActivity} from '../../actions/activity.actions';
+import {create, update, _delete} from '../../actions/activity.actions';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import {ButtonToolbar} from "react-bootstrap";
@@ -211,5 +211,5 @@ export default reduxForm({
     validate, // <--- validation function given to redux-form
     enableReinitialize: true
 })(
-    connect(null, {createActivity, updateActivity, deleteActivity})(ActivityDetail)
+    connect(null, {create, update, _delete})(ActivityDetail)
 );
