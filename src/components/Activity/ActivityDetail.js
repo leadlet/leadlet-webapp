@@ -48,6 +48,9 @@ const renderDateField = ({
     <div className="form-group">
         <label>{label}</label>
         <div className="input-group">
+            <span className="input-group-addon">
+                <i className="fa fa-calendar"></i>
+            </span>
             <DatePicker
                 className="form-control"
                 showMonthDropdown
@@ -58,13 +61,6 @@ const renderDateField = ({
                 selected={input.value ? moment(input.value, 'DD/MM/YYYY') : moment()}
                 onChange={input.onChange}
             />
-            <div class="input-group-addon">
-                <i class="fa fa-calendar"></i>
-            </div>
-
-            <span className="help-block m-b-none">{touched &&
-            ((error && <span>{error}</span>))}
-                </span>
         </div>
     </div>
 )
