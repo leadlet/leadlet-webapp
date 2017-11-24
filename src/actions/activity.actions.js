@@ -71,3 +71,10 @@ export function updateActivity(activity) {
         payload: activity
     }
 }
+
+export function deleteActivity(activityTitle) {
+    return {
+        type: activityConstants.DELETE_SUCCESS,
+        payload: activityTitle
+    }
+}

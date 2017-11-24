@@ -9,12 +9,32 @@ export function activity(state = {}, action) {
             }
         case activityConstants.ACTIVITY_CREATE_SUCCESS:
             return {
-                items : [ ...state.items, action.payload]
+                items: [...state.items, action.payload]
             };
         case activityConstants.UPDATE_SUCCESS:
+            let _state = state;
+
+            _state.items.map((activity) => {
+                if (activity.title === action.payload.title) {
+                    activity.description = action.payload.description;
+                    activity.start = action.payload.start;
+                }
+            });
+
+            return _state;
+
+        case activityConstants.DELETE_SUCCESS:
+
+            let _items = state.items.filter((activity) => {
+
+                return activity.title !== action.payload
+            });
+
             return {
-                //guncellenecek data bulunup ardından yeni datalarla güncellenmeli.
-            }
+                ...state,
+                items: _items
+            };
+
         default:
             return state
     }

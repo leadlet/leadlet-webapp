@@ -2,10 +2,11 @@ import React, {Component} from 'react';
 import {Field, reduxForm} from 'redux-form';
 import Modal from '../../modal-shim';
 import {connect} from 'react-redux';
-import {createActivity, updateActivity} from '../../actions/activity.actions';
+import {createActivity, updateActivity, deleteActivity} from '../../actions/activity.actions';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import {ButtonToolbar} from "react-bootstrap";
+import SweetAlert from 'sweetalert-react';
 
 const validate = values => {
     const errors = {}
@@ -68,11 +69,31 @@ class ActivityDetail extends Component {
 
     constructor(props) {
         super(props);
+
         this.onSubmit = this.onSubmit.bind(this);
+        this.confirmDeleteActivity = this.confirmDeleteActivity.bind(this);
+        this.cancelDeleteActivity = this.cancelDeleteActivity.bind(this);
+        this.onDeleteActivity = this.onDeleteActivity.bind(this);
 
         this.state = {
-            startDate: moment()
+            startDate: moment(),
+            showDeleteDialog: false
         };
+    }
+
+    confirmDeleteActivity(){
+        this.props.deleteActivity(this.props.initialValues.title);
+        this.setState({showDeleteDialog: false});
+        this.props.close();
+    }
+
+    cancelDeleteActivity(){
+        this.setState({showDeleteDialog: false});
+    }
+
+    onDeleteActivity(activityTitle){
+        //this.setState({deletingStageId: id});
+        this.setState({showDeleteDialog: true});
     }
 
     onSubmit = (activity) => {
@@ -116,11 +137,26 @@ class ActivityDetail extends Component {
                             label="Date"
                         />
                         <ButtonToolbar className="pull-right">
-                            <button className="btn btn-sm btn-danger"><strong>Delete</strong></button>
+                            <button className="btn btn-sm btn-danger" onClick={() => this.onDeleteActivity()}><strong>Delete</strong></button>
                             <button className="btn btn-sm btn-primary" type="submit"><strong>Submit</strong></button>
                         </ButtonToolbar>
 
                     </form>
+
+                    <div>
+                        <SweetAlert
+                            title="Are you sure?"
+                            text="You will not be able to recover this imaginary file!"
+                            type="warning"
+                            showCancelButton={true}
+                            confirmButtonColor="#DD6B55"
+                            confirmButtonText= "Yes, delete it!"
+                            show={this.state.showDeleteDialog}
+                            onConfirm={() => this.confirmDeleteActivity()}
+                            onCancel={() => this.cancelDeleteActivity()}
+                        />
+                    </div>
+
                 </Modal.Body>
                 <Modal.Footer>
                 </Modal.Footer>
@@ -135,5 +171,5 @@ export default reduxForm({
     validate, // <--- validation function given to redux-form
     enableReinitialize: true
 })(
-    connect(null, {createActivity, updateActivity})(ActivityDetail)
+    connect(null, {createActivity, updateActivity, deleteActivity})(ActivityDetail)
 );
