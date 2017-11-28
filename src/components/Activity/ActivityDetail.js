@@ -14,6 +14,8 @@ import Dropdown, {
 } from '../../../node_modules/react-simple-dropdown/lib/components/Dropdown';
 import ToggleButtonGroup from "react-bootstrap/es/ToggleButtonGroup";
 import ToggleButton from "react-bootstrap/es/ToggleButton";
+import DropdownButton from "react-bootstrap/es/DropdownButton";
+import MenuItem from "react-bootstrap/es/MenuItem";
 
 const validate = values => {
     const errors = {}
@@ -66,9 +68,10 @@ const renderDateField = ({
                              input,
                              selected,
                              label,
+                             customClass,
                              meta: {touched, error}
                          }) => (
-    <div className="form-group">
+    <div className={"form-group " + customClass}>
         <label>{label}</label>
         <DatePicker
             className="form-control"
@@ -221,18 +224,22 @@ class ActivityDetail extends Component {
                             component={renderField}
                             label="Title"
                         />
-                        <Field
-                            name="start"
-                            selected={this.state.startDate}
-                            component={renderDateField}
-                            label="Start Date & Time"
-                        />
-                        <Field
-                            name="end"
-                            selected={this.state.startDate}
-                            component={renderDateField}
-                            label="End Date & Time"
-                        />
+                        <div className="form-inline">
+                            <Field
+                                name="start"
+                                selected={this.state.startDate}
+                                component={renderDateField}
+                                label="Start Date & Time"
+                            />
+                            <Field
+                                name="end"
+                                customClass="m-l-md"
+                                selected={this.state.startDate}
+                                component={renderDateField}
+                                label="End Date & Time"
+                            />
+
+                        </div>
                         <Field
                             name="memo"
                             component={renderMemoField}
@@ -269,28 +276,13 @@ class ActivityDetail extends Component {
                     </div>
 
                     <div>
-                        <Dropdown className="account-dropdown" ref="dropdown">
-                            <DropdownTrigger>
-                                <span
-                                    className="account-dropdown__name">My Account</span>
-                            </DropdownTrigger>
-                            <DropdownContent>
-                                <ul className="account-dropdown__quick-links account-dropdown__segment">
-                                    <li className="account-dropdown__link">
-                                        <a className="account-dropdown__link__anchor" href="#"
-                                           onClick={this.handleLinkClick}>
-                                            Your profile
-                                        </a>
-                                    </li>
-                                    <li className="account-dropdown__link">
-                                        <a className="account-dropdown__link__anchor" href="#"
-                                           onClick={()=>this.onDeleteActivity()}>
-                                            Delete
-                                        </a>
-                                    </li>
-                                </ul>
-                            </DropdownContent>
-                        </Dropdown>
+                        <DropdownButton className="btn-primary" id="sample-menu" title="Settings">
+                            <MenuItem href="/pipelines">Pipelines & Stages</MenuItem>
+                            <MenuItem href="/register">Profile</MenuItem>
+                            <MenuItem href="/body1">Billing</MenuItem>
+                        </DropdownButton>
+
+
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
