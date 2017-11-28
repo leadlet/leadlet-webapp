@@ -105,7 +105,7 @@ class  Activity extends Component {
                         {
                             title: event.title,
                             start: event.start,
-                            description: event.memo,
+                            memo: event.memo,
                             type: event.type
                         }
                     );

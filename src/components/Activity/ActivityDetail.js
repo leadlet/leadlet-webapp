@@ -12,12 +12,12 @@ const validate = values => {
     const errors = {}
     if (!values.title) {
         errors.title = 'Required'
-    } else if (!values.description) {
-        errors.description = 'Required'
+    } else if (!values.memo) {
+        errors.memo = 'Required'
     } else if (values.title.length > 15) {
         errors.title = 'Must be 15 characters or less'
-    } else if (values.description.length < 15 || values.description.length > 300) {
-        errors.description = 'Must be between 15 and 300 characters'
+    } else if (values.memo.length < 15 || values.memo.length > 300) {
+        errors.memo = 'Must be between 15 and 300 characters'
     }
     return errors
 }
@@ -110,7 +110,7 @@ class ActivityDetail extends Component {
     }
 
     confirmDeleteActivity() {
-        this.props.deleteActivity(this.props.initialValues.title);
+        this.props._delete(this.props.initialValues.title);
         this.setState({showDeleteDialog: false});
         this.props.close();
     }
@@ -130,9 +130,9 @@ class ActivityDetail extends Component {
         activity.start = activity.start._d;
 
         if (this.props.activity) {
-            this.props.updateActivity(activity);
+            this.props.update(activity);
         } else {
-            this.props.createActivity(activity);
+            this.props.create(activity);
         }
         this.props.close();
     }
@@ -157,7 +157,7 @@ class ActivityDetail extends Component {
                             label="Title"
                         />
                         <Field
-                            name="description"
+                            name="memo"
                             type="text"
                             component={renderField}
                             label="Description"

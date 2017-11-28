@@ -2,14 +2,13 @@ import {activityConstants} from "../constants/activity.constants";
 import {activityService} from "../services/activity.service";
 import {alertActions} from "./alert.actions";
 
-export function create(activity, successCallback) {
+export function create(activity) {
     return dispatch => {
         dispatch(request());
 
         return activityService.create(activity)
             .then(
                 activity => {
-                    dispatch(successCallback);
                     dispatch(success(activity));
                     dispatch(alertActions.success('Activity successfully updated'));
                 },
@@ -20,9 +19,9 @@ export function create(activity, successCallback) {
             );
     };
 
-    function request() { return { type: activityConstants.UPDATE_REQUEST } }
-    function success(activity) { return { type: activityConstants.UPDATE_SUCCESS, activity } }
-    function failure(error) { return { type: activityConstants.UPDATE_FAILURE, error } }
+    function request() { return { type: activityConstants.CREATE_REQUEST } }
+    function success(activity) { return { type: activityConstants.CREATE_SUCCESS, activity } }
+    function failure(error) { return { type: activityConstants.CREATE_FAILURE, error } }
 }
 
 export function getAll() {
