@@ -12,6 +12,8 @@ import Dropdown, {
     DropdownTrigger,
     DropdownContent
 } from '../../../node_modules/react-simple-dropdown/lib/components/Dropdown';
+import ToggleButtonGroup from "react-bootstrap/es/ToggleButtonGroup";
+import ToggleButton from "react-bootstrap/es/ToggleButton";
 
 const validate = values => {
     const errors = {}
@@ -91,29 +93,19 @@ const renderTypeField = ({
                              meta: {touched, error}
                          }) => (
     <div className="form-group">
-        <label>{label}</label>
-        <div>
-            <button type="button" className="btn btn-sm btn-white">ALL</button>
-            <button type="button" className="btn btn-sm btn-white"><i
-                className="fa fa-phone"></i> CALL
-            </button>
-            <button type="button" className="btn btn-sm btn-white"><i
-                className="fa fa-users"></i> MEETING
-            </button>
-            <button type="button" className="btn btn-sm btn-white"><i
-                className="fa fa-clock-o"></i> TASK
-            </button>
-            <button type="button" className="btn btn-sm btn-white"><i
-                className="fa fa-flag"></i> DEADLINE
-            </button>
-            <button type="button" className="btn btn-sm btn-white"><i
-                className="fa fa-paper-plane"></i> EMAIL
-            </button>
+        <ButtonToolbar>
+            <ToggleButtonGroup {...input} type="radio">
+                <ToggleButton value="CALL">CALL <i className="fa fa-phone"></i></ToggleButton>
+                <ToggleButton value="MEETING">MEETING <i className="fa fa-users"></i></ToggleButton>
+                <ToggleButton value="TASK">TASK <i className="fa fa-clock-o"></i></ToggleButton>
+                <ToggleButton value="DEADLINE">DEADLINE <i className="fa fa-flag"></i></ToggleButton>
+                <ToggleButton value="EMAIL">EMAIL <i className="fa fa-paper-plane"></i></ToggleButton>
+            </ToggleButtonGroup>
+        </ButtonToolbar>
 
-            <span className="help-block m-b-none">{touched &&
-            ((error && <span>{error}</span>))}
-                </span>
-        </div>
+        <span className="help-block m-b-none">{touched &&
+        ((error && <span>{error}</span>))}
+        </span>
     </div>
 )
 
@@ -217,13 +209,11 @@ class ActivityDetail extends Component {
                     <Modal.Title>{title} New Activity</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <form onSubmit={handleSubmit(this.onSubmit)} onChange={this.handleTypeChange && this.onChange}>
+                    <form onSubmit={handleSubmit(this.onSubmit)}>
                         <Field
                             name="type"
-                            type="text"
                             component={renderTypeField}
                             label="Activity Type"
-                            value={this.state.selectValue}
                         />
                         <Field
                             name="title"
@@ -294,7 +284,7 @@ class ActivityDetail extends Component {
                                     </li>
                                     <li className="account-dropdown__link">
                                         <a className="account-dropdown__link__anchor" href="#"
-                                           onClick={this.onDeleteActivity()}>
+                                           onClick={()=>this.onDeleteActivity()}>
                                             Delete
                                         </a>
                                     </li>
