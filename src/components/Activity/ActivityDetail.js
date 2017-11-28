@@ -7,6 +7,11 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import {ButtonToolbar} from "react-bootstrap";
 import SweetAlert from 'sweetalert-react';
+import {Editor, EditorState} from 'draft-js';
+import Dropdown, {
+    DropdownTrigger,
+    DropdownContent
+} from '../../../node_modules/react-simple-dropdown/lib/components/Dropdown';
 
 const validate = values => {
     const errors = {}
@@ -29,9 +34,25 @@ const renderField = ({
                          meta: {touched, error}
                      }) => (
     <div className="form-group">
-        <label>{label}</label>
         <div>
             <input {...input} placeholder={label} type={type} className="form-control"/>
+            <span className="help-block m-b-none">{touched &&
+            ((error && <span>{error}</span>))}
+                </span>
+        </div>
+    </div>
+)
+
+const renderMemoField = ({
+                             label,
+                             input,
+                             editorState,
+                             meta: {touched, error}
+                         }) => (
+    <div className="form-group">
+        <label>{label}</label>
+        <div>
+            <Editor editorState={editorState} onChange={input.onChange}/>
             <span className="help-block m-b-none">{touched &&
             ((error && <span>{error}</span>))}
                 </span>
@@ -47,21 +68,20 @@ const renderDateField = ({
                          }) => (
     <div className="form-group">
         <label>{label}</label>
-        <div className="input-group">
-            <span className="input-group-addon">
-                <i className="fa fa-calendar"></i>
-            </span>
-            <DatePicker
-                className="form-control"
-                showMonthDropdown
-                showYearDropdown
-                dropdownMode="select"
-                placeholderText="Click to select a date"
-                dateFormat="DD/MM/YYYY"
-                selected={input.value ? moment(input.value, 'DD/MM/YYYY') : moment()}
-                onChange={input.onChange}
-            />
-        </div>
+        <DatePicker
+            className="form-control"
+            showMonthDropdown
+            showYearDropdown
+            dropdownMode="select"
+            placeholderText="Click to select a date"
+            dateFormat="DD/MM/YYYY HH:mm"
+            selected={input.value ? moment(input.value, 'DD/MM/YYYY') : moment()}
+            onChange={input.onChange}
+            showTimeSelect
+            timeFormat="HH:mm"
+            timeIntervals={15}
+            shouldCloseOnSelect={false}
+        />
     </div>
 )
 
@@ -73,15 +93,46 @@ const renderTypeField = ({
     <div className="form-group">
         <label>{label}</label>
         <div>
+            <button type="button" className="btn btn-sm btn-white">ALL</button>
+            <button type="button" className="btn btn-sm btn-white"><i
+                className="fa fa-phone"></i> CALL
+            </button>
+            <button type="button" className="btn btn-sm btn-white"><i
+                className="fa fa-users"></i> MEETING
+            </button>
+            <button type="button" className="btn btn-sm btn-white"><i
+                className="fa fa-clock-o"></i> TASK
+            </button>
+            <button type="button" className="btn btn-sm btn-white"><i
+                className="fa fa-flag"></i> DEADLINE
+            </button>
+            <button type="button" className="btn btn-sm btn-white"><i
+                className="fa fa-paper-plane"></i> EMAIL
+            </button>
+
+            <span className="help-block m-b-none">{touched &&
+            ((error && <span>{error}</span>))}
+                </span>
+        </div>
+    </div>
+)
+
+const renderAssignField = ({
+                               input,
+                               label,
+                               type,
+                               meta: {touched, error}
+                           }) => (
+
+    <div className="form-group">
+        <label>{label}</label>
+        <div>
             <select
                 className="form-control m-b"
                 value={input.value}
                 onChange={input.onChange}>
-                <option value="CALL">CALL</option>
-                <option value="MEETING">MEETING</option>
-                <option value="TASK">TASK</option>
-                <option value="DEADLINE">DEADLINE</option>
-                <option value="EMAIL">EMAIL</option>
+                <option value="ME">Me</option>
+                <option value="YAVUZ">Yavuz</option>
             </select>
 
             <span className="help-block m-b-none">{touched &&
@@ -101,12 +152,19 @@ class ActivityDetail extends Component {
         this.cancelDeleteActivity = this.cancelDeleteActivity.bind(this);
         this.onDeleteActivity = this.onDeleteActivity.bind(this);
         this.handleTypeChange = this.handleTypeChange.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.handleLinkClick = this.handleLinkClick.bind(this);
 
         this.state = {
             startDate: moment(),
             showDeleteDialog: false,
-            selectValue: null
+            selectValue: null,
+            editorState: EditorState.createEmpty()
         };
+    }
+
+    handleLinkClick() {
+        this.refs.dropdown.hide();
     }
 
     confirmDeleteActivity() {
@@ -128,6 +186,7 @@ class ActivityDetail extends Component {
         // print the form values to the console
         console.log("ACTIVITY: ", activity);
         activity.start = activity.start._d;
+        activity.end = activity.end._d;
 
         if (this.props.activity) {
             this.props.update(activity);
@@ -137,37 +196,28 @@ class ActivityDetail extends Component {
         this.props.close();
     }
 
-    handleTypeChange = (type) =>{
+    handleTypeChange = (type) => {
         this.setState({selectValue: type.target.value});
     }
 
+    onChange = (editorState) => {
+        this.setState({editorState});
+    }
+
     render() {
-        const {handleSubmit} = this.props;
+        const {handleSubmit, initialValues} = this.props;
+        let title = "Create";
+
+        if (initialValues && initialValues.title) {
+            title = "Update";
+        }
         return (
             <Modal show={this.props.showModal} onHide={this.props.close}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Create New Activity</Modal.Title>
+                    <Modal.Title>{title} New Activity</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <form onSubmit={handleSubmit(this.onSubmit)} onChange={this.handleTypeChange}>
-                        <Field
-                            name="title"
-                            type="text"
-                            component={renderField}
-                            label="Title"
-                        />
-                        <Field
-                            name="memo"
-                            type="text"
-                            component={renderField}
-                            label="Description"
-                        />
-                        <Field
-                            name="start"
-                            selected={this.state.startDate}
-                            component={renderDateField}
-                            label="Date"
-                        />
+                    <form onSubmit={handleSubmit(this.onSubmit)} onChange={this.handleTypeChange && this.onChange}>
                         <Field
                             name="type"
                             type="text"
@@ -175,6 +225,37 @@ class ActivityDetail extends Component {
                             label="Activity Type"
                             value={this.state.selectValue}
                         />
+                        <Field
+                            name="title"
+                            type="text"
+                            component={renderField}
+                            label="Title"
+                        />
+                        <Field
+                            name="start"
+                            selected={this.state.startDate}
+                            component={renderDateField}
+                            label="Start Date & Time"
+                        />
+                        <Field
+                            name="end"
+                            selected={this.state.startDate}
+                            component={renderDateField}
+                            label="End Date & Time"
+                        />
+                        <Field
+                            name="memo"
+                            component={renderMemoField}
+                            label="Description"
+                            editorState={this.state.editorState}
+                        />
+                        <Field
+                            name="assign"
+                            component={renderAssignField}
+                            label="Assigned To"
+                        />
+
+                        <button className="btn btn-sm btn-primary">...</button>
                         <ButtonToolbar className="pull-right">
                             <button className="btn btn-sm btn-danger" onClick={() => this.onDeleteActivity()}><strong>Delete</strong>
                             </button>
@@ -197,11 +278,34 @@ class ActivityDetail extends Component {
                         />
                     </div>
 
+                    <div>
+                        <Dropdown className="account-dropdown" ref="dropdown">
+                            <DropdownTrigger>
+                                <span
+                                    className="account-dropdown__name">My Account</span>
+                            </DropdownTrigger>
+                            <DropdownContent>
+                                <ul className="account-dropdown__quick-links account-dropdown__segment">
+                                    <li className="account-dropdown__link">
+                                        <a className="account-dropdown__link__anchor" href="#"
+                                           onClick={this.handleLinkClick}>
+                                            Your profile
+                                        </a>
+                                    </li>
+                                    <li className="account-dropdown__link">
+                                        <a className="account-dropdown__link__anchor" href="#"
+                                           onClick={this.onDeleteActivity()}>
+                                            Delete
+                                        </a>
+                                    </li>
+                                </ul>
+                            </DropdownContent>
+                        </Dropdown>
+                    </div>
                 </Modal.Body>
                 <Modal.Footer>
                 </Modal.Footer>
             </Modal>
-
         );
     }
 }

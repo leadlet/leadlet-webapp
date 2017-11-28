@@ -105,6 +105,7 @@ class  Activity extends Component {
                         {
                             title: event.title,
                             start: event.start,
+                            end:event.end,
                             memo: event.memo,
                             type: event.type
                         }
@@ -127,7 +128,7 @@ class  Activity extends Component {
                                         className="fa fa-plus"></i>&nbsp;New Activity
                                     </button>
                                     <div className="pull-left">
-                                        <button type="button" className="btn btn-sm btn-white" onClick={() => this.props.getAllActivity()}>All</button>
+                                        <button type="button" className="btn btn-sm btn-white" onClick={() => this.props.getAll()}>All</button>
                                         <button type="button" className="btn btn-sm btn-white" onClick={() => this.filterActivity('CALL')}><i
                                             className="fa fa-phone"></i></button>
                                         <button type="button" className="btn btn-sm btn-white" onClick={() => this.filterActivity('MEETING')}><i
