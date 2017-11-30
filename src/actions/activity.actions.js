@@ -10,7 +10,7 @@ export function create(activity) {
             .then(
                 activity => {
                     dispatch(success(activity));
-                    dispatch(alertActions.success('Activity successfully updated'));
+                    dispatch(alertActions.success('Activity successfully created'));
                 },
                 error => {
                     dispatch(failure(error));
@@ -71,7 +71,7 @@ export function _delete(id) {
         activityService._delete(id)
             .then(
                 activity => {
-                    dispatch(success(id));
+                    dispatch(success(activity.id));
                 },
                 error => {
                     dispatch(failure(id, error));

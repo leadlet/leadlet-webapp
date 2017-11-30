@@ -163,7 +163,7 @@ class ActivityDetail extends Component {
     }
 
     confirmDeleteActivity() {
-        this.props._delete(this.props.initialValues.title);
+        this.props._delete(this.props.initialValues.id);
         this.setState({showDeleteDialog: false});
         this.props.close();
     }
@@ -172,16 +172,19 @@ class ActivityDetail extends Component {
         this.setState({showDeleteDialog: false});
     }
 
-    onDeleteActivity(activityTitle) {
-        //this.setState({deletingStageId: id});
+    onDeleteActivity(event) {
+        event.preventDefault();
         this.setState({showDeleteDialog: true});
     }
 
-    onSubmit = (activity) => {
+    onSubmit = (formValue) => {
         // print the form values to the console
         console.log("ACTIVITY: ", activity);
-        activity.start = activity.start._d;
-        activity.end = activity.end._d;
+        let activity = {};
+        activity.start = formValue.start? formValue.start._d: '';
+        activity.end = formValue.end ? formValue.end._d: '';
+        activity.memo = formValue.memo.text;
+        activity.type = formValue.type;
 
         if (this.props.activity) {
             this.props.update(activity);
@@ -254,7 +257,7 @@ class ActivityDetail extends Component {
 
                         <button className="btn btn-sm btn-primary">...</button>
                         <ButtonToolbar className="pull-right">
-                            <button className="btn btn-sm btn-danger" onClick={() => this.onDeleteActivity()}><strong>Delete</strong>
+                            <button className="btn btn-sm btn-danger" onClick={this.onDeleteActivity}><strong>Delete</strong>
                             </button>
                             <button className="btn btn-sm btn-primary" type="submit"><strong>Submit</strong></button>
                         </ButtonToolbar>
@@ -270,8 +273,8 @@ class ActivityDetail extends Component {
                             confirmButtonColor="#DD6B55"
                             confirmButtonText="Yes, delete it!"
                             show={this.state.showDeleteDialog}
-                            onConfirm={() => this.confirmDeleteActivity()}
-                            onCancel={() => this.cancelDeleteActivity()}
+                            onConfirm={this.confirmDeleteActivity}
+                            onCancel={this.cancelDeleteActivity}
                         />
                     </div>
 

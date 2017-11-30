@@ -107,7 +107,8 @@ class  Activity extends Component {
                             start: event.start,
                             end:event.end,
                             memo: event.memo,
-                            type: event.type
+                            type: event.type,
+                            id: event.id
                         }
                     );
                 }
