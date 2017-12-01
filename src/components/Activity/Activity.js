@@ -109,7 +109,7 @@ class  Activity extends Component {
                             start: event.start,
                             end:event.end,
                             memo: event.memo,
-                            type: event.type,
+                            activityType: event.type,
                             id: event.id
                         }
                     );

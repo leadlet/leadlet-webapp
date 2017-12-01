@@ -8897,3 +8897,10 @@ body{
   padding-left: 0px;
   padding-right: 0px;
 }
+
+.checkbox label, .radio label{
+  padding-left: 50px;
+}
+.activity-detail-submit{
+  margin-top: 3px;
+}

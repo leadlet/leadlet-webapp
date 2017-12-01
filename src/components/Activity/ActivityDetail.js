@@ -8,25 +8,21 @@ import moment from 'moment';
 import {ButtonToolbar} from "react-bootstrap";
 import SweetAlert from 'sweetalert-react';
 import {Editor, EditorState} from 'draft-js';
-import Dropdown, {
-    DropdownTrigger,
-    DropdownContent
-} from '../../../node_modules/react-simple-dropdown/lib/components/Dropdown';
 import ToggleButtonGroup from "react-bootstrap/es/ToggleButtonGroup";
 import ToggleButton from "react-bootstrap/es/ToggleButton";
 import DropdownButton from "react-bootstrap/es/DropdownButton";
 import MenuItem from "react-bootstrap/es/MenuItem";
+import Checkbox from "react-bootstrap/es/Checkbox";
+import FormControl from "../../../node_modules/react-bootstrap/es/FormControl";
+import Select from '../../../node_modules/react-select';
+
 
 const validate = values => {
     const errors = {}
     if (!values.title) {
         errors.title = 'Required'
-    } else if (!values.memo) {
-        errors.memo = 'Required'
     } else if (values.title.length > 15) {
         errors.title = 'Must be 15 characters or less'
-    } else if (values.memo.length < 15 || values.memo.length > 300) {
-        errors.memo = 'Must be between 15 and 300 characters'
     }
     return errors
 }
@@ -53,13 +49,10 @@ const renderMemoField = ({
                              editorState,
                              meta: {touched, error}
                          }) => (
-    <div className="form-group">
+    <div className="form-group m-t-sm">
         <label>{label}</label>
         <div>
-            <Editor editorState={editorState} onChange={input.onChange}/>
-            <span className="help-block m-b-none">{touched &&
-            ((error && <span>{error}</span>))}
-                </span>
+            <FormControl  {...input} componentClass="textarea" placeholder=""/>
         </div>
     </div>
 )
@@ -97,7 +90,7 @@ const renderTypeField = ({
                          }) => (
     <div className="form-group">
         <ButtonToolbar>
-            <ToggleButtonGroup {...input} type="radio">
+            <ToggleButtonGroup {...input} type="radio" value={input.value}>
                 <ToggleButton value="CALL">CALL <i className="fa fa-phone"></i></ToggleButton>
                 <ToggleButton value="MEETING">MEETING <i className="fa fa-users"></i></ToggleButton>
                 <ToggleButton value="TASK">TASK <i className="fa fa-clock-o"></i></ToggleButton>
@@ -114,26 +107,75 @@ const renderTypeField = ({
 
 const renderAssignField = ({
                                input,
-                               label,
-                               type,
-                               meta: {touched, error}
+                               label
                            }) => (
 
     <div className="form-group">
         <label>{label}</label>
-        <div>
-            <select
-                className="form-control m-b"
-                value={input.value}
-                onChange={input.onChange}>
-                <option value="ME">Me</option>
-                <option value="YAVUZ">Yavuz</option>
-            </select>
 
-            <span className="help-block m-b-none">{touched &&
-            ((error && <span>{error}</span>))}
-                </span>
-        </div>
+        <Select
+            autoFocus
+            simpleValue
+            clearable={true}
+            name="selected-state"
+            disabled={false}
+            rtl={false}
+            openOnClick={false}
+            searchable={true}
+        />
+
+    </div>
+)
+
+const renderDealField = ({
+                             input,
+                             label
+                         }) => (
+    <div className="form-group">
+        <label>{label}</label>
+        <Select
+            closeOnSelect={true}
+            disabled={false}
+            multi
+            placeholder="Select your favourite(s)"
+            removeSelected={true}
+            rtl={false}
+            simpleValue
+        />
+    </div>
+)
+const renderContactField = ({
+                             input,
+                             label
+                         }) => (
+    <div className="form-group">
+        <label>{label}</label>
+        <Select
+            closeOnSelect={true}
+            disabled={false}
+            multi
+            placeholder="Select your favourite(s)"
+            removeSelected={true}
+            rtl={false}
+            simpleValue
+        />
+    </div>
+)
+const renderOrganizationField = ({
+                             input,
+                             label
+                         }) => (
+    <div className="form-group">
+        <label>{label}</label>
+        <Select
+            closeOnSelect={true}
+            disabled={false}
+            multi
+            placeholder="Select your favourite(s)"
+            removeSelected={true}
+            rtl={false}
+            simpleValue
+        />
     </div>
 )
 
@@ -146,7 +188,6 @@ class ActivityDetail extends Component {
         this.confirmDeleteActivity = this.confirmDeleteActivity.bind(this);
         this.cancelDeleteActivity = this.cancelDeleteActivity.bind(this);
         this.onDeleteActivity = this.onDeleteActivity.bind(this);
-        this.handleTypeChange = this.handleTypeChange.bind(this);
         this.onChange = this.onChange.bind(this);
         this.handleLinkClick = this.handleLinkClick.bind(this);
 
@@ -181,10 +222,11 @@ class ActivityDetail extends Component {
         // print the form values to the console
         console.log("ACTIVITY: ", activity);
         let activity = {};
-        activity.start = formValue.start? formValue.start._d: '';
-        activity.end = formValue.end ? formValue.end._d: '';
-        activity.memo = formValue.memo.text;
-        activity.type = formValue.type;
+        activity.start = formValue.start ? formValue.start._d : '';
+        activity.end = formValue.end ? formValue.end._d : '';
+        activity.memo = formValue.memo;
+        activity.type = formValue.activityType;
+        activity.title = formValue.title;
 
         if (this.props.activity) {
             this.props.update(activity);
@@ -194,30 +236,27 @@ class ActivityDetail extends Component {
         this.props.close();
     }
 
-    handleTypeChange = (type) => {
-        this.setState({selectValue: type.target.value});
-    }
-
     onChange = (editorState) => {
         this.setState({editorState});
     }
 
     render() {
         const {handleSubmit, initialValues} = this.props;
-        let title = "Create";
 
+        let title = "Create";
         if (initialValues && initialValues.title) {
             title = "Update";
         }
+
         return (
             <Modal show={this.props.showModal} onHide={this.props.close}>
                 <Modal.Header closeButton>
                     <Modal.Title>{title} New Activity</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <form onSubmit={handleSubmit(this.onSubmit)}>
+                    <form>
                         <Field
-                            name="type"
+                            name="activityType"
                             component={renderTypeField}
                             label="Activity Type"
                         />
@@ -241,26 +280,32 @@ class ActivityDetail extends Component {
                                 component={renderDateField}
                                 label="End Date & Time"
                             />
-
                         </div>
                         <Field
                             name="memo"
                             component={renderMemoField}
                             label="Description"
-                            editorState={this.state.editorState}
                         />
                         <Field
                             name="assign"
                             component={renderAssignField}
                             label="Assigned To"
                         />
-
-                        <button className="btn btn-sm btn-primary">...</button>
-                        <ButtonToolbar className="pull-right">
-                            <button className="btn btn-sm btn-danger" onClick={this.onDeleteActivity}><strong>Delete</strong>
-                            </button>
-                            <button className="btn btn-sm btn-primary" type="submit"><strong>Submit</strong></button>
-                        </ButtonToolbar>
+                        <Field
+                            name="deal"
+                            component={renderDealField}
+                            label="Deal"
+                        />
+                        <Field
+                            name="contact"
+                            component={renderContactField}
+                            label="Contact"
+                        />
+                        <Field
+                            name="organization"
+                            component={renderOrganizationField}
+                            label="Organization"
+                        />
 
                     </form>
 
@@ -277,18 +322,27 @@ class ActivityDetail extends Component {
                             onCancel={this.cancelDeleteActivity}
                         />
                     </div>
-
-                    <div>
-                        <DropdownButton className="btn-primary" id="sample-menu" title="Settings">
-                            <MenuItem href="/pipelines">Pipelines & Stages</MenuItem>
-                            <MenuItem href="/register">Profile</MenuItem>
-                            <MenuItem href="/body1">Billing</MenuItem>
-                        </DropdownButton>
-
-
-                    </div>
                 </Modal.Body>
                 <Modal.Footer>
+
+                    <div className="row">
+                        <div className="col-md-1">
+                            <DropdownButton noCaret id="detail-operations" className="btn-primary" title="...">
+                                <MenuItem href="#" onClick={this.onDeleteActivity}>Delete</MenuItem>
+                            </DropdownButton>
+
+                        </div>
+                        <div className="col-md-6 pull-right">
+                            <div className="pull-right activity-detail-submit">
+                                <button className="btn btn-sm btn-default" onClick={this.props.close}>Cancel</button>
+                                <button className="btn btn-sm btn-primary" onClick={handleSubmit(this.onSubmit)}>
+                                    <strong>Submit</strong></button>
+                            </div>
+                            <Checkbox className="pull-left">Mark as done</Checkbox>
+
+                        </div>
+                    </div>
+
                 </Modal.Footer>
             </Modal>
         );
