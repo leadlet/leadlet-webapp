@@ -70,10 +70,12 @@ class  Activity extends Component {
             return  this.props.activities[item];
         }, this);
 
-        if( this.state.selectedType ){
+        if( this.state.selectedType && this.state.selectedType != ' '){
             events = events.filter( event => (
                 event.type === this.state.selectedType
             ));
+        }if(this.state.selectedType === ' '){
+            this.props.getAll;
         }
 
         const openActivityModal = this.openActivityModal;
@@ -129,7 +131,7 @@ class  Activity extends Component {
                                         className="fa fa-plus"></i>&nbsp;New Activity
                                     </button>
                                     <div className="pull-left">
-                                        <button type="button" className="btn btn-sm btn-white" onClick={() => this.props.getAll()}>All</button>
+                                        <button type="button" className="btn btn-sm btn-white" onClick={() => this.filterActivity(' ')}>All</button>
                                         <button type="button" className="btn btn-sm btn-white" onClick={() => this.filterActivity('CALL')}><i
                                             className="fa fa-phone"></i></button>
                                         <button type="button" className="btn btn-sm btn-white" onClick={() => this.filterActivity('MEETING')}><i
