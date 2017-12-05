@@ -15,7 +15,8 @@ import MenuItem from "react-bootstrap/es/MenuItem";
 import Checkbox from "react-bootstrap/es/Checkbox";
 import FormControl from "../../../node_modules/react-bootstrap/es/FormControl";
 import Select from '../../../node_modules/react-select';
-
+import 'react-select/dist/react-select.css';
+import {getAllOrganization, getAllPerson} from "../../actions/contact.actions";
 
 const validate = values => {
     const errors = {}
@@ -105,75 +106,25 @@ const renderTypeField = ({
     </div>
 )
 
-const renderAssignField = ({
+const renderSelectField = ({
                                input,
-                               label
+                               options,
+                               onChange,
+                               label,
+                               multi
                            }) => (
-
-    <div className="form-group">
-        <label>{label}</label>
-
-        <Select
-            autoFocus
-            simpleValue
-            clearable={true}
-            name="selected-state"
-            disabled={false}
-            rtl={false}
-            openOnClick={false}
-            searchable={true}
-        />
-
-    </div>
-)
-
-const renderDealField = ({
-                             input,
-                             label
-                         }) => (
     <div className="form-group">
         <label>{label}</label>
         <Select
             closeOnSelect={true}
             disabled={false}
-            multi
+            multi={multi}
             placeholder="Select your favourite(s)"
+            options={options}
             removeSelected={true}
             rtl={false}
-            simpleValue
-        />
-    </div>
-)
-const renderContactField = ({
-                             input,
-                             label
-                         }) => (
-    <div className="form-group">
-        <label>{label}</label>
-        <Select
-            closeOnSelect={true}
-            disabled={false}
-            multi
-            placeholder="Select your favourite(s)"
-            removeSelected={true}
-            rtl={false}
-            simpleValue
-        />
-    </div>
-)
-const renderOrganizationField = ({
-                             input,
-                             label
-                         }) => (
-    <div className="form-group">
-        <label>{label}</label>
-        <Select
-            closeOnSelect={true}
-            disabled={false}
-            multi
-            placeholder="Select your favourite(s)"
-            removeSelected={true}
-            rtl={false}
+            onChange={input.onChange}
+            value={input.value}
             simpleValue
         />
     </div>
@@ -190,13 +141,38 @@ class ActivityDetail extends Component {
         this.onDeleteActivity = this.onDeleteActivity.bind(this);
         this.onChange = this.onChange.bind(this);
         this.handleLinkClick = this.handleLinkClick.bind(this);
+        this.mapContact2Options = this.mapContact2Options.bind(this);
+        this.mapOrganization2Options = this.mapOrganization2Options.bind(this);
 
         this.state = {
             startDate: moment(),
             showDeleteDialog: false,
             selectValue: null,
-            editorState: EditorState.createEmpty()
+            editorState: EditorState.createEmpty(),
+            selectedContact: null,
+            selectedOrganization: null
         };
+    }
+
+    componentDidMount() {
+//        this.props.getAllOrganization(`name:${this.state.term}`);
+//        this.props.getAllPerson(`name:${this.state.term}`);
+        this.props.getAllPerson();
+        this.props.getAllOrganization();
+
+    }
+
+    mapContact2Options() {
+
+        return this.props.persons.items ? this.props.persons.items.map((item) => {
+            return {label: item.name, value: item.id}
+        }) : [];
+    }
+
+    mapOrganization2Options() {
+        return this.props.organizations.items ? this.props.organizations.items.map((item) => {
+            return {label: item.name, value: item.id}
+        }) : [];
     }
 
     handleLinkClick() {
@@ -228,6 +204,15 @@ class ActivityDetail extends Component {
         activity.type = formValue.activityType;
         activity.title = formValue.title;
 
+        let contacts = this.props.persons.filter( contact => (
+           formValue.contact.map((item) => {
+               contact.id === item
+           })
+        ));
+
+        activity.contact = formValue.contact;
+        activity.organization = formValue.organization;
+
         if (this.props.activity) {
             this.props.update(activity);
         } else {
@@ -239,6 +224,7 @@ class ActivityDetail extends Component {
     onChange = (editorState) => {
         this.setState({editorState});
     }
+
 
     render() {
         const {handleSubmit, initialValues} = this.props;
@@ -288,23 +274,30 @@ class ActivityDetail extends Component {
                         />
                         <Field
                             name="assign"
-                            component={renderAssignField}
+                            component={renderSelectField}
                             label="Assigned To"
+                            multi={false}
                         />
                         <Field
                             name="deal"
-                            component={renderDealField}
+                            component={renderSelectField}
                             label="Deal"
+                            multi={true}
                         />
                         <Field
                             name="contact"
-                            component={renderContactField}
+                            component={renderSelectField}
                             label="Contact"
+                            multi={true}
+                            options={this.mapContact2Options()}
+
                         />
                         <Field
                             name="organization"
-                            component={renderOrganizationField}
+                            component={renderSelectField}
                             label="Organization"
+                            multi={true}
+                            options={this.mapOrganization2Options()}
                         />
 
                     </form>
@@ -349,10 +342,18 @@ class ActivityDetail extends Component {
     }
 }
 
+
+function mapStateToProps(state) {
+    return {
+        persons: state.contacts.persons,
+        organizations: state.contacts.organizations
+    };
+}
+
 export default reduxForm({
     form: 'postNewActivityForm',
     validate, // <--- validation function given to redux-form
     enableReinitialize: true
 })(
-    connect(null, {create, update, _delete})(ActivityDetail)
+    connect(mapStateToProps, {create, update, _delete, getAllOrganization, getAllPerson})(ActivityDetail)
 );
