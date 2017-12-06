@@ -58,13 +58,13 @@ const renderMemoField = ({
     </div>
 )
 
-const renderDateField = ({
-                             input,
-                             selected,
-                             label,
-                             customClass,
-                             meta: {touched, error}
-                         }) => (
+const renderStartDateField = ({
+                                  input,
+                                  selected,
+                                  label,
+                                  customClass,
+                                  meta: {touched, error}
+                              }) => (
     <div className={"form-group " + customClass}>
         <label>{label}</label>
         <DatePicker
@@ -75,6 +75,35 @@ const renderDateField = ({
             placeholderText="Click to select a date"
             dateFormat="DD/MM/YYYY HH:mm"
             selected={input.value ? moment(input.value, 'DD/MM/YYYY') : moment()}
+            minDate={moment()}
+            onChange={input.onChange}
+            showTimeSelect
+            timeFormat="HH:mm"
+            timeIntervals={15}
+            shouldCloseOnSelect={false}
+        />
+    </div>
+)
+
+const renderEndDateField = ({
+                                input,
+                                selected,
+                                label,
+                                minDate,
+                                customClass,
+                                meta: {touched, error}
+                            }) => (
+    <div className={"form-group " + customClass}>
+        <label>{label}</label>
+        <DatePicker
+            className="form-control"
+            showMonthDropdown
+            showYearDropdown
+            dropdownMode="select"
+            placeholderText="Click to select a date"
+            dateFormat="DD/MM/YYYY HH:mm"
+            selected={input.value ? moment(input.value, 'DD/MM/YYYY') : moment()}
+            minDate={minDate}
             onChange={input.onChange}
             showTimeSelect
             timeFormat="HH:mm"
@@ -127,7 +156,7 @@ const renderSelectField = ({
             onChange={input.onChange}
             value={input.value}
             simpleValue
-            selected={input.value? input.value: null}
+            selected={input.value ? input.value : null}
         />
     </div>
 )
@@ -141,18 +170,13 @@ class ActivityDetail extends Component {
         this.confirmDeleteActivity = this.confirmDeleteActivity.bind(this);
         this.cancelDeleteActivity = this.cancelDeleteActivity.bind(this);
         this.onDeleteActivity = this.onDeleteActivity.bind(this);
-        this.onChange = this.onChange.bind(this);
-        this.handleLinkClick = this.handleLinkClick.bind(this);
         this.mapContact2Options = this.mapContact2Options.bind(this);
         this.mapOrganization2Options = this.mapOrganization2Options.bind(this);
+        this.onClose = this.onClose.bind(this);
+        this.checkDate = this.checkDate.bind(this);
 
         this.state = {
-            startDate: moment(),
             showDeleteDialog: false,
-            selectValue: null,
-            editorState: EditorState.createEmpty(),
-            selectedContact: null,
-            selectedOrganization: null,
             contact: null
         };
     }
@@ -165,7 +189,6 @@ class ActivityDetail extends Component {
     }
 
     mapContact2Options() {
-
         return this.props.persons.items ? this.props.persons.items.map((item) => {
             return {label: item.name, value: item.id}
         }) : [];
@@ -175,10 +198,6 @@ class ActivityDetail extends Component {
         return this.props.organizations.items ? this.props.organizations.items.map((item) => {
             return {label: item.name, value: item.id}
         }) : [];
-    }
-
-    handleLinkClick() {
-        this.refs.dropdown.hide();
     }
 
     confirmDeleteActivity() {
@@ -217,8 +236,20 @@ class ActivityDetail extends Component {
         this.props.close();
     }
 
-    onChange = (editorState) => {
-        this.setState({editorState});
+    onClose() {
+        this.setState({
+            startDate: null
+        });
+        this.props.reset();
+        this.props.close();
+    }
+
+    checkDate() {
+        if (this.props.initialValues) {
+            if (this.props.initialValues.end < this.props.initialValues.start) {
+                this.props.initialValues.end = this.props.initialValues.start;
+            }
+        }
     }
 
     render() {
@@ -230,7 +261,7 @@ class ActivityDetail extends Component {
         }
 
         return (
-            <Modal show={this.props.showModal} onHide={this.props.close}>
+            <Modal show={this.props.showModal} onHide={this.onClose} onChange={this.checkDate()}>
                 <Modal.Header closeButton>
                     <Modal.Title>{title} New Activity</Modal.Title>
                 </Modal.Header>
@@ -250,15 +281,19 @@ class ActivityDetail extends Component {
                         <div className="form-inline">
                             <Field
                                 name="start"
-                                selected={this.state.startDate}
-                                component={renderDateField}
+                                component={renderStartDateField}
                                 label="Start Date & Time"
+                                onChange={(newDate) => {
+                                    this.setState({
+                                        startDate: moment(newDate._d, 'DD/MM/YYYY')
+                                    });
+                                }}
                             />
                             <Field
                                 name="end"
                                 customClass="m-l-md"
-                                selected={this.state.startDate}
-                                component={renderDateField}
+                                component={renderEndDateField}
+                                minDate={this.state.startDate || ((this.props.initialValues && this.props.initialValues.start) ? this.props.initialValues.start : moment())}
                                 label="End Date & Time"
                             />
                         </div>
@@ -335,7 +370,6 @@ class ActivityDetail extends Component {
         );
     }
 }
-
 
 function mapStateToProps(state) {
     return {
