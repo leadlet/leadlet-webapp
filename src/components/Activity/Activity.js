@@ -105,12 +105,15 @@ class  Activity extends Component {
                 eventClick: function (event) {
                     openActivityModal(
                         {
+                            id: event.id,
                             title: event.title,
                             start: event.start,
-                            end:event.end,
+                            end: event.end,
                             memo: event.memo,
                             activityType: event.type,
-                            id: event.id
+                            id: event.id,
+                            contact: event.personId,
+                            organization: event.organizationId
                         }
                     );
                 }

@@ -53,7 +53,7 @@ const renderMemoField = ({
     <div className="form-group m-t-sm">
         <label>{label}</label>
         <div>
-            <FormControl  {...input} componentClass="textarea" placeholder=""/>
+            <FormControl {...input} componentClass="textarea" placeholder=""/>
         </div>
     </div>
 )
@@ -111,7 +111,8 @@ const renderSelectField = ({
                                options,
                                onChange,
                                label,
-                               multi
+                               multi,
+                               selected
                            }) => (
     <div className="form-group">
         <label>{label}</label>
@@ -126,6 +127,7 @@ const renderSelectField = ({
             onChange={input.onChange}
             value={input.value}
             simpleValue
+            selected={input.value? input.value: null}
         />
     </div>
 )
@@ -150,7 +152,8 @@ class ActivityDetail extends Component {
             selectValue: null,
             editorState: EditorState.createEmpty(),
             selectedContact: null,
-            selectedOrganization: null
+            selectedOrganization: null,
+            contact: null
         };
     }
 
@@ -159,7 +162,6 @@ class ActivityDetail extends Component {
 //        this.props.getAllPerson(`name:${this.state.term}`);
         this.props.getAllPerson();
         this.props.getAllOrganization();
-
     }
 
     mapContact2Options() {
@@ -196,24 +198,18 @@ class ActivityDetail extends Component {
 
     onSubmit = (formValue) => {
         // print the form values to the console
-        console.log("ACTIVITY: ", activity);
+
         let activity = {};
+        activity.id = formValue.id;
         activity.start = formValue.start ? formValue.start._d : '';
         activity.end = formValue.end ? formValue.end._d : '';
         activity.memo = formValue.memo;
         activity.type = formValue.activityType;
         activity.title = formValue.title;
+        activity.personId = formValue.contact;
+        activity.organizationId = formValue.organization;
 
-        let contacts = this.props.persons.filter( contact => (
-           formValue.contact.map((item) => {
-               contact.id === item
-           })
-        ));
-
-        activity.contact = formValue.contact;
-        activity.organization = formValue.organization;
-
-        if (this.props.activity) {
+        if (this.props.initialValues.id) {
             this.props.update(activity);
         } else {
             this.props.create(activity);
@@ -224,7 +220,6 @@ class ActivityDetail extends Component {
     onChange = (editorState) => {
         this.setState({editorState});
     }
-
 
     render() {
         const {handleSubmit, initialValues} = this.props;
@@ -282,26 +277,27 @@ class ActivityDetail extends Component {
                             name="deal"
                             component={renderSelectField}
                             label="Deal"
-                            multi={true}
+                            multi={false}
                         />
                         <Field
                             name="contact"
                             component={renderSelectField}
                             label="Contact"
-                            multi={true}
+                            multi={false}
                             options={this.mapContact2Options()}
-
+                            selected={this.state.contact}
                         />
                         <Field
                             name="organization"
                             component={renderSelectField}
                             label="Organization"
-                            multi={true}
+                            multi={false}
                             options={this.mapOrganization2Options()}
                         />
-
+                        <div className="form-group">
+                            <Checkbox>Send invitations to attendees</Checkbox>
+                        </div>
                     </form>
-
                     <div>
                         <SweetAlert
                             title="Are you sure?"
@@ -323,7 +319,6 @@ class ActivityDetail extends Component {
                             <DropdownButton noCaret id="detail-operations" className="btn-primary" title="...">
                                 <MenuItem href="#" onClick={this.onDeleteActivity}>Delete</MenuItem>
                             </DropdownButton>
-
                         </div>
                         <div className="col-md-6 pull-right">
                             <div className="pull-right activity-detail-submit">
@@ -331,8 +326,7 @@ class ActivityDetail extends Component {
                                 <button className="btn btn-sm btn-primary" onClick={handleSubmit(this.onSubmit)}>
                                     <strong>Submit</strong></button>
                             </div>
-                            <Checkbox className="pull-left">Mark as done</Checkbox>
-
+                            <Checkbox className="mark pull-left">Mark as done</Checkbox>
                         </div>
                     </div>
 

@@ -8898,9 +8898,9 @@ body{
   padding-right: 0px;
 }
 
-.checkbox label, .radio label{
+.mark label, .radio label{
   padding-left: 50px;
 }
 .activity-detail-submit{
-  margin-top: 3px;
+  margin-top: 6px;
 }

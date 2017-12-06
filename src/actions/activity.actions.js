@@ -19,9 +19,17 @@ export function create(activity) {
             );
     };
 
-    function request() { return { type: activityConstants.CREATE_REQUEST } }
-    function success(activity) { return { type: activityConstants.CREATE_SUCCESS, activity } }
-    function failure(error) { return { type: activityConstants.CREATE_FAILURE, error } }
+    function request() {
+        return {type: activityConstants.CREATE_REQUEST}
+    }
+
+    function success(activity) {
+        return {type: activityConstants.CREATE_SUCCESS, activity}
+    }
+
+    function failure(error) {
+        return {type: activityConstants.CREATE_FAILURE, error}
+    }
 }
 
 export function getAll() {
@@ -36,19 +44,26 @@ export function getAll() {
 
     };
 
-    function request() { return { type: activityConstants.GETALL_REQUEST } }
-    function success(items) { return { type: activityConstants.GETALL_SUCCESS, items } }
-    function failure(error) { return { type: activityConstants.GETALL_FAILURE, error } }
+    function request() {
+        return {type: activityConstants.GETALL_REQUEST}
+    }
+
+    function success(items) {
+        return {type: activityConstants.GETALL_SUCCESS, items}
+    }
+
+    function failure(error) {
+        return {type: activityConstants.GETALL_FAILURE, error}
+    }
 }
 
-export function update(activity, successCallback) {
+export function update(activity) {
     return dispatch => {
         dispatch(request());
 
         return activityService.update(activity)
             .then(
                 activity => {
-                    dispatch(successCallback);
                     dispatch(success(activity));
                     dispatch(alertActions.success('Activity successfully updated'));
                 },
@@ -59,9 +74,17 @@ export function update(activity, successCallback) {
             );
     };
 
-    function request() { return { type: activityConstants.UPDATE_REQUEST } }
-    function success(activity) { return { type: activityConstants.UPDATE_SUCCESS, activity } }
-    function failure(error) { return { type: activityConstants.UPDATE_FAILURE, error } }
+    function request() {
+        return {type: activityConstants.UPDATE_REQUEST}
+    }
+
+    function success(activity) {
+        return {type: activityConstants.UPDATE_SUCCESS, activity}
+    }
+
+    function failure(error) {
+        return {type: activityConstants.UPDATE_FAILURE, error}
+    }
 }
 
 export function _delete(id) {
@@ -79,7 +102,15 @@ export function _delete(id) {
             );
     };
 
-    function request(id) { return { type: activityConstants.DELETE_REQUEST, id } }
-    function success(id) { return { type: activityConstants.DELETE_SUCCESS, id } }
-    function failure(id, error) { return { type: activityConstants.DELETE_FAILURE, id, error } }
+    function request(id) {
+        return {type: activityConstants.DELETE_REQUEST, id}
+    }
+
+    function success(id) {
+        return {type: activityConstants.DELETE_SUCCESS, id}
+    }
+
+    function failure(id, error) {
+        return {type: activityConstants.DELETE_FAILURE, id, error}
+    }
 }
