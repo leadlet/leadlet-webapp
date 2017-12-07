@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { TopHeader } from "./TopHeader";
+import React, {Component} from 'react';
+import {TopHeader} from "./TopHeader";
 import Footer from "./Footer";
-import { Route } from 'react-router-dom'
+import {Route} from 'react-router-dom'
 import Contacts from "../components/Contacts/Contacts";
 import Dashboard from "../Dashboard/Dashboard";
 import Deals from "../components/Deals/Deals";
@@ -20,18 +20,18 @@ class TopMenuLayout extends Component {
                 <div id="wrapper">
                     <div id="page-wrapper" className="gray-bg">
 
-                        <TopHeader />
-                         <Switch>
-                            <Route exact path="/" component={Dashboard} />
-                            <Route path="/contacts/:contactId" component={ContactEdit} />
-                            <Route path="/contacts" component={Contacts} />
-                            <Route path="/deals" component={Deals} />
-                            <Route path="/pipelines" component={PipelinesPage} />
-                            <Route path="/chats" component={Chats} />
-                            <Route path="/activity" component={Activity} />
+                        <TopHeader/>
+                        <Switch>
+                            <Route exact path="/" component={Dashboard}/>
+                            <Route path="/contacts/:contactId" component={ContactEdit}/>
+                            <Route path="/contacts" component={Contacts}/>
+                            <Route path="/deals" component={Deals}/>
+                            <Route path="/pipelines" component={PipelinesPage}/>
+                            <Route path="/chats" component={Chats}/>
+                            <Route path="/activity" component={Activity}/>
                         </Switch>
 
-                        <Footer />
+                        <Footer/>
 
                     </div>
 

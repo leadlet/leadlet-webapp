@@ -1,298 +1,108 @@
-import React, { Component } from 'react';
-import {DropdownButton, MenuItem} from "react-bootstrap";
+import React, {Component} from 'react';
+import PipelineSelector from './PipelineSelector'
+import StageList from './StageList'
+import {getAllPipelines} from "../../actions/pipeline.actions";
+import {getAllStages} from "../../actions/stage.actions";
+import {connect} from "react-redux";
+import NewDeal from "./NewDeal";
+import Button from "react-bootstrap/es/Button";
 
 class Deals extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            selectedPipelineId: null,
+            isNewDealModalVisible: false,
+            activeStages: null
+        };
+
+        this.pipelineChanged = this.pipelineChanged.bind(this);
+        this.selectedStages = this.selectedStages.bind(this);
+        this.toggleNewDealModal = this.toggleNewDealModal.bind(this);
+    }
+
+    toggleNewDealModal() {
+        this.setState({
+            isNewDealModalVisible: !this.state.isNewDealModalVisible
+        });
+    }
+
+    componentDidMount() {
+        this.props.getAllPipelines();
+        this.props.getAllStages();
+    }
+
+    pipelineChanged(newPipelineId, _props = this.props) {
+
+        const activeStages = _props.stages.ids
+            .filter( id => { return _props.stages.items[id].pipelineId == newPipelineId })
+            .map(id => { return _props.stages.items[id]; });
+
+        this.setState({
+            selectedPipelineId: newPipelineId,
+            activeStages: activeStages
+        });
+    }
+
+    selectedStages(){
+        return this.props.stages.ids
+            .filter( id => { return this.props.stages.items[id].pipelineId == this.state.selectedPipelineId })
+            .map(id => { return this.props.stages.items[id]; });
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.pipelines.ids && nextProps.stages.ids && !this.state.selectedPipelineId){
+            this.pipelineChanged(nextProps.pipelines.ids[0], nextProps);
+
+        }
+    }
 
     render() {
         return (
             <div className="wrapper">
                 <div className="container">
-                    <div className="row" style={{width: '100%'}} >
-                    <div style={{float: 'right'}} >
-                        <DropdownButton className="btn-link" id="sample-menu" title="Pre-Sales Pipeline">
-                            <MenuItem href="/pipes">Pipes & Stages</MenuItem>
-                            <MenuItem href="/register">Profile</MenuItem>
-                            <MenuItem href="/body1">Billing</MenuItem>
-                        </DropdownButton>
+                    <div className="row" style={{width: '100%', margin: '0px'}}>
+                        <div style={{float: 'right', width: '100px', padding: '2px 0px'}}>
+                            {this.props.pipelines.ids &&
+                            <PipelineSelector
+                                pipelines={this.props.pipelines}
+                                selectedPipelineId={this.state.selectedPipelineId}
+                                onChange={this.pipelineChanged}
+                            />}
+                        </div>
+                        <Button onClick={this.toggleNewDealModal}>Add Deal</Button>
                     </div>
-                </div>
-                <div className="row">
-                    <div className="col-lg-3">
-                        <div className="ibox">
-                            <div className="ibox-content">
-                                <h3>To-do</h3>
-                                <p className="small"><i className="fa fa-hand-o-up"/> Drag task between list</p>
+                    <div className="row">
+                        { this.props.pipelines.ids && this.state.activeStages &&
+                            <StageList stages={this.state.activeStages}/>
+                        }
+                    </div>
 
-                                <div className="input-group">
-                                    <input type="text" placeholder="Add new task. " className="input input-sm form-control" />
-                                <span className="input-group-btn">
-                                        <button type="button" className="btn btn-sm btn-white"> <i className="fa fa-plus"/> Add task</button>
-                                </span>
-                                </div>
-
-                                <ul className="sortable-list connectList agile-list" id="todo">
-                                    <li className="warning-element" id="task1">
-                                        Simply dummy text of the printing and typesetting industry.
-                                        <div className="agile-detail">
-                                            <a href="#" className="pull-right btn btn-xs btn-white">Tag</a>
-                                            <i className="fa fa-clock-o" /> 12.10.2015
-                                        </div>
-                                    </li>
-                                    <li className="success-element" id="task2">
-                                        Many desktop publishing packages and web page editors now use Lorem Ipsum as their default.
-                                        <div className="agile-detail">
-                                            <a href="#" className="pull-right btn btn-xs btn-white">Mark</a>
-                                            <i className="fa fa-clock-o" /> 05.04.2015
-                                        </div>
-                                    </li>
-                                    <li className="info-element" id="task3">
-                                        Sometimes by accident, sometimes on purpose (injected humour and the like).
-                                        <div className="agile-detail">
-                                            <a href="#" className="pull-right btn btn-xs btn-white">Mark</a>
-                                            <i className="fa fa-clock-o" /> 16.11.2015
-                                        </div>
-                                    </li>
-                                    <li className="danger-element" id="task4">
-                                        All the Lorem Ipsum generators
-                                        <div className="agile-detail">
-                                            <a href="#" className="pull-right btn btn-xs btn-primary">Done</a>
-                                            <i className="fa fa-clock-o" /> 06.10.2015
-                                        </div>
-                                    </li>
-                                    <li className="warning-element" id="task5">
-                                        Which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
-                                        <div className="agile-detail">
-                                            <a href="#" className="pull-right btn btn-xs btn-white">Tag</a>
-                                            <i className="fa fa-clock-o" /> 09.12.2015
-                                        </div>
-                                    </li>
-                                    <li className="warning-element" id="task6">
-                                        Packages and web page editors now use Lorem Ipsum as
-                                        <div className="agile-detail">
-                                            <a href="#" className="pull-right btn btn-xs btn-primary">Done</a>
-                                            <i className="fa fa-clock-o" /> 08.04.2015
-                                        </div>
-                                    </li>
-                                    <li className="success-element" id="task7">
-                                        Many desktop publishing packages and web page editors now use Lorem Ipsum as their default.
-                                        <div className="agile-detail">
-                                            <a href="#" className="pull-right btn btn-xs btn-white">Mark</a>
-                                            <i className="fa fa-clock-o" /> 05.04.2015
-                                        </div>
-                                    </li>
-                                    <li className="info-element" id="task8">
-                                        Sometimes by accident, sometimes on purpose (injected humour and the like).
-                                        <div className="agile-detail">
-                                            <a href="#" className="pull-right btn btn-xs btn-white">Mark</a>
-                                            <i className="fa fa-clock-o" /> 16.11.2015
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-lg-3">
-                        <div className="ibox">
-                            <div className="ibox-content">
-                                <h3>In Progress</h3>
-                                <p className="small"><i className="fa fa-hand-o-up" /> Drag task between list</p>
-                                <ul className="sortable-list connectList agile-list" id="inprogress">
-                                    <li className="success-element" id="task9">
-                                        Quisque venenatis ante in porta suscipit.
-                                        <div className="agile-detail">
-                                            <a href="#" className="pull-right btn btn-xs btn-white">Tag</a>
-                                            <i className="fa fa-clock-o" /> 12.10.2015
-                                        </div>
-                                    </li>
-                                    <li className="success-element" id="task10">
-                                        Phasellus sit amet tortor sed enim mollis accumsan in consequat orci.
-                                        <div className="agile-detail">
-                                            <a href="#" className="pull-right btn btn-xs btn-white">Mark</a>
-                                            <i className="fa fa-clock-o" /> 05.04.2015
-                                        </div>
-                                    </li>
-                                    <li className="warning-element" id="task11">
-                                        Nunc sed arcu at ligula faucibus tempus ac id felis. Vestibulum et nulla quis turpis sagittis fringilla.
-                                        <div className="agile-detail">
-                                            <a href="#" className="pull-right btn btn-xs btn-white">Mark</a>
-                                            <i className="fa fa-clock-o" /> 16.11.2015
-                                        </div>
-                                    </li>
-                                    <li className="warning-element" id="task12">
-                                        Ut porttitor augue non sapien mollis accumsan.
-                                        Nulla non elit eget lacus elementum viverra.
-                                        <div className="agile-detail">
-                                            <a href="#" className="pull-right btn btn-xs btn-white">Tag</a>
-                                            <i className="fa fa-clock-o" /> 09.12.2015
-                                        </div>
-                                    </li>
-                                    <li className="info-element" id="task13">
-                                        Packages and web page editors now use Lorem Ipsum as
-                                        <div className="agile-detail">
-                                            <a href="#" className="pull-right btn btn-xs btn-primary">Done</a>
-                                            <i className="fa fa-clock-o" /> 08.04.2015
-                                        </div>
-                                    </li>
-                                    <li className="success-element" id="task14">
-                                        Quisque lacinia tellus et odio ornare maximus.
-                                        <div className="agile-detail">
-                                            <a href="#" className="pull-right btn btn-xs btn-white">Mark</a>
-                                            <i className="fa fa-clock-o" /> 05.04.2015
-                                        </div>
-                                    </li>
-                                    <li className="danger-element" id="task15">
-                                        Enim mollis accumsan in consequat orci.
-                                        <div className="agile-detail">
-                                            <a href="#" className="pull-right btn btn-xs btn-white">Mark</a>
-                                            <i className="fa fa-clock-o" /> 11.04.2015
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-lg-3">
-                        <div className="ibox">
-                            <div className="ibox-content">
-                                <h3>Completed</h3>
-                                <p className="small"><i className="fa fa-hand-o-up" /> Drag task between list</p>
-                                <ul className="sortable-list connectList agile-list" id="completed">
-                                    <li className="info-element" id="task16">
-                                        Sometimes by accident, sometimes on purpose (injected humour and the like).
-                                        <div className="agile-detail">
-                                            <a href="#" className="pull-right btn btn-xs btn-white">Mark</a>
-                                            <i className="fa fa-clock-o" /> 16.11.2015
-                                        </div>
-                                    </li>
-                                    <li className="warning-element" id="task17">
-                                        Ut porttitor augue non sapien mollis accumsan.
-                                        Nulla non elit eget lacus elementum viverra.
-                                        <div className="agile-detail">
-                                            <a href="#" className="pull-right btn btn-xs btn-white">Tag</a>
-                                            <i className="fa fa-clock-o" /> 09.12.2015
-                                        </div>
-                                    </li>
-                                    <li className="warning-element" id="task18">
-                                        Which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
-                                        <div className="agile-detail">
-                                            <a href="#" className="pull-right btn btn-xs btn-white">Tag</a>
-                                            <i className="fa fa-clock-o" /> 09.12.2015
-                                        </div>
-                                    </li>
-                                    <li className="warning-element" id="task19">
-                                        Packages and web page editors now use Lorem Ipsum as
-                                        <div className="agile-detail">
-                                            <a href="#" className="pull-right btn btn-xs btn-primary">Done</a>
-                                            <i className="fa fa-clock-o" /> 08.04.2015
-                                        </div>
-                                    </li>
-                                    <li className="success-element" id="task20">
-                                        Many desktop publishing packages and web page editors now use Lorem Ipsum as their default.
-                                        <div className="agile-detail">
-                                            <a href="#" className="pull-right btn btn-xs btn-white">Mark</a>
-                                            <i className="fa fa-clock-o" /> 05.04.2015
-                                        </div>
-                                    </li>
-                                    <li className="info-element" id="task21">
-                                        Sometimes by accident, sometimes on purpose (injected humour and the like).
-                                        <div className="agile-detail">
-                                            <a href="#" className="pull-right btn btn-xs btn-white">Mark</a>
-                                            <i className="fa fa-clock-o" /> 16.11.2015
-                                        </div>
-                                    </li>
-                                    <li className="warning-element" id="task22">
-                                        Simply dummy text of the printing and typesetting industry.
-                                        <div className="agile-detail">
-                                            <a href="#" className="pull-right btn btn-xs btn-white">Tag</a>
-                                            <i className="fa fa-clock-o" /> 12.10.2015
-                                        </div>
-                                    </li>
-                                    <li className="success-element" id="task23">
-                                        Many desktop publishing packages and web page editors now use Lorem Ipsum as their default.
-                                        <div className="agile-detail">
-                                            <a href="#" className="pull-right btn btn-xs btn-white">Mark</a>
-                                            <i className="fa fa-clock-o" /> 05.04.2015
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-lg-3">
-                        <div className="ibox">
-                            <div className="ibox-content">
-                                <h3>Completed</h3>
-                                <p className="small"><i className="fa fa-hand-o-up" /> Drag task between list</p>
-                                <ul className="sortable-list connectList agile-list" id="completed">
-                                    <li className="info-element" id="task16">
-                                        Sometimes by accident, sometimes on purpose (injected humour and the like).
-                                        <div className="agile-detail">
-                                            <a href="#" className="pull-right btn btn-xs btn-white">Mark</a>
-                                            <i className="fa fa-clock-o" /> 16.11.2015
-                                        </div>
-                                    </li>
-                                    <li className="warning-element" id="task17">
-                                        Ut porttitor augue non sapien mollis accumsan.
-                                        Nulla non elit eget lacus elementum viverra.
-                                        <div className="agile-detail">
-                                            <a href="#" className="pull-right btn btn-xs btn-white">Tag</a>
-                                            <i className="fa fa-clock-o" /> 09.12.2015
-                                        </div>
-                                    </li>
-                                    <li className="warning-element" id="task18">
-                                        Which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
-                                        <div className="agile-detail">
-                                            <a href="#" className="pull-right btn btn-xs btn-white">Tag</a>
-                                            <i className="fa fa-clock-o" /> 09.12.2015
-                                        </div>
-                                    </li>
-                                    <li className="warning-element" id="task19">
-                                        Packages and web page editors now use Lorem Ipsum as
-                                        <div className="agile-detail">
-                                            <a href="#" className="pull-right btn btn-xs btn-primary">Done</a>
-                                            <i className="fa fa-clock-o" /> 08.04.2015
-                                        </div>
-                                    </li>
-                                    <li className="success-element" id="task20">
-                                        Many desktop publishing packages and web page editors now use Lorem Ipsum as their default.
-                                        <div className="agile-detail">
-                                            <a href="#" className="pull-right btn btn-xs btn-white">Mark</a>
-                                            <i className="fa fa-clock-o" /> 05.04.2015
-                                        </div>
-                                    </li>
-                                    <li className="info-element" id="task21">
-                                        Sometimes by accident, sometimes on purpose (injected humour and the like).
-                                        <div className="agile-detail">
-                                            <a href="#" className="pull-right btn btn-xs btn-white">Mark</a>
-                                            <i className="fa fa-clock-o" /> 16.11.2015
-                                        </div>
-                                    </li>
-                                    <li className="warning-element" id="task22">
-                                        Simply dummy text of the printing and typesetting industry.
-                                        <div className="agile-detail">
-                                            <a href="#" className="pull-right btn btn-xs btn-white">Tag</a>
-                                            <i className="fa fa-clock-o" /> 12.10.2015
-                                        </div>
-                                    </li>
-                                    <li className="success-element" id="task23">
-                                        Many desktop publishing packages and web page editors now use Lorem Ipsum as their default.
-                                        <div className="agile-detail">
-                                            <a href="#" className="pull-right btn btn-xs btn-white">Mark</a>
-                                            <i className="fa fa-clock-o" /> 05.04.2015
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                    <div>
+                        {this.state.activeStages &&
+                            <NewDeal showModal={this.state.isNewDealModalVisible}
+                                     close={this.toggleNewDealModal}
+                                     initialValues={{
+                                         stageId: this.state.activeStages[0].id
+                                     }}
+                            />
+                        }
                     </div>
 
                 </div>
-
             </div>
-                </div>
         );
     }
 
 }
 
-export default Deals;
+function mapStateToProps(state) {
+    return {
+        pipelines: state.pipelines,
+        stages: state.stages,
+    }
+}
+
+export default connect(mapStateToProps, {getAllPipelines, getAllStages})(Deals);

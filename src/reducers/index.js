@@ -10,6 +10,7 @@ import {pipelines} from "./pipelines.reducer";
 import {stages} from "./stages.reducer";
 import {chats} from './chats.reducer';
 import {activities} from './activities.reducer';
+import {deals} from './deals.reducer';
 
 const rootReducer = combineReducers({
     authentication,
@@ -21,7 +22,8 @@ const rootReducer = combineReducers({
     pipelines,
     stages,
     chats,
-    activities
+    activities,
+    deals
 });
 
 export default rootReducer;
