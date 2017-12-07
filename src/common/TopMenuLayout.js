@@ -4,7 +4,7 @@ import Footer from "./Footer";
 import {Route} from 'react-router-dom'
 import Contacts from "../components/Contacts/Contacts";
 import Dashboard from "../Dashboard/Dashboard";
-import Deals from "../components/Deals/Deals";
+import Deals from "../components/DealBoard/DealBoard";
 import ContactEdit from "../components/Contacts/ContactNew";
 import Switch from "react-router-dom/es/Switch";
 import PipelinesPage from "../components/Pipelines/Pipelines";

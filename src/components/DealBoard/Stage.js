@@ -2,6 +2,20 @@ import React from 'react';
 import {connect} from "react-redux";
 import {deleteDeal, getAllDeals} from "../../actions/deal.actions";
 import SweetAlert from 'sweetalert-react';
+import Deal from "./Deal";
+
+const dealTarget = {
+    drop(props,monitor) {
+        console.log("dropped item {} to {} ", monitor.getItem(), props);
+    }
+};
+
+function collect(connect, monitor) {
+    return {
+        connectDropTarget: connect.dropTarget(),
+        isOver: monitor.isOver()
+    };
+}
 
 class Stage extends React.Component {
 
@@ -60,16 +74,7 @@ class Stage extends React.Component {
         return filteredDeals.map( id => {
                 const deal = deals.items[id];
                return (
-                   <li className="warning-element" id={id}>
-                       {deal.name}
-                       <div className="agile-detail pull-right">
-                           <i className="fa fa-clock-o"/> 12.10.2015
-                           <div className="btn-group btn-group-xs" role="group" aria-label="...">
-                               <i className="btn fa fa-edit"  onClick={() => this.onEditDeal(id)}></i>
-                               <i className="btn fa fa-trash" onClick={() => this.onDeleteDeal(id)}></i>
-                           </div>
-                       </div>
-                   </li>
+                   <Deal deal={deal} onEditDeal={this.onEditDeal} onDeleteDeal={this.onDeleteDeal} />
                );
             } );
     }

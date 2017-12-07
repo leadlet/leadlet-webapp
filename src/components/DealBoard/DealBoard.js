@@ -6,8 +6,11 @@ import {getAllStages} from "../../actions/stage.actions";
 import {connect} from "react-redux";
 import NewDeal from "./NewDeal";
 import Button from "react-bootstrap/es/Button";
+import HTML5Backend from 'react-dnd-html5-backend';
+import { DragDropContext } from 'react-dnd';
 
-class Deals extends Component {
+
+class DealBoard extends Component {
 
     constructor(props) {
         super(props);
@@ -105,4 +108,5 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, {getAllPipelines, getAllStages})(Deals);
+export default connect(mapStateToProps, {getAllPipelines, getAllStages})(DragDropContext(HTML5Backend)(DealBoard));
+
