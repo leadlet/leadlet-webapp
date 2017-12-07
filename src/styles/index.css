@@ -8904,3 +8904,6 @@ body{
 .activity-detail-submit{
   margin-top: 6px;
 }
+.react-datepicker-popper{
+  z-index: 2;
+}
