@@ -1,21 +1,9 @@
 import React from 'react';
 import {connect} from "react-redux";
-import {deleteDeal, getAllDeals} from "../../actions/deal.actions";
+import {deleteDeal, getAllDeals, updateDeal} from "../../actions/deal.actions";
 import SweetAlert from 'sweetalert-react';
 import Deal from "./Deal";
 
-const dealTarget = {
-    drop(props,monitor) {
-        console.log("dropped item {} to {} ", monitor.getItem(), props);
-    }
-};
-
-function collect(connect, monitor) {
-    return {
-        connectDropTarget: connect.dropTarget(),
-        isOver: monitor.isOver()
-    };
-}
 
 class Stage extends React.Component {
 
@@ -26,14 +14,15 @@ class Stage extends React.Component {
         this.onEditDeal = this.onEditDeal.bind(this);
         this.confirmDeleteActivity = this.confirmDeleteActivity.bind(this);
         this.cancelDeleteActivity = this.cancelDeleteActivity.bind(this);
+        this.onMoveDeal = this.onMoveDeal.bind(this);
 
-        this.state= {
+        this.state = {
             showDeleteDialog: false
         };
 
     }
 
-    confirmDeleteActivity(){
+    confirmDeleteActivity() {
         this.props.deleteDeal(this.state.deletingDealId);
 
         this.setState({
@@ -42,41 +31,47 @@ class Stage extends React.Component {
         });
     }
 
-    cancelDeleteActivity(){
+    cancelDeleteActivity() {
         this.setState({
             showDeleteDialog: false,
             deletingDealId: null
         });
     }
 
-    onDeleteDeal(id){
+    onMoveDeal(){
+
+    }
+    onDeleteDeal(id) {
         this.setState({
             showDeleteDialog: true,
             deletingDealId: id
         });
     }
 
-    onEditDeal(id){
+    onEditDeal(id) {
         console.log("edit");
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.props.getAllDeals();
     }
 
-    renderDeals(stage){
+    renderDeals(stage) {
         const deals = this.props.deals;
 
-        const filteredDeals = deals.ids.filter( id =>
+        return deals.ids.filter(id =>
             deals.items[id].stageId == stage.id
-        );
-
-        return filteredDeals.map( id => {
-                const deal = deals.items[id];
-               return (
-                   <Deal deal={deal} onEditDeal={this.onEditDeal} onDeleteDeal={this.onDeleteDeal} />
-               );
-            } );
+        ).sort((a,b)=>
+            deals.items[a].order - deals.items[b].order
+        ).map(id => {
+            const deal = deals.items[id];
+            return (
+                <Deal deal={deal}
+                      onEditDeal={this.onEditDeal}
+                      onDeleteDeal={this.onDeleteDeal}
+                      onMoveDeal={this.onMoveDeal}/>
+            );
+        });
     }
 
     render() {
@@ -116,4 +111,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, {getAllDeals, deleteDeal})(Stage);
+export default connect(mapStateToProps, {getAllDeals, deleteDeal, updateDeal})(Stage);

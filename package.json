@@ -13,7 +13,6 @@
     "history": "^4.6.3",
     "jquery": "^3.2.1",
     "jquery-ui": "^1.12.1",
-    "lodash.flow": "^3.5.0",
     "metismenu": "^2.7.0",
     "normalizr": "^3.2.4",
     "react": "^16.1.1",

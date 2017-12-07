@@ -19,14 +19,13 @@ export function getAllDeals() {
 
 }
 
-export function updateDeal(deal, successCallback) {
+export function updateDeal(deal) {
     return dispatch => {
         dispatch(request());
 
         return dealService.update(deal)
             .then(
                 deal => {
-                    dispatch(successCallback);
                     dispatch(success(deal));
                     dispatch(alertActions.success('Deal successfully updated'));
                 },
