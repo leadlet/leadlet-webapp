@@ -1,6 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { DropTarget } from 'react-dnd';
 import { findDOMNode } from 'react-dom';
+import PropTypes from 'prop-types';
 
 import Card from './DraggableCard';
 import {dealConstants} from "../../../constants/deal.constants";

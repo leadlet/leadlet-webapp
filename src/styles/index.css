@@ -3644,6 +3644,7 @@ video {
 }
 /* WRAPPERS */
 #wrapper {
+  height: 100%;
   width: 100%;
   overflow-x: hidden;
 }
@@ -3651,18 +3652,18 @@ video {
   padding: 0 20px;
 }
 .wrapper-content {
-  padding: 20px 10px 40px;
+  padding: 60px 0px 50px 0px;
+  height: 100% ;
 }
 #page-wrapper {
   padding: 0 15px;
-  min-height: 568px;
   position: relative !important;
 }
 @media (min-width: 768px) {
   #page-wrapper {
     position: inherit;
     margin: 0 0 0 240px;
-    min-height: 2002px;
+    height: 100%;
   }
 }
 .title-action {
@@ -3692,6 +3693,7 @@ ol.unstyled {
 }
 /* FOOTER */
 .footer {
+  display: block;
   background: none repeat scroll 0 0 white;
   border-top: 1px solid #e7eaec;
   bottom: 0;
@@ -5350,11 +5352,11 @@ dd.project-people {
 }
 .clients-list .tab-pane {
   position: relative;
-  height: 600px;
+  height: 100%;
 }
 .client-detail {
   position: relative;
-  height: 620px;
+  height: 100%;
 }
 .clients-list table tr td {
   height: 46px;
@@ -8442,7 +8444,6 @@ body.md-skin {
   #page-wrapper {
     position: inherit;
     margin: 0 0 0 220px;
-    min-height: 1200px;
   }
   .navbar-static-side {
     z-index: 2001;
@@ -8459,7 +8460,6 @@ body.md-skin {
   #page-wrapper {
     position: inherit;
     margin: 0 0 0 0;
-    min-height: 1000px;
   }
   .body-small .navbar-static-side {
     display: none;
@@ -8903,4 +8903,53 @@ body{
 }
 .activity-detail-submit{
   margin-top: 6px;
+}
+
+.deals-board{
+  padding: 0px 10px;
+  height:100%;
+  white-space: nowrap;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+.deals-board .stage {
+  height:100%;
+  width: 270px;
+  display: inline-block;
+  border-radius: 3px;
+  margin-right: 20px;
+  vertical-align: top;
+  background-color: #ffffff;
+  overflow: hidden;
+
+}
+.deals-board .stage-header{
+  position: relative;
+  padding: 5px 8px;
+  margin-bottom: 10px;
+  zoom: 1;
+}
+
+.deals-board .stage-deals-list{
+  height:100%;
+  overflow-y: scroll;
+  padding-bottom: 40px;
+
+}
+
+.deals-board .stage-name{
+  font-weight: bold;
+  white-space: normal;
+  width: 100%;
+}
+
+.deals-board .deal-item{
+  width: 90%;
+  margin: 0 auto 10px;
+  min-height: 100px;
+  border-radius: 5px;
+  box-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+  transition: 0.15s;
+  cursor: pointer;
 }

@@ -1,12 +1,17 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import { connect } from 'react-redux';
 
 import * as ListsActions from '../../actions/lists';
 
 import CardsContainer from './Cards/CardsContainer';
 import CustomDragLayer from './CustomDragLayer';
-import HTML5Backend from "react-dnd-html5-backend/src/HTML5Backend";
 import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
+import {getLists} from "../../actions/lists";
+import {moveCard} from "../../actions/lists";
+import {moveList} from "../../actions/lists";
 
 
 class Board extends Component {
@@ -116,4 +121,5 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, {ListsActions})(DragDropContext(HTML5Backend)(Board));
+const wrapped = DragDropContext(HTML5Backend)(Board);
+export default connect(mapStateToProps, {getLists,moveCard,moveList})(wrapped);

@@ -16,27 +16,23 @@ class TopMenuLayout extends Component {
 
     render() {
         return (
-            <div className="top-navigation">
+            <div className="top-navigation full-height">
 
-                <div id="wrapper">
-                    <div id="page-wrapper" className="gray-bg">
-
+                <div id="wrapper" className="gray-bg">
                         <TopHeader/>
-                        <Switch>
-                            <Route exact path="/" component={Dashboard}/>
-                            <Route path="/contacts/:contactId" component={ContactEdit}/>
-                            <Route path="/contacts" component={Contacts}/>
-                            <Route path="/deals" component={Deals}/>
-                            <Route path="/pipelines" component={PipelinesPage}/>
-                            <Route path="/chats" component={Chats}/>
-                            <Route path="/activity" component={Activity}/>
-                            <Route path="/board" component={Board}/>
-
-                        </Switch>
-
+                        <div className="wrapper-content">
+                            <Switch>
+                                <Route exact path="/" component={Dashboard}/>
+                                <Route path="/contacts/:contactId" component={ContactEdit}/>
+                                <Route path="/contacts" component={Contacts}/>
+                                <Route path="/deals" component={Deals}/>
+                                <Route path="/pipelines" component={PipelinesPage}/>
+                                <Route path="/chats" component={Chats}/>
+                                <Route path="/activity" component={Activity}/>
+                                <Route path="/board" component={Board}/>
+                            </Switch>
+                        </div>
                         <Footer/>
-
-                    </div>
 
                 </div>
             </div>

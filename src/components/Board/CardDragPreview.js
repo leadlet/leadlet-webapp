@@ -1,19 +1,23 @@
-import React, { PropTypes } from 'react';
-import Card from './Cards/Card';
+import React  from 'react';
+import PropTypes from 'prop-types';
 
-const styles = {
-  display: 'inline-block',
-  transform: 'rotate(-3deg)',
-  WebkitTransform: 'rotate(-3deg)'
-};
+import Card from './Cards/Card';
 
 const propTypes = {
   card: PropTypes.object
 };
 
 const CardDragPreview = (props) => {
-  styles.width = `${props.card.clientWidth || 243}px`;
-  styles.height = `${props.card.clientHeight || 243}px`;
+  let width = `${props.card.clientWidth || 243}px`;
+  let height = `${props.card.clientHeight || 243}px`;
+
+  let styles = {
+        display: 'inline-block',
+        transform: 'rotate(-3deg)',
+        WebkitTransform: 'rotate(-3deg)',
+      height: height,
+      width: width
+    };
 
   return (
     <div style={styles}>

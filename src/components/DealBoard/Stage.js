@@ -58,7 +58,20 @@ class Stage extends React.Component {
 
     renderDeals(stage) {
         const deals = this.props.deals;
+/*
+        const numberOfDeals = Math.ceil( Math.random() * (50 - 3) + 3);
 
+        const arr = Array.from(new Array(numberOfDeals), (x,i) => i+1);
+
+        return arr.map(id => {
+            return (
+                <Deal deal={{name: `name${id}`}}
+                      onEditDeal={this.onEditDeal}
+                      onDeleteDeal={this.onDeleteDeal}
+                      onMoveDeal={this.onMoveDeal}/>
+            );
+        });
+*/
         return deals.ids.filter(id =>
             deals.items[id].stageId == stage.id
         ).sort((a,b)=>
@@ -77,28 +90,13 @@ class Stage extends React.Component {
     render() {
         const {stage} = this.props;
         return (
-            <div className="ibox">
-                <div className="ibox-content">
-                    <h3>{stage.name}</h3>
-                    <p className="small"><i className="fa fa-hand-o-up"/> Drag task between list</p>
-
-                    <ul className="sortable-list connectList agile-list" id="todo">
+            <div className="stage">
+                    <div className="stage-header">
+                        <div className="stage-name">{stage.name}</div>
+                    </div>
+                    <div className="stage-deals-list">
                         {this.props.deals.ids && this.renderDeals(stage)}
-                    </ul>
-                </div>
-                <div>
-                    <SweetAlert
-                        title="Are you sure?"
-                        text="You will not be able to recover this imaginary file!"
-                        type="warning"
-                        showCancelButton={true}
-                        confirmButtonColor="#DD6B55"
-                        confirmButtonText="Yes, delete it!"
-                        show={this.state.showDeleteDialog}
-                        onConfirm={this.confirmDeleteActivity}
-                        onCancel={this.cancelDeleteActivity}
-                    />
-                </div>
+                    </div>
             </div>
         );
     }

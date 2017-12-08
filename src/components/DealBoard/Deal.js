@@ -88,7 +88,7 @@ class Deal extends React.Component {
         const opacity = isDragging ? 0 : 1
 
         return connectDragSource(
-            connectDropTarget(<div style={{ ...style, opacity }}>{deal.name}</div>),
+            connectDropTarget(<div className="deal-item" style={{ ...style, opacity }}>{deal.name}</div>),
 
         );
     }

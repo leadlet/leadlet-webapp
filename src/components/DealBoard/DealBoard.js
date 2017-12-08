@@ -64,38 +64,11 @@ class DealBoard extends Component {
 
     render() {
         return (
-            <div className="wrapper">
-                <div className="container">
-                    <div className="row" style={{width: '100%', margin: '0px'}}>
-                        <div style={{float: 'right', width: '100px', padding: '2px 0px'}}>
-                            {this.props.pipelines.ids &&
-                            <PipelineSelector
-                                pipelines={this.props.pipelines}
-                                selectedPipelineId={this.state.selectedPipelineId}
-                                onChange={this.pipelineChanged}
-                            />}
-                        </div>
-                        <Button onClick={this.toggleNewDealModal}>Add Deal</Button>
-                    </div>
-                    <div className="row">
-                        { this.props.pipelines.ids && this.state.activeStages &&
-                            <StageList stages={this.state.activeStages}/>
-                        }
-                    </div>
-
-                    <div>
-                        {this.state.activeStages &&
-                            <NewDeal showModal={this.state.isNewDealModalVisible}
-                                     close={this.toggleNewDealModal}
-                                     initialValues={{
-                                         stageId: this.state.activeStages[0].id
-                                     }}
-                            />
-                        }
-                    </div>
-
+                <div className="deals-board">
+                    { this.props.pipelines.ids && this.state.activeStages &&
+                        <StageList stages={this.state.activeStages}/>
+                    }
                 </div>
-            </div>
         );
     }
 

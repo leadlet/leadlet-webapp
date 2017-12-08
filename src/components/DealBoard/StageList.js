@@ -6,18 +6,12 @@ function StageList(props) {
     function renderStageList(){
         return props.stages.map(stage => {
             return (
-                <div className="col-lg-3">
-                    <Stage stage={stage}></Stage>
-                </div>
+                <Stage stage={stage}></Stage>
             );
         });
     }
 
-    return (
-        <div>
-            {props.stages && renderStageList()}
-        </div>
-    );
+    return props.stages && renderStageList();
 }
 
 export default StageList;
