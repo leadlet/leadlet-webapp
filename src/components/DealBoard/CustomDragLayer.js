@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-
 import { DragLayer } from 'react-dnd';
+import PropTypes from 'prop-types';
 
 import CardDragPreview from './CardDragPreview';
 import snapToGrid from './snapToGrid';

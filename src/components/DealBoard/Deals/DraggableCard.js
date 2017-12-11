@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { findDOMNode } from 'react-dom';
 import { DragSource } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
+import PropTypes from 'prop-types';
 
 import Card from './Card';
 
@@ -84,5 +84,5 @@ class CardComponent extends Component {
   }
 }
 
-export default DragSource('card', cardSource, collectDragSource, OPTIONS)(CardComponent);
 
+export default DragSource('card', cardSource, collectDragSource, OPTIONS)(CardComponent);

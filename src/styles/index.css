@@ -8923,6 +8923,14 @@ body{
   background-color: #ffffff;
   overflow: hidden;
 
+  background-color: #ffffff;
+  color: inherit;
+  padding: 15px 20px 20px 20px;
+  border-color: #e7eaec;
+  border-image: none;
+  border-style: solid solid none;
+  border-width: 1px 0;
+
 }
 .deals-board .stage-header{
   position: relative;
@@ -8944,12 +8952,7 @@ body{
   width: 100%;
 }
 
-.deals-board .deal-item{
-  width: 90%;
-  margin: 0 auto 10px;
-  min-height: 100px;
-  border-radius: 5px;
-  box-shadow: 1px 1px 1px rgba(0,0,0,0.3);
-  transition: 0.15s;
-  cursor: pointer;
+.deals-board .placeholder{
+  height: 100px;
+  background-color: #FAFAFB
 }

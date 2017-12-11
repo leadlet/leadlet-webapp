@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import {Field, reduxForm} from 'redux-form';
-import Modal from '../../modal-shim';
+import Modal from '../../../modal-shim';
 import {connect} from 'react-redux';
 import SweetAlert from 'sweetalert-react';
 import DropdownButton from "react-bootstrap/es/DropdownButton";
 import MenuItem from "react-bootstrap/es/MenuItem";
 import Checkbox from "react-bootstrap/es/Checkbox";
 import 'react-select/dist/react-select.css';
-import {createDeal} from "../../actions/deal.actions";
+import {createDeal} from "../../../actions/deal.actions";
 
 const validate = values => {
     const errors = {}

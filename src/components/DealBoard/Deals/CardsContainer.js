@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-
 import { DropTarget, DragSource } from 'react-dnd';
+import PropTypes from 'prop-types';
 
 import Cards from './Cards';
 
@@ -62,29 +61,31 @@ class CardsContainer extends Component {
     const opacity = isDragging ? 0.5 : 1;
 
     return connectDragSource(connectDropTarget(
-      <div className="desk" style={{ opacity }}>
-        <div className="desk-head">
-          <div className="desk-name">{item.name}</div>
+      <div className="stage" style={{ opacity }}>
+        <div className="stage-header">
+          <div className="stage-name">{item.name}</div>
         </div>
         <Cards
           moveCard={moveCard}
           x={x}
-          cards={item.cards}
           startScrolling={this.props.startScrolling}
           stopScrolling={this.props.stopScrolling}
           isScrolling={this.props.isScrolling}
+          cards={this.props.cards}
         />
       </div>
     ));
   }
 }
 
-const dropWrapper = DropTarget('list', listTarget, connectDragSource => ({
+
+let dropWrapper = DropTarget('list', listTarget, connectDragSource => ({
     connectDropTarget: connectDragSource.dropTarget(),
 }))(CardsContainer);
 
-export default DragSource('list', listSource, (connectDragSource, monitor) => ({
+let dragWrapper = DragSource('list', listSource, (connectDragSource, monitor) => ({
     connectDragSource: connectDragSource.dragSource(),
     isDragging: monitor.isDragging()
 }))(dropWrapper);
 
+export default dragWrapper;

@@ -1,13 +1,15 @@
 import React, {Component} from 'react';
 import PipelineSelector from './PipelineSelector'
-import StageList from './StageList'
 import {getAllPipelines} from "../../actions/pipeline.actions";
 import {getAllStages} from "../../actions/stage.actions";
 import {connect} from "react-redux";
-import NewDeal from "./NewDeal";
+import NewDeal from "./Deals/NewDeal";
 import Button from "react-bootstrap/es/Button";
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
+import CardsContainer from "./Deals/CardsContainer";
+import CustomDragLayer from "./CustomDragLayer";
+import {getAllDeals} from "../../actions/deal.actions";
 
 
 class DealBoard extends Component {
@@ -18,12 +20,64 @@ class DealBoard extends Component {
         this.state = {
             selectedPipelineId: null,
             isNewDealModalVisible: false,
-            activeStages: null
+            activeStages: null,
+            isScrolling: false
         };
 
         this.pipelineChanged = this.pipelineChanged.bind(this);
         this.selectedStages = this.selectedStages.bind(this);
         this.toggleNewDealModal = this.toggleNewDealModal.bind(this);
+        this.scrollRight = this.scrollRight.bind(this);
+        this.scrollLeft = this.scrollLeft.bind(this);
+        this.stopScrolling = this.stopScrolling.bind(this);
+        this.startScrolling = this.startScrolling.bind(this);
+        this.getStageDeals = this.getStageDeals.bind(this);
+        this.moveCard = this.moveCard.bind(this);
+        this.moveList = this.moveList.bind(this);
+    }
+
+    moveCard(lastX, lastY, nextX, nextY) {
+        console.log(arguments);
+    }
+
+    moveList(listId, nextX) {
+        console.log(arguments);
+
+    }
+
+
+
+    startScrolling(direction) {
+        // if (!this.state.isScrolling) {
+        switch (direction) {
+            case 'toLeft':
+                this.setState({ isScrolling: true }, this.scrollLeft());
+                break;
+            case 'toRight':
+                this.setState({ isScrolling: true }, this.scrollRight());
+                break;
+            default:
+                break;
+        }
+        // }
+    }
+
+    scrollRight() {
+        function scroll() {
+            document.getElementById('deals-board').scrollLeft += 10;
+        }
+        this.scrollInterval = setInterval(scroll, 10);
+    }
+
+    scrollLeft() {
+        function scroll() {
+            document.getElementById('deals-board').scrollLeft -= 10;
+        }
+        this.scrollInterval = setInterval(scroll, 10);
+    }
+
+    stopScrolling() {
+        this.setState({ isScrolling: false }, clearInterval(this.scrollInterval));
     }
 
     toggleNewDealModal() {
@@ -35,6 +89,8 @@ class DealBoard extends Component {
     componentDidMount() {
         this.props.getAllPipelines();
         this.props.getAllStages();
+        this.props.getAllDeals();
+
     }
 
     pipelineChanged(newPipelineId, _props = this.props) {
@@ -62,12 +118,34 @@ class DealBoard extends Component {
         }
     }
 
+    getStageDeals( stage ){
+       return  this.props.deals.ids.filter(
+            id => this.props.deals.items[id].stageId === stage.id
+        )
+            .map(
+                id => this.props.deals.items[id]
+            );
+    }
+
     render() {
         return (
-                <div className="deals-board">
-                    { this.props.pipelines.ids && this.state.activeStages &&
-                        <StageList stages={this.state.activeStages}/>
-                    }
+                <div id="deals-board" className="deals-board">
+                    <CustomDragLayer snapToGrid={false} />
+                    { this.props.pipelines.ids && this.props.deals.ids && this.state.activeStages
+                        && this.state.activeStages.map((stage, i) =>
+                        <CardsContainer
+                            key={stage.id}
+                            id={stage.id}
+                            item={stage}
+                            moveCard={this.moveCard}
+                            moveList={this.moveList}
+                            startScrolling={this.startScrolling}
+                            stopScrolling={this.stopScrolling}
+                            isScrolling={this.state.isScrolling}
+                            x={i}
+                            cards={this.getStageDeals(stage)}
+                        />
+                    )}
                 </div>
         );
     }
@@ -78,8 +156,9 @@ function mapStateToProps(state) {
     return {
         pipelines: state.pipelines,
         stages: state.stages,
+        deals: state.deals,
     }
 }
 
-export default connect(mapStateToProps, {getAllPipelines, getAllStages})(DragDropContext(HTML5Backend)(DealBoard));
+export default connect(mapStateToProps, {getAllPipelines, getAllStages, getAllDeals})(DragDropContext(HTML5Backend)(DealBoard));
 
