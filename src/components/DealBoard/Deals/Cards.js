@@ -81,6 +81,8 @@ class Cards extends Component {
     static propTypes = {
         connectDropTarget: PropTypes.func.isRequired,
         moveCard: PropTypes.func.isRequired,
+        editDeal: PropTypes.func.isRequired,
+        deleteDeal: PropTypes.func.isRequired,
         cards: PropTypes.array.isRequired,
         x: PropTypes.number.isRequired,
         isOver: PropTypes.bool,
@@ -120,6 +122,8 @@ class Cards extends Component {
                           item={item}
                           key={item.id}
                           stopScrolling={this.props.stopScrolling}
+                          editDeal={this.props.editDeal}
+                          deleteDeal={this.props.deleteDeal}
                     />
                 );
             }

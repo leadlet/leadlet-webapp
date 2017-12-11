@@ -53,7 +53,10 @@ class CardsContainer extends Component {
     isDragging: PropTypes.bool,
     startScrolling: PropTypes.func,
     stopScrolling: PropTypes.func,
-    isScrolling: PropTypes.bool
+    isScrolling: PropTypes.bool,
+      editDeal: PropTypes.func.isRequired,
+      deleteDeal: PropTypes.func.isRequired
+
   }
 
   render() {
@@ -72,6 +75,8 @@ class CardsContainer extends Component {
           stopScrolling={this.props.stopScrolling}
           isScrolling={this.props.isScrolling}
           cards={this.props.cards}
+          editDeal={this.props.editDeal}
+          deleteDeal={this.props.deleteDeal}
         />
       </div>
     ));

@@ -9,7 +9,8 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
 import CardsContainer from "./Deals/CardsContainer";
 import CustomDragLayer from "./CustomDragLayer";
-import {getAllDeals, moveDeal} from "../../actions/deal.actions";
+import {deleteDeal, getAllDeals, moveDeal} from "../../actions/deal.actions";
+import SweetAlert from 'sweetalert-react';
 
 
 class DealBoard extends Component {
@@ -21,7 +22,9 @@ class DealBoard extends Component {
             selectedPipelineId: null,
             isNewDealModalVisible: false,
             activeStages: null,
-            isScrolling: false
+            isScrolling: false,
+            showDeleteDealDialog: false,
+            deletingDealId: null
         };
 
         this.pipelineChanged = this.pipelineChanged.bind(this);
@@ -33,7 +36,30 @@ class DealBoard extends Component {
         this.startScrolling = this.startScrolling.bind(this);
         this.getStageDeals = this.getStageDeals.bind(this);
         this.moveCard = this.moveCard.bind(this);
+        this.onDeleteDeal = this.onDeleteDeal.bind(this);
         this.moveList = this.moveList.bind(this);
+    }
+
+    cancelDeleteDeal(){
+        this.setState({
+            deletingDealId: null,
+            showDeleteDealDialog: false
+        });
+    }
+
+    confirmDeleteDeal(){
+        this.props.deleteDeal(this.state.deletingDealId);
+        this.setState({
+            deletingDealId: null,
+            showDeleteDealDialog: false
+        });
+    }
+
+    onDeleteDeal(dealId){
+        this.setState({
+           deletingDealId: dealId,
+           showDeleteDealDialog: true
+        });
     }
 
     moveCard(dealId, nextStageId, nextDealOrder) {
@@ -150,8 +176,22 @@ class DealBoard extends Component {
                             isScrolling={this.state.isScrolling}
                             x={stage.id}
                             cards={this.getStageDeals(stage)}
+                            editDeal={this.onDeleteDeal}
+                            deleteDeal={this.onDeleteDeal}
                         />
                     )}
+
+                    <SweetAlert
+                        title="Are you sure?"
+                        text="You will loose information related to deal!"
+                        type="warning"
+                        showCancelButton={true}
+                        confirmButtonColor="#DD6B55"
+                        confirmButtonText= "Yes, delete it!"
+                        show={this.state.showDeleteDealDialog}
+                        onConfirm={() => this.confirmDeleteDeal()}
+                        onCancel={() => this.cancelDeleteDeal()}
+                    />
                 </div>
         );
     }
@@ -166,5 +206,5 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, {getAllPipelines, getAllStages, getAllDeals,moveDeal })(DragDropContext(HTML5Backend)(DealBoard));
+export default connect(mapStateToProps, {getAllPipelines, getAllStages, getAllDeals,moveDeal, deleteDeal })(DragDropContext(HTML5Backend)(DealBoard));
 

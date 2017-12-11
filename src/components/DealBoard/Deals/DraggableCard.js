@@ -64,7 +64,9 @@ class CardComponent extends Component {
     isDragging: PropTypes.bool.isRequired,
     x: PropTypes.number.isRequired,
     y: PropTypes.number,
-    stopScrolling: PropTypes.func
+    stopScrolling: PropTypes.func,
+      editDeal: PropTypes.func.isRequired,
+      deleteDeal: PropTypes.func.isRequired
   }
 
   componentDidMount() {
@@ -78,7 +80,11 @@ class CardComponent extends Component {
 
     return connectDragSource(
       <div>
-        <Card style={getStyles(isDragging)} item={item} />
+        <Card style={getStyles(isDragging)}
+              item={item}
+              editDeal={this.props.editDeal}
+              deleteDeal={this.props.deleteDeal}
+        />
       </div>
     );
   }
