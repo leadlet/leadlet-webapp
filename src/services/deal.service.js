@@ -5,6 +5,7 @@ export const dealService = {
     getById,
     create,
     update,
+    move,
     _delete
 };
 
@@ -28,6 +29,15 @@ function update(stage) {
     return fetch('/api/deals/', requestOptions).then(handleResponse);
 }
 
+function move(stage) {
+    const requestOptions = {
+        method: 'PUT',
+        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+        body: JSON.stringify(stage)
+    };
+
+    return fetch('/api/deals/move', requestOptions).then(handleResponse);
+}
 
 function getById(id) {
     const requestOptions = {

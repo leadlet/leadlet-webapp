@@ -9,7 +9,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
 import CardsContainer from "./Deals/CardsContainer";
 import CustomDragLayer from "./CustomDragLayer";
-import {getAllDeals} from "../../actions/deal.actions";
+import {getAllDeals, moveDeal} from "../../actions/deal.actions";
 
 
 class DealBoard extends Component {
@@ -36,8 +36,14 @@ class DealBoard extends Component {
         this.moveList = this.moveList.bind(this);
     }
 
-    moveCard(lastX, lastY, nextX, nextY) {
-        console.log(arguments);
+    moveCard(dealId, nextStageId, nextDealOrder) {
+        this.props.moveDeal({
+            id: dealId,
+            newStageId: nextStageId,
+            newOrder: nextDealOrder
+        });
+
+        console.log(`Moving deal ${dealId} to new stage index : ${nextStageId} and new deal order: ${nextDealOrder}`);
     }
 
     moveList(listId, nextX) {
@@ -142,7 +148,7 @@ class DealBoard extends Component {
                             startScrolling={this.startScrolling}
                             stopScrolling={this.stopScrolling}
                             isScrolling={this.state.isScrolling}
-                            x={i}
+                            x={stage.id}
                             cards={this.getStageDeals(stage)}
                         />
                     )}
@@ -160,5 +166,5 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, {getAllPipelines, getAllStages, getAllDeals})(DragDropContext(HTML5Backend)(DealBoard));
+export default connect(mapStateToProps, {getAllPipelines, getAllStages, getAllDeals,moveDeal })(DragDropContext(HTML5Backend)(DealBoard));
 

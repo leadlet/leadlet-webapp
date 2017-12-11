@@ -38,7 +38,7 @@ const specs = {
             return;
         }
 
-        props.moveCard(lastX, lastY, nextX, nextY);
+        props.moveCard(monitor.getItem().item.id, nextX, nextY );
     },
     hover(props, monitor, component) {
         // defines where placeholder is rendered
@@ -116,7 +116,7 @@ class Cards extends Component {
             }
             if (item !== undefined) {
                 cardList.push(
-                    <Card x={x} y={i}
+                    <Card x={item.stageId} y={item.order}
                           item={item}
                           key={item.id}
                           stopScrolling={this.props.stopScrolling}

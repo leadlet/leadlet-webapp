@@ -41,6 +41,29 @@ export function updateDeal(deal) {
     function failure(error) { return { type: dealConstants.UPDATE_FAILURE, error } }
 }
 
+export function moveDeal(deal) {
+    return dispatch => {
+        dispatch(request());
+
+        return dealService.move(deal)
+            .then(
+                deal => {
+                    dispatch(success(deal));
+                    dispatch(alertActions.success('Deal successfully updated'));
+                },
+                error => {
+                    dispatch(failure(error));
+                    dispatch(alertActions.error(error));
+                }
+            );
+    };
+
+    function request() { return { type: dealConstants.UPDATE_REQUEST } }
+    function success(deal) { return { type: dealConstants.UPDATE_SUCCESS, deal } }
+    function failure(error) { return { type: dealConstants.UPDATE_FAILURE, error } }
+}
+
+
 
 export function createDeal(deal) {
     return dispatch => {
