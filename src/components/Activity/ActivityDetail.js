@@ -16,7 +16,8 @@ import Checkbox from "react-bootstrap/es/Checkbox";
 import FormControl from "../../../node_modules/react-bootstrap/es/FormControl";
 import Select from '../../../node_modules/react-select';
 import 'react-select/dist/react-select.css';
-import {getAllOrganization, getAllPerson} from "../../actions/contact.actions";
+import {getAll} from "../../actions/contact.actions";
+import {contactConstants} from "../../constants/contact.constants";
 
 const validate = values => {
     const errors = {}
@@ -171,7 +172,6 @@ class ActivityDetail extends Component {
         this.cancelDeleteActivity = this.cancelDeleteActivity.bind(this);
         this.onDeleteActivity = this.onDeleteActivity.bind(this);
         this.mapContact2Options = this.mapContact2Options.bind(this);
-        this.mapOrganization2Options = this.mapOrganization2Options.bind(this);
         this.onClose = this.onClose.bind(this);
         this.checkDate = this.checkDate.bind(this);
 
@@ -182,23 +182,24 @@ class ActivityDetail extends Component {
     }
 
     componentDidMount() {
-//        this.props.getAllOrganization(`name:${this.state.term}`);
-//        this.props.getAllPerson(`name:${this.state.term}`);
-        this.props.getAllPerson();
-        this.props.getAllOrganization();
+        this.props.getAll();
     }
 
-    mapContact2Options() {
-        return this.props.persons.items ? this.props.persons.items.map((item) => {
-            return {label: item.name, value: item.id}
-        }) : [];
+    mapContact2Options(type) {
+
+        if(!this.props.contacts.ids ){
+            return [];
+        }else{
+           return this.props.contacts.ids.filter(id => {
+               return this.props.contacts.items[id].type === type;
+           })
+                .map( id => {
+                    return {label: this.props.contacts.items[id].name, value: this.props.contacts.items[id].id}
+                });
+
+        }
     }
 
-    mapOrganization2Options() {
-        return this.props.organizations.items ? this.props.organizations.items.map((item) => {
-            return {label: item.name, value: item.id}
-        }) : [];
-    }
 
     confirmDeleteActivity() {
         this.props._delete(this.props.initialValues.id);
@@ -319,7 +320,7 @@ class ActivityDetail extends Component {
                             component={renderSelectField}
                             label="Contact"
                             multi={false}
-                            options={this.mapContact2Options()}
+                            options={this.mapContact2Options(contactConstants.CONTACT_TYPE_PERSON)}
                             selected={this.state.contact}
                         />
                         <Field
@@ -327,7 +328,7 @@ class ActivityDetail extends Component {
                             component={renderSelectField}
                             label="Organization"
                             multi={false}
-                            options={this.mapOrganization2Options()}
+                            options={this.mapContact2Options(contactConstants.CONTACT_TYPE_ORGANIZATION)}
                         />
                         <div className="form-group">
                             <Checkbox>Send invitations to attendees</Checkbox>
@@ -375,8 +376,7 @@ class ActivityDetail extends Component {
 
 function mapStateToProps(state) {
     return {
-        persons: state.contacts.persons,
-        organizations: state.contacts.organizations
+        contacts: state.contacts
     };
 }
 
@@ -385,5 +385,5 @@ export default reduxForm({
     validate, // <--- validation function given to redux-form
     enableReinitialize: true
 })(
-    connect(mapStateToProps, {create, update, _delete, getAllOrganization, getAllPerson})(ActivityDetail)
+    connect(mapStateToProps, {create, update, _delete, getAll})(ActivityDetail)
 );

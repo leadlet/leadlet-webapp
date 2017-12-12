@@ -52,7 +52,7 @@ export function getAllOrganization(filter) {
     function failure(error) { return { type: contactConstants.GETALL_FAILURE, error } }
 }
 
-export function getAll(filter) {
+export function getAll(filter= 'name:') {
     return dispatch => {
         dispatch(request());
 
