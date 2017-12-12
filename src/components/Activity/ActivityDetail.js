@@ -253,7 +253,7 @@ class ActivityDetail extends Component {
     }
 
     render() {
-        const {handleSubmit, initialValues} = this.props;
+        const {handleSubmit, initialValues, submitting, pristine, valid} = this.props;
 
         let title = "Create";
         if (initialValues && initialValues.title) {
@@ -358,7 +358,9 @@ class ActivityDetail extends Component {
                         <div className="col-md-6 pull-right">
                             <div className="pull-right activity-detail-submit">
                                 <button className="btn btn-sm btn-default" onClick={this.props.close}>Cancel</button>
-                                <button className="btn btn-sm btn-primary" onClick={handleSubmit(this.onSubmit)}>
+                                <button className="btn btn-sm btn-primary"
+                                        disabled={pristine || submitting || !valid}
+                                        onClick={handleSubmit(this.onSubmit)}>
                                     <strong>Submit</strong></button>
                             </div>
                             <Checkbox className="mark pull-left">Mark as done</Checkbox>

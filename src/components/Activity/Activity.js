@@ -5,6 +5,7 @@ import draggable from '../../../node_modules/jquery-ui/ui/widgets/draggable';
 import fullCalendar from 'fullcalendar';
 import ActivityDetail from "./ActivityDetail";
 import {getAll} from "../../actions/activity.actions";
+import moment from 'moment';
 
 class  Activity extends Component {
 
@@ -80,7 +81,6 @@ class  Activity extends Component {
 
         const openActivityModal = this.openActivityModal;
 
-
         //TODO: fullCalendar her update de render olmamalı.
         if (events) {
             $('#calendar').fullCalendar('destroy');
@@ -130,7 +130,10 @@ class  Activity extends Component {
                             <div className="ibox-title">
                                 <div className="ibox-tools">
                                     <button className="btn btn-primary btn-sm" type="button"
-                                            onClick={this.openActivityModal}><i
+                                            onClick={() => this.openActivityModal({
+                                                    start: moment(),
+                                                    end: moment()
+                                            })}><i
                                         className="fa fa-plus"></i>&nbsp;New Activity
                                     </button>
                                     <div className="pull-left">

@@ -3657,6 +3657,7 @@ video {
 }
 #page-wrapper {
   padding: 0 15px;
+  min-height: 568px;
   position: relative !important;
 }
 @media (min-width: 768px) {
@@ -8903,6 +8904,9 @@ body{
 }
 .activity-detail-submit{
   margin-top: 6px;
+}
+.react-datepicker-popper{
+  z-index: 2;
 }
 
 .deals-board{
