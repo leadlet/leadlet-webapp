@@ -1,73 +1,96 @@
-import { contactConstants } from '../constants';
+import {contactConstants} from "../constants/contact.constants.js";
+import {normalize, schema} from 'normalizr';
 
-export function contacts(state = { persons: { total: 0}, organizations: { total: 0}}, action) {
-  switch (action.type) {
-      case contactConstants.ORGANIZATIONS_GETALL_REQUEST:
-      return {
-          ...state,
-        organizations : {
-            loading: true
-        }
-      };
-    case contactConstants.ORGANIZATIONS_GETALL_SUCCESS:
-      return {
-          ...state,
-          organizations : {
-              items: action.data[0],
-              total: action.data[1]
-          }
-      };
-    case contactConstants.ORGANIZATIONS_GETALL_FAILURE:
-      return {
-          ...state,
-          organizations : {
-              error: action.error
-          }
-      };
+const contactSchema = new schema.Entity('contacts');
 
-    case contactConstants.PERSONS_GETALL_REQUEST:
-        return {
-            ...state,
-            persons : {
+// or use shorthand syntax:
+const contactListSchema = [contactSchema];
+
+export function contacts(state = {}, action) {
+    switch (action.type) {
+        /* get by id */
+        case contactConstants.GET_REQUEST:
+            return {
                 loading: true
-            }
-        };
-    case contactConstants.PERSONS_GETALL_SUCCESS:
-        return {
-            ...state,
-            persons : {
-                items: action.data[0],
-                total: action.data[1]
-            }
-        };
-    case contactConstants.PERSONS_GETALL_FAILURE:
-        return {
-            ...state,
-            persons : {
+            };
+        case contactConstants.GET_SUCCESS:
+            return {
+                ...state,
+                viewedContact: action.contact
+            };
+        case contactConstants.GET_FAILURE:
+            return {
                 error: action.error
-            }
-        };
-      case contactConstants.CREATE_REQUEST:
-        return {
-            ...state,
-            newContact: {
+            };
+
+
+        /* ALL contactS */
+        case contactConstants.GETALL_REQUEST:
+            return {
                 loading: true
-            }
-        };
-      case contactConstants.CREATE_SUCCESS:
-        // TODO check here
-        const newState = { ...state };
-        newState.persons.items.push(action.data[0]);
-        newState.persons.total++;
-        return newState;
-    case contactConstants.CREATE_FAILURE:
-        return {
-            ...state,
-            newContact: {
+            };
+        case contactConstants.GETALL_SUCCESS:
+            const _items = normalize(action.items, contactListSchema);
+            return {
+                ...state,
+                items: _items.entities.contacts,
+                ids: _items.result
+            };
+        case contactConstants.GETALL_FAILURE:
+            return {
                 error: action.error
-            }
-        };
-    default:
-      return state
-  }
+            };
+
+        /* NEW contact */
+        case contactConstants.CREATE_REQUEST:
+            return state;
+        case contactConstants.CREATE_SUCCESS:
+            let _state = {
+                ...state,
+                items: {
+                    ...state.items,
+                    [action.contact.id]: action.contact
+                },
+                ids: [ ...state.ids, action.contact.id]
+            };
+
+            return _state;
+
+        case contactConstants.CREATE_FAILURE:
+            return {
+                ...state,
+                error: action.error
+            };
+        /* UPDATE contact */
+        case contactConstants.UPDATE_REQUEST:
+            return state;
+        case contactConstants.UPDATE_SUCCESS:
+            _state = {
+                ...state,
+                items: {
+                    ...state.items,
+                    [action.contact.id]: action.contact
+                }
+            };
+
+            return _state;
+        case contactConstants.UPDATE_FAILURE:
+            return {
+                ...state,
+                error: action.error
+            };
+        /* DELETE contact */
+        case contactConstants.DELETE_REQUEST:
+            return state;
+        case contactConstants.DELETE_SUCCESS:
+            delete state.items[action.id];
+            return {
+                ...state,
+                items: state.items,
+                ids: state.ids.filter(item => item !== action.id),
+            };
+
+        default:
+            return state
+    }
 }

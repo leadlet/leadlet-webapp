@@ -30,9 +30,9 @@ export function getAllPerson(filter) {
             );
     };
 
-    function request() { return { type: contactConstants.PERSONS_GETALL_REQUEST } }
-    function success(data) { return { type: contactConstants.PERSONS_GETALL_SUCCESS, data } }
-    function failure(error) { return { type: contactConstants.PERSONS_GETALL_FAILURE, error } }
+    function request() { return { type: contactConstants.GETALL_REQUEST } }
+    function success(data) { return { type: contactConstants.GETALL_SUCCESS, data } }
+    function failure(error) { return { type: contactConstants.GETALL_FAILURE, error } }
 
 }
 
@@ -47,9 +47,9 @@ export function getAllOrganization(filter) {
             );
     };
 
-    function request() { return { type: contactConstants.ORGANIZATIONS_GETALL_REQUEST } }
-    function success(data) { return { type: contactConstants.ORGANIZATIONS_GETALL_SUCCESS, data } }
-    function failure(error) { return { type: contactConstants.ORGANIZATIONS_GETALL_FAILURE, error } }
+    function request() { return { type: contactConstants.GETALL_REQUEST } }
+    function success(data) { return { type: contactConstants.GETALL_SUCCESS, data } }
+    function failure(error) { return { type: contactConstants.GETALL_FAILURE, error } }
 }
 
 export function getAll(filter) {
@@ -58,13 +58,13 @@ export function getAll(filter) {
 
         contactService.getAll(filter)
             .then(
-                contacts => dispatch(success(contacts)),
+                items => dispatch(success(items)),
                 error => dispatch(failure(error))
             );
     };
 
     function request() { return { type: contactConstants.GETALL_REQUEST } }
-    function success(contacts) { return { type: contactConstants.GETALL_SUCCESS, contacts } }
+    function success(items) { return { type: contactConstants.GETALL_SUCCESS, items } }
     function failure(error) { return { type: contactConstants.GETALL_FAILURE, error } }
 }
 
@@ -74,9 +74,8 @@ export function createContact(contact, successCallback) {
 
         return contactService.createContact(contact)
             .then(
-                data => {
-                    dispatch(successCallback);
-                    dispatch(success(data));
+                contact => {
+                    dispatch(success(contact));
                     dispatch(alertActions.success('Contact create successful'));
                 },
                 error => {
@@ -89,7 +88,7 @@ export function createContact(contact, successCallback) {
     };
 
     function request() { return { type: contactConstants.CREATE_REQUEST } }
-    function success(data) { return { type: contactConstants.CREATE_SUCCESS, data } }
+    function success(data) { return { type: contactConstants.CREATE_SUCCESS, contact } }
     function failure(error) { return { type: contactConstants.CREATE_FAILURE, error } }
 }
 

@@ -5,11 +5,11 @@ import {Route} from 'react-router-dom'
 import Contacts from "../components/Contacts/Contacts";
 import Dashboard from "../Dashboard/Dashboard";
 import Deals from "../components/DealBoard/DealBoard";
-import ContactEdit from "../components/Contacts/ContactNew";
 import Switch from "react-router-dom/es/Switch";
 import PipelinesPage from "../components/Pipelines/Pipelines";
 import Chats from "../components/Chat/Chats";
 import Activity from "../components/Activity/Activity";
+import ContactDetail from "../components/Contacts/ContactDetail";
 
 class TopMenuLayout extends Component {
 
@@ -22,7 +22,7 @@ class TopMenuLayout extends Component {
                         <div className="wrapper-content">
                             <Switch>
                                 <Route exact path="/" component={Dashboard}/>
-                                <Route path="/contacts/:contactId" component={ContactEdit}/>
+                                <Route path="/contacts/:contactId" component={ContactDetail}/>
                                 <Route path="/contacts" component={Contacts}/>
                                 <Route path="/deals" component={Deals}/>
                                 <Route path="/pipelines" component={PipelinesPage}/>

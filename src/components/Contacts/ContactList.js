@@ -1,16 +1,24 @@
 import React  from 'react';
 import {Scrollbars} from "react-custom-scrollbars";
 import {contactConstants} from "../../constants/contact.constants";
+import Link from "react-router-dom/es/Link";
 
 export  const ContactList = function(props) {
 
     const { contacts, onContactSelect, type, onEditClicked } = props;
 
     function renderList() {
-        return contacts.items.map((contact) => {
+        let filteredIds = contacts.ids;
+
+        if( type !== contactConstants.CONTACT_TYPE_ALL ){
+            filteredIds = contacts.ids.filter(id => contacts.items[id].type === type);
+        }
+        return filteredIds.map( id => {
+                let contact = contacts.items[id];
                 return (
                     <tr key={contact.id} onClick={()=>onContactSelect(contact)} >
-                        <td> {contact.name} </td>
+                        <td>  <Link to={`/contacts/${contact.id}`} >{contact.name}</Link> </td>
+
                         { (type === contactConstants.CONTACT_TYPE_PERSON) && <td> {contact.organization && contact.organization.name} </td>}
                         <td className="contact-type"><i className="fa fa-envelope"> </i></td>
                         <td> { contact.emails && contact.emails.length > 0 ? contact.emails[0].email : '' }</td>
@@ -23,13 +31,12 @@ export  const ContactList = function(props) {
     }
 
     return (
-        <Scrollbars style={{ height: '100%' }}>
+        <Scrollbars style={{ height: '400px' }}>
             <div className="table-responsive">
-                {contacts.loading && <em>Loading users...</em>}
-                {contacts.error && <span className="text-danger">ERROR: {contacts.error}</span>}
+                {!contacts.ids && <em>Loading users...</em>}
                 <table className="table table-striped table-hover">
                     <tbody>
-                    {contacts.items && renderList()}
+                    {contacts.ids && renderList()}
                     </tbody>
                 </table>
             </div>

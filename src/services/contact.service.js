@@ -35,6 +35,7 @@ function getAll(filter = "") {
 }
 
 
+/*
 function handleResponse(response) {
     if (response.ok !== true) {
         return Promise.reject(response.statusText);
@@ -47,4 +48,17 @@ function handleResponse(response) {
     // a Promise is returned since the reading of the stream will happen asynchronously.
 
     // return response.json();
+}
+*/
+
+
+function handleResponse(response) {
+    if (response.ok !== true) {
+        return Promise.reject(response.statusText);
+    }
+
+    // The response of a fetch() request is a Stream object, which means that when we call the json() method,
+    // a Promise is returned since the reading of the stream will happen asynchronously.
+
+    return response.json();
 }

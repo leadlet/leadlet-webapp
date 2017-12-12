@@ -1,22 +1,30 @@
-import React, { Component } from 'react';
-import {Tab, Tabs} from "react-bootstrap";
+import React, {Component} from 'react';
 import {contactConstants} from "../../constants/contact.constants";
-import { connect } from 'react-redux';
-import {getAllOrganization, getAllPerson} from "../../actions/contact.actions";
+import {connect} from 'react-redux';
+import {getAll} from "../../actions/contact.actions";
 import {ContactList} from "./ContactList";
-import {ContactDetail} from "./ContactDetail";
+import {ContactSummary} from "./ContactSummary";
 import ContactEdit from "./ContactNew";
+import ButtonToolbar from "react-bootstrap/es/ButtonToolbar";
+import ToggleButton from "react-bootstrap/es/ToggleButton";
+import ToggleButtonGroup from "react-bootstrap/es/ToggleButtonGroup";
+import FormGroup from "react-bootstrap/es/FormGroup";
+import InputGroup from "react-bootstrap/es/InputGroup";
+import Button from "react-bootstrap/es/Button";
+import FormControl from "react-bootstrap/es/FormControl";
+import Form from "react-bootstrap/es/Form";
 
 class Contacts extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.state = {
             selectedContact: null,
             term: "",
             showEditModal: false,
-            contactSelectedForEdit: null
+            contactSelectedForEdit: null,
+            selectedType: contactConstants.CONTACT_TYPE_ALL
         };
 
         this.onContactSelect = this.onContactSelect.bind(this);
@@ -24,115 +32,121 @@ class Contacts extends Component {
         this.onInputChange = this.onInputChange.bind(this);
         this.openEditModal = this.openEditModal.bind(this);
         this.closeEditModal = this.closeEditModal.bind(this);
+        this.onTypeChange = this.onTypeChange.bind(this);
 
 
     }
 
     componentDidMount() {
-        this.props.getAllOrganization(`name:${this.state.term}`);
-        this.props.getAllPerson(`name:${this.state.term}`);
+        this.props.getAll(`name:${this.state.term}`);
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({ selectedContact: nextProps.persons &&  nextProps.persons.items ? nextProps.persons.items[0] : null })
+        this.setState({selectedContact: nextProps.persons && nextProps.persons.items ? nextProps.persons.items[0] : null})
     }
 
-    onContactSelect(contact){
-        this.setState({ selectedContact : contact});
+    onContactSelect(contact) {
+        this.setState({selectedContact: contact});
     }
 
-    onSearchSubmit(event){
+    onSearchSubmit(event) {
         event.preventDefault();
-        this.props.getAllOrganization(`name:${this.state.term}`);
-        this.props.getAllPerson(`name:${this.state.term}`);
+        this.props.getAll(`name:${this.state.term}`);
 
     }
 
-    onInputChange(event){
+    onInputChange(event) {
         this.setState({term: event.target.value});
     }
 
-    openEditModal(contact){
-//        this.setState({showEditModal: true});
-//        this.setState({contactSelectedForEdit: contact});
+    openEditModal(contact) {
+        this.setState({showEditModal: true});
+        this.setState({contactSelectedForEdit: contact});
     }
 
-    closeEditModal(){
+    closeEditModal() {
         this.setState({showEditModal: false});
     }
 
-    test() {
-        return (
-            <span> Person <span class="badge">5</span></span>
-        );
-    }
+    onTypeChange = (value) => {
+        this.setState({ selectedType: value });
+    };
+
     render() {
         return (
-            <div className="wrapper wrapper-content">
-                <div className="container">
-            <div className="row">
-                <div className="col-sm-8">
-                    <div className="ibox">
-                        <div className="ibox-content">
-                            <span className="text-muted small pull-right">Last modification: <i className="fa fa-clock-o"/> 2:10 pm - 12.06.2014</span>
-                            <h2>Contacts</h2>
-                            <p>
-                                All clients need to be verified before you can send email and set a project.
-                            </p>
-                            <form className="input-group" onSubmit={this.onSearchSubmit}>
-                                <input type="text" placeholder="Search contact..."
-                                       onChange={this.onInputChange} className="input form-control" />
-                                <span className="input-group-btn">
-                                        <button type="submit" className="btn btn btn-primary"> <i className="fa fa-search"/> Search</button>
-                                </span>
-                            </form>
-                            <div className="clients-list">
-                                <p className="pull-right ">
-                                    <button className="btn btn-success btn-sm m-r-sm disabled" type="button"><i className="fa fa-upload"></i>&nbsp;Import</button>
-                                    <button className="btn btn-primary btn-sm" type="button" onClick={this.openEditModal}><i className="fa fa-plus"></i>&nbsp;Create</button>
+            <div className="container full-height" style={{'overflow-y':'hidden'}}>
+                <div className="row full-height">
+                    <div className="col-sm-8 full-height">
+                        <div className="ibox full-height">
+                            <div className="ibox-content full-height">
+                                    <span className="text-muted small pull-right">Last modification: <i
+                                        className="fa fa-clock-o"/> 2:10 pm - 12.06.2014</span>
+                                <h2>Contacts</h2>
+                                <p>
+                                    All clients need to be verified before you can send email and set a project.
                                 </p>
 
-                                <div className="tab-content">
+                                <div>
+                                    <Form inline onSubmit={this.onSearchSubmit}>
+                                        <FormGroup bsSize="small">
+                                            <ToggleButtonGroup  type="radio" name="contactType"
+                                                                value={this.state.selectedType}
+                                                                onChange={this.onTypeChange} >
+                                                <ToggleButton className="btn-sm" value={contactConstants.CONTACT_TYPE_ALL}>All </ToggleButton>
+                                                <ToggleButton className="btn-sm" value={contactConstants.CONTACT_TYPE_PERSON}>Person <i className="fa fa-users"></i></ToggleButton>
+                                                <ToggleButton className="btn-sm" value={contactConstants.CONTACT_TYPE_ORGANIZATION}>Organization <i className="fa fa-industry"></i></ToggleButton>
+                                            </ToggleButtonGroup>
+                                        </FormGroup>
+                                        <FormGroup bsSize="small" className="m-l-sm">
+                                            <InputGroup>
+                                                <FormControl type="text" onChange={this.onInputChange}/>
+                                                <InputGroup.Button>
+                                                    <Button bsSize="small" onClick={this.onSearchSubmit}>Search</Button>
+                                                </InputGroup.Button>
+                                            </InputGroup>
+                                        </FormGroup>
+                                        <FormGroup bsSize="small" className="pull-right">
+                                            <button className="btn btn-primary btn-sm pull-right" type="button"
+                                                    onClick={this.openEditModal}><i className="fa fa-plus"></i>&nbsp;
+                                                Create
+                                            </button>
+                                        </FormGroup>
+                                    </Form>
 
-                                    <Tabs defaultActiveKey={1} id="uncontrolled-tab-example">
-                                        <Tab eventKey={1} title={<span> Person <span class="badge"> {this.props.persons.total} </span></span>}>
-                                            <ContactList
-                                                contacts={this.props.persons}
-                                                type={contactConstants.CONTACT_TYPE_PERSON}
-                                                onContactSelect={this.onContactSelect}
-                                                onEditClicked={()=>this.openEditModal}
-                                            />
-                                        </Tab>
-                                        <Tab eventKey={2} title={<span> Organization <span class="badge"> {this.props.organizations.total} </span></span>}>
-                                            <ContactList
-                                                contacts={this.props.organizations}
-                                                type={contactConstants.CONTACT_TYPE_ORGANIZATION}
-                                                onContactSelect={this.onContactSelect}
-                                                onEditClicked={()=>this.openEditModal}
-                                            />
-                                        </Tab>
-                                    </Tabs>
+
                                 </div>
 
+                                <div className="clients-list full-height">
+
+                                    {
+                                        this.props.contacts.ids &&
+                                        <ContactList
+                                            contacts={this.props.contacts}
+                                            type={this.state.selectedType}
+                                            onContactSelect={this.onContactSelect}
+                                            onEditClicked={() => this.openEditModal}
+                                        />
+                                    }
+
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className="col-sm-4">
-                    <div className="ibox ">
+                    <div className="col-sm-4">
+                        <div className="ibox ">
 
-                        <div className="ibox-content">
-                            <ContactDetail contact={ this.state.selectedContact } onEditClicked={()=>this.openEditModal(this.state.selectedContact)}/>
+                            <div className="ibox-content">
+                                <ContactSummary contact={this.state.selectedContact}
+                                               onEditClicked={() => this.openEditModal(this.state.selectedContact)}/>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div>
-                    <ContactEdit showEditModal={this.state.showEditModal}
-                                 close={this.closeEditModal}
-                                 contact={this.state.contactSelectedForEdit}
-                    />
-                </div>
-            </div>
+                    <div>
+                        <ContactEdit showEditModal={this.state.showEditModal}
+                                     close={this.closeEditModal}
+                                     contact={this.state.contactSelectedForEdit}
+                        />
+                    </div>
                 </div>
             </div>
         );
@@ -140,12 +154,11 @@ class Contacts extends Component {
 
 }
 
-function mapStateToProps(state){
+function mapStateToProps(state) {
     return {
-        persons: state.contacts.persons,
-        organizations: state.contacts.organizations
+        contacts: state.contacts
     };
 }
 
 
-export default connect(mapStateToProps, {getAllOrganization, getAllPerson})(Contacts);
+export default connect(mapStateToProps, {getAll})(Contacts);
