@@ -1,8 +1,8 @@
 import React from 'react';
 import Modal from '../../modal-shim';
-import { Field, reduxForm } from 'redux-form'
-import { createContact } from "../../actions/contact.actions";
-import { connect } from 'react-redux';
+import {Field, reduxForm} from 'redux-form'
+import {createContact} from "../../actions/contact.actions";
+import {connect} from 'react-redux';
 
 const validate = values => {
     const errors = {}
@@ -28,12 +28,12 @@ const renderField = ({
                          input,
                          label,
                          type,
-                         meta: { touched, error, warning }
+                         meta: {touched, error, warning}
                      }) => (
     <div className="form-group">
         <label>{label}</label>
         <div>
-            <input {...input} placeholder={label} type={type}  className="form-control"/>
+            <input {...input} placeholder={label} type={type} className="form-control"/>
             <span className="help-block m-b-none">{touched &&
             ((error && <span>{error}</span>) ||
                 (warning && <span>{warning}</span>))}
@@ -53,20 +53,19 @@ class ContactNew extends React.Component {
     onSubmit = (values) => {
         // print the form values to the console
         console.log(values);
-        return this.props.createContact(values,this.props.close);
+        return this.props.createContact(values, this.props.close);
 
     }
 
-
-    render () {
-        const { handleSubmit, pristine, reset, submitting } = this.props;
+    render() {
+        const {handleSubmit, pristine, reset, submitting} = this.props;
         return (
             <Modal show={this.props.showEditModal} onHide={this.props.close}>
                 <Modal.Header closeButton>
                     <Modal.Title>Create New Contact</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <form onSubmit={ handleSubmit(this.onSubmit) }>
+                    <form onSubmit={handleSubmit(this.onSubmit)}>
                         <Field
                             name="name"
                             type="text"
@@ -94,13 +93,8 @@ class ContactNew extends React.Component {
                                 </Field>
                             </div>
                         </div>
-
-
-
                         <button className="btn btn-sm btn-primary pull-right"
                                 type="submit" disabled={submitting}><strong>Submit</strong></button>
-
-
                     </form>
                 </Modal.Body>
                 <Modal.Footer>
@@ -118,5 +112,5 @@ export default reduxForm({
         type: 'PERSON'
     }
 })(
-   connect(null, {createContact})( ContactNew)
+    connect(null, {createContact})(ContactNew)
 );
