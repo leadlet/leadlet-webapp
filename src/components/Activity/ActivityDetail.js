@@ -229,7 +229,7 @@ class ActivityDetail extends Component {
         activity.personId = formValue.contact;
         activity.organizationId = formValue.organization;
 
-        if (this.props.initialValues.id) {
+        if (this.props.initialValues && this.props.initialValues.id) {
             this.props.update(activity);
         } else {
             this.props.create(activity);

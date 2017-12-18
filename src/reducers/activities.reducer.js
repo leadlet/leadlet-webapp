@@ -7,11 +7,12 @@ const activitySchema = new schema.Entity('activities');
 // or use shorthand syntax:
 const activityListSchema = [activitySchema];
 
-export function activities(state = {}, action) {
+export function activities(state = { ids: [], items: {}}, action) {
     switch (action.type) {
         /* ALL activities */
         case activityConstants.GETALL_REQUEST:
             return {
+                ...state,
                 loading: true
             };
         case activityConstants.GETALL_SUCCESS:

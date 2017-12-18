@@ -2,6 +2,11 @@ import React, {Component} from 'react';
 import connect from "react-redux/es/connect/connect";
 import {getById} from "../../actions/contact.actions";
 import ContactNew from "./ContactNew";
+import moment from 'moment';
+import ActivityDetail from "../Activity/ActivityDetail";
+import fullCalendar from 'fullcalendar';
+import '../../../node_modules/fullcalendar/dist/fullcalendar.css';
+import $ from 'jquery';
 
 class ContactDetail extends Component {
 
@@ -9,12 +14,14 @@ class ContactDetail extends Component {
         super(props);
 
         this.state = {
-            showEditModal: false
+            showEditModal: false,
+            showModal: false
         };
 
         this.openEditModal = this.openEditModal.bind(this);
         this.closeEditModal = this.closeEditModal.bind(this);
-
+        this.openActivityModal = this.openActivityModal.bind(this);
+        this.closeActivityModal = this.closeActivityModal.bind(this);
     }
 
     openEditModal() {
@@ -25,8 +32,62 @@ class ContactDetail extends Component {
         this.setState({showEditModal: false});
     }
 
+    openActivityModal() {
+        this.setState({showModal: true});
+    }
+
+    closeActivityModal() {
+        this.setState({showModal: false});
+    }
+
     componentDidMount() {
         this.props.getById(this.props.match.params.contactId);
+    }
+
+    componentDidUpdate(){
+        $('#contact-calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'listDay,listWeek,month'
+            },
+            // customize the button names,
+            // otherwise they'd all just say "list"
+            views: {
+                listDay: { buttonText: 'list day' },
+                listWeek: { buttonText: 'list week' }
+            },
+            defaultView: 'listWeek',
+            navLinks: true, // can click day/week names to navigate views
+            editable: true,
+            eventLimit: true, // allow "more" link when too many events
+            events: [
+                {
+                    title: 'All Day Event',
+                    start: '2017-11-01'
+                },
+                {
+                    title: 'Long Event',
+                    start: '2017-11-07',
+                    end: '2017-11-10'
+                },
+                {
+                    id: 999,
+                    title: 'Repeating Event',
+                    start: '2017-11-09T16:00:00'
+                },
+                {
+                    id: 999,
+                    title: 'Repeating Event',
+                    start: '2017-11-16T16:00:00'
+                },
+                {
+                    title: 'Conference',
+                    start: '2017-11-11',
+                    end: '2017-11-13'
+                }
+            ]
+        });
     }
 
     render() {
@@ -224,11 +285,15 @@ class ContactDetail extends Component {
                                 </div>
                                 <div className="ibox">
                                     <div className="ibox-title">
-                                        <i className="fa fa-plus pull-right" aria-hidden="true"></i>
+                                        <i className="fa fa-plus pull-right" aria-hidden="true"
+                                           onClick={() => this.openActivityModal({
+                                               start: moment(),
+                                               end: moment()
+                                           })}></i>
                                         <h5>Activities</h5>
                                     </div>
-                                    <div className="ibox-content text-center">
-                                        Activities
+                                    <div className="ibox-content">
+                                        <div id="contact-calendar"></div>
                                     </div>
                                 </div>
                                 <div className="ibox">
@@ -240,6 +305,12 @@ class ContactDetail extends Component {
                                         Documents
                                     </div>
                                 </div>
+                            </div>
+
+                            <div>
+                                <ActivityDetail showModal={this.state.showModal}
+                                                close={this.closeActivityModal}
+                                />
                             </div>
                         </div>
                     </div>

@@ -11,6 +11,7 @@ export function deals(state = {}, action) {
         /* ALL dealS */
         case dealConstants.GETALL_REQUEST:
             return {
+                ...state,
                 loading: true
             };
         case dealConstants.GETALL_SUCCESS:

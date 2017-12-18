@@ -27,6 +27,7 @@ export function contacts(state = {}, action) {
         /* ALL contactS */
         case contactConstants.GETALL_REQUEST:
             return {
+                ...state,
                 loading: true
             };
         case contactConstants.GETALL_SUCCESS:

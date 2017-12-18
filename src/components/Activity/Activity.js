@@ -6,6 +6,7 @@ import fullCalendar from 'fullcalendar';
 import ActivityDetail from "./ActivityDetail";
 import {getAll} from "../../actions/activity.actions";
 import moment from 'moment';
+import '../../../node_modules/fullcalendar/dist/fullcalendar.css';
 
 class  Activity extends Component {
 
@@ -75,7 +76,8 @@ class  Activity extends Component {
             events = events.filter( event => (
                 event.type === this.state.selectedType
             ));
-        }if(this.state.selectedType === ' '){
+        }
+        if(this.state.selectedType === ' '){
             this.props.getAll;
         }
 
@@ -90,7 +92,7 @@ class  Activity extends Component {
                 header: {
                     left: 'prev,next today',
                     center: 'title',
-                    right: 'month,agendaWeek,agendaDay'
+                    right: 'month,agendaWeek,agendaDay,listMonth'
                 },
                 editable: true,
                 droppable: true, // this allows things to be dropped onto the calendar
