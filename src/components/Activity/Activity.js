@@ -8,6 +8,7 @@ import {getAll, update} from "../../actions/activity.actions";
 import moment from 'moment';
 import ToggleButton from "react-bootstrap/es/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/es/ToggleButtonGroup";
+import '../../../node_modules/fullcalendar/dist/fullcalendar.css';
 
 class Activity extends Component {
 
@@ -69,7 +70,7 @@ class Activity extends Component {
                 header: {
                     left: 'prev,next today',
                     center: 'title',
-                    right: 'month,agendaWeek,agendaDay'
+                    right: 'month,agendaWeek,agendaDay,listMonth'
                 },
                 selectable: true,
                 selectHelper: true,

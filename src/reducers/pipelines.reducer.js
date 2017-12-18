@@ -11,6 +11,7 @@ export function pipelines(state = {}, action) {
         /* ALL STAGES */
         case pipelineConstants.GETALL_REQUEST:
             return {
+                ...state,
                 loading: true
             };
         case pipelineConstants.GETALL_SUCCESS:

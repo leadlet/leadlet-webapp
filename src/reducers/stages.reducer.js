@@ -11,6 +11,7 @@ export function stages(state = {}, action) {
         /* ALL STAGES */
         case stageConstants.GETALL_REQUEST:
             return {
+                ...state,
                 loading: true
             };
         case stageConstants.GETALL_SUCCESS:

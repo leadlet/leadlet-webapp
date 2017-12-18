@@ -217,8 +217,7 @@ class ActivityDetail extends Component {
     }
 
     onSubmit = (formValue) => {
-        // print the form values to the console
-
+       
         let activity = {};
         activity.id = formValue.id;
         activity.start = formValue.start ? formValue.start._d : '';

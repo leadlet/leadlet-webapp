@@ -4,6 +4,7 @@ export function users(state = {}, action) {
   switch (action.type) {
     case userConstants.GETALL_REQUEST:
       return {
+          ...state,
         loading: true
       };
     case userConstants.GETALL_SUCCESS:

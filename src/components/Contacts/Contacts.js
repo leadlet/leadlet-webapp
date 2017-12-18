@@ -3,9 +3,7 @@ import {contactConstants} from "../../constants/contact.constants";
 import {connect} from 'react-redux';
 import {getAll} from "../../actions/contact.actions";
 import {ContactList} from "./ContactList";
-import {ContactSummary} from "./ContactSummary";
 import ContactEdit from "./ContactNew";
-import ButtonToolbar from "react-bootstrap/es/ButtonToolbar";
 import ToggleButton from "react-bootstrap/es/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/es/ToggleButtonGroup";
 import FormGroup from "react-bootstrap/es/FormGroup";
@@ -20,33 +18,21 @@ class Contacts extends Component {
         super(props);
 
         this.state = {
-            selectedContact: null,
             term: "",
             showEditModal: false,
             contactSelectedForEdit: null,
             selectedType: contactConstants.CONTACT_TYPE_ALL
         };
 
-        this.onContactSelect = this.onContactSelect.bind(this);
         this.onSearchSubmit = this.onSearchSubmit.bind(this);
         this.onInputChange = this.onInputChange.bind(this);
         this.openEditModal = this.openEditModal.bind(this);
         this.closeEditModal = this.closeEditModal.bind(this);
         this.onTypeChange = this.onTypeChange.bind(this);
-
-
     }
 
     componentDidMount() {
         this.props.getAll(`name:${this.state.term}`);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.setState({selectedContact: nextProps.persons && nextProps.persons.items ? nextProps.persons.items[0] : null})
-    }
-
-    onContactSelect(contact) {
-        this.setState({selectedContact: contact});
     }
 
     onSearchSubmit(event) {
@@ -69,12 +55,12 @@ class Contacts extends Component {
     }
 
     onTypeChange = (value) => {
-        this.setState({ selectedType: value });
+        this.setState({selectedType: value});
     };
 
     render() {
         return (
-            <div className="container full-height" style={{'overflow-y':'hidden'}}>
+            <div className="container full-height" style={{'overflow-y': 'hidden'}}>
                 <div className="row full-height">
                     <div className="col-sm-8 full-height">
                         <div className="ibox full-height">
@@ -89,11 +75,17 @@ class Contacts extends Component {
                                 <div>
                                     <Form inline onSubmit={this.onSearchSubmit}>
                                         <FormGroup bsSize="small">
-                                            <ToggleButtonGroup  type="radio" name="contactType"
-                                                                onChange={this.onTypeChange} >
-                                                <ToggleButton className="btn-sm active" value={contactConstants.CONTACT_TYPE_ALL}>All </ToggleButton>
-                                                <ToggleButton className="btn-sm" value={contactConstants.CONTACT_TYPE_PERSON}>Person <i className="fa fa-users"></i></ToggleButton>
-                                                <ToggleButton className="btn-sm" value={contactConstants.CONTACT_TYPE_ORGANIZATION}>Organization <i className="fa fa-industry"></i></ToggleButton>
+                                            <ToggleButtonGroup type="radio" name="contactType"
+                                                               value={this.state.selectedType}
+                                                               onChange={this.onTypeChange}>
+                                                <ToggleButton className="btn-sm active"
+                                                              value={contactConstants.CONTACT_TYPE_ALL}>All </ToggleButton>
+                                                <ToggleButton className="btn-sm"
+                                                              value={contactConstants.CONTACT_TYPE_PERSON}>Person <i
+                                                    className="fa fa-users"></i></ToggleButton>
+                                                <ToggleButton className="btn-sm"
+                                                              value={contactConstants.CONTACT_TYPE_ORGANIZATION}>Organization
+                                                    <i className="fa fa-industry"></i></ToggleButton>
                                             </ToggleButtonGroup>
                                         </FormGroup>
                                         <FormGroup bsSize="small" className="m-l-sm">
@@ -111,8 +103,6 @@ class Contacts extends Component {
                                             </button>
                                         </FormGroup>
                                     </Form>
-
-
                                 </div>
 
                                 <div className="clients-list full-height">
@@ -122,21 +112,11 @@ class Contacts extends Component {
                                         <ContactList
                                             contacts={this.props.contacts}
                                             type={this.state.selectedType}
-                                            onContactSelect={this.onContactSelect}
                                             onEditClicked={() => this.openEditModal}
+                                            history={this.props.history}
                                         />
                                     }
-
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-sm-4">
-                        <div className="ibox ">
-
-                            <div className="ibox-content">
-                                <ContactSummary contact={this.state.selectedContact}
-                                               onEditClicked={() => this.openEditModal(this.state.selectedContact)}/>
                             </div>
                         </div>
                     </div>
@@ -150,7 +130,6 @@ class Contacts extends Component {
             </div>
         );
     }
-
 }
 
 function mapStateToProps(state) {
@@ -158,6 +137,5 @@ function mapStateToProps(state) {
         contacts: state.contacts
     };
 }
-
 
 export default connect(mapStateToProps, {getAll})(Contacts);
