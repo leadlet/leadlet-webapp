@@ -6,8 +6,10 @@ import fullCalendar from 'fullcalendar';
 import ActivityDetail from "./ActivityDetail";
 import {getAll} from "../../actions/activity.actions";
 import moment from 'moment';
+import ToggleButton from "react-bootstrap/es/ToggleButton";
+import ToggleButtonGroup from "react-bootstrap/es/ToggleButtonGroup";
 
-class  Activity extends Component {
+class Activity extends Component {
 
     constructor(props) {
         super(props);
@@ -32,9 +34,9 @@ class  Activity extends Component {
         this.setState({showModal: false});
     }
 
-    filterActivity(activityType){
-        this.setState({selectedType: activityType});
-    }
+    filterActivity = (value) => {
+        this.setState({selectedType: value});
+    };
 
     componentDidMount() {
 
@@ -63,19 +65,20 @@ class  Activity extends Component {
 
     componentDidUpdate() {
 
-        if( !this.props.ids ){
+        if (!this.props.ids) {
             return;
         }
 
-        let events = this.props.ids.map(function(item) {
-            return  this.props.activities[item];
+        let events = this.props.ids.map(function (item) {
+            return this.props.activities[item];
         }, this);
 
-        if( this.state.selectedType && this.state.selectedType != ' '){
-            events = events.filter( event => (
+        if (this.state.selectedType && this.state.selectedType != ' ') {
+            events = events.filter(event => (
                 event.type === this.state.selectedType
             ));
-        }if(this.state.selectedType === ' '){
+        }
+        if (this.state.selectedType === ' ') {
             this.props.getAll;
         }
 
@@ -131,23 +134,21 @@ class  Activity extends Component {
                                 <div className="ibox-tools">
                                     <button className="btn btn-primary btn-sm" type="button"
                                             onClick={() => this.openActivityModal({
-                                                    start: moment(),
-                                                    end: moment()
+                                                start: moment(),
+                                                end: moment()
                                             })}><i
                                         className="fa fa-plus"></i>&nbsp;New Activity
                                     </button>
                                     <div className="pull-left">
-                                        <button type="button" className="btn btn-sm btn-white" onClick={() => this.filterActivity(' ')}>All</button>
-                                        <button type="button" className="btn btn-sm btn-white" onClick={() => this.filterActivity('CALL')}><i
-                                            className="fa fa-phone"></i></button>
-                                        <button type="button" className="btn btn-sm btn-white" onClick={() => this.filterActivity('MEETING')}><i
-                                            className="fa fa-users"></i></button>
-                                        <button type="button" className="btn btn-sm btn-white" onClick={() => this.filterActivity('TASK')}><i
-                                            className="fa fa-clock-o"></i></button>
-                                        <button type="button" className="btn btn-sm btn-white" onClick={() => this.filterActivity('DEADLINE')}><i
-                                            className="fa fa-flag"></i></button>
-                                        <button type="button" className="btn btn-sm btn-white" onClick={() => this.filterActivity('EMAIL')}><i
-                                            className="fa fa-paper-plane"></i></button>
+                                        <ToggleButtonGroup type="radio" name="activityType"
+                                                           onChange={this.filterActivity}>
+                                            <ToggleButton className="btn-sm active" value={' '}>All </ToggleButton>
+                                            <ToggleButton className="btn-sm" value={'CALL'}><i className="fa fa-phone"></i></ToggleButton>
+                                            <ToggleButton className="btn-sm" value={'MEETING'}><i className="fa fa-users"></i></ToggleButton>
+                                            <ToggleButton className="btn-sm" value={'TASK'}><i className="fa fa-clock-o"></i></ToggleButton>
+                                            <ToggleButton className="btn-sm" value={'DEADLINE'}><i className="fa fa-flag"></i></ToggleButton>
+                                            <ToggleButton className="btn-sm" value={'EMAIL'}><i className="fa fa-paper-plane"></i></ToggleButton>
+                                        </ToggleButtonGroup>
                                     </div>
                                 </div>
                             </div>

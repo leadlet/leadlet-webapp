@@ -90,9 +90,8 @@ class Contacts extends Component {
                                     <Form inline onSubmit={this.onSearchSubmit}>
                                         <FormGroup bsSize="small">
                                             <ToggleButtonGroup  type="radio" name="contactType"
-                                                                value={this.state.selectedType}
                                                                 onChange={this.onTypeChange} >
-                                                <ToggleButton className="btn-sm" value={contactConstants.CONTACT_TYPE_ALL}>All </ToggleButton>
+                                                <ToggleButton className="btn-sm active" value={contactConstants.CONTACT_TYPE_ALL}>All </ToggleButton>
                                                 <ToggleButton className="btn-sm" value={contactConstants.CONTACT_TYPE_PERSON}>Person <i className="fa fa-users"></i></ToggleButton>
                                                 <ToggleButton className="btn-sm" value={contactConstants.CONTACT_TYPE_ORGANIZATION}>Organization <i className="fa fa-industry"></i></ToggleButton>
                                             </ToggleButtonGroup>
