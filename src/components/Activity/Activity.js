@@ -4,7 +4,7 @@ import $ from 'jquery';
 import draggable from '../../../node_modules/jquery-ui/ui/widgets/draggable';
 import fullCalendar from 'fullcalendar';
 import ActivityDetail from "./ActivityDetail";
-import {getAll} from "../../actions/activity.actions";
+import {getAll, update} from "../../actions/activity.actions";
 import moment from 'moment';
 import ToggleButton from "react-bootstrap/es/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/es/ToggleButtonGroup";
@@ -39,27 +39,6 @@ class Activity extends Component {
     };
 
     componentDidMount() {
-
-        $(document).ready(function () {
-            $('#external-events div.external-event').each(function (index, element) {
-
-                // store data so the calendar knows to render an event upon drop
-                $(element).data('event', {
-                    title: $.trim($(element).text()), // use the element's text as the event title
-                    stick: true // maintain when user navigates (see docs on the renderEvent method)
-                });
-
-                // make the event draggable using jQuery UI
-                $(element).draggable({
-                    zIndex: 1111999,
-                    revert: true,      // will cause the event to go back to its
-                    revertDuration: 0  //  original position after the drag
-                });
-
-            });
-
-        });
-
         this.props.getAll();
     }
 
@@ -78,32 +57,37 @@ class Activity extends Component {
                 event.type === this.state.selectedType
             ));
         }
-        if (this.state.selectedType === ' ') {
-            this.props.getAll;
-        }
 
         const openActivityModal = this.openActivityModal;
+        const updateActivity = this.props.update;
 
         //TODO: fullCalendar her update de render olmamalı.
         if (events) {
             $('#calendar').fullCalendar('destroy');
 
             $('#calendar').fullCalendar({
-                aspectRatio: 3,
                 header: {
                     left: 'prev,next today',
                     center: 'title',
                     right: 'month,agendaWeek,agendaDay'
                 },
-                editable: true,
-                droppable: true, // this allows things to be dropped onto the calendar
-                drop: function () {
-                    // is the "remove after drop" checkbox checked?
-                    if ($('#drop-remove').is(':checked')) {
-                        // if so, remove the element from the "Draggable Events" list
-                        $(this).remove();
+                selectable: true,
+                selectHelper: true,
+                select: function(start, end) {
+                    var title = openActivityModal();
+
+                    var eventData;
+                    if (title) {
+                        eventData = {
+                            title: title,
+                            start: start,
+                            end: end
+                        };
+                        $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
                     }
+                    $('#calendar').fullCalendar('unselect');
                 },
+                editable: true,
                 events,
                 eventClick: function (event) {
                     openActivityModal(
@@ -119,6 +103,20 @@ class Activity extends Component {
                             organization: event.organizationId
                         }
                     );
+                },
+                eventDrop: function (event) {
+
+                    let activity = {};
+                    activity.id = event.id;
+                    activity.start = event.start._d;
+                    activity.end = event.end._d;
+                    activity.memo = event.memo;
+                    activity.type = event.type;
+                    activity.title = event.title;
+                    activity.personId = event.personId;
+                    activity.organizationId = event.organizationId;
+
+                    updateActivity(activity);
                 }
             });
         }
@@ -177,4 +175,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, {getAll})(Activity);
+export default connect(mapStateToProps, {getAll, update})(Activity);
