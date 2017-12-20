@@ -88,7 +88,7 @@ export function createContact(contact, successCallback) {
     };
 
     function request() { return { type: contactConstants.CREATE_REQUEST } }
-    function success(data) { return { type: contactConstants.CREATE_SUCCESS, contact } }
+    function success(contact) { return { type: contactConstants.CREATE_SUCCESS, contact } }
     function failure(error) { return { type: contactConstants.CREATE_FAILURE, error } }
 }
 

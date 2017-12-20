@@ -1,4 +1,3 @@
-import React from 'react';
 import {activityConstants} from "../constants/activity.constants";
 import {normalize, schema} from 'normalizr';
 

@@ -3,7 +3,8 @@ import {contactConstants} from "../../constants/contact.constants";
 import {connect} from 'react-redux';
 import {getAll} from "../../actions/contact.actions";
 import {ContactList} from "./ContactList";
-import ContactEdit from "./ContactNew";
+import ContactPerson from "./ContactPerson";
+import ContactOrganization from "./ContactOrganization";
 import ToggleButton from "react-bootstrap/es/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/es/ToggleButtonGroup";
 import FormGroup from "react-bootstrap/es/FormGroup";
@@ -11,7 +12,6 @@ import InputGroup from "react-bootstrap/es/InputGroup";
 import Button from "react-bootstrap/es/Button";
 import FormControl from "react-bootstrap/es/FormControl";
 import Form from "react-bootstrap/es/Form";
-import DropdownButton from "react-bootstrap/es/DropdownButton";
 import MenuItem from "react-bootstrap/es/MenuItem";
 import Dropdown from "react-bootstrap/es/Dropdown";
 
@@ -22,14 +22,16 @@ class Contacts extends Component {
 
         this.state = {
             term: "",
-            showEditModal: false,
+            showPersonModal: false,
+            showOrganizationModal: false,
             contactSelectedForEdit: null,
             selectedType: contactConstants.CONTACT_TYPE_ALL
         };
 
         this.onSearchSubmit = this.onSearchSubmit.bind(this);
         this.onInputChange = this.onInputChange.bind(this);
-        this.openEditModal = this.openEditModal.bind(this);
+        this.openPersonModal = this.openPersonModal.bind(this);
+        this.openOrganizationModal = this.openOrganizationModal.bind(this);
         this.closeEditModal = this.closeEditModal.bind(this);
         this.onTypeChange = this.onTypeChange.bind(this);
     }
@@ -48,13 +50,19 @@ class Contacts extends Component {
         this.setState({term: event.target.value});
     }
 
-    openEditModal(contact) {
-        this.setState({showEditModal: true});
+    openPersonModal(contact) {
+        this.setState({showPersonModal: true});
+        this.setState({contactSelectedForEdit: contact});
+    }
+
+    openOrganizationModal(contact) {
+        this.setState({showOrganizationModal: true});
         this.setState({contactSelectedForEdit: contact});
     }
 
     closeEditModal() {
-        this.setState({showEditModal: false});
+        this.setState({showPersonModal: false});
+        this.setState({showOrganizationModal: false});
     }
 
     onTypeChange = (value) => {
@@ -68,14 +76,22 @@ class Contacts extends Component {
                     <div className="ibox-content full-height">
                         <div className="row m-b-lg">
                             <div className="col-md-4">
-                                <button className="btn btn-primary btn-sm pull-right" type="button"
-                                        onClick={this.openEditModal}><i className="fa fa-plus"></i>&nbsp;
-                                    Create
-                                </button>
+                                <div className="col-md-1 pull-right">
+                                    <Dropdown id="contact-operations">
+                                        <Dropdown.Toggle noCaret>
+                                            <i className="fa fa-plus" aria-hidden="true"></i> Add
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu>
+                                            <MenuItem href="#" onClick={this.openPersonModal}>Contact: Person</MenuItem>
+                                            <MenuItem href="#" onClick={this.openOrganizationModal}>Contact: Organization</MenuItem>
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                </div>
+
                                 <div className="col-md-1 pull-right m-r-lg">
                                     <Dropdown id="detail-operations">
                                         <Dropdown.Toggle noCaret>
-                                            <i class="fa fa-cog" aria-hidden="true"></i>
+                                            <i className="fa fa-cog" aria-hidden="true"></i>
                                         </Dropdown.Toggle>
                                         <Dropdown.Menu>
                                             <MenuItem href="#">Export</MenuItem>
@@ -128,9 +144,15 @@ class Contacts extends Component {
                                 }
                             </div>
                             <div>
-                                <ContactEdit showEditModal={this.state.showEditModal}
-                                             close={this.closeEditModal}
-                                             contact={this.state.contactSelectedForEdit}
+                                <ContactPerson showEditModal={this.state.showPersonModal}
+                                               close={this.closeEditModal}
+                                               contact={this.state.contactSelectedForEdit}
+                                />
+                            </div>
+                            <div>
+                                <ContactOrganization showEditModal={this.state.showOrganizationModal}
+                                               close={this.closeEditModal}
+                                               contact={this.state.contactSelectedForEdit}
                                 />
                             </div>
                         </div>

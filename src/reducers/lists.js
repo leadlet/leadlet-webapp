@@ -15,7 +15,7 @@ const InitialState = Record({
   isDragging: false
 });
 /* eslint-enable new-cap */
-const initialState = new InitialState;
+const initialState = new InitialState();
 
 
 export default function lists(state = initialState, action) {

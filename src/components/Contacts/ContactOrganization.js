@@ -58,11 +58,17 @@ class ContactNew extends React.Component {
     }
 
     render() {
-        const {handleSubmit, pristine, reset, submitting} = this.props;
+        const {handleSubmit, pristine, reset, submitting, contact} = this.props;
+
+        let title = "Create";
+        if (contact && contact.title) {
+            title = "Update";
+        }
+
         return (
             <Modal show={this.props.showEditModal} onHide={this.props.close}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Create New Contact</Modal.Title>
+                    <Modal.Title>{title} New Organization</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <form onSubmit={handleSubmit(this.onSubmit)}>
@@ -73,10 +79,34 @@ class ContactNew extends React.Component {
                             label="Name"
                         />
                         <Field
-                            name="title"
+                            name="phones"
+                            type="text" //?
+                            component={renderField}
+                            label="Mobile Phone"
+                        />
+                        <Field
+                            name="phones"
+                            type="text" //?
+                            component={renderField}
+                            label="Work Phone"
+                        />
+                        <Field
+                            name="organization"
+                            type="text" //?
+                            component={renderField}
+                            label="Parent Organization Name"
+                        />
+                        <Field
+                            name="emails"
+                            type="text" //?
+                            component={renderField}
+                            label="Email"
+                        />
+                        <Field
+                            name="location"
                             type="text"
                             component={renderField}
-                            label="Title"
+                            label="Address"
                         />
 
                         <div className="form-group">

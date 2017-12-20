@@ -1,4 +1,3 @@
-import React from 'react';
 import {chatConstants} from '../constants';
 
 export function chats(state = {}, action) {

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import connect from "react-redux/es/connect/connect";
 import {getById} from "../../actions/contact.actions";
-import ContactNew from "./ContactNew";
+import ContactNew from "./ContactPerson";
 import moment from 'moment';
 import ActivityDetail from "../Activity/ActivityDetail";
 import fullCalendar from 'fullcalendar';
