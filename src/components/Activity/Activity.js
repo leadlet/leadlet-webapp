@@ -141,7 +141,7 @@ class Activity extends Component {
                                     <div className="pull-left">
                                         <ToggleButtonGroup type="radio" name="activityType"
                                                            onChange={this.filterActivity}>
-                                            <ToggleButton className="btn-sm active" value={' '}>All </ToggleButton>
+                                            <ToggleButton className="btn-sm" value={' '}>All </ToggleButton>
                                             <ToggleButton className="btn-sm" value={'CALL'}><i className="fa fa-phone"></i></ToggleButton>
                                             <ToggleButton className="btn-sm" value={'MEETING'}><i className="fa fa-users"></i></ToggleButton>
                                             <ToggleButton className="btn-sm" value={'TASK'}><i className="fa fa-clock-o"></i></ToggleButton>

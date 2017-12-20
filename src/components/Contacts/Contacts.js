@@ -11,6 +11,9 @@ import InputGroup from "react-bootstrap/es/InputGroup";
 import Button from "react-bootstrap/es/Button";
 import FormControl from "react-bootstrap/es/FormControl";
 import Form from "react-bootstrap/es/Form";
+import DropdownButton from "react-bootstrap/es/DropdownButton";
+import MenuItem from "react-bootstrap/es/MenuItem";
+import Dropdown from "react-bootstrap/es/Dropdown";
 
 class Contacts extends Component {
 
@@ -61,70 +64,76 @@ class Contacts extends Component {
     render() {
         return (
             <div className="container full-height" style={{'overflow-y': 'hidden'}}>
-                <div className="row full-height">
-                    <div className="col-sm-8 full-height">
-                        <div className="ibox full-height">
-                            <div className="ibox-content full-height">
-                                    <span className="text-muted small pull-right">Last modification: <i
-                                        className="fa fa-clock-o"/> 2:10 pm - 12.06.2014</span>
+                <div className="ibox full-height">
+                    <div className="ibox-content full-height">
+                        <div className="row m-b-lg">
+                            <div className="col-md-4">
+                                <button className="btn btn-primary btn-sm pull-right" type="button"
+                                        onClick={this.openEditModal}><i className="fa fa-plus"></i>&nbsp;
+                                    Create
+                                </button>
+                                <div className="col-md-1 pull-right m-r-lg">
+                                    <Dropdown id="detail-operations">
+                                        <Dropdown.Toggle noCaret>
+                                            <i class="fa fa-cog" aria-hidden="true"></i>
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu>
+                                            <MenuItem href="#">Export</MenuItem>
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                </div>
                                 <h2>Contacts</h2>
-                                <p>
-                                    All clients need to be verified before you can send email and set a project.
-                                </p>
-
-                                <div>
-                                    <Form inline onSubmit={this.onSearchSubmit}>
-                                        <FormGroup bsSize="small">
-                                            <ToggleButtonGroup type="radio" name="contactType"
-                                                               value={this.state.selectedType}
-                                                               onChange={this.onTypeChange}>
-                                                <ToggleButton className="btn-sm active"
-                                                              value={contactConstants.CONTACT_TYPE_ALL}>All </ToggleButton>
-                                                <ToggleButton className="btn-sm"
-                                                              value={contactConstants.CONTACT_TYPE_PERSON}>Person <i
-                                                    className="fa fa-users"></i></ToggleButton>
-                                                <ToggleButton className="btn-sm"
-                                                              value={contactConstants.CONTACT_TYPE_ORGANIZATION}>Organization
-                                                    <i className="fa fa-industry"></i></ToggleButton>
-                                            </ToggleButtonGroup>
-                                        </FormGroup>
-                                        <FormGroup bsSize="small" className="m-l-sm">
-                                            <InputGroup>
-                                                <FormControl type="text" onChange={this.onInputChange}/>
-                                                <InputGroup.Button>
-                                                    <Button bsSize="small" onClick={this.onSearchSubmit}>Search</Button>
-                                                </InputGroup.Button>
-                                            </InputGroup>
-                                        </FormGroup>
-                                        <FormGroup bsSize="small" className="pull-right">
-                                            <button className="btn btn-primary btn-sm pull-right" type="button"
-                                                    onClick={this.openEditModal}><i className="fa fa-plus"></i>&nbsp;
-                                                Create
-                                            </button>
-                                        </FormGroup>
-                                    </Form>
-                                </div>
-
-                                <div className="clients-list full-height">
-
-                                    {
-                                        this.props.contacts.ids &&
-                                        <ContactList
-                                            contacts={this.props.contacts}
-                                            type={this.state.selectedType}
-                                            onEditClicked={() => this.openEditModal}
-                                            history={this.props.history}
-                                        />
-                                    }
-                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div>
-                        <ContactEdit showEditModal={this.state.showEditModal}
-                                     close={this.closeEditModal}
-                                     contact={this.state.contactSelectedForEdit}
-                        />
+                        <div className="row full-height">
+                            <div>
+                                <Form inline onSubmit={this.onSearchSubmit}>
+                                    <FormGroup bsSize="small">
+                                        <ToggleButtonGroup type="radio" name="contactType"
+                                                           value={this.state.selectedType}
+                                                           onChange={this.onTypeChange}>
+                                            <ToggleButton className="btn-sm"
+                                                          value={contactConstants.CONTACT_TYPE_ALL}>All
+                                            </ToggleButton>
+                                            <ToggleButton className="btn-sm"
+                                                          value={contactConstants.CONTACT_TYPE_PERSON}>Person <i
+                                                className="fa fa-users"></i></ToggleButton>
+                                            <ToggleButton className="btn-sm"
+                                                          value={contactConstants.CONTACT_TYPE_ORGANIZATION}>Organization <i className="fa fa-industry"></i></ToggleButton>
+                                        </ToggleButtonGroup>
+                                    </FormGroup>
+                                    <FormGroup bsSize="small" className="m-l-sm">
+                                        <InputGroup>
+                                            <FormControl type="text" onChange={this.onInputChange}/>
+                                            <InputGroup.Button>
+                                                <Button bsSize="small" onClick={this.onSearchSubmit}>Search</Button>
+                                            </InputGroup.Button>
+                                        </InputGroup>
+                                    </FormGroup>
+                                </Form>
+                                <span className="text-muted small pull-right">Last modification: <i
+                                    className="fa fa-clock-o"/> 2:10 pm - 12.06.2014</span>
+                            </div>
+
+                            <div className="clients-list full-height">
+
+                                {
+                                    this.props.contacts.ids &&
+                                    <ContactList
+                                        contacts={this.props.contacts}
+                                        type={this.state.selectedType}
+                                        onEditClicked={() => this.openEditModal}
+                                        history={this.props.history}
+                                    />
+                                }
+                            </div>
+                            <div>
+                                <ContactEdit showEditModal={this.state.showEditModal}
+                                             close={this.closeEditModal}
+                                             contact={this.state.contactSelectedForEdit}
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
