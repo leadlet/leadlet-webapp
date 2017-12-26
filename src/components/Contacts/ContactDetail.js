@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import connect from "react-redux/es/connect/connect";
 import {getById} from "../../actions/contact.actions";
-import ContactNew from "./ContactPerson";
+import ContactPerson from "./ContactPerson";
+import ContactOrganization from "./ContactOrganization";
 import moment from 'moment';
 import ActivityDetail from "../Activity/ActivityDetail";
 import fullCalendar from 'fullcalendar';
@@ -14,7 +15,8 @@ class ContactDetail extends Component {
         super(props);
 
         this.state = {
-            showEditModal: false,
+            showPersonEditModal: false,
+            showOrganizationEditModal: false,
             showModal: false
         };
 
@@ -24,12 +26,17 @@ class ContactDetail extends Component {
         this.closeActivityModal = this.closeActivityModal.bind(this);
     }
 
-    openEditModal() {
-        this.setState({showEditModal: true});
+    openEditModal(type) {
+        if(type === "PERSON"){
+            this.setState({showPersonEditModal: true});
+        }else{
+            this.setState({showOrganizationEditModal: true});
+        }
     }
 
     closeEditModal() {
-        this.setState({showEditModal: false});
+        this.setState({showPersonEditModal: false});
+        this.setState({showOrganizationEditModal: false});
     }
 
     openActivityModal() {
@@ -105,7 +112,7 @@ class ContactDetail extends Component {
                                 </div>
                                 <div className="profile-info">
                                     <div className="m-b-md">
-                                        <a onClick={() => this.openEditModal()}
+                                        <a onClick={() => this.openEditModal(this.props.viewedContact.type)}
                                            className="btn btn-primary btn-sm pull-right">Edit</a>
                                         <h2 className="no-margins">
                                             {this.props.viewedContact && this.props.viewedContact.name}
@@ -116,10 +123,17 @@ class ContactDetail extends Component {
                                 </div>
                             </div>
                             <div>
-                                <ContactNew showEditModal={this.state.showEditModal}
+                                <ContactPerson showEditModal={this.state.showPersonEditModal}
                                             close={this.closeEditModal}
                                             contact={this.props.viewedContact}
                                             initialValues={this.props.viewedContact}
+                                />
+                            </div>
+                            <div>
+                                <ContactOrganization showEditModal={this.state.showOrganizationEditModal}
+                                               close={this.closeEditModal}
+                                               contact={this.props.viewedContact}
+                                               initialValues={this.props.viewedContact}
                                 />
                             </div>
                         </div>

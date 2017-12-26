@@ -61,7 +61,7 @@ class ContactNew extends React.Component {
         const {handleSubmit, pristine, reset, submitting, contact} = this.props;
 
         let title = "Create";
-        if (contact && contact.title) {
+        if (contact && contact.id) {
             title = "Update";
         }
 
@@ -119,6 +119,7 @@ class ContactNew extends React.Component {
                             <label>Type</label>
                             <div>
                                 <Field
+                                    visible={contact && contact.id && true}
                                     name="type"
                                     type="select"
                                     component="select"

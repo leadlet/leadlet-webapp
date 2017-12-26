@@ -61,7 +61,7 @@ class ContactNew extends React.Component {
         const {handleSubmit, pristine, reset, submitting, contact} = this.props;
 
         let title = "Create";
-        if (contact && contact.title) {
+        if (contact && contact.id) {
             title = "Update";
         }
 
