@@ -21,7 +21,7 @@ export const ContactList = function(props) {
 
                         { (type === contactConstants.CONTACT_TYPE_PERSON) && <td> {contact.organization && contact.organization.name} </td>}
                         <td className="contact-type"><i className="fa fa-envelope"> </i></td>
-                        <td> { contact.emails && contact.emails.length > 0 ? contact.emails[0].email : '' }</td>
+                        <td> { contact.email && contact.email.length > 0 ? contact.email : '' }</td>
                         <td className="client-status"><span className="label label-primary">Active</span></td>
                     </tr>
                 );

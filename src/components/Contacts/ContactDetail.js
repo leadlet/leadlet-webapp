@@ -48,7 +48,6 @@ class ContactDetail extends Component {
         $('#contact-calendar').fullCalendar({
             header: {
                 left: 'prev,next today',
-                center: 'title',
                 right: 'listDay,listWeek,month'
             },
             // customize the button names,
@@ -64,27 +63,27 @@ class ContactDetail extends Component {
             events: [
                 {
                     title: 'All Day Event',
-                    start: '2017-11-01'
+                    start: '2017-12-30'
                 },
                 {
                     title: 'Long Event',
                     start: '2017-11-07',
-                    end: '2017-11-10'
+                    end: '2017-12-28'
                 },
                 {
                     id: 999,
                     title: 'Repeating Event',
-                    start: '2017-11-09T16:00:00'
+                    start: '2017-12-09T16:00:00'
                 },
                 {
                     id: 999,
                     title: 'Repeating Event',
-                    start: '2017-11-16T16:00:00'
+                    start: '2017-12-16T16:00:00'
                 },
                 {
                     title: 'Conference',
                     start: '2017-11-11',
-                    end: '2017-11-13'
+                    end: '2017-12-26'
                 }
             ]
         });
@@ -109,9 +108,9 @@ class ContactDetail extends Component {
                                         <a onClick={() => this.openEditModal()}
                                            className="btn btn-primary btn-sm pull-right">Edit</a>
                                         <h2 className="no-margins">
-                                            {this.props.viewedContact.name}
+                                            {this.props.viewedContact && this.props.viewedContact.name}
                                         </h2>
-                                        <h4>{this.props.viewedContact.organization.name}</h4>
+                                        <h4>{this.props.viewedContact.organization && this.props.viewedContact.organization.name}</h4>
 
                                     </div>
                                 </div>

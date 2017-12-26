@@ -79,26 +79,26 @@ class ContactNew extends React.Component {
                             label="Name"
                         />
                         <Field
-                            name="phones"
-                            type="text" //?
+                            name="phones[0].phone"
+                            type="text"
                             component={renderField}
                             label="Mobile Phone"
                         />
                         <Field
-                            name="phones"
-                            type="text" //?
+                            name="phones[1].phone"
+                            type="text"
                             component={renderField}
                             label="Work Phone"
                         />
                         <Field
-                            name="organization"
-                            type="text" //?
+                            name="organization.name"
+                            type="text"
                             component={renderField}
                             label="Organization Name"
                         />
                         <Field
-                            name="emails"
-                            type="text" //?
+                            name="email"
+                            type="text"
                             component={renderField}
                             label="Email"
                         />
