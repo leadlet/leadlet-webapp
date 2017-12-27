@@ -3,6 +3,8 @@ import Modal from '../../modal-shim';
 import {Field, reduxForm} from 'redux-form'
 import {createContact} from "../../actions/contact.actions";
 import {connect} from 'react-redux';
+import Select from '../../../node_modules/react-select';
+import {contactConstants} from "../../constants/contact.constants";
 
 const validate = values => {
     const errors = {}
@@ -43,6 +45,32 @@ const renderField = ({
     </div>
 )
 
+const renderSelectField = ({
+                               input,
+                               options,
+                               onChange,
+                               label,
+                               multi,
+                               selected
+                           }) => (
+    <div className="form-group">
+        <label>{label}</label>
+        <Select
+            closeOnSelect={true}
+            disabled={false}
+            multi={multi}
+            placeholder="Select..."
+            options={options}
+            removeSelected={true}
+            rtl={false}
+            onChange={input.onChange}
+            value={input.value}
+            simpleValue
+            selected={input.value ? input.value : null}
+        />
+    </div>
+)
+
 class ContactNew extends React.Component {
 
     constructor(props) {
@@ -52,11 +80,11 @@ class ContactNew extends React.Component {
 
     onSubmit = (values) => {
         // print the form values to the console
+        values.type = contactConstants.CONTACT_TYPE_ORGANIZATION;
         console.log(values);
         return this.props.createContact(values, this.props.close);
 
     }
-
     render() {
         const {handleSubmit, pristine, reset, submitting, contact} = this.props;
 
@@ -79,26 +107,20 @@ class ContactNew extends React.Component {
                             label="Name"
                         />
                         <Field
-                            name="phones"
-                            type="text" //?
+                            name="phones[0].phone"
+                            type="text"
                             component={renderField}
                             label="Mobile Phone"
                         />
                         <Field
-                            name="phones"
-                            type="text" //?
+                            name="phones[1].phone"
+                            type="text"
                             component={renderField}
                             label="Work Phone"
                         />
                         <Field
-                            name="organization"
-                            type="text" //?
-                            component={renderField}
-                            label="Parent Organization Name"
-                        />
-                        <Field
-                            name="emails"
-                            type="text" //?
+                            name="email"
+                            type="text"
                             component={renderField}
                             label="Email"
                         />
@@ -108,21 +130,6 @@ class ContactNew extends React.Component {
                             component={renderField}
                             label="Address"
                         />
-
-                        <div className="form-group">
-                            <label>Type</label>
-                            <div>
-                                <Field
-                                    name="type"
-                                    type="select"
-                                    component="select"
-                                    label="Type"
-                                    className="form-control">
-                                    <option value="PERSON">Person</option>
-                                    <option value="ORGANIZATION">Organization</option>
-                                </Field>
-                            </div>
-                        </div>
                         <button className="btn btn-sm btn-primary pull-right"
                                 type="submit" disabled={submitting}><strong>Submit</strong></button>
                     </form>
@@ -137,10 +144,7 @@ class ContactNew extends React.Component {
 export default reduxForm({
     form: 'simple', // a unique identifier for this form
     validate, // <--- validation function given to redux-form
-    warn, // <--- warning function given to redux-form
-    initialValues: {
-        type: 'PERSON'
-    }
+    warn // <--- warning function given to redux-form
 })(
     connect(null, {createContact})(ContactNew)
 );

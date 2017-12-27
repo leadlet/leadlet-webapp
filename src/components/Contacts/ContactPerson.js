@@ -1,8 +1,10 @@
 import React from 'react';
 import Modal from '../../modal-shim';
 import {Field, reduxForm} from 'redux-form'
-import {createContact} from "../../actions/contact.actions";
+import {createContact, getAll} from "../../actions/contact.actions";
 import {connect} from 'react-redux';
+import {contactConstants} from "../../constants/contact.constants";
+import Select from '../../../node_modules/react-select';
 
 const validate = values => {
     const errors = {}
@@ -43,18 +45,64 @@ const renderField = ({
     </div>
 )
 
+const renderSelectField = ({
+                               input,
+                               options,
+                               onChange,
+                               label,
+                               multi,
+                               selected
+                           }) => (
+    <div className="form-group">
+        <label>{label}</label>
+        <Select
+            closeOnSelect={true}
+            disabled={false}
+            multi={multi}
+            placeholder="Select..."
+            options={options}
+            removeSelected={true}
+            rtl={false}
+            onChange={input.onChange}
+            value={input.value}
+            simpleValue
+            selected={input.value ? input.value : null}
+        />
+    </div>
+)
+
 class ContactNew extends React.Component {
 
     constructor(props) {
         super(props);
         this.onSubmit = this.onSubmit.bind(this);
+        this.mapContact2Options = this.mapContact2Options.bind(this);
+    }
+
+    componentDidMount() {
+        this.props.getAll();
     }
 
     onSubmit = (values) => {
         // print the form values to the console
+        values.type = contactConstants.CONTACT_TYPE_PERSON;
         console.log(values);
         return this.props.createContact(values, this.props.close);
 
+    }
+
+    mapContact2Options(type) {
+
+        if (!this.props.contacts.ids) {
+            return [];
+        } else {
+            return this.props.contacts.ids.filter(id => {
+                return this.props.contacts.items[id].type === type;
+            })
+                .map(id => {
+                    return {label: this.props.contacts.items[id].name, value: this.props.contacts.items[id].id}
+                });
+        }
     }
 
     render() {
@@ -91,10 +139,12 @@ class ContactNew extends React.Component {
                             label="Work Phone"
                         />
                         <Field
-                            name="organization.name"
+                            name="organizationId"
                             type="text"
-                            component={renderField}
+                            component={renderSelectField}
                             label="Organization Name"
+                            multi={false}
+                            options={this.mapContact2Options(contactConstants.CONTACT_TYPE_ORGANIZATION)}
                         />
                         <Field
                             name="email"
@@ -114,22 +164,6 @@ class ContactNew extends React.Component {
                             component={renderField}
                             label="Title"
                         />
-
-                        <div className="form-group">
-                            <label>Type</label>
-                            <div>
-                                <Field
-                                    visible={contact && contact.id && true}
-                                    name="type"
-                                    type="select"
-                                    component="select"
-                                    label="Type"
-                                    className="form-control">
-                                    <option value="PERSON">Person</option>
-                                    <option value="ORGANIZATION">Organization</option>
-                                </Field>
-                            </div>
-                        </div>
                         <button className="btn btn-sm btn-primary pull-right"
                                 type="submit" disabled={submitting}><strong>Submit</strong></button>
                     </form>
@@ -141,13 +175,16 @@ class ContactNew extends React.Component {
     }
 }
 
+function mapStateToProps(state) {
+    return {
+        contacts: state.contacts
+    };
+}
+
 export default reduxForm({
     form: 'simple', // a unique identifier for this form
     validate, // <--- validation function given to redux-form
-    warn, // <--- warning function given to redux-form
-    initialValues: {
-        type: 'PERSON'
-    }
+    warn // <--- warning function given to redux-form
 })(
-    connect(null, {createContact})(ContactNew)
+    connect(mapStateToProps, {createContact, getAll})(ContactNew)
 );

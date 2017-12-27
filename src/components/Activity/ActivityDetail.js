@@ -150,7 +150,7 @@ const renderSelectField = ({
             closeOnSelect={true}
             disabled={false}
             multi={multi}
-            placeholder="Select your favourite(s)"
+            placeholder="Select..."
             options={options}
             removeSelected={true}
             rtl={false}
@@ -196,10 +196,8 @@ class ActivityDetail extends Component {
                 .map( id => {
                     return {label: this.props.contacts.items[id].name, value: this.props.contacts.items[id].id}
                 });
-
         }
     }
-
 
     confirmDeleteActivity() {
         this.props._delete(this.props.initialValues.id);
