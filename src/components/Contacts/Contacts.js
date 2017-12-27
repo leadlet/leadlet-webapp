@@ -14,6 +14,7 @@ import FormControl from "react-bootstrap/es/FormControl";
 import Form from "react-bootstrap/es/Form";
 import MenuItem from "react-bootstrap/es/MenuItem";
 import Dropdown from "react-bootstrap/es/Dropdown";
+import Checkbox from "react-bootstrap/es/Checkbox";
 
 class Contacts extends Component {
 
@@ -22,6 +23,7 @@ class Contacts extends Component {
 
         this.state = {
             term: "",
+            checked: false,
             showPersonModal: false,
             showOrganizationModal: false,
             contactSelectedForEdit: null,
@@ -34,6 +36,7 @@ class Contacts extends Component {
         this.openOrganizationModal = this.openOrganizationModal.bind(this);
         this.closeEditModal = this.closeEditModal.bind(this);
         this.onTypeChange = this.onTypeChange.bind(this);
+        this.onCheckChange = this.onCheckChange.bind(this);
     }
 
     componentDidMount() {
@@ -69,6 +72,14 @@ class Contacts extends Component {
         this.setState({selectedType: value});
     };
 
+    onCheckChange() {
+        if (this.state.checked === false) {
+            this.setState({checked: true});
+        } else {
+            this.setState({checked: false});
+        }
+    }
+
     render() {
         return (
             <div className="container full-height" style={{'overflow-y': 'hidden'}}>
@@ -83,7 +94,8 @@ class Contacts extends Component {
                                         </Dropdown.Toggle>
                                         <Dropdown.Menu>
                                             <MenuItem href="#" onClick={this.openPersonModal}>Contact: Person</MenuItem>
-                                            <MenuItem href="#" onClick={this.openOrganizationModal}>Contact: Organization</MenuItem>
+                                            <MenuItem href="#" onClick={this.openOrganizationModal}>Contact:
+                                                Organization</MenuItem>
                                         </Dropdown.Menu>
                                     </Dropdown>
                                 </div>
@@ -105,7 +117,12 @@ class Contacts extends Component {
                             <div>
                                 <Form inline onSubmit={this.onSearchSubmit}>
                                     <FormGroup bsSize="small">
-                                        <ToggleButtonGroup type="radio" name="contactType"
+                                        <Checkbox
+                                            className="contact-checkbox m-l-md m-r-lg"
+                                            onChange={this.onCheckChange}
+                                        />
+                                        <ToggleButtonGroup className={this.state.checked ? "invisible" : "visible"}
+                                                           type="radio" name="contactType"
                                                            value={this.state.selectedType}
                                                            onChange={this.onTypeChange}>
                                             <ToggleButton className="btn-sm"
@@ -115,17 +132,24 @@ class Contacts extends Component {
                                                           value={contactConstants.CONTACT_TYPE_PERSON}>Person <i
                                                 className="fa fa-users"></i></ToggleButton>
                                             <ToggleButton className="btn-sm"
-                                                          value={contactConstants.CONTACT_TYPE_ORGANIZATION}>Organization <i className="fa fa-industry"></i></ToggleButton>
+                                                          value={contactConstants.CONTACT_TYPE_ORGANIZATION}>Organization <i
+                                                className="fa fa-industry"></i></ToggleButton>
                                         </ToggleButtonGroup>
                                     </FormGroup>
                                     <FormGroup bsSize="small" className="m-l-sm">
-                                        <InputGroup>
+                                        <InputGroup className={this.state.checked ? "invisible" : "visible"}>
                                             <FormControl type="text" onChange={this.onInputChange}/>
                                             <InputGroup.Button>
                                                 <Button bsSize="small" onClick={this.onSearchSubmit}>Search</Button>
                                             </InputGroup.Button>
                                         </InputGroup>
                                     </FormGroup>
+                                    <InputGroup
+                                        className={this.state.checked ? "visible deleteBtn" : "invisible deleteBtn"}>
+                                        <InputGroup.Button>
+                                            <Button bsStyle="danger">Delete</Button>
+                                        </InputGroup.Button>
+                                    </InputGroup>
                                 </Form>
                                 <span className="text-muted small pull-right">Last modification: <i
                                     className="fa fa-clock-o"/> 2:10 pm - 12.06.2014</span>
@@ -140,6 +164,7 @@ class Contacts extends Component {
                                         type={this.state.selectedType}
                                         onEditClicked={() => this.openEditModal}
                                         history={this.props.history}
+                                        checked={this.state.checked}
                                     />
                                 }
                             </div>
@@ -151,8 +176,8 @@ class Contacts extends Component {
                             </div>
                             <div>
                                 <ContactOrganization showEditModal={this.state.showOrganizationModal}
-                                               close={this.closeEditModal}
-                                               contact={this.state.contactSelectedForEdit}
+                                                     close={this.closeEditModal}
+                                                     contact={this.state.contactSelectedForEdit}
                                 />
                             </div>
                         </div>

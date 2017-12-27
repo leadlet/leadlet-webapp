@@ -45,32 +45,6 @@ const renderField = ({
     </div>
 )
 
-const renderSelectField = ({
-                               input,
-                               options,
-                               onChange,
-                               label,
-                               multi,
-                               selected
-                           }) => (
-    <div className="form-group">
-        <label>{label}</label>
-        <Select
-            closeOnSelect={true}
-            disabled={false}
-            multi={multi}
-            placeholder="Select..."
-            options={options}
-            removeSelected={true}
-            rtl={false}
-            onChange={input.onChange}
-            value={input.value}
-            simpleValue
-            selected={input.value ? input.value : null}
-        />
-    </div>
-)
-
 class ContactNew extends React.Component {
 
     constructor(props) {
@@ -82,6 +56,7 @@ class ContactNew extends React.Component {
         // print the form values to the console
         values.type = contactConstants.CONTACT_TYPE_ORGANIZATION;
         console.log(values);
+        this.props.close();
         return this.props.createContact(values, this.props.close);
 
     }

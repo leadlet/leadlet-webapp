@@ -77,6 +77,7 @@ class ContactNew extends React.Component {
         super(props);
         this.onSubmit = this.onSubmit.bind(this);
         this.mapContact2Options = this.mapContact2Options.bind(this);
+        this.onClose = this.onClose.bind(this);
     }
 
     componentDidMount() {
@@ -87,8 +88,8 @@ class ContactNew extends React.Component {
         // print the form values to the console
         values.type = contactConstants.CONTACT_TYPE_PERSON;
         console.log(values);
+        this.props.close();
         return this.props.createContact(values, this.props.close);
-
     }
 
     mapContact2Options(type) {
@@ -105,6 +106,10 @@ class ContactNew extends React.Component {
         }
     }
 
+    onClose() {
+        this.props.close();
+    }
+
     render() {
         const {handleSubmit, pristine, reset, submitting, contact} = this.props;
 
@@ -114,7 +119,7 @@ class ContactNew extends React.Component {
         }
 
         return (
-            <Modal show={this.props.showEditModal} onHide={this.props.close}>
+            <Modal show={this.props.showEditModal} onHide={this.onClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>{title} New Person</Modal.Title>
                 </Modal.Header>
