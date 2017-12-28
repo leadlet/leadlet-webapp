@@ -1,19 +1,30 @@
 import React from 'react';
 import Modal from '../../modal-shim';
 import {Field, reduxForm} from 'redux-form'
-import {createContact} from "../../actions/contact.actions";
+import {updateContact, createContact} from "../../actions/contact.actions";
 import {connect} from 'react-redux';
-import Select from '../../../node_modules/react-select';
 import {contactConstants} from "../../constants/contact.constants";
+import FormGroup from "react-bootstrap/es/FormGroup";
+import InputGroup from "react-bootstrap/es/InputGroup";
+import FormControl from "react-bootstrap/es/FormControl";
 
 const validate = values => {
     const errors = {}
+
+    const re_org = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const org_email_valid = re_org.test(values.email);
+
     if (!values.name) {
         errors.name = 'Required'
-    } else if (!values.type) {
+    }
+    if (!values.type) {
         errors.type = 'Required'
-    } else if (values.name.length > 15) {
+    }
+    if (values.name && (values.name.length > 15)) {
         errors.name = 'Must be 15 characters or less'
+    }
+    if (!org_email_valid) {
+        errors.email = "mail is not valid"
     }
     return errors
 }
@@ -45,6 +56,73 @@ const renderField = ({
     </div>
 )
 
+const renderPhoneField = ({
+                              input,
+                              label,
+                              type,
+                              meta: {touched, error, warning}
+                          }) => (
+    <div className="form-group">
+        <label>{label}</label>
+        <div>
+            <FormGroup>
+                <InputGroup>
+                    <InputGroup.Addon><i class="fa fa-phone" aria-hidden="true"></i></InputGroup.Addon>
+                    <FormControl {...input} placeholder={label} type={type} className="form-control"/>
+                </InputGroup>
+            </FormGroup>
+            <span className="help-block m-b-none">{touched &&
+            ((error && <span>{error}</span>) ||
+                (warning && <span>{warning}</span>))}
+                </span>
+
+        </div>
+    </div>
+)
+
+const renderEmailField = ({
+                              input,
+                              label,
+                              type,
+                              meta: {touched, error, warning}
+                          }) => (
+    <div className="form-group">
+        <label>{label}</label>
+        <div>
+            <FormGroup>
+                <InputGroup>
+                    <InputGroup.Addon>@</InputGroup.Addon>
+                    <FormControl {...input} placeholder={label} type={type} className="form-control"/>
+                </InputGroup>
+            </FormGroup>
+            <span className="help-block m-b-none">{touched &&
+            ((error && <span>{error}</span>) ||
+                (warning && <span>{warning}</span>))}
+                </span>
+
+        </div>
+    </div>
+)
+
+const renderLocationField = ({
+                                 input,
+                                 label,
+                                 type,
+                                 meta: {touched, error, warning}
+                             }) => (
+    <div className="form-group">
+        <label>{label}</label>
+        <div>
+            <FormControl {...input} componentClass="textarea" placeholder=""/>
+            <span className="help-block m-b-none">{touched &&
+            ((error && <span>{error}</span>) ||
+                (warning && <span>{warning}</span>))}
+                </span>
+
+        </div>
+    </div>
+)
+
 class ContactNew extends React.Component {
 
     constructor(props) {
@@ -57,11 +135,16 @@ class ContactNew extends React.Component {
         values.type = contactConstants.CONTACT_TYPE_ORGANIZATION;
         console.log(values);
         this.props.close();
-        return this.props.createContact(values, this.props.close);
 
+        if (this.props.initialValues && this.props.initialValues.id) {
+            return this.props.updateContact(values, this.props.close);
+        } else {
+            return this.props.createContact(values, this.props.close);
+        }
     }
+
     render() {
-        const {handleSubmit, pristine, reset, submitting, contact} = this.props;
+        const {handleSubmit, pristine, reset, submitting, contact, valid} = this.props;
 
         let title = "Create";
         if (contact && contact.id) {
@@ -84,29 +167,30 @@ class ContactNew extends React.Component {
                         <Field
                             name="phones[0].phone"
                             type="text"
-                            component={renderField}
+                            component={renderPhoneField}
                             label="Mobile Phone"
                         />
                         <Field
                             name="phones[1].phone"
                             type="text"
-                            component={renderField}
+                            component={renderPhoneField}
                             label="Work Phone"
                         />
                         <Field
                             name="email"
                             type="text"
-                            component={renderField}
+                            component={renderEmailField}
                             label="Email"
                         />
                         <Field
                             name="location"
                             type="text"
-                            component={renderField}
+                            component={renderLocationField}
                             label="Address"
                         />
                         <button className="btn btn-sm btn-primary pull-right"
-                                type="submit" disabled={submitting}><strong>Submit</strong></button>
+                                type="submit" disabled={pristine || submitting}><strong>Submit</strong>
+                        </button>
                     </form>
                 </Modal.Body>
                 <Modal.Footer>
@@ -121,5 +205,5 @@ export default reduxForm({
     validate, // <--- validation function given to redux-form
     warn // <--- warning function given to redux-form
 })(
-    connect(null, {createContact})(ContactNew)
+    connect(null, {updateContact, createContact})(ContactNew)
 );

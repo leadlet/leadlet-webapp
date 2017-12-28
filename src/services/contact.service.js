@@ -3,12 +3,23 @@ import { authHeader } from '../helpers';
 export const contactService = {
     getAll,
     getById,
-    createContact
+    createContact,
+    updateContact
 };
 
 function createContact(contact, callback) {
     const requestOptions = {
         method: 'POST',
+        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+        body: JSON.stringify(contact)
+    };
+
+    return fetch('/api/contacts/', requestOptions).then(handleResponse);
+}
+
+function updateContact(contact, callback) {
+    const requestOptions = {
+        method: 'PUT',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
         body: JSON.stringify(contact)
     };

@@ -92,6 +92,30 @@ export function createContact(contact, successCallback) {
     function failure(error) { return { type: contactConstants.CREATE_FAILURE, error } }
 }
 
+export function updateContact(contact, successCallback) {
+    return dispatch => {
+        dispatch(request());
+
+        return contactService.updateContact(contact)
+            .then(
+                contact => {
+                    dispatch(success(contact));
+                    dispatch(alertActions.success('Contact update successful'));
+                },
+                error => {
+                    // TODO catch validation error here and throw submission error
+                    // throw new SubmissionError({name: 'hedeler' , title: 'hedeler2', _error: 'olmadi'});
+                    dispatch(failure(error));
+                    dispatch(alertActions.error(error));
+                }
+            );
+    };
+
+    function request() { return { type: contactConstants.UPDATE_REQUEST } }
+    function success(contact) { return { type: contactConstants.UPDATE_SUCCESS, contact } }
+    function failure(error) { return { type: contactConstants.UPDATE_FAILURE, error } }
+}
+
 // prefixed function name with underscore because delete is a reserved word in javascript
 function _delete(id) {
     return dispatch => {
