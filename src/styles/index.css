@@ -8960,3 +8960,7 @@ body{
   height: 100px;
   background-color: #FAFAFB
 }
+
+.input-group .form-control{
+  z-index: 0;
+}

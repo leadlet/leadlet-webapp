@@ -7,6 +7,7 @@ import {contactConstants} from "../../constants/contact.constants";
 import FormGroup from "react-bootstrap/es/FormGroup";
 import InputGroup from "react-bootstrap/es/InputGroup";
 import FormControl from "react-bootstrap/es/FormControl";
+import Phone from 'react-phone-number-input';
 
 const validate = values => {
     const errors = {}
@@ -68,7 +69,11 @@ const renderPhoneField = ({
             <FormGroup>
                 <InputGroup>
                     <InputGroup.Addon><i class="fa fa-phone" aria-hidden="true"></i></InputGroup.Addon>
-                    <FormControl {...input} placeholder={label} type={type} className="form-control"/>
+
+                    <Phone
+                        placeholder="enter phone number"
+                        value={input.value}
+                        onChange={input.onChange}/>
                 </InputGroup>
             </FormGroup>
             <span className="help-block m-b-none">{touched &&
