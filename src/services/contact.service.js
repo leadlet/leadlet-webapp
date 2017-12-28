@@ -36,13 +36,13 @@ function getById(id) {
     return fetch('/api/contacts/' + id, requestOptions).then(handleResponse);
 }
 
-function getAll(filter = "") {
+function getAll(filter , page, size) {
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
     };
 
-    return fetch('/api/contacts' + ( filter ? `?filter=${filter}` : "" ), requestOptions).then(handleResponse);
+    return fetch(`/api/contacts?filter=${filter}&page=${page}&size=${size}` , requestOptions).then(handleResponse);
 }
 
 

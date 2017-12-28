@@ -6,7 +6,6 @@
   "dependencies": {
     "animate.css": "^3.5.2",
     "bootstrap": "^3.3.7",
-    "draft-js": "^0.10.4",
     "es6-shim": "^0.35.3",
     "faker": "^3.1.0",
     "font-awesome": "^4.7.0",
@@ -19,6 +18,7 @@
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-bootstrap": "^0.31.3",
+    "react-bootstrap-table": "^4.3.1",
     "react-color": "^2.13.8",
     "react-custom-scrollbars": "^4.2.0",
     "react-datepicker": "^0.61.0",

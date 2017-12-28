@@ -54,7 +54,7 @@ class TopHeader extends React.Component {
                                 <a aria-expanded="false" role="button" href="/activity">Activity</a>
                             </li>
                         </ul>
-                        <ul className="nav navbar-top-links navbar-right">
+                        <ul className="nav navbar-nav navbar-right">
                             <li className="dropdown">
                                 <DropdownButton className="btn-link" id="sample-menu" title="Settings">
                                     <MenuItem href="/pipelines">Pipelines & Stages</MenuItem>

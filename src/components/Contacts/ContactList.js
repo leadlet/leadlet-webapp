@@ -1,52 +1,48 @@
 import React from 'react';
-import {Scrollbars} from "react-custom-scrollbars";
-import {contactConstants} from "../../constants/contact.constants";
-import Checkbox from "react-bootstrap/es/Checkbox";
+import './../../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
+import {BootstrapTable, InsertButton, TableHeaderColumn} from 'react-bootstrap-table';
 import Link from "react-router-dom/es/Link";
 
 export const ContactList = function (props) {
 
-    const {contacts, type} = props;
+    const {contacts, } = props;
 
-    function renderList() {
-        let filteredIds = contacts.ids;
 
-        if (type !== contactConstants.CONTACT_TYPE_ALL) {
-            filteredIds = contacts.ids.filter(id => contacts.items[id].type === type);
-        }
-        return filteredIds.map(id => {
-                let contact = contacts.items[id];
-                return (
-                    <tr key={contact.id}>
-                        <Checkbox checked={props.checked} className="contact-item-checkbox m-l-md"/>
-                        <td onClick={() => {
-                            props.history.push(`/contacts/${contact.id}`)
-                        }}>{contact.name}</td>
+    const options = {
+        onPageChange: props.onPageChange,
+        onSizePerPageList: props.sizePerPageListChange,
+        sizePerPage: 10
+    };
+    const selectRowProp = {
+        mode: 'checkbox',
+        onSelect: props.onRowSelect,
+        onSelectAll: props.onSelectAll
+    };
 
-                        {(type === contactConstants.CONTACT_TYPE_PERSON) &&
-                        <td> {contact.organization && contact.organization.name} </td>}
-                        <td className="contact-type"><i className="fa fa-envelope"> </i></td>
-                        <td onClick={() => {
-                            props.history.push(`/contacts/${contact.id}`)
-                        }}> {contact.email && contact.email.length > 0 ? contact.email : ''}</td>
-                        <td className="client-status"><span className="label label-primary">Active</span></td>
-                    </tr>
-                );
-            }
-        );
+    const contactsMapped = contacts.ids.map(id => {
+        return {
+            id: id,
+            name: contacts.items[id].name,
+            email: contacts.items[id].email
+        };
+    });
+    function nameFormatter(cell, row) {
+        return (<Link to={"contacts/"+row.id}>{cell}</Link>);
     }
 
     return (
-        <Scrollbars style={{height: '400px'}}>
-            <div className="table-responsive">
-                {!contacts.ids && <em>Loading users...</em>}
-                <table className="table table-striped table-hover">
-                    <tbody>
-                    {contacts.ids && renderList()}
-                    </tbody>
-                </table>
-            </div>
-        </Scrollbars>
+        <BootstrapTable data={contactsMapped} selectRow={ selectRowProp }
+                        pagination
+                        height='400px'
+                        scrollTop={ 'Bottom' }
+                        bordered={ false }
+                        keyField='id'
+                        options={options}
+                        fetchInfo={{dataTotalSize: 20}}
+        >
+            <TableHeaderColumn dataField='name' dataFormat={nameFormatter}>Name</TableHeaderColumn>
+            <TableHeaderColumn dataField='email'>Email</TableHeaderColumn>
+        </BootstrapTable>
     );
 }
 

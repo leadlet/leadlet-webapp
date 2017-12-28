@@ -7,7 +7,6 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import {ButtonToolbar} from "react-bootstrap";
 import SweetAlert from 'sweetalert-react';
-import {Editor, EditorState} from 'draft-js';
 import ToggleButtonGroup from "react-bootstrap/es/ToggleButtonGroup";
 import ToggleButton from "react-bootstrap/es/ToggleButton";
 import DropdownButton from "react-bootstrap/es/DropdownButton";

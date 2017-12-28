@@ -21,10 +21,13 @@ function PipelineSelector(props) {
         props.onChange(newValue);
     }
 
-    return (<div>
-            {!props.pipelines.ids && <em>loading..</em>}
-            {props.pipelines.ids &&
+
+    if( !props.pipelines.ids)
+        return <em>loading..</em>;
+    else
+    return (
             <Select
+                className="pipeline-selector"
                 id="state-select"
                 autoFocus
                 options={stateToOptions(props.pipelines)}
@@ -36,11 +39,8 @@ function PipelineSelector(props) {
                 openOnClick={false}
                 searchable={false}
 
-                />}
-        </div>
+                />);
 
-
-    );
 }
 
 export default PipelineSelector;

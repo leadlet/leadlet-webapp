@@ -8,13 +8,9 @@ import ContactOrganization from "./ContactOrganization";
 import ToggleButton from "react-bootstrap/es/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/es/ToggleButtonGroup";
 import FormGroup from "react-bootstrap/es/FormGroup";
-import InputGroup from "react-bootstrap/es/InputGroup";
-import Button from "react-bootstrap/es/Button";
 import FormControl from "react-bootstrap/es/FormControl";
-import Form from "react-bootstrap/es/Form";
-import MenuItem from "react-bootstrap/es/MenuItem";
-import Dropdown from "react-bootstrap/es/Dropdown";
-import Checkbox from "react-bootstrap/es/Checkbox";
+import Badge from "react-bootstrap/es/Badge";
+import SweetAlert from 'sweetalert-react';
 
 class Contacts extends Component {
 
@@ -22,8 +18,12 @@ class Contacts extends Component {
         super(props);
 
         this.state = {
+            currentPage:0,
+            pageSize:10,
+            selected: [],
             term: "",
             checked: false,
+            showDeleteDialog: false,
             showPersonModal: false,
             showOrganizationModal: false,
             contactSelectedForEdit: null,
@@ -37,16 +37,81 @@ class Contacts extends Component {
         this.closeEditModal = this.closeEditModal.bind(this);
         this.onTypeChange = this.onTypeChange.bind(this);
         this.onCheckChange = this.onCheckChange.bind(this);
+        this.onRowSelect = this.onRowSelect.bind(this);
+        this.onSelectAll = this.onSelectAll.bind(this);
+
+        this.confirmDeleteActivity = this.confirmDeleteActivity.bind(this);
+        this.cancelDeleteActivity = this.cancelDeleteActivity.bind(this);
+
+        this.openDeleteDialog = this.openDeleteDialog.bind(this);
+
+        this.getFilterQuery = this.getFilterQuery.bind(this);
+        this.filterContacts = this.filterContacts.bind(this);
+
+        this.sizePerPageListChange = this.sizePerPageListChange.bind(this);
+        this.onPageChange = this.onPageChange.bind(this);
+
+    }
+
+    sizePerPageListChange(sizePerPage) {
+        this.setState({
+            pageSize: sizePerPage
+        }, () => {
+            this.filterContacts();
+        });
+    }
+
+    onPageChange(page, sizePerPage) {
+        this.setState({
+            pageSize: sizePerPage,
+            currentPage: page
+        }, () => {
+            this.filterContacts();
+        });
+    }
+
+    getFilterQuery(){
+        let query = '';
+
+        if(this.state.term && this.state.term.length > 0){
+            query=`name:${this.state.term}`;
+        }
+
+        if(this.state.selectedType != contactConstants.CONTACT_TYPE_ALL){
+            query += (query ? "&": "") + `type:${this.state.selectedType}`;
+        }
+
+        return query;
+    }
+    openDeleteDialog(){
+        this.setState({
+            showDeleteDialog: true
+        });
+    }
+
+    confirmDeleteActivity(){
+        this.setState({
+            showDeleteDialog: false
+        });
+    }
+
+    cancelDeleteActivity(){
+        this.setState({
+            showDeleteDialog: false
+        });
+    }
+
+    filterContacts(){
+        this.props.getAll(this.getFilterQuery(), this.state.currentPage, this.state.pageSize);
     }
 
     componentDidMount() {
-        this.props.getAll(`name:${this.state.term}`);
+        this.filterContacts();
     }
 
     onSearchSubmit(event) {
         event.preventDefault();
-        this.props.getAll(`name:${this.state.term}`);
-
+        this.filterContacts();
     }
 
     onInputChange(event) {
@@ -69,7 +134,9 @@ class Contacts extends Component {
     }
 
     onTypeChange = (value) => {
-        this.setState({selectedType: value});
+        this.setState({selectedType: value}, () => {
+            this.filterContacts();
+        });
     };
 
     onCheckChange() {
@@ -80,81 +147,82 @@ class Contacts extends Component {
         }
     }
 
+    onRowSelect({ id }, isSelected) {
+        if (isSelected) {
+            this.setState({
+                selected: [ ...this.state.selected, id ].sort()
+                //, currPage: this.refs.table.state.currPage
+            });
+        } else {
+            this.setState({ selected: this.state.selected.filter(it => it !== id) });
+        }
+        return true;
+    }
+
+    onSelectAll(isSelected, currentDisplayAndSelectedData){
+        const ids = currentDisplayAndSelectedData.map(item => {return item.id});
+
+        if (isSelected) {
+            this.setState({
+                selected: [ ...this.state.selected, ...ids ].sort()
+                //, currPage: this.refs.table.state.currPage
+            });
+        } else {
+            this.setState({ selected: this.state.selected.filter(it => !ids.includes(it)) });
+        }
+    }
+
     render() {
         return (
-            <div className="container full-height" style={{'overflow-y': 'hidden'}}>
+            <div className="container full-height">
                 <div className="ibox full-height">
                     <div className="ibox-content full-height">
-                        <div className="row m-b-lg">
+                        <div className="row m-b-sm">
                             <div className="col-md-4">
-                                <div className="col-md-1 pull-right">
-                                    <Dropdown id="contact-operations">
-                                        <Dropdown.Toggle noCaret>
-                                            <i className="fa fa-plus" aria-hidden="true"></i> Add
-                                        </Dropdown.Toggle>
-                                        <Dropdown.Menu>
-                                            <MenuItem href="#" onClick={this.openPersonModal}>Contact: Person</MenuItem>
-                                            <MenuItem href="#" onClick={this.openOrganizationModal}>Contact:
-                                                Organization</MenuItem>
-                                        </Dropdown.Menu>
-                                    </Dropdown>
-                                </div>
-
-                                <div className="col-md-1 pull-right m-r-lg">
-                                    <Dropdown id="detail-operations">
-                                        <Dropdown.Toggle noCaret>
-                                            <i className="fa fa-cog" aria-hidden="true"></i>
-                                        </Dropdown.Toggle>
-                                        <Dropdown.Menu>
-                                            <MenuItem href="#">Export</MenuItem>
-                                        </Dropdown.Menu>
-                                    </Dropdown>
-                                </div>
                                 <h2>Contacts</h2>
                             </div>
                         </div>
                         <div className="row full-height">
-                            <div>
-                                <Form inline onSubmit={this.onSearchSubmit}>
-                                    <FormGroup bsSize="small">
-                                        <Checkbox
-                                            className="contact-checkbox m-l-md m-r-lg"
-                                            onChange={this.onCheckChange}
-                                        />
-                                        <ToggleButtonGroup className={this.state.checked ? "invisible" : "visible"}
-                                                           type="radio" name="contactType"
-                                                           value={this.state.selectedType}
-                                                           onChange={this.onTypeChange}>
-                                            <ToggleButton className="btn-sm"
-                                                          value={contactConstants.CONTACT_TYPE_ALL}>All
-                                            </ToggleButton>
-                                            <ToggleButton className="btn-sm"
-                                                          value={contactConstants.CONTACT_TYPE_PERSON}>Person <i
-                                                className="fa fa-users"></i></ToggleButton>
-                                            <ToggleButton className="btn-sm"
-                                                          value={contactConstants.CONTACT_TYPE_ORGANIZATION}>Organization <i
-                                                className="fa fa-industry"></i></ToggleButton>
-                                        </ToggleButtonGroup>
-                                    </FormGroup>
-                                    <FormGroup bsSize="small" className="m-l-sm">
-                                        <InputGroup className={this.state.checked ? "invisible" : "visible"}>
-                                            <FormControl type="text" onChange={this.onInputChange}/>
-                                            <InputGroup.Button>
-                                                <Button bsSize="small" onClick={this.onSearchSubmit}>Search</Button>
-                                            </InputGroup.Button>
-                                        </InputGroup>
-                                    </FormGroup>
-                                    <InputGroup
-                                        className={this.state.checked ? "visible deleteBtn" : "invisible deleteBtn"}>
-                                        <InputGroup.Button>
-                                            <Button bsStyle="danger">Delete</Button>
-                                        </InputGroup.Button>
-                                    </InputGroup>
-                                </Form>
-                                <span className="text-muted small pull-right">Last modification: <i
-                                    className="fa fa-clock-o"/> 2:10 pm - 12.06.2014</span>
+                            <div className="row row-flex">
                             </div>
-
+                            <div className="row row-flex">
+                                    <ToggleButtonGroup type="radio"
+                                                       name="contactType"
+                                                       value={this.state.selectedType}
+                                                       onChange={this.onTypeChange}>
+                                        <ToggleButton className="btn-sm"
+                                                      value={contactConstants.CONTACT_TYPE_ALL}>All
+                                        </ToggleButton>
+                                        <ToggleButton className="btn-sm"
+                                                      value={contactConstants.CONTACT_TYPE_PERSON}>Person <i
+                                            className="fa fa-users"/></ToggleButton>
+                                        <ToggleButton className="btn-sm"
+                                                      value={contactConstants.CONTACT_TYPE_ORGANIZATION}>Organization <i
+                                            className="fa fa-industry"/></ToggleButton>
+                                    </ToggleButtonGroup>
+                                    <form className="form-inline m-l-sm">
+                                        <FormGroup
+                                            controlId="formBasicText" >
+                                            <FormControl
+                                                type="text"
+                                                value={this.state.value}
+                                                placeholder="Search name"
+                                                onChange={this.handleChange}
+                                                bsSize="small"
+                                            />
+                                            <FormControl.Feedback />
+                                        </FormGroup>
+                                    </form>
+                                    <button type="button" className="btn btn-primary btn-sm m-l-sm" onClick={this.openPersonModal}>
+                                        <i className="fa fa-plus" aria-hidden="true"/> Person
+                                    </button>
+                                    <button type="button" className="btn btn-primary btn-sm m-l-sm" onClick={this.openOrganizationModal}>
+                                        <i className="fa fa-plus" aria-hidden="true"/> Organization
+                                    </button>
+                                    <button type="button" className={this.state.selected.length>0 ? "btn btn-danger btn-sm m-l-sm" : "btn btn-danger btn-sm m-l-sm hidden"} onClick={this.openDeleteDialog}>
+                                        <i className="fa fa-trash" aria-hidden="true"/> Delete <Badge>{this.state.selected.length}</Badge>
+                                    </button>
+                            </div>
                             <div className="clients-list full-height">
 
                                 {
@@ -165,6 +233,10 @@ class Contacts extends Component {
                                         onEditClicked={() => this.openEditModal}
                                         history={this.props.history}
                                         checked={this.state.checked}
+                                        onRowSelect={this.onRowSelect}
+                                        onSelectAll={this.onSelectAll}
+                                        sizePerPageListChange={this.sizePerPageListChange}
+                                        onPageChange={this.onPageChange}
                                     />
                                 }
                             </div>
@@ -178,6 +250,19 @@ class Contacts extends Component {
                                 <ContactOrganization showEditModal={this.state.showOrganizationModal}
                                                      close={this.closeEditModal}
                                                      contact={this.state.contactSelectedForEdit}
+                                />
+                            </div>
+                            <div>
+                                <SweetAlert
+                                    title="Are you sure?"
+                                    text={`You will delete ${this.state.selected.length}! contacts`}
+                                    type="warning"
+                                    showCancelButton={true}
+                                    confirmButtonColor="#DD6B55"
+                                    confirmButtonText="Yes, delete it!"
+                                    show={this.state.showDeleteDialog}
+                                    onConfirm={this.confirmDeleteActivity}
+                                    onCancel={this.cancelDeleteActivity}
                                 />
                             </div>
                         </div>

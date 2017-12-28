@@ -11,6 +11,7 @@ import CardsContainer from "./Deals/CardsContainer";
 import CustomDragLayer from "./CustomDragLayer";
 import {deleteDeal, getAllDeals, moveDeal} from "../../actions/deal.actions";
 import SweetAlert from 'sweetalert-react';
+import ButtonToolbar from "react-bootstrap/es/ButtonToolbar";
 
 
 class DealBoard extends Component {
@@ -161,26 +162,33 @@ class DealBoard extends Component {
 
     render() {
         return (
-                <div id="deals-board" className="deals-board">
-                    <CustomDragLayer snapToGrid={false} />
-                    { this.props.pipelines.ids && this.props.deals.ids && this.state.activeStages
+                <div>
+                    <ButtonToolbar>
+                            <Button bsStyle="primary" onClick={this.toggleNewDealModal}>Create</Button>
+                            <PipelineSelector pipelines={this.props.pipelines}
+                                              onChange={this.pipelineChanged}
+                                              selectedPipelineId={this.state.selectedPipelineId}/>
+                    </ButtonToolbar>
+                    <div id="deals-board" className="deals-board">
+                        <CustomDragLayer snapToGrid={false} />
+                        { this.props.pipelines.ids && this.props.deals.ids && this.state.activeStages
                         && this.state.activeStages.map((stage, i) =>
-                        <CardsContainer
-                            key={stage.id}
-                            id={stage.id}
-                            item={stage}
-                            moveCard={this.moveCard}
-                            moveList={this.moveList}
-                            startScrolling={this.startScrolling}
-                            stopScrolling={this.stopScrolling}
-                            isScrolling={this.state.isScrolling}
-                            x={stage.id}
-                            cards={this.getStageDeals(stage)}
-                            editDeal={this.onDeleteDeal}
-                            deleteDeal={this.onDeleteDeal}
-                        />
-                    )}
-
+                            <CardsContainer
+                                key={stage.id}
+                                id={stage.id}
+                                item={stage}
+                                moveCard={this.moveCard}
+                                moveList={this.moveList}
+                                startScrolling={this.startScrolling}
+                                stopScrolling={this.stopScrolling}
+                                isScrolling={this.state.isScrolling}
+                                x={stage.id}
+                                cards={this.getStageDeals(stage)}
+                                editDeal={this.onDeleteDeal}
+                                deleteDeal={this.onDeleteDeal}
+                            />
+                        )}
+                    </div>
                     <SweetAlert
                         title="Are you sure?"
                         text="You will loose information related to deal!"
