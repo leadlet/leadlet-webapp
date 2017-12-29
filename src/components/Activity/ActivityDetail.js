@@ -139,10 +139,9 @@ const renderTypeField = ({
 const renderSelectField = ({
                                input,
                                options,
-                               onChange,
                                label,
                                multi,
-                               selected
+                               contact
                            }) => (
     <div className="form-group">
         <label>{label}</label>
@@ -157,7 +156,7 @@ const renderSelectField = ({
             onChange={input.onChange}
             value={input.value}
             simpleValue
-            selected={input.value ? input.value : null}
+            selected={contact ? contact : null}
         />
     </div>
 )
@@ -318,7 +317,7 @@ class ActivityDetail extends Component {
                             label="Contact"
                             multi={false}
                             options={this.mapContact2Options(contactConstants.CONTACT_TYPE_PERSON)}
-                            selected={this.state.contact}
+                            contact={this.props.contact}
                         />
                         <Field
                             name="organization"
@@ -326,6 +325,7 @@ class ActivityDetail extends Component {
                             label="Organization"
                             multi={false}
                             options={this.mapContact2Options(contactConstants.CONTACT_TYPE_ORGANIZATION)}
+                            contact={this.props.contact}
                         />
                         <div className="form-group">
                             <Checkbox>Send invitations to attendees</Checkbox>

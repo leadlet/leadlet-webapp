@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import connect from "react-redux/es/connect/connect";
 import {getById} from "../../actions/contact.actions";
+import {getByPersonId} from "../../actions/activity.actions";
 import ContactPerson from "./ContactPerson";
 import ContactOrganization from "./ContactOrganization";
 import moment from 'moment';
@@ -27,9 +28,9 @@ class ContactDetail extends Component {
     }
 
     openEditModal(type) {
-        if(type === "PERSON"){
+        if (type === "PERSON") {
             this.setState({showPersonEditModal: true});
-        }else{
+        } else {
             this.setState({showOrganizationEditModal: true});
         }
     }
@@ -49,51 +50,40 @@ class ContactDetail extends Component {
 
     componentDidMount() {
         this.props.getById(this.props.match.params.contactId);
+        this.props.getByPersonId(this.props.match.params.contactId);
     }
 
-    componentDidUpdate(){
-        $('#contact-calendar').fullCalendar({
-            header: {
-                left: 'prev,next today',
-                right: 'listDay,listWeek,month'
-            },
-            // customize the button names,
-            // otherwise they'd all just say "list"
-            views: {
-                listDay: { buttonText: 'list day' },
-                listWeek: { buttonText: 'list week' }
-            },
-            defaultView: 'listWeek',
-            navLinks: true, // can click day/week names to navigate views
-            editable: true,
-            eventLimit: true, // allow "more" link when too many events
-            events: [
-                {
-                    title: 'All Day Event',
-                    start: '2017-12-30'
+    componentDidUpdate() {
+
+        if (!this.props.ids) {
+            return;
+        }
+
+        let events = this.props.ids.map(function (item) {
+            return this.props.activities[item];
+        }, this);
+
+        if (events) {
+            $('#contact-calendar').fullCalendar('destroy');
+
+            $('#contact-calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    right: 'listDay,listWeek,month'
                 },
-                {
-                    title: 'Long Event',
-                    start: '2017-11-07',
-                    end: '2017-12-28'
+                // customize the button names,
+                // otherwise they'd all just say "list"
+                views: {
+                    listDay: {buttonText: 'list day'},
+                    listWeek: {buttonText: 'list week'}
                 },
-                {
-                    id: 999,
-                    title: 'Repeating Event',
-                    start: '2017-12-09T16:00:00'
-                },
-                {
-                    id: 999,
-                    title: 'Repeating Event',
-                    start: '2017-12-16T16:00:00'
-                },
-                {
-                    title: 'Conference',
-                    start: '2017-11-11',
-                    end: '2017-12-26'
-                }
-            ]
-        });
+                defaultView: 'listWeek',
+                navLinks: true, // can click day/week names to navigate views
+                editable: true,
+                eventLimit: true, // allow "more" link when too many events
+                events
+            });
+        }
     }
 
     render() {
@@ -124,16 +114,16 @@ class ContactDetail extends Component {
                             </div>
                             <div>
                                 <ContactPerson showEditModal={this.state.showPersonEditModal}
-                                            close={this.closeEditModal}
-                                            contact={this.props.viewedContact}
-                                            initialValues={this.props.viewedContact}
+                                               close={this.closeEditModal}
+                                               contact={this.props.viewedContact}
+                                               initialValues={this.props.viewedContact}
                                 />
                             </div>
                             <div>
                                 <ContactOrganization showEditModal={this.state.showOrganizationEditModal}
-                                               close={this.closeEditModal}
-                                               contact={this.props.viewedContact}
-                                               initialValues={this.props.viewedContact}
+                                                     close={this.closeEditModal}
+                                                     contact={this.props.viewedContact}
+                                                     initialValues={this.props.viewedContact}
                                 />
                             </div>
                         </div>
@@ -323,6 +313,7 @@ class ContactDetail extends Component {
                             <div>
                                 <ActivityDetail showModal={this.state.showModal}
                                                 close={this.closeActivityModal}
+                                                contact={this.props.viewedContact}
                                 />
                             </div>
                         </div>
@@ -336,8 +327,10 @@ class ContactDetail extends Component {
 
 function mapStateToProps(state) {
     return {
-        viewedContact: state.contacts.viewedContact
+        viewedContact: state.contacts.viewedContact,
+        activities: state.activities.items,
+        ids: state.activities.ids
     };
 }
 
-export default connect(mapStateToProps, {getById})(ContactDetail);
+export default connect(mapStateToProps, {getByPersonId, getById})(ContactDetail);

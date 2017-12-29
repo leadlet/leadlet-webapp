@@ -172,7 +172,7 @@ class Activity extends Component {
 function mapStateToProps(state) {
     return {
         activities: state.activities.items,
-        ids: state.activities.ids,
+        ids: state.activities.ids
     }
 }
 
