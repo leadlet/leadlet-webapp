@@ -139,8 +139,7 @@ const renderSelectField = ({
                                input,
                                options,
                                label,
-                               multi,
-                               contact
+                               multi
                            }) => (
     <div className="form-group">
         <label>{label}</label>
@@ -155,7 +154,6 @@ const renderSelectField = ({
             onChange={input.onChange}
             value={input.value}
             simpleValue
-            selected={contact ? contact : null}
         />
     </div>
 )
@@ -310,22 +308,25 @@ class ActivityDetail extends Component {
                             label="Deal"
                             multi={false}
                         />
-                        <Field
-                            name="contact"
-                            component={renderSelectField}
-                            label="Contact"
-                            multi={false}
-                            options={this.mapContact2Options(contactConstants.CONTACT_TYPE_PERSON)}
-                            contact={this.props.contact}
-                        />
-                        <Field
-                            name="organization"
-                            component={renderSelectField}
-                            label="Organization"
-                            multi={false}
-                            options={this.mapContact2Options(contactConstants.CONTACT_TYPE_ORGANIZATION)}
-                            contact={this.props.contact}
-                        />
+                        {
+                            (!this.props.contact || (this.props.contact && !this.props.contact.type)) &&
+                                <div>
+                                    <Field
+                                        name="contact"
+                                        label="Contact"
+                                        multi={false}
+                                        options={this.mapContact2Options(contactConstants.CONTACT_TYPE_PERSON)}
+                                        component={renderSelectField}
+                                    />
+                                    <Field
+                                        name="organization"
+                                        label="Organization"
+                                        multi={false}
+                                        options={this.mapContact2Options(contactConstants.CONTACT_TYPE_ORGANIZATION)}
+                                        component={this.props.contact && (this.props.contact.type === "ORGANIZATION")? null : renderSelectField}
+                                    />
+                                </div>
+                        }
                         <div className="form-group">
                             <Checkbox>Send invitations to attendees</Checkbox>
                         </div>
