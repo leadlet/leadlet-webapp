@@ -8910,7 +8910,7 @@ body{
 }
 
 .deals-board{
-  padding: 0px 10px;
+  padding: 0px 20px;
   height:100%;
   white-space: nowrap;
   overflow-x: scroll;
@@ -8918,7 +8918,7 @@ body{
 }
 
 .deals-board .stage {
-  height:100%;
+  max-height:100%;
   width: 270px;
   display: inline-block;
   border-radius: 3px;
@@ -8975,4 +8975,29 @@ body{
   display: flex;
   flex:1 1 auto;
   padding-left: 20px;
+  padding-right: 20px;
+
+}
+
+.row-flex-reverse{
+  flex-direction:row-reverse;
+  display: flex;
+  flex:1 1 auto;
+  padding-left: 20px;
+  padding-right: 20px;
+
+}
+
+.client-table-header > thead > tr > th,
+.client-table-header > thead > tr > td {
+  background-color: #fff;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom-width: 1px;
+}
+
+
+deals-toolbar {
+
 }

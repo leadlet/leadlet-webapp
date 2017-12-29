@@ -11,6 +11,7 @@ import CustomDragLayer from "./CustomDragLayer";
 import {deleteDeal, getAllDeals, moveDeal} from "../../actions/deal.actions";
 import SweetAlert from 'sweetalert-react';
 import ButtonToolbar from "react-bootstrap/es/ButtonToolbar";
+import NewDeal from "./Deals/NewDeal";
 
 
 class DealBoard extends Component {
@@ -161,13 +162,13 @@ class DealBoard extends Component {
 
     render() {
         return (
-                <div>
-                    <ButtonToolbar>
-                            <Button bsStyle="primary" onClick={this.toggleNewDealModal}>Create</Button>
-                            <PipelineSelector pipelines={this.props.pipelines}
-                                              onChange={this.pipelineChanged}
-                                              selectedPipelineId={this.state.selectedPipelineId}/>
-                    </ButtonToolbar>
+                <div className="full-height">
+                    <div className="row-flex-reverse m-b-sm full-width">
+                        <PipelineSelector pipelines={this.props.pipelines}
+                                          onChange={this.pipelineChanged}
+                                          selectedPipelineId={this.state.selectedPipelineId}/>
+                        <Button bsStyle="primary" className="m-l-sm" onClick={this.toggleNewDealModal}>New Deal</Button>
+                    </div>
                     <div id="deals-board" className="deals-board">
                         <CustomDragLayer snapToGrid={false} />
                         { this.props.pipelines.ids && this.props.deals.ids && this.state.activeStages
@@ -199,6 +200,16 @@ class DealBoard extends Component {
                         onConfirm={() => this.confirmDeleteDeal()}
                         onCancel={() => this.cancelDeleteDeal()}
                     />
+                    <div>
+                        {this.state.activeStages &&
+                        <NewDeal showModal={this.state.isNewDealModalVisible}
+                                 close={this.toggleNewDealModal}
+                                 initialValues={{
+                                     stageId: this.state.activeStages[0].id
+                                 }}
+                        />
+                        }
+                    </div>
                 </div>
         );
     }

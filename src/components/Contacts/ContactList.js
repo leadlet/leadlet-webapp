@@ -28,7 +28,7 @@ export const ContactList = function (props) {
 
     return (
         <BootstrapTable
-            tableHeaderClass='table-striped'
+            tableHeaderClass='client-table-header'
             containerClass='table-responsive'
             tableContainerClass='table'
             tableBodyClass='table-striped'
@@ -36,7 +36,7 @@ export const ContactList = function (props) {
             data={ dataMapper(props.data) }
                         remote={ true }
                         pagination={ true }
-                        height='420px'
+                        height='410'
                         scrollTop={ 'Bottom' }
                         keyField='id'
                         selectRow={ selectRowProp }

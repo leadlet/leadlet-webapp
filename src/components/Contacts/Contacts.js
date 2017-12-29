@@ -201,14 +201,12 @@ class Contacts extends Component {
                             <div className="col-md-4">
                                 <h2>{'Contacts '}
                                     {this.props.contacts && this.props.contacts.dataTotalSize &&
-                                        <span><Badge>{this.props.contacts.dataTotalSize}</Badge></span>
+                                    <span><Badge>{this.props.contacts.dataTotalSize}</Badge></span>
                                     }
-                                    </h2>
+                                </h2>
                             </div>
                         </div>
-                        <div className="row full-height">
-                            <div className="row row-flex">
-                            </div>
+                        <div className="row">
                             <div className="row row-flex">
                                 <ToggleButtonGroup type="radio"
                                                    name="contactType"
@@ -249,11 +247,11 @@ class Contacts extends Component {
                                 <button type="button"
                                         className={this.state.selected.length > 0 ? "btn btn-danger btn-sm m-l-sm" : "btn btn-danger btn-sm m-l-sm hidden"}
                                         onClick={this.openDeleteDialog}>
-                                    <i className="fa fa-trash"/> Delete
+                                    <i className="fa fa-trash"/> {'Delete '}
                                     <Badge>{this.state.selected.length}</Badge>
                                 </button>
                             </div>
-                            <div className="clients-list full-height">
+                            <div className="clients-list">
 
                                 {
                                     this.props.contacts.ids &&
