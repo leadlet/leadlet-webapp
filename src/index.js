@@ -6,7 +6,6 @@ import './../node_modules/animate.css/animate.min.css'
 import React from 'react';
 import './../node_modules/react-datepicker/dist/react-datepicker.css';
 import './../node_modules/react-datepicker/dist/react-datepicker-cssmodules.css';
-import './../node_modules/draft-js/dist/Draft.css';
 import './../node_modules/es6-shim/es6-sham';
 import './../node_modules/react-simple-dropdown/styles/Dropdown.css';
 import './../node_modules/sweetalert/dist/sweetalert.css';
