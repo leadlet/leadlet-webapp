@@ -93,7 +93,7 @@ const renderEmailField = ({
                           }) => (
     <div className="form-group">
         <label>{label}</label>
-        <div>
+        <div className="contact">
             <FormGroup>
                 <InputGroup>
                     <InputGroup.Addon>@</InputGroup.Addon>
