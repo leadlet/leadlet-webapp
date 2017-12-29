@@ -57,6 +57,31 @@ export function getAll() {
     }
 }
 
+export function getByPersonId(id) {
+    return dispatch => {
+        dispatch(request());
+
+        activityService.getByPersonId(id)
+            .then(
+                items => dispatch(success(items)),
+                error => dispatch(failure(error))
+            );
+
+    };
+
+    function request() {
+        return {type: activityConstants.GETALL_REQUEST}
+    }
+
+    function success(items) {
+        return {type: activityConstants.GETALL_SUCCESS, items}
+    }
+
+    function failure(error) {
+        return {type: activityConstants.GETALL_FAILURE, error}
+    }
+}
+
 export function update(activity) {
     return dispatch => {
         dispatch(request());

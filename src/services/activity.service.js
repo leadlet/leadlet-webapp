@@ -4,7 +4,8 @@ export const activityService = {
     getAll,
     create,
     update,
-    _delete
+    _delete,
+    getByPersonId
 };
 
 function create(activity) {
@@ -35,6 +36,15 @@ function getAll() {
     };
 
     return fetch('/api/activities', requestOptions).then(handleResponse);
+}
+
+function getByPersonId(id) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    return fetch(`/api/activities/person/${id}`, requestOptions).then(handleResponse);
 }
 
 function _delete(id) {
