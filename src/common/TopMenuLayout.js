@@ -7,7 +7,6 @@ import Dashboard from "../Dashboard/Dashboard";
 import Deals from "../components/DealBoard/DealBoard";
 import Switch from "react-router-dom/es/Switch";
 import PipelinesPage from "../components/Pipelines/Pipelines";
-import Chats from "../components/Chat/Chats";
 import Activity from "../components/Activity/Activity";
 import ContactDetail from "../components/Contacts/ContactDetail";
 
@@ -26,7 +25,6 @@ class TopMenuLayout extends Component {
                                 <Route path="/contacts" component={Contacts}/>
                                 <Route path="/deals" component={Deals}/>
                                 <Route path="/pipelines" component={PipelinesPage}/>
-                                <Route path="/chats" component={Chats}/>
                                 <Route path="/activity" component={Activity}/>
                             </Switch>
                         </div>

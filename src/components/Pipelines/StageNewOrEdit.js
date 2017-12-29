@@ -87,7 +87,7 @@ class StageNewOrEdit extends React.Component {
 
 
     render () {
-        const { handleSubmit, pristine, reset, submitting, initialValues } = this.props;
+        const { handleSubmit, submitting, initialValues } = this.props;
         let title = "Create New Stage";
         if( initialValues ){
             title = "Edit Stage";

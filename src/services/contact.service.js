@@ -46,30 +46,12 @@ function getAll(filter , page, size) {
 }
 
 
-/*
+
 function handleResponse(response) {
     if (response.ok !== true) {
         return Promise.reject(response.statusText);
     }
 
-    // TODO: I had to return new promise combining two values but not sure it is similar to what is done commented line
     return Promise.all([ response.json(), response.headers.get("x-total-count")]);
 
-    // The response of a fetch() request is a Stream object, which means that when we call the json() method,
-    // a Promise is returned since the reading of the stream will happen asynchronously.
-
-    // return response.json();
-}
-*/
-
-
-function handleResponse(response) {
-    if (response.ok !== true) {
-        return Promise.reject(response.statusText);
-    }
-
-    // The response of a fetch() request is a Stream object, which means that when we call the json() method,
-    // a Promise is returned since the reading of the stream will happen asynchronously.
-
-    return response.json();
 }

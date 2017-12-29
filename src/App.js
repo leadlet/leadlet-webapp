@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 
 import './App.css';
 import TopMenuLayout from "./common/TopMenuLayout";
-import { history } from './helpers';
 import { alertActions } from './actions';
 import { PrivateRoute } from './components';
 import { LoginPage } from './components/Login';
@@ -14,10 +13,6 @@ var NotificationSystem = require('react-notification-system');
 
 class App extends React.Component {
     _notificationSystem;
-
-    constructor(props) {
-        super(props);
-    }
 
     componentDidUpdate(){
         if(this.props.alert.level){
@@ -34,11 +29,10 @@ class App extends React.Component {
         this._notificationSystem = this.refs.notificationSystem;
     }
     render() {
-        const { alert } = this.props;
         return (
             [
-                <NotificationSystem ref="notificationSystem" />,
-                <Switch>
+                <NotificationSystem key="notificationSystem" ref="notificationSystem" />,
+                <Switch key="appSwitch">
                     <Route exact={true} path="/login" component={LoginPage} />
                     <Route exact={true} path="/register" component={RegisterPage} />
                     <PrivateRoute path="/" component={TopMenuLayout} />

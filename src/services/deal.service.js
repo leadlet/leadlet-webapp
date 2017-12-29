@@ -63,7 +63,7 @@ function _delete(id) {
         headers: authHeader()
     };
 
-    return fetch('/api/deals/' + id, requestOptions).then(handleResponse);;
+    return fetch('/api/deals/' + id, requestOptions).then(handleResponse);
 }
 
 function handleResponse(response) {

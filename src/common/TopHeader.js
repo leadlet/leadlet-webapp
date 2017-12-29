@@ -35,7 +35,7 @@ class TopHeader extends React.Component {
                 <nav className="navbar navbar-fixed-top" role="navigation">
                     <div className="navbar-header">
                         <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" className="navbar-toggle collapsed" type="button">
-                            <i className="fa fa-reorder"></i>
+                            <i className="fa fa-reorder"/>
                         </button>
                         <a href="/" className="navbar-brand">Leadlet</a>
                     </div>
@@ -46,9 +46,6 @@ class TopHeader extends React.Component {
                             </li>
                             <li>
                                 <a aria-expanded="false" role="button" href="/deals">Deals</a>
-                            </li>
-                            <li>
-                                <a aria-expanded="false" role="button" href="/chats">Chats</a>
                             </li>
                             <li>
                                 <a aria-expanded="false" role="button" href="/activity">Activity</a>
@@ -64,7 +61,7 @@ class TopHeader extends React.Component {
                             </li>
                             <li>
                                 <a href="#" onClick={this.handleLogOut}>
-                                    <i className="fa fa-sign-out"></i> Log out
+                                    <i className="fa fa-sign-out"/> Log out
                                 </a>
                             </li>
                         </ul>

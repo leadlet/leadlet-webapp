@@ -11,6 +11,9 @@ import FormGroup from "react-bootstrap/es/FormGroup";
 import FormControl from "react-bootstrap/es/FormControl";
 import Badge from "react-bootstrap/es/Badge";
 import SweetAlert from 'sweetalert-react';
+import _ from "lodash"
+import Dropdown from "react-bootstrap/es/Dropdown";
+import MenuItem from "react-bootstrap/es/MenuItem";
 
 class Contacts extends Component {
 
@@ -18,8 +21,8 @@ class Contacts extends Component {
         super(props);
 
         this.state = {
-            currentPage:0,
-            pageSize:10,
+            currentPage: 1,
+            pageSize: null,
             selected: [],
             term: "",
             checked: false,
@@ -51,7 +54,14 @@ class Contacts extends Component {
         this.sizePerPageListChange = this.sizePerPageListChange.bind(this);
         this.onPageChange = this.onPageChange.bind(this);
 
+        this.handleSearchTermChange = this.handleSearchTermChange.bind(this);
+
+        this.handleSearchDebounced = _.debounce(function () {
+            if (this.state.term && this.state.term.length > 2)
+                this.filterContacts();
+        }, 500);
     }
+
 
     sizePerPageListChange(sizePerPage) {
         this.setState({
@@ -60,6 +70,13 @@ class Contacts extends Component {
             this.filterContacts();
         });
     }
+
+
+    handleSearchTermChange(event) {
+        this.setState({term: event.target.value});
+        this.handleSearchDebounced();
+    }
+
 
     onPageChange(page, sizePerPage) {
         this.setState({
@@ -70,39 +87,40 @@ class Contacts extends Component {
         });
     }
 
-    getFilterQuery(){
+    getFilterQuery() {
         let query = '';
 
-        if(this.state.term && this.state.term.length > 0){
-            query=`name:${this.state.term}`;
+        if (this.state.term && this.state.term.length > 0) {
+            query = `name:${this.state.term}`;
         }
 
-        if(this.state.selectedType != contactConstants.CONTACT_TYPE_ALL){
-            query += (query ? "&": "") + `type:${this.state.selectedType}`;
+        if (this.state.selectedType !== contactConstants.CONTACT_TYPE_ALL) {
+            query += (query ? "&" : "") + `type:${this.state.selectedType}`;
         }
 
         return query;
     }
-    openDeleteDialog(){
+
+    openDeleteDialog() {
         this.setState({
             showDeleteDialog: true
         });
     }
 
-    confirmDeleteActivity(){
+    confirmDeleteActivity() {
         this.setState({
             showDeleteDialog: false
         });
     }
 
-    cancelDeleteActivity(){
+    cancelDeleteActivity() {
         this.setState({
             showDeleteDialog: false
         });
     }
 
-    filterContacts(){
-        this.props.getAll(this.getFilterQuery(), this.state.currentPage, this.state.pageSize);
+    filterContacts() {
+        this.props.getAll(this.getFilterQuery(), this.state.currentPage - 1, this.state.pageSize);
     }
 
     componentDidMount() {
@@ -147,28 +165,30 @@ class Contacts extends Component {
         }
     }
 
-    onRowSelect({ id }, isSelected) {
+    onRowSelect({id}, isSelected) {
         if (isSelected) {
             this.setState({
-                selected: [ ...this.state.selected, id ].sort()
+                selected: [...this.state.selected, id].sort()
                 //, currPage: this.refs.table.state.currPage
             });
         } else {
-            this.setState({ selected: this.state.selected.filter(it => it !== id) });
+            this.setState({selected: this.state.selected.filter(it => it !== id)});
         }
         return true;
     }
 
-    onSelectAll(isSelected, currentDisplayAndSelectedData){
-        const ids = currentDisplayAndSelectedData.map(item => {return item.id});
+    onSelectAll(isSelected, currentDisplayAndSelectedData) {
+        const ids = currentDisplayAndSelectedData.map(item => {
+            return item.id
+        });
 
         if (isSelected) {
             this.setState({
-                selected: [ ...this.state.selected, ...ids ].sort()
+                selected: [...this.state.selected, ...ids].sort()
                 //, currPage: this.refs.table.state.currPage
             });
         } else {
-            this.setState({ selected: this.state.selected.filter(it => !ids.includes(it)) });
+            this.setState({selected: this.state.selected.filter(it => !ids.includes(it))});
         }
     }
 
@@ -179,60 +199,71 @@ class Contacts extends Component {
                     <div className="ibox-content full-height">
                         <div className="row m-b-sm">
                             <div className="col-md-4">
-                                <h2>Contacts</h2>
+                                <h2>{'Contacts '}
+                                    {this.props.contacts && this.props.contacts.dataTotalSize &&
+                                        <span><Badge>{this.props.contacts.dataTotalSize}</Badge></span>
+                                    }
+                                    </h2>
                             </div>
                         </div>
                         <div className="row full-height">
                             <div className="row row-flex">
                             </div>
                             <div className="row row-flex">
-                                    <ToggleButtonGroup type="radio"
-                                                       name="contactType"
-                                                       value={this.state.selectedType}
-                                                       onChange={this.onTypeChange}>
-                                        <ToggleButton className="btn-sm"
-                                                      value={contactConstants.CONTACT_TYPE_ALL}>All
-                                        </ToggleButton>
-                                        <ToggleButton className="btn-sm"
-                                                      value={contactConstants.CONTACT_TYPE_PERSON}>Person <i
-                                            className="fa fa-users"/></ToggleButton>
-                                        <ToggleButton className="btn-sm"
-                                                      value={contactConstants.CONTACT_TYPE_ORGANIZATION}>Organization <i
-                                            className="fa fa-industry"/></ToggleButton>
-                                    </ToggleButtonGroup>
-                                    <form className="form-inline m-l-sm">
-                                        <FormGroup
-                                            controlId="formBasicText" >
-                                            <FormControl
-                                                type="text"
-                                                value={this.state.value}
-                                                placeholder="Search name"
-                                                onChange={this.handleChange}
-                                                bsSize="small"
-                                            />
-                                            <FormControl.Feedback />
-                                        </FormGroup>
-                                    </form>
-                                    <button type="button" className="btn btn-primary btn-sm m-l-sm" onClick={this.openPersonModal}>
-                                        <i className="fa fa-plus" aria-hidden="true"/> Person
-                                    </button>
-                                    <button type="button" className="btn btn-primary btn-sm m-l-sm" onClick={this.openOrganizationModal}>
-                                        <i className="fa fa-plus" aria-hidden="true"/> Organization
-                                    </button>
-                                    <button type="button" className={this.state.selected.length>0 ? "btn btn-danger btn-sm m-l-sm" : "btn btn-danger btn-sm m-l-sm hidden"} onClick={this.openDeleteDialog}>
-                                        <i className="fa fa-trash" aria-hidden="true"/> Delete <Badge>{this.state.selected.length}</Badge>
-                                    </button>
+                                <ToggleButtonGroup type="radio"
+                                                   name="contactType"
+                                                   value={this.state.selectedType}
+                                                   onChange={this.onTypeChange}>
+                                    <ToggleButton className="btn-sm"
+                                                  value={contactConstants.CONTACT_TYPE_ALL}>All
+                                    </ToggleButton>
+                                    <ToggleButton className="btn-sm"
+                                                  value={contactConstants.CONTACT_TYPE_PERSON}>Person <i
+                                        className="fa fa-users"/></ToggleButton>
+                                    <ToggleButton className="btn-sm"
+                                                  value={contactConstants.CONTACT_TYPE_ORGANIZATION}>Organization <i
+                                        className="fa fa-industry"/></ToggleButton>
+                                </ToggleButtonGroup>
+                                <form className="form-inline m-l-sm">
+                                    <FormGroup
+                                        controlId="formBasicText">
+                                        <FormControl
+                                            type="text"
+                                            value={this.state.value}
+                                            placeholder="Search name"
+                                            onChange={this.handleSearchTermChange}
+                                            bsSize="small"
+                                        />
+                                        <FormControl.Feedback/>
+                                    </FormGroup>
+                                </form>
+                                <Dropdown bsSize="small" className="m-l-sm" id="contactAdd">
+                                    <Dropdown.Toggle noCaret>
+                                        <i className="fa fa-plus"/> Add
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu>
+                                        <MenuItem href="#" onClick={this.openPersonModal}>Person</MenuItem>
+                                        <MenuItem href="#" onClick={this.openOrganizationModal}>Organization</MenuItem>
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                                <button type="button"
+                                        className={this.state.selected.length > 0 ? "btn btn-danger btn-sm m-l-sm" : "btn btn-danger btn-sm m-l-sm hidden"}
+                                        onClick={this.openDeleteDialog}>
+                                    <i className="fa fa-trash"/> Delete
+                                    <Badge>{this.state.selected.length}</Badge>
+                                </button>
                             </div>
                             <div className="clients-list full-height">
 
                                 {
                                     this.props.contacts.ids &&
                                     <ContactList
-                                        contacts={this.props.contacts}
+                                        data={this.props.contacts}
+                                        sizePerPage={this.state.sizePerPage}
+                                        currentPage={this.state.currentPage}
                                         type={this.state.selectedType}
                                         onEditClicked={() => this.openEditModal}
                                         history={this.props.history}
-                                        checked={this.state.checked}
                                         onRowSelect={this.onRowSelect}
                                         onSelectAll={this.onSelectAll}
                                         sizePerPageListChange={this.sizePerPageListChange}

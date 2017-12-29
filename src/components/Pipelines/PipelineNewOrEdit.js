@@ -66,7 +66,7 @@ class PipelineNewOrEdit extends React.Component {
 
 
     render () {
-        const { handleSubmit, pristine, reset, submitting, stage } = this.props;
+        const { handleSubmit, submitting, stage } = this.props;
         let title = "Create New Pipeline";
         if( stage !== null ){
             title = "Edit Pipeline";

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { userActions } from '../../actions/index';
@@ -39,8 +38,6 @@ class LoginPage extends React.Component {
     }
 
     render() {
-        const { loggingIn } = this.props;
-        const { username, password, submitted } = this.state;
         return (
             <div className="gray-bg">
                 <div className="loginColumns animated fadeInDown">

@@ -31,11 +31,12 @@ export function contacts(state = {}, action) {
                 loading: true
             };
         case contactConstants.GETALL_SUCCESS:
-            const _items = normalize(action.items, contactListSchema);
+            const _items = normalize(action.data.items, contactListSchema);
             return {
                 ...state,
                 items: _items.entities.contacts,
-                ids: _items.result
+                ids: _items.result,
+                dataTotalSize: action.data.dataTotalSize
             };
         case contactConstants.GETALL_FAILURE:
             return {

@@ -19,52 +19,19 @@ export function getById(contactId) {
     function failure(error) { return { type: contactConstants.GET_FAILURE, error } }
 }
 
-export function getAllPerson(filter) {
-    return dispatch => {
-        dispatch(request());
-
-        contactService.getAll(filter + ",type:PERSON")
-            .then(
-                data => dispatch(success(data)),
-                error => dispatch(failure(error))
-            );
-    };
-
-    function request() { return { type: contactConstants.GETALL_REQUEST } }
-    function success(data) { return { type: contactConstants.GETALL_SUCCESS, data } }
-    function failure(error) { return { type: contactConstants.GETALL_FAILURE, error } }
-
-}
-
-export function getAllOrganization(filter) {
-    return dispatch => {
-        dispatch(request());
-
-        contactService.getAll(filter + ",type:ORGANIZATION")
-            .then(
-                data => dispatch(success(data)),
-                error => dispatch(failure(error))
-            );
-    };
-
-    function request() { return { type: contactConstants.GETALL_REQUEST } }
-    function success(data) { return { type: contactConstants.GETALL_SUCCESS, data } }
-    function failure(error) { return { type: contactConstants.GETALL_FAILURE, error } }
-}
-
 export function getAll(filter, page, size) {
     return dispatch => {
         dispatch(request());
 
         contactService.getAll(filter, page, size)
             .then(
-                items => dispatch(success(items)),
+                response => dispatch(success({ items: response[0], dataTotalSize: response[1]})),
                 error => dispatch(failure(error))
             );
     };
 
     function request() { return { type: contactConstants.GETALL_REQUEST } }
-    function success(items) { return { type: contactConstants.GETALL_SUCCESS, items } }
+    function success(data) { return { type: contactConstants.GETALL_SUCCESS, data } }
     function failure(error) { return { type: contactConstants.GETALL_FAILURE, error } }
 }
 

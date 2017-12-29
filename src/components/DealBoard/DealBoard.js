@@ -3,7 +3,6 @@ import PipelineSelector from './PipelineSelector'
 import {getAllPipelines} from "../../actions/pipeline.actions";
 import {getAllStages} from "../../actions/stage.actions";
 import {connect} from "react-redux";
-import NewDeal from "./Deals/NewDeal";
 import Button from "react-bootstrap/es/Button";
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
@@ -129,7 +128,7 @@ class DealBoard extends Component {
     pipelineChanged(newPipelineId, _props = this.props) {
 
         const activeStages = _props.stages.ids
-            .filter( id => { return _props.stages.items[id].pipelineId == newPipelineId })
+            .filter( id => { return _props.stages.items[id].pipelineId === newPipelineId })
             .map(id => { return _props.stages.items[id]; });
 
         this.setState({
@@ -140,7 +139,7 @@ class DealBoard extends Component {
 
     selectedStages(){
         return this.props.stages.ids
-            .filter( id => { return this.props.stages.items[id].pipelineId == this.state.selectedPipelineId })
+            .filter( id => { return this.props.stages.items[id].pipelineId === this.state.selectedPipelineId })
             .map(id => { return this.props.stages.items[id]; });
     }
 

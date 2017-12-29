@@ -69,23 +69,23 @@ class Stages extends React.Component {
             <div className="step-indicator">
                 {
                     this.props.ids &&
-                    this.props.ids.map( stageId => {
+                    this.props.ids.filter( id =>
+                        this.props.stages[id].pipelineId !== this.props.pipelineId
+                    ).map( stageId => {
                         const stageItem = this.props.stages[stageId];
-                        if( stageItem.pipelineId == this.props.pipelineId ){
-                            return (
-                                <div key={stageId} className="step" style={{"--stage-color": stageItem.color}}>
-                                    {stageItem.name}
-                                    <div className="btn-group btn-group-xs" role="group" aria-label="...">
-                                        <i className="btn fa fa-edit"  onClick={() => this.onEditStage(stageItem)}></i>
-                                        <i className="btn fa fa-trash" onClick={() => this.onDeleteStage(stageItem.id)}></i>
-                                    </div>
+                        return (
+                            <div key={stageId} className="step" style={{"--stage-color": stageItem.color}}>
+                                {stageItem.name}
+                                <div className="btn-group btn-group-xs" role="group" aria-label="...">
+                                    <i className="btn fa fa-edit"  onClick={() => this.onEditStage(stageItem)} />
+                                    <i className="btn fa fa-trash" onClick={() => this.onDeleteStage(stageItem.id)} />
                                 </div>
-                            );
-                        }
+                            </div>
+                        );
                     }, this)
                 }
                 <div className="step">
-                    <a onClick={() => this.onNewStage()}>New Stage <i className="fa fa-plus" ></i></a>
+                    <a onClick={() => this.onNewStage()}>New Stage <i className="fa fa-plus" /></a>
                 </div>
                 <StageNewOrEdit showModal={this.state.showStageModal}
                                 close={this.closeStageModal}

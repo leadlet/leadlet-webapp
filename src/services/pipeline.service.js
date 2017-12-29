@@ -53,7 +53,7 @@ function _delete(id) {
         headers: authHeader()
     };
 
-    return fetch('/api/pipelines/' + id, requestOptions).then(handleResponse);;
+    return fetch('/api/pipelines/' + id, requestOptions).then(handleResponse);
 }
 
 function handleResponse(response) {
