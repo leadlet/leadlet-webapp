@@ -27,7 +27,13 @@ export const ContactList = function (props) {
     }
 
     return (
-        <BootstrapTable data={ dataMapper(props.data) }
+        <BootstrapTable
+            tableHeaderClass='table-striped'
+            containerClass='table-responsive'
+            tableContainerClass='table'
+            tableBodyClass='table-striped'
+
+            data={ dataMapper(props.data) }
                         remote={ true }
                         pagination={ true }
                         height='420px'
