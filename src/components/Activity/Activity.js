@@ -99,7 +99,6 @@ class Activity extends Component {
                             end: event.end,
                             memo: event.memo,
                             activityType: event.type,
-                            id: event.id,
                             contact: event.personId,
                             organization: event.organizationId
                         }

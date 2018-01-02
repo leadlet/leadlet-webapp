@@ -10,7 +10,6 @@ import CardsContainer from "./Deals/CardsContainer";
 import CustomDragLayer from "./CustomDragLayer";
 import {deleteDeal, getAllDeals, moveDeal} from "../../actions/deal.actions";
 import SweetAlert from 'sweetalert-react';
-import ButtonToolbar from "react-bootstrap/es/ButtonToolbar";
 import NewDeal from "./Deals/NewDeal";
 
 

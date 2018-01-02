@@ -1,7 +1,6 @@
 import {contactConstants} from "../constants/contact.constants";
 import {contactService} from "../services/contact.service";
 import {alertActions} from "./alert.actions";
-import {SubmissionError} from "redux-form";
 
 export function getById(contactId) {
     return dispatch => {

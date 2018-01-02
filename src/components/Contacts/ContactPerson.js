@@ -199,7 +199,7 @@ class ContactNew extends React.Component {
     }
 
     render() {
-        const {handleSubmit, pristine, reset, submitting, contact, valid} = this.props;
+        const {handleSubmit, pristine, submitting, contact, valid} = this.props;
 
         let title = "Create";
         if (contact && contact.id) {
