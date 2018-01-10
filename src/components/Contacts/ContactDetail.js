@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import connect from "react-redux/es/connect/connect";
 import {getById} from "../../actions/contact.actions";
 import {getByPersonId} from "../../actions/activity.actions";
+import {createNote} from "../../actions/note.actions";
 import ContactPerson from "./ContactPerson";
 import ContactOrganization from "./ContactOrganization";
 import moment from 'moment';
@@ -18,13 +19,31 @@ class ContactDetail extends Component {
         this.state = {
             showPersonEditModal: false,
             showOrganizationEditModal: false,
-            showModal: false
+            showModal: false,
+            value: ''
         };
 
         this.openEditModal = this.openEditModal.bind(this);
         this.closeEditModal = this.closeEditModal.bind(this);
         this.openActivityModal = this.openActivityModal.bind(this);
         this.closeActivityModal = this.closeActivityModal.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleChange(event) {
+        this.setState({value: event.target.value});
+    }
+
+    handleSubmit(event) {
+        alert('A somebody was submitted: ' + this.state.value);
+        event.preventDefault();
+        console.log("Note Event: ", event.target);
+        this.props.createNote( {
+            content: this.state.value,
+            contactId: this.props.viewedContact.id
+        });
+        this.state.value = '';
     }
 
     openEditModal(type) {
@@ -149,10 +168,13 @@ class ContactDetail extends Component {
                                                         <div className="tab-content">
                                                             <div className="tab-pane active" id="tab-1">
                                                                 <div className="note-form">
-                                                                    <form role="form">
+                                                                    <form role="form" onSubmit={this.handleSubmit}>
                                                                         <div className="form-group">
-                                                                            <textarea className="form-control"
-                                                                                      placeholder="Note"></textarea>
+                                                                            <textarea placeholder="Please enter a note."
+                                                                                      className="form-control"
+                                                                                      value={this.state.value}
+                                                                                      onChange={this.handleChange}
+                                                                            ></textarea>
                                                                         </div>
                                                                         <div className="text-right">
                                                                             <button type="submit"
@@ -333,4 +355,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, {getByPersonId, getById})(ContactDetail);
+export default connect(mapStateToProps, {getByPersonId, getById, createNote})(ContactDetail);
