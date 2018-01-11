@@ -3,6 +3,7 @@ import connect from "react-redux/es/connect/connect";
 import {getById} from "../../actions/contact.actions";
 import {getByPersonId} from "../../actions/activity.actions";
 import {createNote} from "../../actions/note.actions";
+import {getAll} from "../../actions/timeline.actions";
 import ContactPerson from "./ContactPerson";
 import ContactOrganization from "./ContactOrganization";
 import moment from 'moment';
@@ -29,6 +30,59 @@ class ContactDetail extends Component {
         this.closeActivityModal = this.closeActivityModal.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.renderTimeline = this.renderTimeline.bind(this);
+    }
+
+    renderTimeline() {
+        return (
+            <div>
+                {this.props.timeLineIds.map(timelineId => {
+                    const timelineItem = this.props.timeLines[timelineId];
+                    if (timelineItem.type === 'NOTE_CREATED') {
+                        return (
+                            <div className="vertical-timeline-block">
+                                <div className="vertical-timeline-icon navy-bg">
+                                    <i className="fa fa-sticky-note-o" aria-hidden="true"/>
+                                </div>
+
+                                <div className="vertical-timeline-content">
+                                    <h2>Note</h2>
+                                    <p>
+                                        {timelineItem.source.content}
+                                    </p>
+                                    <a href="#" className="btn btn-sm btn-primary"> More info</a>
+                                    <span className="vertical-date">
+                                        {moment(timelineItem.createdDate).format('HH:MM').toString()} <br/>
+                                        <small>{moment(timelineItem.createdDate).format('DD-MMM-YYYY').toString()}</small>
+                    </span>
+                                </div>
+                            </div>
+
+                        )
+                    }else if(timelineItem.type === 'ACTIVITY_CREATED'){
+                        return (
+                            <div className="vertical-timeline-block">
+                                <div className="vertical-timeline-icon navy-bg">
+                                    <i className="fa fa-briefcase"/>
+                                </div>
+
+                                <div className="vertical-timeline-content">
+                                    <h2>{timelineItem.source.title}</h2>
+                                    <p>
+                                        {timelineItem.source.memo}
+                                    </p>
+                                    <a href="#" className="btn btn-sm btn-primary"> More info</a>
+                                    <span className="vertical-date">
+                                        {moment(timelineItem.source.start).format('HH:MM').toString()} <br/>
+                                        <small>{moment(timelineItem.source.start).format('DD-MMM-YYYY').toString()}</small>
+                    </span>
+                                </div>
+                            </div>
+                        );
+                    }
+                })}
+            </div>
+        );
     }
 
     handleChange(event) {
@@ -39,7 +93,7 @@ class ContactDetail extends Component {
         alert('A somebody was submitted: ' + this.state.value);
         event.preventDefault();
         console.log("Note Event: ", event.target);
-        this.props.createNote( {
+        this.props.createNote({
             content: this.state.value,
             contactId: this.props.viewedContact.id
         });
@@ -70,6 +124,7 @@ class ContactDetail extends Component {
     componentDidMount() {
         this.props.getById(this.props.match.params.contactId);
         this.props.getByPersonId(this.props.match.params.contactId);
+        this.props.getAll(); //timeline
     }
 
     componentDidUpdate() {
@@ -198,102 +253,7 @@ class ContactDetail extends Component {
                                     <div className="ibox-content">
                                         <div id="vertical-timeline"
                                              className="vertical-container dark-timeline center-orientation">
-                                            <div className="vertical-timeline-block">
-                                                <div className="vertical-timeline-icon navy-bg">
-                                                    <i className="fa fa-briefcase"></i>
-                                                </div>
-
-                                                <div className="vertical-timeline-content">
-                                                    <h2>Meeting</h2>
-                                                    <p>Conference on the sales results for the previous year. Monica
-                                                        please examine sales trends in marketing and products. Below
-                                                        please find the current status of the sale.
-                                                    </p>
-                                                    <a href="#" className="btn btn-sm btn-primary"> More info</a>
-                                                    <span className="vertical-date">
-                                        Today <br/>
-                                        <small>Dec 24</small>
-                                    </span>
-                                                </div>
-                                            </div>
-
-                                            <div className="vertical-timeline-block">
-                                                <div className="vertical-timeline-icon blue-bg">
-                                                    <i className="fa fa-file-text"></i>
-                                                </div>
-
-                                                <div className="vertical-timeline-content">
-                                                    <h2>Send documents to Mike</h2>
-                                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting
-                                                        industry. Lorem Ipsum has been the industry's standard dummy
-                                                        text ever since.</p>
-                                                    <a href="#" className="btn btn-sm btn-success"> Download
-                                                        document </a>
-                                                    <span className="vertical-date">
-                                        Today <br/>
-                                        <small>Dec 24</small>
-                                    </span>
-                                                </div>
-                                            </div>
-
-                                            <div className="vertical-timeline-block">
-                                                <div className="vertical-timeline-icon lazur-bg">
-                                                    <i className="fa fa-coffee"></i>
-                                                </div>
-
-                                                <div className="vertical-timeline-content">
-                                                    <h2>Coffee Break</h2>
-                                                    <p>Go to shop and find some products. Lorem Ipsum is simply dummy
-                                                        text of the printing and typesetting industry. Lorem Ipsum has
-                                                        been the industry's. </p>
-                                                    <a href="#" className="btn btn-sm btn-info">Read more</a>
-                                                    <span className="vertical-date"> Yesterday <br/><small>Dec 23</small></span>
-                                                </div>
-                                            </div>
-
-                                            <div className="vertical-timeline-block">
-                                                <div className="vertical-timeline-icon yellow-bg">
-                                                    <i className="fa fa-phone"></i>
-                                                </div>
-
-                                                <div className="vertical-timeline-content">
-                                                    <h2>Phone with Jeronimo</h2>
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto,
-                                                        optio, dolorum provident rerum aut hic quasi placeat iure
-                                                        tempora laudantium ipsa ad debitis unde? Iste voluptatibus minus
-                                                        veritatis qui ut.</p>
-                                                    <span className="vertical-date">Yesterday <br/><small>Dec 23</small></span>
-                                                </div>
-                                            </div>
-
-                                            <div className="vertical-timeline-block">
-                                                <div className="vertical-timeline-icon lazur-bg">
-                                                    <i className="fa fa-user-md"></i>
-                                                </div>
-
-                                                <div className="vertical-timeline-content">
-                                                    <h2>Go to the doctor dr Smith</h2>
-                                                    <p>Find some issue and go to doctor. Lorem Ipsum is simply dummy
-                                                        text of the printing and typesetting industry. Lorem Ipsum has
-                                                        been the industry's standard dummy text ever since the
-                                                        1500s. </p>
-                                                    <span className="vertical-date">Yesterday <br/><small>Dec 23</small></span>
-                                                </div>
-                                            </div>
-
-                                            <div className="vertical-timeline-block">
-                                                <div className="vertical-timeline-icon navy-bg">
-                                                    <i className="fa fa-comments"></i>
-                                                </div>
-
-                                                <div className="vertical-timeline-content">
-                                                    <h2>Chat with Monica and Sandra</h2>
-                                                    <p>Web sites still in their infancy. Various versions have evolved
-                                                        over the years, sometimes by accident, sometimes on purpose
-                                                        (injected humour and the like). </p>
-                                                    <span className="vertical-date">Yesterday <br/><small>Dec 23</small></span>
-                                                </div>
-                                            </div>
+                                            {this.props.timeLines && this.renderTimeline()}
                                         </div>
                                     </div>
                                 </div>
@@ -351,8 +311,11 @@ function mapStateToProps(state) {
     return {
         viewedContact: state.contacts.viewedContact,
         activities: state.activities.items,
-        ids: state.activities.ids
+        ids: state.activities.ids,
+        timeLines: state.timeLines.items,
+        timeLineIds: state.timeLines.ids
+
     };
 }
 
-export default connect(mapStateToProps, {getByPersonId, getById, createNote})(ContactDetail);
+export default connect(mapStateToProps, {getByPersonId, getById, createNote, getAll})(ContactDetail);

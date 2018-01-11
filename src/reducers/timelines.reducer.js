@@ -1,12 +1,12 @@
 import {timelineConstants} from "../constants/timeline.constants";
 import {normalize, schema} from 'normalizr';
 
-const timelineSchema = new schema.Entity('timelines');
+const timeLineSchema = new schema.Entity('timeLines');
 
 // or use shorthand syntax:
-const timelineListSchema = [timelineSchema];
+const timelineListSchema = [timeLineSchema];
 
-export function timelines(state = {}, action) {
+export function timeLines(state = {}, action) {
     switch (action.type) {
         /* ALL timelineS */
         case timelineConstants.GETALL_REQUEST:
@@ -15,10 +15,10 @@ export function timelines(state = {}, action) {
                 loading: true
             };
         case timelineConstants.GETALL_SUCCESS:
-            const _items = normalize(action.items, timelineListSchema);
+            const _items = normalize(action.data.items, timelineListSchema);
             return {
                 ...state,
-                items: _items.entities.timelines,
+                items: _items.entities.timeLines,
                 ids: _items.result
             };
         case timelineConstants.GETALL_FAILURE:

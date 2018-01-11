@@ -10,7 +10,7 @@ function getAll(filter, page, size) {
         headers: authHeader()
     };
 
-    return fetch(`/api/timelines?filter=${filter}&page=${page}&size=${size}`, requestOptions).then(handlePaginationResponse);
+    return fetch(`/api/timeLines?filter=${filter}&page=${page}&size=${size}`, requestOptions).then(handlePaginationResponse);
 }
 
 function handlePaginationResponse(response) {
