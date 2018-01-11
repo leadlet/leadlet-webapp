@@ -73,8 +73,8 @@ class ContactDetail extends Component {
                                     </p>
                                     <a href="#" className="btn btn-sm btn-primary"> More info</a>
                                     <span className="vertical-date">
-                                        {moment(timelineItem.source.start).format('HH:MM').toString()} <br/>
-                                        <small>{moment(timelineItem.source.start).format('DD-MMM-YYYY').toString()}</small>
+                                        {moment(timelineItem.createdDate).format('HH:MM').toString()} <br/>
+                                        <small>{moment(timelineItem.createdDate).format('DD-MMM-YYYY').toString()}</small>
                     </span>
                                 </div>
                             </div>
