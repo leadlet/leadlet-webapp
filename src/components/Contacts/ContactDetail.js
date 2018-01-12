@@ -6,11 +6,12 @@ import {createNote} from "../../actions/note.actions";
 import {getAll} from "../../actions/timeline.actions";
 import ContactPerson from "./ContactPerson";
 import ContactOrganization from "./ContactOrganization";
-import moment from 'moment';
 import ActivityDetail from "../Activity/ActivityDetail";
 import fullCalendar from 'fullcalendar';
 import '../../../node_modules/fullcalendar/dist/fullcalendar.css';
 import $ from 'jquery';
+import {Timeline} from "../Timeline/Timelines";
+import moment from 'moment';
 
 class ContactDetail extends Component {
 
@@ -30,60 +31,8 @@ class ContactDetail extends Component {
         this.closeActivityModal = this.closeActivityModal.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.renderTimeline = this.renderTimeline.bind(this);
     }
 
-    renderTimeline() {
-        return (
-            <div>
-                {this.props.timeLineIds.map(timelineId => {
-                    const timelineItem = this.props.timeLines[timelineId];
-                    if (timelineItem.type === 'NOTE_CREATED') {
-                        return (
-                            <div className="vertical-timeline-block">
-                                <div className="vertical-timeline-icon navy-bg">
-                                    <i className="fa fa-sticky-note-o" aria-hidden="true"/>
-                                </div>
-
-                                <div className="vertical-timeline-content">
-                                    <h2>Note</h2>
-                                    <p>
-                                        {timelineItem.source.content}
-                                    </p>
-                                    <a href="#" className="btn btn-sm btn-primary"> More info</a>
-                                    <span className="vertical-date">
-                                        {moment(timelineItem.createdDate).format('HH:MM').toString()} <br/>
-                                        <small>{moment(timelineItem.createdDate).format('DD-MMM-YYYY').toString()}</small>
-                    </span>
-                                </div>
-                            </div>
-
-                        )
-                    }else if(timelineItem.type === 'ACTIVITY_CREATED'){
-                        return (
-                            <div className="vertical-timeline-block">
-                                <div className="vertical-timeline-icon navy-bg">
-                                    <i className="fa fa-briefcase"/>
-                                </div>
-
-                                <div className="vertical-timeline-content">
-                                    <h2>{timelineItem.source.title}</h2>
-                                    <p>
-                                        {timelineItem.source.memo}
-                                    </p>
-                                    <a href="#" className="btn btn-sm btn-primary"> More info</a>
-                                    <span className="vertical-date">
-                                        {moment(timelineItem.createdDate).format('HH:MM').toString()} <br/>
-                                        <small>{moment(timelineItem.createdDate).format('DD-MMM-YYYY').toString()}</small>
-                    </span>
-                                </div>
-                            </div>
-                        );
-                    }
-                })}
-            </div>
-        );
-    }
 
     handleChange(event) {
         this.setState({value: event.target.value});
@@ -253,7 +202,10 @@ class ContactDetail extends Component {
                                     <div className="ibox-content">
                                         <div id="vertical-timeline"
                                              className="vertical-container dark-timeline center-orientation">
-                                            {this.props.timeLines && this.renderTimeline()}
+                                            {this.props.timeLines && <Timeline
+                                                timeLines={this.props.timeLines}
+                                                timeLineIds={this.props.timeLineIds}
+                                            />}
                                         </div>
                                     </div>
                                 </div>
@@ -295,7 +247,7 @@ class ContactDetail extends Component {
                             <div>
                                 <ActivityDetail showModal={this.state.showModal}
                                                 close={this.closeActivityModal}
-                                                contact={this.props.viewedContact}
+                                                initialValues={{contact:this.props.viewedContact.id}}
                                 />
                             </div>
                         </div>

@@ -172,8 +172,7 @@ class ActivityDetail extends Component {
         this.checkDate = this.checkDate.bind(this);
 
         this.state = {
-            showDeleteDialog: false,
-            contact: null
+            showDeleteDialog: false
         };
     }
 
@@ -309,7 +308,7 @@ class ActivityDetail extends Component {
                             multi={false}
                         />
                         {
-                            (!this.props.contact || (this.props.contact && !this.props.contact.type)) &&
+                            (this.props.initialValues && !this.props.initialValues.contact) &&
                                 <div>
                                     <Field
                                         name="contact"
@@ -323,7 +322,7 @@ class ActivityDetail extends Component {
                                         label="Organization"
                                         multi={false}
                                         options={this.mapContact2Options(contactConstants.CONTACT_TYPE_ORGANIZATION)}
-                                        component={this.props.contact && (this.props.contact.type === "ORGANIZATION")? null : renderSelectField}
+                                        component={renderSelectField}
                                     />
                                 </div>
                         }
