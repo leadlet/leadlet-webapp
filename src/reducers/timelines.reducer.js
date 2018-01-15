@@ -16,10 +16,28 @@ export function timeLines(state = {}, action) {
             };
         case timelineConstants.GETALL_SUCCESS:
             const _items = normalize(action.data.items, timelineListSchema);
+
+            let newIds = state.ids;
+
+            if (newIds) {
+                newIds = newIds.concat(_items.result);
+            } else {
+                newIds = _items.result
+            }
+
+            let newItems = state.items;
+            if (newItems) {
+                _items.result.forEach(id => {
+                    newItems[id] = _items.entities.timeLines[id];
+                });
+            } else {
+                newItems = _items.entities.timeLines;
+            }
+
             return {
                 ...state,
-                items: _items.entities.timeLines,
-                ids: _items.result
+                items: newItems,
+                ids: newIds
             };
         case timelineConstants.GETALL_FAILURE:
             return {

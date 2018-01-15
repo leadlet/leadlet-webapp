@@ -1538,6 +1538,10 @@ console-control-strings@^1.0.0, console-control-strings@~1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/console-control-strings/-/console-control-strings-1.1.0.tgz#3d7cf4464db6446ea644bf4b39507f9851008e8e"
 
+consolidated-events@^1.1.0:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/consolidated-events/-/consolidated-events-1.1.1.tgz#25395465b35e531395418b7bbecb5ecaf198d179"
+
 constants-browserify@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/constants-browserify/-/constants-browserify-1.0.0.tgz#c20b96d8c617748aaf1c16021760cd27fcb8cb75"
@@ -5615,6 +5619,13 @@ react-styling@^1.6.1:
   dependencies:
     babel-runtime "^6.6.1"
     style-builder "^1.0.13"
+
+react-waypoint@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/react-waypoint/-/react-waypoint-8.0.0.tgz#948748a3160e2ca27ae38b0a9acf8df8284e28e7"
+  dependencies:
+    consolidated-events "^1.1.0"
+    prop-types "^15.0.0"
 
 react@^16.2.0:
   version "16.2.0"

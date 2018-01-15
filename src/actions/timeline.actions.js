@@ -1,11 +1,11 @@
 import {timelineConstants} from "../constants/timeline.constants";
 import {timelineService} from "../services/timeline.service";
 
-export function getAll(filter, page, size) {
+export function getPaginated(filter, page, size) {
     return dispatch => {
         dispatch(request());
 
-        timelineService.getAll(filter, page, size)
+        timelineService.getPaginated(filter, page, size)
             .then(
                 response => dispatch(success({items: response[0], dataTotalSize: response[1]})),
                 error => dispatch(failure(error))

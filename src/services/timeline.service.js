@@ -1,10 +1,10 @@
 import {authHeader} from '../helpers';
 
 export const timelineService = {
-    getAll
+    getPaginated
 };
 
-function getAll(filter, page, size) {
+function getPaginated(filter, page, size) {
     const requestOptions = {
         method: 'GET',
         headers: authHeader()

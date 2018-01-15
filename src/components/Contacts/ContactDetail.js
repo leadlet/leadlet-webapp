@@ -3,15 +3,14 @@ import connect from "react-redux/es/connect/connect";
 import {getById} from "../../actions/contact.actions";
 import {getByPersonId} from "../../actions/activity.actions";
 import {createNote} from "../../actions/note.actions";
-import {getAll} from "../../actions/timeline.actions";
 import ContactPerson from "./ContactPerson";
 import ContactOrganization from "./ContactOrganization";
 import ActivityDetail from "../Activity/ActivityDetail";
 import fullCalendar from 'fullcalendar';
 import '../../../node_modules/fullcalendar/dist/fullcalendar.css';
 import $ from 'jquery';
-import {Timeline} from "../Timeline/Timelines";
 import moment from 'moment';
+import Timeline from "../Timeline/Timeline";
 
 class ContactDetail extends Component {
 
@@ -39,7 +38,6 @@ class ContactDetail extends Component {
     }
 
     handleSubmit(event) {
-        alert('A somebody was submitted: ' + this.state.value);
         event.preventDefault();
         console.log("Note Event: ", event.target);
         this.props.createNote({
@@ -73,7 +71,6 @@ class ContactDetail extends Component {
     componentDidMount() {
         this.props.getById(this.props.match.params.contactId);
         this.props.getByPersonId(this.props.match.params.contactId);
-        this.props.getAll(); //timeline
     }
 
     componentDidUpdate() {
@@ -199,13 +196,11 @@ class ContactDetail extends Component {
                                     </div>
                                 </div>
                                 <div className="ibox">
-                                    <div className="ibox-content">
+                                    <div className="ibox-content" style={{height:'600px'}}>
                                         <div id="vertical-timeline"
-                                             className="vertical-container dark-timeline center-orientation">
-                                            {this.props.timeLines && <Timeline
-                                                timeLines={this.props.timeLines}
-                                                timeLineIds={this.props.timeLineIds}
-                                            />}
+                                             className="vertical-container dark-timeline center-orientation full-height">
+                                            <Timeline
+                                                pageSize={5}/>
                                         </div>
                                     </div>
                                 </div>
@@ -247,7 +242,7 @@ class ContactDetail extends Component {
                             <div>
                                 <ActivityDetail showModal={this.state.showModal}
                                                 close={this.closeActivityModal}
-                                                initialValues={{contact:this.props.viewedContact.id}}
+                                                initialValues={{contact: this.props.viewedContact.id}}
                                 />
                             </div>
                         </div>
@@ -263,11 +258,8 @@ function mapStateToProps(state) {
     return {
         viewedContact: state.contacts.viewedContact,
         activities: state.activities.items,
-        ids: state.activities.ids,
-        timeLines: state.timeLines.items,
-        timeLineIds: state.timeLines.ids
-
+        ids: state.activities.ids
     };
 }
 
-export default connect(mapStateToProps, {getByPersonId, getById, createNote, getAll})(ContactDetail);
+export default connect(mapStateToProps, {getByPersonId, getById, createNote})(ContactDetail);

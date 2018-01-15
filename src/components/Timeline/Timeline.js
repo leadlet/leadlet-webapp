@@ -1,19 +1,42 @@
-import React from 'react';
+import React, {Component} from 'react';
 import moment from 'moment';
+import connect from "react-redux/es/connect/connect";
+import {getPaginated} from "../../actions/timeline.actions";
+import Waypoint from 'react-waypoint';
 
-export const Timeline = function (props) {
 
-    const {timeLines, timeLineIds} = props;
+class Timeline extends Component {
 
-    if (!timeLines) {
-        return (<em> Loading... </em>);
+    PAGE_SIZE = 5;
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            currentPage: 0
+        };
+
+        this.renderTimelineItems = this.renderTimelineItems.bind(this);
+        this.loadMoreItems = this.loadMoreItems.bind(this);
+
+        this._handleWaypointEnter = this._handleWaypointEnter.bind(this);
+        this._handleWaypointLeave = this._handleWaypointLeave.bind(this);
     }
 
-    function renderTimeline() {
+    componentDidMount() {
+        this.loadMoreItems();
+    }
+
+    loadMoreItems() {
+        this.props.getPaginated(null, this.state.currentPage, this.PAGE_SIZE);
+    }
+
+    renderTimelineItems() {
         return (
             <div>
-                {timeLineIds.map(timelineId => {
-                    const timelineItem = timeLines[timelineId];
+                {this.props.timeLineIds.map(timelineId => {
+                    const timelineItem = this.props.timeLines[timelineId];
+
                     if (timelineItem.type === 'NOTE_CREATED') {
                         return (
                             <div className="vertical-timeline-block">
@@ -141,11 +164,39 @@ export const Timeline = function (props) {
         );
     }
 
-    return (
-        <div>
-            <div className="timeline-class">
-                {renderTimeline()}
-            </div>
-        </div>
-    );
+    _handleWaypointEnter(waypointUpdate) {
+        console.log("hede", waypointUpdate);
+    }
+
+    _handleWaypointLeave(waypointUpdate) {
+        this.setState({currentPage: this.state.currentPage + 1},
+            this.loadMoreItems())
+    }
+
+    render() {
+        if (!this.props.timeLineIds) {
+            return (
+                <em>Loading Timeline Items</em>
+            );
+        } else {
+            return (
+                <div style={{height: '500px', overflowY: 'scroll'}}>
+                    {this.renderTimelineItems()}
+                    <Waypoint
+                        onEnter={this._handleWaypointEnter}
+                        onLeave={this._handleWaypointLeave}
+                    />
+                </div>
+            )
+        }
+    }
 }
+
+function mapStateToProps(state) {
+    return {
+        timeLines: state.timeLines.items,
+        timeLineIds: state.timeLines.ids
+    };
+}
+
+export default connect(mapStateToProps, {getPaginated})(Timeline);
