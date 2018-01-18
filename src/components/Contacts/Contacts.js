@@ -65,6 +65,7 @@ class Contacts extends Component {
         this.handleSearchTermChange = this.handleSearchTermChange.bind(this);
 
         this.getSelectedCount = this.getSelectedCount.bind(this);
+        this.clearSelections = this.clearSelections.bind(this);
 
         this.handleSearchDebounced = _.debounce(function () {
             if (this.state.term && this.state.term.length > 2)
@@ -278,6 +279,12 @@ class Contacts extends Component {
         }
     }
 
+    clearSelections(){
+        this.setState({
+            selectedOrganizationIds : [],
+            selectedPersonIds: []
+                        });
+    }
     render() {
         return (
             <div className="container">
@@ -333,7 +340,15 @@ class Contacts extends Component {
                                             <Badge>{this.getSelectedCount()}</Badge>
                                         </button>
                                 }
-
+                                {
+                                    this.getSelectedCount() > 0 &&
+                                    <button type="button"
+                                            className="btn btn-info btn-xs m-l-sm"
+                                            onClick={this.clearSelections}>
+                                        <i className="fa fa-remove"/> {'Clear Selected '}
+                                        <Badge>{this.getSelectedCount()}</Badge>
+                                    </button>
+                                }
 
                             </div>
                             <div>
