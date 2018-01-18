@@ -2,7 +2,7 @@ import { authHeader } from '../helpers';
 
 export const organizationService = {
     getAllOrganization,
-    getById,
+    getByIdOrganization,
     createOrganization,
     updateOrganization
 };
@@ -27,7 +27,7 @@ function updateOrganization(organization, callback) {
     return fetch('/api/organizations/', requestOptions).then(handleResponse);
 }
 
-function getById(id) {
+function getByIdOrganization(id) {
     const requestOptions = {
         method: 'GET',
         headers: authHeader()

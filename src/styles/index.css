@@ -4650,6 +4650,7 @@ body.mini-navbar.fixed-sidebar .logo-element {
   border: 1px solid #e7eaec;
   padding: 20px;
   margin-bottom: 20px;
+  word-wrap: break-word;
 }
 .contact-box > a {
   color: inherit;
@@ -5055,15 +5056,15 @@ a.compose-mail {
   margin-right: 10px;
 }
 .profile-image {
+  margin-left: 10px;
   width: 120px;
-  float: left;
 }
 .profile-image img {
   width: 96px;
   height: 96px;
 }
 .profile-info {
-  margin-left: 120px;
+  margin-left: -2px
 }
 .feed-activity-list .feed-element {
   border-bottom: 1px solid #e7eaec;

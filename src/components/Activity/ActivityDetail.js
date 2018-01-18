@@ -22,8 +22,10 @@ const validate = values => {
     const errors = {}
     if (!values.title) {
         errors.title = 'Required'
-    } else if (values.title.length > 15) {
-        errors.title = 'Must be 15 characters or less'
+    } else if (values.title.length > 45) {
+        errors.title = 'Must be 45 characters or less!'
+    }else if(!values.activityType){
+        errors.title = "Please, select a type!"
     }
     return errors
 }
@@ -226,8 +228,17 @@ class ActivityDetail extends Component {
         activity.memo = formValue.memo;
         activity.type = formValue.activityType;
         activity.title = formValue.title;
-        activity.personId = formValue.person;
-        activity.organizationId = formValue.organization;
+        if (!this.props.person) {
+            activity.personId = formValue.person;
+        } else {
+            activity.personId = this.props.person.id;
+        }
+        if (!this.props.organization) {
+            activity.organizationId = formValue.organization;
+        } else {
+            activity.organizationId = this.props.organization.id;
+        }
+
 
         if (this.props.initialValues && this.props.initialValues.id) {
             this.props.update(activity);
@@ -335,7 +346,7 @@ class ActivityDetail extends Component {
                                 component={renderSelectField}
                             />
                         }
-                        <div className="form-group">
+                        <div className="invisible form-group">
                             <Checkbox>Send invitations to attendees</Checkbox>
                         </div>
                     </form>
@@ -369,7 +380,7 @@ class ActivityDetail extends Component {
                                         onClick={handleSubmit(this.onSubmit)}>
                                     <strong>Submit</strong></button>
                             </div>
-                            <Checkbox className="mark pull-left">Mark as done</Checkbox>
+                            <Checkbox className="mark pull-left invisible">Mark as done</Checkbox>
                         </div>
                     </div>
 

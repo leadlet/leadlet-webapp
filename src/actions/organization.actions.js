@@ -2,11 +2,11 @@ import {organizationConstants} from "../constants/organization.constants";
 import {organizationService} from "../services/organization.service";
 import {alertActions} from "./alert.actions";
 
-export function getById(organizationId) {
+export function getByIdOrganization(organizationId) {
     return dispatch => {
         dispatch(request(organizationId));
 
-        organizationService.getById(organizationId)
+        organizationService.getByIdOrganization(organizationId)
             .then(
                 organization => dispatch(success(organization)),
                 error => dispatch(failure(error))

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import connect from "react-redux/es/connect/connect";
 import {createNote} from "../../actions/note.actions";
-import {getById} from "../../actions/organization.actions"
+import {getByIdOrganization} from "../../actions/organization.actions"
 import ContactPerson from "./ContactPerson";
 import moment from 'moment';
 import ActivityDetail from "../Activity/ActivityDetail";
@@ -60,7 +60,7 @@ class OrganizationDetail extends Component {
     }
 
     componentDidMount() {
-        this.props.getById(this.props.match.params.organizationId);
+        this.props.getByIdOrganization(this.props.match.params.organizationId);
     }
 
     componentDidUpdate() {
@@ -339,4 +339,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, {getById, createNote})(OrganizationDetail);
+export default connect(mapStateToProps, {getByIdOrganization, createNote})(OrganizationDetail);
