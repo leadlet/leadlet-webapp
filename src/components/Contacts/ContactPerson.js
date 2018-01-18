@@ -1,14 +1,14 @@
 import React from 'react';
 import Modal from '../../modal-shim';
 import {Field, reduxForm} from 'redux-form'
-import {updateContact, getAll, createContact} from "../../actions/contact.actions";
 import {connect} from 'react-redux';
-import {contactConstants} from "../../constants/contact.constants";
 import Select from '../../../node_modules/react-select';
 import FormGroup from "react-bootstrap/es/FormGroup";
 import InputGroup from "react-bootstrap/es/InputGroup";
 import FormControl from "react-bootstrap/es/FormControl";
 import Phone from 'react-phone-number-input';
+import {createPerson, getAllPerson, updatePerson} from "../../actions/person.actions";
+import {getAllOrganization} from "../../actions/organization.actions";
 
 const validate = values => {
     const errors = {}
@@ -69,7 +69,7 @@ const renderPhoneField = ({
         <div>
             <FormGroup>
                 <InputGroup>
-                    <InputGroup.Addon><i class="fa fa-phone" aria-hidden="true"></i></InputGroup.Addon>
+                    <InputGroup.Addon><i class="fa fa-phone" aria-hidden="true"/></InputGroup.Addon>
                     <Phone
                         placeholder="enter phone number"
                         value={input.value}
@@ -159,37 +159,33 @@ class ContactNew extends React.Component {
     constructor(props) {
         super(props);
         this.onSubmit = this.onSubmit.bind(this);
-        this.mapContact2Options = this.mapContact2Options.bind(this);
+        this.mapOrganization2Options = this.mapOrganization2Options.bind(this);
         this.onClose = this.onClose.bind(this);
     }
 
     componentDidMount() {
-        this.props.getAll();
+        this.props.getAllOrganization();
     }
 
     onSubmit = (values) => {
         // print the form values to the console
-        values.type = contactConstants.CONTACT_TYPE_PERSON;
-        console.log(values);
         this.props.close();
 
         if (this.props.initialValues && this.props.initialValues.id) {
-            return this.props.updateContact(values, this.props.close);
+            return this.props.updatePerson(values, this.props.close);
         } else {
-            return this.props.createContact(values, this.props.close);
+            return this.props.createPerson(values, this.props.close);
         }
     }
 
-    mapContact2Options(type) {
+    mapOrganization2Options() {
 
-        if (!this.props.contacts.ids) {
+        if (!this.props.organizations.ids) {
             return [];
         } else {
-            return this.props.contacts.ids.filter(id => {
-                return this.props.contacts.items[id].type === type;
-            })
+            return this.props.organizations.ids
                 .map(id => {
-                    return {label: this.props.contacts.items[id].name, value: this.props.contacts.items[id].id}
+                    return {label: this.props.organizations.items[id].name, value: this.props.organizations.items[id].id}
                 });
         }
     }
@@ -243,7 +239,7 @@ class ContactNew extends React.Component {
                             component={renderSelectField}
                             label="Organization Name"
                             multi={false}
-                            options={this.mapContact2Options(contactConstants.CONTACT_TYPE_ORGANIZATION)}
+                            options={this.mapOrganization2Options()}
                         />
                         <Field
                             name="email"
@@ -271,7 +267,7 @@ class ContactNew extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        contacts: state.contacts
+        organizations: state.organizations
     };
 }
 
@@ -280,5 +276,5 @@ export default reduxForm({
     validate, // <--- validation function given to redux-form
     warn // <--- warning function given to redux-form
 })(
-    connect(mapStateToProps, {updateContact, getAll, createContact})(ContactNew)
+    connect(mapStateToProps, {updatePerson, getAllOrganization, createPerson})(ContactNew)
 );

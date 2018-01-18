@@ -1,30 +1,30 @@
 import { authHeader } from '../helpers';
 
-export const contactService = {
-    getAll,
+export const personService = {
+    getAllPerson,
     getById,
-    createContact,
-    updateContact
+    createPerson,
+    updatePerson
 };
 
-function createContact(contact, callback) {
+function createPerson(person, callback) {
     const requestOptions = {
         method: 'POST',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
-        body: JSON.stringify(contact)
+        body: JSON.stringify(person)
     };
 
-    return fetch('/api/contacts/', requestOptions).then(handleResponse);
+    return fetch('/api/persons/', requestOptions).then(handleResponse);
 }
 
-function updateContact(contact, callback) {
+function updatePerson(person, callback) {
     const requestOptions = {
         method: 'PUT',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
-        body: JSON.stringify(contact)
+        body: JSON.stringify(person)
     };
 
-    return fetch('/api/contacts/', requestOptions).then(handleResponse);
+    return fetch('/api/persons/', requestOptions).then(handleResponse);
 }
 
 function getById(id) {
@@ -33,19 +33,17 @@ function getById(id) {
         headers: authHeader()
     };
 
-    return fetch('/api/contacts/' + id, requestOptions).then(handleResponse);
+    return fetch('/api/persons/' + id, requestOptions).then(handleResponse);
 }
 
-function getAll(filter , page, size) {
+function getAllPerson(filter , page, size) {
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
     };
 
-    return fetch(`/api/contacts?filter=${filter}&page=${page}&size=${size}` , requestOptions).then(handlePaginationResponse);
+    return fetch(`/api/persons?filter=${filter}&page=${page}&size=${size}` , requestOptions).then(handlePaginationResponse);
 }
-
-
 
 function handlePaginationResponse(response) {
     if (response.ok !== true) {

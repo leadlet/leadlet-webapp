@@ -1,8 +1,5 @@
 import React, {Component} from 'react';
-import {contactConstants} from "../../constants/contact.constants";
 import {connect} from 'react-redux';
-import {getAll} from "../../actions/contact.actions";
-import {ContactList} from "./ContactList";
 import ContactPerson from "./ContactPerson";
 import ContactOrganization from "./ContactOrganization";
 import ToggleButton from "react-bootstrap/es/ToggleButton";
@@ -14,6 +11,14 @@ import SweetAlert from 'sweetalert-react';
 import _ from "lodash"
 import Dropdown from "react-bootstrap/es/Dropdown";
 import MenuItem from "react-bootstrap/es/MenuItem";
+import {getAllPerson} from "../../actions/person.actions";
+import {getAllOrganization} from "../../actions/organization.actions";
+import {PersonList} from "./PersonList";
+import {OrganizationList} from "./OrganizationList";
+
+const CONTACT_PERSON = 'person';
+const CONTACT_ORGANIZATION = 'organization';
+
 
 class Contacts extends Component {
 
@@ -30,7 +35,7 @@ class Contacts extends Component {
             showPersonModal: false,
             showOrganizationModal: false,
             contactSelectedForEdit: null,
-            selectedType: contactConstants.CONTACT_TYPE_ALL
+            selectedType: CONTACT_PERSON
         };
 
         this.onSearchSubmit = this.onSearchSubmit.bind(this);
@@ -94,9 +99,11 @@ class Contacts extends Component {
             query = `name:${this.state.term}`;
         }
 
+        /*
         if (this.state.selectedType !== contactConstants.CONTACT_TYPE_ALL) {
             query += (query ? "&" : "") + `type:${this.state.selectedType}`;
         }
+        */
 
         return query;
     }
@@ -120,7 +127,8 @@ class Contacts extends Component {
     }
 
     filterContacts() {
-        this.props.getAll(this.getFilterQuery(), this.state.currentPage - 1, this.state.pageSize);
+        this.props.getAllPerson(this.getFilterQuery(), this.state.currentPage - 1, this.state.pageSize);
+        this.props.getAllOrganization(this.getFilterQuery(), this.state.currentPage - 1, this.state.pageSize);
     }
 
     componentDidMount() {
@@ -192,6 +200,46 @@ class Contacts extends Component {
         }
     }
 
+    renderList(){
+
+        let data = null;
+
+        if( this.state.selectedType === CONTACT_PERSON){
+            data = this.props.persons;
+            return (
+                data.ids &&
+                <PersonList
+                    data={data}
+                    sizePerPage={this.state.sizePerPage}
+                    currentPage={this.state.currentPage}
+                    type={this.state.selectedType}
+                    onEditClicked={() => this.openEditModal}
+                    history={this.props.history}
+                    onRowSelect={this.onRowSelect}
+                    onSelectAll={this.onSelectAll}
+                    sizePerPageListChange={this.sizePerPageListChange}
+                    onPageChange={this.onPageChange}
+                />
+            )
+        }else {
+            data = this.props.organizations;
+            return (
+                data.ids &&
+                <OrganizationList
+                    data={data}
+                    sizePerPage={this.state.sizePerPage}
+                    currentPage={this.state.currentPage}
+                    type={this.state.selectedType}
+                    onEditClicked={() => this.openEditModal}
+                    history={this.props.history}
+                    onRowSelect={this.onRowSelect}
+                    onSelectAll={this.onSelectAll}
+                    sizePerPageListChange={this.sizePerPageListChange}
+                    onPageChange={this.onPageChange}
+                />
+            )
+        }
+    }
     render() {
         return (
             <div className="container full-height">
@@ -199,11 +247,6 @@ class Contacts extends Component {
                     <div className="ibox-content full-height">
                         <div className="row m-b-sm">
                             <div className="col-md-4">
-                                <h2>{'Contacts '}
-                                    {this.props.contacts && this.props.contacts.dataTotalSize &&
-                                    <span><Badge>{this.props.contacts.dataTotalSize}</Badge></span>
-                                    }
-                                </h2>
                             </div>
                         </div>
                         <div className="row">
@@ -213,13 +256,10 @@ class Contacts extends Component {
                                                    value={this.state.selectedType}
                                                    onChange={this.onTypeChange}>
                                     <ToggleButton className="btn-sm"
-                                                  value={contactConstants.CONTACT_TYPE_ALL}>All
-                                    </ToggleButton>
-                                    <ToggleButton className="btn-sm"
-                                                  value={contactConstants.CONTACT_TYPE_PERSON}>Person <i
+                                                  value={CONTACT_PERSON}>Person <i
                                         className="fa fa-users"/></ToggleButton>
                                     <ToggleButton className="btn-sm"
-                                                  value={contactConstants.CONTACT_TYPE_ORGANIZATION}>Organization <i
+                                                  value={CONTACT_ORGANIZATION}>Organization <i
                                         className="fa fa-industry"/></ToggleButton>
                                 </ToggleButtonGroup>
                                 <form className="form-inline m-l-sm">
@@ -252,22 +292,7 @@ class Contacts extends Component {
                                 </button>
                             </div>
                             <div className="clients-list">
-
-                                {
-                                    this.props.contacts.ids &&
-                                    <ContactList
-                                        data={this.props.contacts}
-                                        sizePerPage={this.state.sizePerPage}
-                                        currentPage={this.state.currentPage}
-                                        type={this.state.selectedType}
-                                        onEditClicked={() => this.openEditModal}
-                                        history={this.props.history}
-                                        onRowSelect={this.onRowSelect}
-                                        onSelectAll={this.onSelectAll}
-                                        sizePerPageListChange={this.sizePerPageListChange}
-                                        onPageChange={this.onPageChange}
-                                    />
-                                }
+                                {this.renderList()}
                             </div>
                             <div>
                                 <ContactPerson showEditModal={this.state.showPersonModal}
@@ -304,8 +329,9 @@ class Contacts extends Component {
 
 function mapStateToProps(state) {
     return {
-        contacts: state.contacts
+        persons: state.persons,
+        organizations: state.organizations
     };
 }
 
-export default connect(mapStateToProps, {getAll})(Contacts);
+export default connect(mapStateToProps, {getAllPerson, getAllOrganization})(Contacts);
