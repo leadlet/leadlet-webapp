@@ -127,7 +127,7 @@ class ContactDetail extends Component {
                                             );
                                         })}
 
-                                        <i className="fa fa-envelope"/> {this.props.viewedPerson && this.props.viewedPerson.email}
+                                        {this.props.viewedPerson && this.props.viewedPerson.email && <span><i className="fa fa-envelope"/> {this.props.viewedPerson.email}</span>}
                                     </address>
                                 </a>
                                 <div className="contact-box-footer">
