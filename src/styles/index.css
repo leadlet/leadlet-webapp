@@ -9001,3 +9001,12 @@ body{
 deals-toolbar {
 
 }
+
+.client-table-container {
+ margin-top: 10px;
+}
+
+.client-table {
+  border: 0 !important;
+
+}

@@ -23,30 +23,30 @@ export const OrganizationList = function (props) {
     }
 
     function nameFormatter(cell, row) {
-        return (<Link to={"organization/"+row.id}>{cell}</Link>);
+        return (<Link to={"organization/" + row.id}>{cell}</Link>);
     }
 
     return (
         <BootstrapTable
             tableHeaderClass='client-table-header'
-            containerClass='table-responsive'
-            tableContainerClass='table'
-            tableBodyClass='table-striped'
+            containerClass='client-table-container'
+            tableContainerClass='client-table'
+            tableBodyClass='table-hover'
 
-            data={ dataMapper(props.data) }
-                        remote={ true }
-                        pagination={ true }
-                        height='410'
-                        scrollTop={ 'Bottom' }
-                        keyField='id'
-                        selectRow={ selectRowProp }
-                        fetchInfo={ { dataTotalSize: parseInt(props.data.dataTotalSize) } }
-                        options={ {
-                            sizePerPage: props.sizePerPage,
-                            onPageChange: props.onPageChange,
-                            sizePerPageList: [ 5, 10 ],
-                            page: props.currentPage,
-                            onSizePerPageList: props.onSizePerPageList } }
+
+            data={dataMapper(props.data)}
+            remote={true}
+            pagination={true}
+            keyField='id'
+            selectRow={selectRowProp}
+            fetchInfo={{dataTotalSize: parseInt(props.data.dataTotalSize)}}
+            options={{
+                sizePerPage: props.sizePerPage,
+                onPageChange: props.onPageChange,
+                sizePerPageList: [5, 10],
+                page: props.currentPage,
+                onSizePerPageList: props.onSizePerPageList
+            }}
 
         >
             <TableHeaderColumn dataField='name' dataFormat={nameFormatter}>Name</TableHeaderColumn>

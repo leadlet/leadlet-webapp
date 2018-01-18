@@ -4,7 +4,8 @@ export const personService = {
     getAllPerson,
     getById,
     createPerson,
-    updatePerson
+    updatePerson,
+    _delete
 };
 
 function createPerson(person, callback) {
@@ -43,6 +44,15 @@ function getAllPerson(filter , page, size) {
     };
 
     return fetch(`/api/persons?filter=${filter}&page=${page}&size=${size}` , requestOptions).then(handlePaginationResponse);
+}
+
+function _delete(idList) {
+    const requestOptions = {
+        method: 'DELETE',
+        headers: authHeader()
+    };
+
+    return fetch('/api/persons/' + idList, requestOptions).then(handleResponse);
 }
 
 function handlePaginationResponse(response) {

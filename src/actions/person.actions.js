@@ -83,22 +83,23 @@ export function updatePerson(person, successCallback) {
 }
 
 // prefixed function name with underscore because delete is a reserved word in javascript
-function _delete(id) {
+export function _deletePersons(idList) {
     return dispatch => {
-        dispatch(request(id));
+        dispatch(request(idList));
 
-        personService.delete(id)
+        personService._delete(idList)
             .then(
-                person => {
-                    dispatch(success(id));
+                ids => {
+                    dispatch(success(ids));
+                    dispatch(alertActions.success('Persons deleted successfully'));
                 },
                 error => {
-                    dispatch(failure(id, error));
+                    dispatch(failure(idList, error));
                 }
             );
     };
 
-    function request(id) { return { type: personConstants.DELETE_REQUEST, id } }
-    function success(id) { return { type: personConstants.DELETE_SUCCESS, id } }
-    function failure(id, error) { return { type: personConstants.DELETE_FAILURE, id, error } }
+    function request(idList) { return { type: personConstants.DELETE_REQUEST, idList } }
+    function success(ids) { return { type: personConstants.DELETE_SUCCESS, ids } }
+    function failure(idList, error) { return { type: personConstants.DELETE_FAILURE, idList, error } }
 }
