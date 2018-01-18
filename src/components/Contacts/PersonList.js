@@ -40,7 +40,7 @@ export const PersonList = function (props) {
     }
 
     function organizationFormatter(cell, row) {
-        return (<Link to={"organizations/"+row.organizationId}>{row.organizationName}</Link>);
+        return (<Link to={"organization/"+row.organizationId}>{row.organizationName}</Link>);
     }
     return (
         <BootstrapTable
