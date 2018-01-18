@@ -52,7 +52,8 @@ export function persons(state = {}, action) {
                     ...state.items,
                     [action.person.id]: action.person
                 },
-                ids: [ ...state.ids, action.person.id]
+                ids: [ ...state.ids, action.person.id],
+                dataTotalSize: state.dataTotalSize + 1
             };
 
             return _state;
@@ -84,11 +85,14 @@ export function persons(state = {}, action) {
         case personConstants.DELETE_REQUEST:
             return state;
         case personConstants.DELETE_SUCCESS:
-            delete state.items[action.id];
+            action.ids.forEach(id => {
+                delete state.items[id];
+            })
             return {
                 ...state,
                 items: state.items,
-                ids: state.ids.filter(item => item !== action.id),
+                ids: state.ids.filter(id => !action.ids.includes(id)),
+                dataTotalSize: state.dataTotalSize - action.ids.length
             };
 
         default:

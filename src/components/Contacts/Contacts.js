@@ -11,8 +11,8 @@ import SweetAlert from 'sweetalert-react';
 import _ from "lodash"
 import Dropdown from "react-bootstrap/es/Dropdown";
 import MenuItem from "react-bootstrap/es/MenuItem";
-import {getAllPerson} from "../../actions/person.actions";
-import {getAllOrganization} from "../../actions/organization.actions";
+import {getAllPerson, _deletePersons} from "../../actions/person.actions";
+import {getAllOrganization, _deleteOrganizations} from "../../actions/organization.actions";
 import {PersonList} from "./PersonList";
 import {OrganizationList} from "./OrganizationList";
 
@@ -27,8 +27,9 @@ class Contacts extends Component {
 
         this.state = {
             currentPage: 1,
-            pageSize: null,
-            selected: [],
+            pageSize: 10,
+            selectedPersonIds: [],
+            selectedOrganizationIds: [],
             term: "",
             checked: false,
             showDeleteDialog: false,
@@ -45,8 +46,10 @@ class Contacts extends Component {
         this.closeEditModal = this.closeEditModal.bind(this);
         this.onTypeChange = this.onTypeChange.bind(this);
         this.onCheckChange = this.onCheckChange.bind(this);
-        this.onRowSelect = this.onRowSelect.bind(this);
-        this.onSelectAll = this.onSelectAll.bind(this);
+        this.onPersonRowSelected = this.onPersonRowSelected.bind(this);
+        this.onPersonRowSelectAll = this.onPersonRowSelectAll.bind(this);
+        this.onOrganizationRowSelected = this.onOrganizationRowSelected.bind(this);
+        this.onOrganizationRowSelectAll = this.onOrganizationRowSelectAll.bind(this);
 
         this.confirmDeleteActivity = this.confirmDeleteActivity.bind(this);
         this.cancelDeleteActivity = this.cancelDeleteActivity.bind(this);
@@ -60,6 +63,9 @@ class Contacts extends Component {
         this.onPageChange = this.onPageChange.bind(this);
 
         this.handleSearchTermChange = this.handleSearchTermChange.bind(this);
+
+        this.getSelectedCount = this.getSelectedCount.bind(this);
+        this.clearSelections = this.clearSelections.bind(this);
 
         this.handleSearchDebounced = _.debounce(function () {
             if (this.state.term && this.state.term.length > 2)
@@ -99,12 +105,6 @@ class Contacts extends Component {
             query = `name:${this.state.term}`;
         }
 
-        /*
-        if (this.state.selectedType !== contactConstants.CONTACT_TYPE_ALL) {
-            query += (query ? "&" : "") + `type:${this.state.selectedType}`;
-        }
-        */
-
         return query;
     }
 
@@ -118,6 +118,17 @@ class Contacts extends Component {
         this.setState({
             showDeleteDialog: false
         });
+        if( this.state.selectedType === CONTACT_PERSON ){
+            this.props._deletePersons(this.state.selectedPersonIds);
+            this.setState({
+                selectedPersonIds: []
+            });
+        }else{
+            this.props._deleteOrganizations(this.state.selectedOrganizationIds);
+            this.setState({
+                selectedOrganizationIds: []
+            });
+        }
     }
 
     cancelDeleteActivity() {
@@ -173,78 +184,112 @@ class Contacts extends Component {
         }
     }
 
-    onRowSelect({id}, isSelected) {
+    onPersonRowSelected({id}, isSelected) {
         if (isSelected) {
             this.setState({
-                selected: [...this.state.selected, id].sort()
-                //, currPage: this.refs.table.state.currPage
+                selectedPersonIds: [...this.state.selectedPersonIds, id].sort()
             });
         } else {
-            this.setState({selected: this.state.selected.filter(it => it !== id)});
+            this.setState({selectedPersonIds: this.state.selectedPersonIds.filter(it => it !== id)});
         }
         return true;
     }
 
-    onSelectAll(isSelected, currentDisplayAndSelectedData) {
+    onPersonRowSelectAll(isSelected, currentDisplayAndSelectedData) {
         const ids = currentDisplayAndSelectedData.map(item => {
             return item.id
         });
 
         if (isSelected) {
             this.setState({
-                selected: [...this.state.selected, ...ids].sort()
-                //, currPage: this.refs.table.state.currPage
+                selectedPersonIds: [...this.state.selectedPersonIds, ...ids].sort()
             });
         } else {
-            this.setState({selected: this.state.selected.filter(it => !ids.includes(it))});
+            this.setState({selectedPersonIds: this.state.selectedPersonIds.filter(it => !ids.includes(it))});
         }
     }
 
-    renderList(){
+    onOrganizationRowSelected({id}, isSelected) {
+        if (isSelected) {
+            this.setState({
+                selectedOrganizationIds: [...this.state.selectedOrganizationIds, id].sort()
+            });
+        } else {
+            this.setState({selectedOrganizationIds: this.state.selectedOrganizationIds.filter(it => it !== id)});
+        }
+        return true;
+    }
+
+    onOrganizationRowSelectAll(isSelected, currentDisplayAndSelectedData) {
+        const ids = currentDisplayAndSelectedData.map(item => {
+            return item.id
+        });
+
+        if (isSelected) {
+            this.setState({
+                selectedOrganizationIds: [...this.state.selectedOrganizationIds, ...ids].sort()
+            });
+        } else {
+            this.setState({selectedOrganizationIds: this.state.selectedOrganizationIds.filter(it => !ids.includes(it))});
+        }
+    }
+
+    renderList() {
 
         let data = null;
 
-        if( this.state.selectedType === CONTACT_PERSON){
+        if (this.state.selectedType === CONTACT_PERSON) {
             data = this.props.persons;
             return (
                 data.ids &&
                 <PersonList
                     data={data}
+                    selectedRows={this.state.selectedPersonIds}
                     sizePerPage={this.state.sizePerPage}
                     currentPage={this.state.currentPage}
-                    type={this.state.selectedType}
-                    onEditClicked={() => this.openEditModal}
-                    history={this.props.history}
-                    onRowSelect={this.onRowSelect}
-                    onSelectAll={this.onSelectAll}
+                    onRowSelect={this.onPersonRowSelected}
+                    onSelectAll={this.onPersonRowSelectAll}
                     sizePerPageListChange={this.sizePerPageListChange}
                     onPageChange={this.onPageChange}
                 />
             )
-        }else {
+        } else {
             data = this.props.organizations;
             return (
                 data.ids &&
                 <OrganizationList
                     data={data}
+                    selectedRows={this.state.selectedOrganizationIds}
                     sizePerPage={this.state.sizePerPage}
                     currentPage={this.state.currentPage}
-                    type={this.state.selectedType}
-                    onEditClicked={() => this.openEditModal}
-                    history={this.props.history}
-                    onRowSelect={this.onRowSelect}
-                    onSelectAll={this.onSelectAll}
+                    onRowSelect={this.onOrganizationRowSelected}
+                    onSelectAll={this.onOrganizationRowSelectAll}
                     sizePerPageListChange={this.sizePerPageListChange}
                     onPageChange={this.onPageChange}
                 />
             )
         }
     }
+
+    getSelectedCount() {
+        if (this.state.selectedType === CONTACT_PERSON) {
+            return this.state.selectedPersonIds && this.state.selectedPersonIds.length;
+        } else {
+            return this.state.selectedOrganizationIds && this.state.selectedOrganizationIds.length;
+        }
+    }
+
+    clearSelections(){
+        this.setState({
+            selectedOrganizationIds : [],
+            selectedPersonIds: []
+                        });
+    }
     render() {
         return (
-            <div className="container full-height">
-                <div className="ibox full-height">
-                    <div className="ibox-content full-height">
+            <div className="container">
+                <div className="ibox">
+                    <div className="ibox-content">
                         <div className="row m-b-sm">
                             <div className="col-md-4">
                             </div>
@@ -257,10 +302,12 @@ class Contacts extends Component {
                                                    onChange={this.onTypeChange}>
                                     <ToggleButton className="btn-sm"
                                                   value={CONTACT_PERSON}>Person <i
-                                        className="fa fa-users"/></ToggleButton>
+                                        className="fa fa-users"/>&nbsp;
+                                        <Badge>{this.props.persons.dataTotalSize}</Badge></ToggleButton>
                                     <ToggleButton className="btn-sm"
                                                   value={CONTACT_ORGANIZATION}>Organization <i
-                                        className="fa fa-industry"/></ToggleButton>
+                                        className="fa fa-industry"/>&nbsp;
+                                        <Badge>{this.props.organizations.dataTotalSize}</Badge></ToggleButton>
                                 </ToggleButtonGroup>
                                 <form className="form-inline m-l-sm">
                                     <FormGroup
@@ -284,14 +331,27 @@ class Contacts extends Component {
                                         <MenuItem href="#" onClick={this.openOrganizationModal}>Organization</MenuItem>
                                     </Dropdown.Menu>
                                 </Dropdown>
-                                <button type="button"
-                                        className={this.state.selected.length > 0 ? "btn btn-danger btn-sm m-l-sm" : "btn btn-danger btn-sm m-l-sm hidden"}
-                                        onClick={this.openDeleteDialog}>
-                                    <i className="fa fa-trash"/> {'Delete '}
-                                    <Badge>{this.state.selected.length}</Badge>
-                                </button>
+                                {
+                                    this.getSelectedCount() > 0 &&
+                                        <button type="button"
+                                                className="btn btn-danger btn-xs m-l-sm"
+                                                onClick={this.openDeleteDialog}>
+                                            <i className="fa fa-trash"/> {'Delete '}
+                                            <Badge>{this.getSelectedCount()}</Badge>
+                                        </button>
+                                }
+                                {
+                                    this.getSelectedCount() > 0 &&
+                                    <button type="button"
+                                            className="btn btn-info btn-xs m-l-sm"
+                                            onClick={this.clearSelections}>
+                                        <i className="fa fa-remove"/> {'Clear Selected '}
+                                        <Badge>{this.getSelectedCount()}</Badge>
+                                    </button>
+                                }
+
                             </div>
-                            <div className="clients-list">
+                            <div>
                                 {this.renderList()}
                             </div>
                             <div>
@@ -309,7 +369,7 @@ class Contacts extends Component {
                             <div>
                                 <SweetAlert
                                     title="Are you sure?"
-                                    text={`You will delete ${this.state.selected.length}! contacts`}
+                                    text={`You will delete ${this.getSelectedCount()}! records`}
                                     type="warning"
                                     showCancelButton={true}
                                     confirmButtonColor="#DD6B55"
@@ -334,4 +394,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, {getAllPerson, getAllOrganization})(Contacts);
+export default connect(mapStateToProps, {getAllPerson, getAllOrganization, _deletePersons, _deleteOrganizations})(Contacts);

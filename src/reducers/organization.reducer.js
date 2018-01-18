@@ -84,11 +84,13 @@ export function organizations(state = {}, action) {
         case organizationConstants.DELETE_REQUEST:
             return state;
         case organizationConstants.DELETE_SUCCESS:
-            delete state.items[action.id];
+            action.ids.forEach(id => {
+                delete state.items[id];
+            })
             return {
                 ...state,
                 items: state.items,
-                ids: state.ids.filter(item => item !== action.id),
+                ids: state.ids.filter(id => !action.ids.includes(id)),
             };
 
         default:
