@@ -99,7 +99,7 @@ class Activity extends Component {
                             end: event.end,
                             memo: event.memo,
                             activityType: event.type,
-                            contact: event.personId,
+                            person: event.personId,
                             organization: event.organizationId
                         }
                     );
@@ -135,23 +135,23 @@ class Activity extends Component {
                                                 start: moment(),
                                                 end: moment()
                                             })}><i
-                                        className="fa fa-plus"></i>&nbsp;New Activity
+                                        className="fa fa-plus"/>&nbsp;New Activity
                                     </button>
                                     <div className="pull-left">
                                         <ToggleButtonGroup type="radio" name="activityType"
                                                            onChange={this.filterActivity}>
                                             <ToggleButton className="btn-sm" value={' '}>All </ToggleButton>
-                                            <ToggleButton className="btn-sm" value={'CALL'}><i className="fa fa-phone"></i></ToggleButton>
-                                            <ToggleButton className="btn-sm" value={'MEETING'}><i className="fa fa-users"></i></ToggleButton>
-                                            <ToggleButton className="btn-sm" value={'TASK'}><i className="fa fa-clock-o"></i></ToggleButton>
-                                            <ToggleButton className="btn-sm" value={'DEADLINE'}><i className="fa fa-flag"></i></ToggleButton>
-                                            <ToggleButton className="btn-sm" value={'EMAIL'}><i className="fa fa-paper-plane"></i></ToggleButton>
+                                            <ToggleButton className="btn-sm" value={'CALL'}><i className="fa fa-phone"/></ToggleButton>
+                                            <ToggleButton className="btn-sm" value={'MEETING'}><i className="fa fa-users"/></ToggleButton>
+                                            <ToggleButton className="btn-sm" value={'TASK'}><i className="fa fa-clock-o"/></ToggleButton>
+                                            <ToggleButton className="btn-sm" value={'DEADLINE'}><i className="fa fa-flag"/></ToggleButton>
+                                            <ToggleButton className="btn-sm" value={'EMAIL'}><i className="fa fa-paper-plane"/></ToggleButton>
                                         </ToggleButtonGroup>
                                     </div>
                                 </div>
                             </div>
                             <div className="ibox-content">
-                                <div id="calendar"></div>
+                                <div id="calendar"/>
                             </div>
                         </div>
 

@@ -1,25 +1,22 @@
 import React, {Component} from 'react';
 import connect from "react-redux/es/connect/connect";
-import {getById} from "../../actions/contact.actions";
-import {getByPersonId} from "../../actions/activity.actions";
 import {createNote} from "../../actions/note.actions";
+import {getById} from "../../actions/organization.actions"
 import ContactPerson from "./ContactPerson";
-import ContactOrganization from "./ContactOrganization";
 import moment from 'moment';
 import ActivityDetail from "../Activity/ActivityDetail";
 import fullCalendar from 'fullcalendar';
 import '../../../node_modules/fullcalendar/dist/fullcalendar.css';
 import $ from 'jquery';
 
-class ContactDetail extends Component {
+class OrganizationDetail extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            showPersonEditModal: false,
-            showOrganizationEditModal: false,
-            showModal: false,
+            showEditModal: false,
+            showActivityModal: false,
             value: ''
         };
 
@@ -41,35 +38,29 @@ class ContactDetail extends Component {
         console.log("Note Event: ", event.target);
         this.props.createNote( {
             content: this.state.value,
-            contactId: this.props.viewedContact.id
+            contactId: this.props.viewedOrganization.id
         });
         this.state.value = '';
     }
 
     openEditModal(type) {
-        if (type === "PERSON") {
-            this.setState({showPersonEditModal: true});
-        } else {
-            this.setState({showOrganizationEditModal: true});
-        }
+        this.setState({showEditModal: true});
     }
 
     closeEditModal() {
-        this.setState({showPersonEditModal: false});
-        this.setState({showOrganizationEditModal: false});
+        this.setState({showEditModal: false});
     }
 
     openActivityModal() {
-        this.setState({showModal: true});
+        this.setState({showActivityModal: true});
     }
 
     closeActivityModal() {
-        this.setState({showModal: false});
+        this.setState({showActivityModal: false});
     }
 
     componentDidMount() {
-        this.props.getById(this.props.match.params.contactId);
-        this.props.getByPersonId(this.props.match.params.contactId);
+        this.props.getById(this.props.match.params.organizationId);
     }
 
     componentDidUpdate() {
@@ -106,9 +97,9 @@ class ContactDetail extends Component {
     }
 
     render() {
-        if (!this.props.viewedContact) {
+        if (!this.props.viewedOrganization) {
             return (
-                <em>Loading details for {this.props.match.params.contactId}</em>
+                <em>Loading details for {this.props.match.params.organizationId}</em>
             );
         } else {
             return (
@@ -117,32 +108,25 @@ class ContactDetail extends Component {
                         <div className="row m-b-md">
                             <div className="col-md-4">
                                 <div className="profile-image">
-                                    <i className="fa fa-user-circle-o fa-5x" aria-hidden="true"></i>
+                                    <i className="fa fa-user-circle-o fa-5x" aria-hidden="true"/>
                                 </div>
                                 <div className="profile-info">
                                     <div className="m-b-md">
-                                        <a onClick={() => this.openEditModal(this.props.viewedContact.type)}
+                                        <a onClick={() => this.openEditModal(this.props.viewedOrganization.type)}
                                            className="btn btn-primary btn-sm pull-right">Edit</a>
                                         <h2 className="no-margins">
-                                            {this.props.viewedContact && this.props.viewedContact.name}
+                                            {this.props.viewedOrganization && this.props.viewedOrganization.name}
                                         </h2>
-                                        <h4>{this.props.viewedContact.organization && this.props.viewedContact.organization.name}</h4>
+                                        <h4>{this.props.viewedOrganization.organization && this.props.viewedOrganization.organization.name}</h4>
 
                                     </div>
                                 </div>
                             </div>
                             <div>
-                                <ContactPerson showEditModal={this.state.showPersonEditModal}
+                                <ContactPerson showEditModal={this.state.showEditModal}
                                                close={this.closeEditModal}
-                                               contact={this.props.viewedContact}
-                                               initialValues={this.props.viewedContact}
-                                />
-                            </div>
-                            <div>
-                                <ContactOrganization showEditModal={this.state.showOrganizationEditModal}
-                                                     close={this.closeEditModal}
-                                                     contact={this.props.viewedContact}
-                                                     initialValues={this.props.viewedContact}
+                                               contact={this.props.viewedOrganization}
+                                               initialValues={this.props.viewedOrganization}
                                 />
                             </div>
                         </div>
@@ -174,7 +158,7 @@ class ContactDetail extends Component {
                                                                                       className="form-control"
                                                                                       value={this.state.value}
                                                                                       onChange={this.handleChange}
-                                                                            ></textarea>
+                                                                            />
                                                                         </div>
                                                                         <div className="text-right">
                                                                             <button type="submit"
@@ -200,7 +184,7 @@ class ContactDetail extends Component {
                                              className="vertical-container dark-timeline center-orientation">
                                             <div className="vertical-timeline-block">
                                                 <div className="vertical-timeline-icon navy-bg">
-                                                    <i className="fa fa-briefcase"></i>
+                                                    <i className="fa fa-briefcase"/>
                                                 </div>
 
                                                 <div className="vertical-timeline-content">
@@ -301,7 +285,7 @@ class ContactDetail extends Component {
                             <div className="col-lg-4">
                                 <div className="ibox">
                                     <div className="ibox-title">
-                                        <i className="fa fa-plus pull-right" aria-hidden="true"></i>
+                                        <i className="fa fa-plus pull-right" aria-hidden="true"/>
                                         <h5>Deals</h5>
                                     </div>
                                     <div className="ibox-content text-center">
@@ -314,16 +298,16 @@ class ContactDetail extends Component {
                                            onClick={() => this.openActivityModal({
                                                start: moment(),
                                                end: moment()
-                                           })}></i>
+                                           })}/>
                                         <h5>Activities</h5>
                                     </div>
                                     <div className="ibox-content">
-                                        <div id="contact-calendar"></div>
+                                        <div id="contact-calendar"/>
                                     </div>
                                 </div>
                                 <div className="ibox">
                                     <div className="ibox-title">
-                                        <i className="fa fa-plus pull-right" aria-hidden="true"></i>
+                                        <i className="fa fa-plus pull-right" aria-hidden="true"/>
                                         <h5>Documents</h5>
                                     </div>
                                     <div className="ibox-content text-center">
@@ -333,9 +317,9 @@ class ContactDetail extends Component {
                             </div>
 
                             <div>
-                                <ActivityDetail showModal={this.state.showModal}
+                                <ActivityDetail showActivityModal={this.state.showActivityModal}
                                                 close={this.closeActivityModal}
-                                                contact={this.props.viewedContact}
+                                                organization={this.props.viewedOrganization}
                                 />
                             </div>
                         </div>
@@ -349,10 +333,10 @@ class ContactDetail extends Component {
 
 function mapStateToProps(state) {
     return {
-        viewedContact: state.contacts.viewedContact,
+        viewedOrganization: state.organizations.viewedOrganization,
         activities: state.activities.items,
         ids: state.activities.ids
     };
 }
 
-export default connect(mapStateToProps, {getByPersonId, getById, createNote})(ContactDetail);
+export default connect(mapStateToProps, {getById, createNote})(OrganizationDetail);

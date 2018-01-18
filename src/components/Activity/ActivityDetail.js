@@ -185,7 +185,7 @@ class ActivityDetail extends Component {
         if (!this.props.persons.ids) {
             return [];
         } else {
-            this.props.persons.ids.map(id => {
+            return this.props.persons.ids.map(id => {
                 return {label: this.props.persons.items[id].name, value: this.props.persons.items[id].id}
             });
         }
@@ -196,7 +196,7 @@ class ActivityDetail extends Component {
         if (!this.props.organizations.ids) {
             return [];
         } else {
-            this.props.organizations.ids.map(id => {
+            return this.props.organizations.ids.map(id => {
                 return {label: this.props.organizations.items[id].name, value: this.props.organizations.items[id].id}
             });
         }

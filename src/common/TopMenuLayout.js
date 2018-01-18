@@ -8,7 +8,8 @@ import Deals from "../components/DealBoard/DealBoard";
 import Switch from "react-router-dom/es/Switch";
 import PipelinesPage from "../components/Pipelines/Pipelines";
 import Activity from "../components/Activity/Activity";
-import ContactDetail from "../components/Contacts/ContactDetail";
+import PersonDetail from "../components/Contacts/PersonDetail";
+import OrganizationDetail from "../components/Contacts/OrganizationDetail";
 
 class TopMenuLayout extends Component {
 
@@ -21,7 +22,8 @@ class TopMenuLayout extends Component {
                         <div className="wrapper-content">
                             <Switch>
                                 <Route exact path="/" component={Dashboard}/>
-                                <Route path="/contacts/:contactId" component={ContactDetail}/>
+                                <Route path="/person/:personId" component={PersonDetail}/>
+                                <Route path="/organization/:organizationId" component={OrganizationDetail}/>
                                 <Route path="/contacts" component={Contacts}/>
                                 <Route path="/deals" component={Deals}/>
                                 <Route path="/pipelines" component={PipelinesPage}/>

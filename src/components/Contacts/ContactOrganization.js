@@ -1,13 +1,12 @@
 import React from 'react';
 import Modal from '../../modal-shim';
 import {Field, reduxForm} from 'redux-form'
-import {updateContact, createContact} from "../../actions/contact.actions";
 import {connect} from 'react-redux';
-import {contactConstants} from "../../constants/contact.constants";
 import FormGroup from "react-bootstrap/es/FormGroup";
 import InputGroup from "react-bootstrap/es/InputGroup";
 import FormControl from "react-bootstrap/es/FormControl";
 import Phone from 'react-phone-number-input';
+import {createOrganization, updateOrganization} from "../../actions/organization.actions";
 
 const validate = values => {
     const errors = {}
@@ -68,7 +67,7 @@ const renderPhoneField = ({
         <div>
             <FormGroup>
                 <InputGroup>
-                    <InputGroup.Addon><i class="fa fa-phone" aria-hidden="true"></i></InputGroup.Addon>
+                    <InputGroup.Addon><i class="fa fa-phone" aria-hidden="true"/></InputGroup.Addon>
 
                     <Phone
                         placeholder="enter phone number"
@@ -137,14 +136,12 @@ class ContactNew extends React.Component {
 
     onSubmit = (values) => {
         // print the form values to the console
-        values.type = contactConstants.CONTACT_TYPE_ORGANIZATION;
-        console.log(values);
         this.props.close();
 
         if (this.props.initialValues && this.props.initialValues.id) {
-            return this.props.updateContact(values, this.props.close);
+            return this.props.updateOrganization(values, this.props.close);
         } else {
-            return this.props.createContact(values, this.props.close);
+            return this.props.createOrganization(values, this.props.close);
         }
     }
 
@@ -210,5 +207,5 @@ export default reduxForm({
     validate, // <--- validation function given to redux-form
     warn // <--- warning function given to redux-form
 })(
-    connect(null, {updateContact, createContact})(ContactNew)
+    connect(null, {updateOrganization, createOrganization})(ContactNew)
 );

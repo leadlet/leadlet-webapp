@@ -3,7 +3,7 @@ import './../../../node_modules/react-bootstrap-table/dist/react-bootstrap-table
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import Link from "react-router-dom/es/Link";
 
-export const ContactList = function (props) {
+export const OrganizationList = function (props) {
 
     const selectRowProp = {
         mode: 'checkbox',
@@ -23,7 +23,7 @@ export const ContactList = function (props) {
     }
 
     function nameFormatter(cell, row) {
-        return (<Link to={"contacts/"+row.id}>{cell}</Link>);
+        return (<Link to={"organization/"+row.id}>{cell}</Link>);
     }
 
     return (
