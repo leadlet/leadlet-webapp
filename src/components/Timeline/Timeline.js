@@ -20,7 +20,6 @@ class Timeline extends Component {
         this.loadMoreItems = this.loadMoreItems.bind(this);
 
         this._handleWaypointEnter = this._handleWaypointEnter.bind(this);
-        this._handleWaypointLeave = this._handleWaypointLeave.bind(this);
     }
 
     componentDidMount() {
@@ -62,7 +61,7 @@ class Timeline extends Component {
                         return (
                             <div className="vertical-timeline-block">
                                 <div className="vertical-timeline-icon navy-bg">
-                                    <i className="fa fa-phone"></i>
+                                    <i className="fa fa-phone"/>
                                 </div>
 
                                 <div className="vertical-timeline-content">
@@ -82,7 +81,7 @@ class Timeline extends Component {
                         return (
                             <div className="vertical-timeline-block">
                                 <div className="vertical-timeline-icon navy-bg">
-                                    <i className="fa fa-users"></i>
+                                    <i className="fa fa-users"/>
                                 </div>
 
                                 <div className="vertical-timeline-content">
@@ -102,7 +101,7 @@ class Timeline extends Component {
                         return (
                             <div className="vertical-timeline-block">
                                 <div className="vertical-timeline-icon navy-bg">
-                                    <i className="fa fa-clock-o"></i>
+                                    <i className="fa fa-clock-o"/>
                                 </div>
 
                                 <div className="vertical-timeline-content">
@@ -122,7 +121,7 @@ class Timeline extends Component {
                         return (
                             <div className="vertical-timeline-block">
                                 <div className="vertical-timeline-icon navy-bg">
-                                    <i className="fa fa-flag"></i>
+                                    <i className="fa fa-flag"/>
                                 </div>
 
                                 <div className="vertical-timeline-content">
@@ -142,7 +141,7 @@ class Timeline extends Component {
                         return (
                             <div className="vertical-timeline-block">
                                 <div className="vertical-timeline-icon navy-bg">
-                                    <i className="fa fa-paper-plane"></i>
+                                    <i className="fa fa-paper-plane"/>
                                 </div>
 
                                 <div className="vertical-timeline-content">
@@ -165,12 +164,10 @@ class Timeline extends Component {
     }
 
     _handleWaypointEnter(waypointUpdate) {
-        console.log("hede", waypointUpdate);
-    }
-
-    _handleWaypointLeave(waypointUpdate) {
-        this.setState({currentPage: this.state.currentPage + 1},
-            this.loadMoreItems())
+        if( this.props.timeLineIds.length != this.props.dataTotalSize) {
+            this.setState({currentPage: this.state.currentPage + 1},
+                this.loadMoreItems)
+        }
     }
 
     render() {
@@ -180,11 +177,10 @@ class Timeline extends Component {
             );
         } else {
             return (
-                <div style={{height: '500px', overflowY: 'scroll'}}>
+                <div>
                     {this.renderTimelineItems()}
                     <Waypoint
                         onEnter={this._handleWaypointEnter}
-                        onLeave={this._handleWaypointLeave}
                     />
                 </div>
             )
@@ -195,7 +191,8 @@ class Timeline extends Component {
 function mapStateToProps(state) {
     return {
         timeLines: state.timeLines.items,
-        timeLineIds: state.timeLines.ids
+        timeLineIds: state.timeLines.ids,
+        dataTotalSize: state.timeLines.dataTotalSize
     };
 }
 

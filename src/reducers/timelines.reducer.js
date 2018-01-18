@@ -37,7 +37,9 @@ export function timeLines(state = {}, action) {
             return {
                 ...state,
                 items: newItems,
-                ids: newIds
+                ids: newIds,
+                dataTotalSize: action.data.dataTotalSize
+
             };
         case timelineConstants.GETALL_FAILURE:
             return {

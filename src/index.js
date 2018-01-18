@@ -7,7 +7,6 @@ import React from 'react';
 import './../node_modules/react-datepicker/dist/react-datepicker.css';
 import './../node_modules/react-datepicker/dist/react-datepicker-cssmodules.css';
 import './../node_modules/es6-shim/es6-sham';
-import './../node_modules/react-simple-dropdown/styles/Dropdown.css';
 import './../node_modules/sweetalert/dist/sweetalert.css';
 import rrui from './../node_modules/react-phone-number-input/rrui.css';
 import rpni from './../node_modules/react-phone-number-input/style.css';

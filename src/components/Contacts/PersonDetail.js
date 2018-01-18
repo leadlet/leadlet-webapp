@@ -40,7 +40,7 @@ class ContactDetail extends Component {
         console.log("Note Event: ", event.target);
         this.props.createNote({
             content: this.state.value,
-            contactId: this.props.viewedPerson.id
+            personId: this.props.viewedPerson.id
         });
         this.state.value = '';
     }
@@ -181,7 +181,7 @@ class ContactDetail extends Component {
                                     </div>
                                 </div>
                                 <div className="ibox">
-                                    <div className="ibox-content" style={{height:'600px'}}>
+                                    <div className="ibox-content">
                                         <div id="vertical-timeline"
                                              className="vertical-container dark-timeline center-orientation full-height">
                                             <Timeline
