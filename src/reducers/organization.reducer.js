@@ -1,90 +1,89 @@
-import {contactConstants} from "../constants/contact.constants.js";
+import {organizationConstants} from "../constants/organization.constants";
 import {normalize, schema} from 'normalizr';
 
-const contactSchema = new schema.Entity('contacts');
+const organizationSchema = new schema.Entity('organizations');
 
 // or use shorthand syntax:
-const contactListSchema = [contactSchema];
+const organizationListSchema = [organizationSchema];
 
-export function contacts(state = {}, action) {
+export function organizations(state = {}, action) {
     switch (action.type) {
         /* get by id */
-        case contactConstants.GET_REQUEST:
+        case organizationConstants.GET_REQUEST:
             return {
                 loading: true
             };
-        case contactConstants.GET_SUCCESS:
+        case organizationConstants.GET_SUCCESS:
             return {
                 ...state,
-                viewedContact: action.contact
+                viewedOrganization: action.organization
             };
-        case contactConstants.GET_FAILURE:
+        case organizationConstants.GET_FAILURE:
             return {
                 error: action.error
             };
 
-
-        /* ALL contactS */
-        case contactConstants.GETALL_REQUEST:
+        /* ALL organizationS */
+        case organizationConstants.GETALL_REQUEST:
             return {
                 ...state,
                 loading: true
             };
-        case contactConstants.GETALL_SUCCESS:
-            const _items = normalize(action.data.items, contactListSchema);
+        case organizationConstants.GETALL_SUCCESS:
+            const _items = normalize(action.data.items, organizationListSchema);
             return {
                 ...state,
-                items: _items.entities.contacts,
+                items: _items.entities.organizations,
                 ids: _items.result,
                 dataTotalSize: action.data.dataTotalSize
             };
-        case contactConstants.GETALL_FAILURE:
+        case organizationConstants.GETALL_FAILURE:
             return {
                 error: action.error
             };
 
-        /* NEW contact */
-        case contactConstants.CREATE_REQUEST:
+        /* NEW organization */
+        case organizationConstants.CREATE_REQUEST:
             return state;
-        case contactConstants.CREATE_SUCCESS:
+        case organizationConstants.CREATE_SUCCESS:
             let _state = {
                 ...state,
                 items: {
                     ...state.items,
-                    [action.contact.id]: action.contact
+                    [action.organization.id]: action.organization
                 },
-                ids: [ ...state.ids, action.contact.id]
+                ids: [ ...state.ids, action.organization.id]
             };
 
             return _state;
 
-        case contactConstants.CREATE_FAILURE:
+        case organizationConstants.CREATE_FAILURE:
             return {
                 ...state,
                 error: action.error
             };
-        /* UPDATE contact */
-        case contactConstants.UPDATE_REQUEST:
+        /* UPDATE organization */
+        case organizationConstants.UPDATE_REQUEST:
             return state;
-        case contactConstants.UPDATE_SUCCESS:
+        case organizationConstants.UPDATE_SUCCESS:
             _state = {
                 ...state,
                 items: {
                     ...state.items,
-                    [action.contact.id]: action.contact
+                    [action.organization.id]: action.organization
                 }
             };
 
             return _state;
-        case contactConstants.UPDATE_FAILURE:
+        case organizationConstants.UPDATE_FAILURE:
             return {
                 ...state,
                 error: action.error
             };
-        /* DELETE contact */
-        case contactConstants.DELETE_REQUEST:
+        /* DELETE organization */
+        case organizationConstants.DELETE_REQUEST:
             return state;
-        case contactConstants.DELETE_SUCCESS:
+        case organizationConstants.DELETE_SUCCESS:
             delete state.items[action.id];
             return {
                 ...state,

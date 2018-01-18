@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
-import {contactConstants} from "../../constants/contact.constants";
 import {connect} from 'react-redux';
-import {getAll} from "../../actions/contact.actions";
 import {ContactList} from "./ContactList";
 import ContactPerson from "./ContactPerson";
 import ContactOrganization from "./ContactOrganization";
@@ -14,6 +12,8 @@ import SweetAlert from 'sweetalert-react';
 import _ from "lodash"
 import Dropdown from "react-bootstrap/es/Dropdown";
 import MenuItem from "react-bootstrap/es/MenuItem";
+import {getAllPerson} from "../../actions/person.actions";
+import {getAllOrganization} from "../../actions/organization.actions";
 
 class Contacts extends Component {
 
@@ -120,7 +120,8 @@ class Contacts extends Component {
     }
 
     filterContacts() {
-        this.props.getAll(this.getFilterQuery(), this.state.currentPage - 1, this.state.pageSize);
+        this.props.getAllPerson(this.getFilterQuery(), this.state.currentPage - 1, this.state.pageSize);
+        this.props.getAllOrganization(this.getFilterQuery(), this.state.currentPage - 1, this.state.pageSize);
     }
 
     componentDidMount() {
@@ -308,4 +309,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, {getAll})(Contacts);
+export default connect(mapStateToProps, {getAllPerson, getAllOrganization})(Contacts);

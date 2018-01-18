@@ -15,8 +15,8 @@ import Checkbox from "react-bootstrap/es/Checkbox";
 import FormControl from "../../../node_modules/react-bootstrap/es/FormControl";
 import Select from '../../../node_modules/react-select';
 import 'react-select/dist/react-select.css';
-import {getAll} from "../../actions/contact.actions";
-import {contactConstants} from "../../constants/contact.constants";
+import {getAllOrganization} from "../../actions/organization.actions";
+import {getAllPerson} from "../../actions/person.actions";
 
 const validate = values => {
     const errors = {}
@@ -87,7 +87,6 @@ const renderStartDateField = ({
 
 const renderEndDateField = ({
                                 input,
-                                selected,
                                 label,
                                 minDate,
                                 customClass,
@@ -115,7 +114,6 @@ const renderEndDateField = ({
 
 const renderTypeField = ({
                              input,
-                             label,
                              meta: {touched, error}
                          }) => (
     <div className="form-group">
@@ -167,31 +165,40 @@ class ActivityDetail extends Component {
         this.confirmDeleteActivity = this.confirmDeleteActivity.bind(this);
         this.cancelDeleteActivity = this.cancelDeleteActivity.bind(this);
         this.onDeleteActivity = this.onDeleteActivity.bind(this);
-        this.mapContact2Options = this.mapContact2Options.bind(this);
         this.onClose = this.onClose.bind(this);
         this.checkDate = this.checkDate.bind(this);
+        this.mapOrganization2Options = this.mapOrganization2Options.bind(this);
+        this.mapPerson2Options = this.mapPerson2Options.bind(this);
 
         this.state = {
-            showDeleteDialog: false,
-            contact: null
+            showDeleteDialog: false
         };
     }
 
     componentDidMount() {
-        this.props.getAll();
+        this.props.getAllOrganization();
+        this.props.getAllPerson();
     }
 
-    mapContact2Options(type) {
+    mapPerson2Options() {
 
-        if(!this.props.contacts.ids ){
+        if (!this.props.persons.ids) {
             return [];
-        }else{
-           return this.props.contacts.ids.filter(id => {
-               return this.props.contacts.items[id].type === type;
-           })
-                .map( id => {
-                    return {label: this.props.contacts.items[id].name, value: this.props.contacts.items[id].id}
-                });
+        } else {
+            this.props.persons.ids.map(id => {
+                return {label: this.props.persons.items[id].name, value: this.props.persons.items[id].id}
+            });
+        }
+    }
+
+    mapOrganization2Options() {
+
+        if (!this.props.organizations.ids) {
+            return [];
+        } else {
+            this.props.organizations.ids.map(id => {
+                return {label: this.props.organizations.items[id].name, value: this.props.organizations.items[id].id}
+            });
         }
     }
 
@@ -211,7 +218,7 @@ class ActivityDetail extends Component {
     }
 
     onSubmit = (formValue) => {
-       
+
         let activity = {};
         activity.id = formValue.id;
         activity.start = formValue.start ? formValue.start._d : '';
@@ -219,7 +226,7 @@ class ActivityDetail extends Component {
         activity.memo = formValue.memo;
         activity.type = formValue.activityType;
         activity.title = formValue.title;
-        activity.personId = formValue.contact;
+        activity.personId = formValue.person;
         activity.organizationId = formValue.organization;
 
         if (this.props.initialValues && this.props.initialValues.id) {
@@ -309,23 +316,24 @@ class ActivityDetail extends Component {
                             multi={false}
                         />
                         {
-                            (!this.props.contact || (this.props.contact && !this.props.contact.type)) &&
-                                <div>
-                                    <Field
-                                        name="contact"
-                                        label="Contact"
-                                        multi={false}
-                                        options={this.mapContact2Options(contactConstants.CONTACT_TYPE_PERSON)}
-                                        component={renderSelectField}
-                                    />
-                                    <Field
-                                        name="organization"
-                                        label="Organization"
-                                        multi={false}
-                                        options={this.mapContact2Options(contactConstants.CONTACT_TYPE_ORGANIZATION)}
-                                        component={this.props.contact && (this.props.contact.type === "ORGANIZATION")? null : renderSelectField}
-                                    />
-                                </div>
+                            (!this.props.person) &&
+                            <Field
+                                name="person"
+                                label="Person"
+                                multi={false}
+                                options={this.mapPerson2Options()}
+                                component={renderSelectField}
+                            />
+                        }
+                        {
+                            (!this.props.organization) &&
+                            <Field
+                                name="organization"
+                                label="Organization"
+                                multi={false}
+                                options={this.mapOrganization2Options()}
+                                component={renderSelectField}
+                            />
                         }
                         <div className="form-group">
                             <Checkbox>Send invitations to attendees</Checkbox>
@@ -373,7 +381,8 @@ class ActivityDetail extends Component {
 
 function mapStateToProps(state) {
     return {
-        contacts: state.contacts
+        persons: state.persons,
+        organizations: state.organizations
     };
 }
 
@@ -382,5 +391,5 @@ export default reduxForm({
     validate, // <--- validation function given to redux-form
     enableReinitialize: true
 })(
-    connect(mapStateToProps, {create, update, _delete, getAll})(ActivityDetail)
+    connect(mapStateToProps, {create, update, _delete, getAllOrganization, getAllPerson})(ActivityDetail)
 );
