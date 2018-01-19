@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import moment from 'moment';
 import connect from "react-redux/es/connect/connect";
-import {getPaginated} from "../../actions/timeline.actions";
 import Waypoint from 'react-waypoint';
 
 
@@ -27,7 +26,7 @@ class Timeline extends Component {
     }
 
     loadMoreItems() {
-        this.props.getPaginated(null, this.state.currentPage, this.PAGE_SIZE);
+        this.props.getTimelineItems(null, this.state.currentPage, this.PAGE_SIZE, this.props.itemId);
     }
 
     renderTimelineItems() {
@@ -164,7 +163,7 @@ class Timeline extends Component {
     }
 
     _handleWaypointEnter(waypointUpdate) {
-        if( this.props.timeLineIds.length != this.props.dataTotalSize) {
+        if (this.props.timeLineIds.length != this.props.dataTotalSize) {
             this.setState({currentPage: this.state.currentPage + 1},
                 this.loadMoreItems)
         }
@@ -196,4 +195,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, {getPaginated})(Timeline);
+export default connect(mapStateToProps)(Timeline);

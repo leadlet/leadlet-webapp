@@ -9,6 +9,7 @@ import '../../../node_modules/fullcalendar/dist/fullcalendar.css';
 import $ from 'jquery';
 import Timeline from "../Timeline/Timeline";
 import ContactOrganization from "./ContactOrganization";
+import {getTimelineByOrganizationId} from "../../actions/timeline.actions";
 
 class OrganizationDetail extends Component {
 
@@ -34,12 +35,11 @@ class OrganizationDetail extends Component {
     }
 
     handleSubmit(event) {
-        alert('A somebody was submitted: ' + this.state.value);
         event.preventDefault();
         console.log("Note Event: ", event.target);
         this.props.createNote({
             content: this.state.value,
-            contactId: this.props.viewedOrganization.id
+            organizationId: this.props.viewedOrganization.id
         });
         this.state.value = '';
     }
@@ -186,7 +186,10 @@ class OrganizationDetail extends Component {
                                     <div id="vertical-timeline"
                                          className="vertical-container dark-timeline center-orientation full-height">
                                         <Timeline
-                                            pageSize={5}/>
+                                            pageSize={5}
+                                            getTimelineItems={this.props.getTimelineByOrganizationId}
+                                            itemId={this.props.viewedOrganization.id}
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -245,4 +248,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, {getByIdOrganization, createNote})(OrganizationDetail);
+export default connect(mapStateToProps, {getByIdOrganization, createNote, getTimelineByOrganizationId})(OrganizationDetail);

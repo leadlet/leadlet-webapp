@@ -11,6 +11,7 @@ import $ from 'jquery';
 import moment from 'moment';
 import Timeline from "../Timeline/Timeline";
 import {getByPersonId} from "../../actions/activity.actions";
+import {getTimelineByPersonId} from "../../actions/timeline.actions";
 
 class ContactDetail extends Component {
 
@@ -190,7 +191,10 @@ class ContactDetail extends Component {
                                     <div id="vertical-timeline"
                                          className="vertical-container dark-timeline center-orientation full-height">
                                         <Timeline
-                                            pageSize={5}/>
+                                            pageSize={5}
+                                            getTimelineItems={this.props.getTimelineByPersonId}
+                                            itemId={this.props.viewedPerson.id}
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -250,4 +254,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, {getById, createNote, getByIdOrganization, getByPersonId})(ContactDetail);
+export default connect(mapStateToProps, {getById, createNote, getByIdOrganization, getByPersonId, getTimelineByPersonId})(ContactDetail);
