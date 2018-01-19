@@ -64,10 +64,10 @@ class CardsContainer extends Component {
     const opacity = isDragging ? 0.5 : 1;
 
     return connectDragSource(connectDropTarget(
-      <div className="stage" style={{ opacity }}>
-        <div className="stage-header">
-          <div className="stage-name">{item.name}</div>
-        </div>
+        <div className="list" style={{ opacity }}>
+          <div className="stage-header">
+            <div className="stage-name">{item.name}</div>
+          </div>
         <Cards
           moveCard={moveCard}
           x={x}
@@ -78,6 +78,7 @@ class CardsContainer extends Component {
           editDeal={this.props.editDeal}
           deleteDeal={this.props.deleteDeal}
         />
+        <footer>Add a card...</footer>
       </div>
     ));
   }

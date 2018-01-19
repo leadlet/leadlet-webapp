@@ -161,14 +161,10 @@ class DealBoard extends Component {
 
     render() {
         return (
-                <div className="full-height">
-                    <div className="row-flex-reverse m-b-sm full-width">
-                        <PipelineSelector pipelines={this.props.pipelines}
-                                          onChange={this.pipelineChanged}
-                                          selectedPipelineId={this.state.selectedPipelineId}/>
-                        <Button bsStyle="primary" className="m-l-sm" onClick={this.toggleNewDealModal}>New Deal</Button>
+                <div className="dealboard">
+                    <div className="dealboard-toolbar">
                     </div>
-                    <div id="deals-board" className="deals-board">
+                    <div id="deals-board" className="lists">
                         <CustomDragLayer snapToGrid={false} />
                         { this.props.pipelines.ids && this.props.deals.ids && this.state.activeStages
                         && this.state.activeStages.map((stage, i) =>

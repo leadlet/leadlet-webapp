@@ -3652,7 +3652,7 @@ video {
   padding: 0 20px;
 }
 .wrapper-content {
-  padding: 60px 0px 50px 0px;
+  padding: 50px 0px 40px 0px;
   height: 100% ;
 }
 #page-wrapper {
@@ -3694,6 +3694,7 @@ ol.unstyled {
 }
 /* FOOTER */
 .footer {
+  max-height:40px;
   display: block;
   background: none repeat scroll 0 0 white;
   border-top: 1px solid #e7eaec;
@@ -8910,57 +8911,6 @@ body{
   z-index: 2;
 }
 
-.deals-board{
-  padding: 0px 20px;
-  height:100%;
-  white-space: nowrap;
-  overflow-x: scroll;
-  overflow-y: hidden;
-}
-
-.deals-board .stage {
-  max-height:100%;
-  width: 270px;
-  display: inline-block;
-  border-radius: 3px;
-  margin-right: 20px;
-  vertical-align: top;
-  background-color: #ffffff;
-  overflow: hidden;
-
-  background-color: #ffffff;
-  color: inherit;
-  padding: 15px 20px 20px 20px;
-  border-color: #e7eaec;
-  border-image: none;
-  border-style: solid solid none;
-  border-width: 1px 0;
-
-}
-.deals-board .stage-header{
-  position: relative;
-  padding: 5px 8px;
-  margin-bottom: 10px;
-  zoom: 1;
-}
-
-.deals-board .stage-deals-list{
-  height:100%;
-  overflow-y: scroll;
-  padding-bottom: 40px;
-
-}
-
-.deals-board .stage-name{
-  font-weight: bold;
-  white-space: normal;
-  width: 100%;
-}
-
-.deals-board .placeholder{
-  height: 100px;
-  background-color: #FAFAFB
-}
 
 .contact .input-group .form-control{
   z-index: 0;
@@ -8999,9 +8949,7 @@ body{
 }
 
 
-deals-toolbar {
 
-}
 
 .client-table-container {
  margin-top: 10px;
@@ -9010,4 +8958,85 @@ deals-toolbar {
 .client-table {
   border: 0 !important;
 
+}
+
+.dealboard {
+  height: 100%;
+}
+
+.dealboard-toolbar{
+  height: 40px;
+}
+
+.dealboard .lists {
+  height: calc(100% - 40px);
+  display: flex;
+  overflow-x: auto;
+  padding: 10px;
+
+}
+
+.dealboard .list {
+  width: 270px;
+  max-height:100%;
+  height: 100%;
+  flex: 0 0 auto;
+  border-radius: 3px;
+  margin-right: 10px;
+  margin-left: 10px;
+  vertical-align: top;
+  background-color: #ffffff;
+  padding: 15px 20px 20px 20px;
+  border-color: #e7eaec;
+  border-image: none;
+  border-style: solid solid none;
+  border-width: 1px 0;
+
+}
+
+.dealboard .list footer {
+  line-height: 20px;
+  padding: 5px 8px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  color: #888;
+}
+
+.dealboard .list ul {
+  list-style: none;
+  margin: 0;
+  padding: 10px 0;
+  height: calc(100% - 40px);
+  max-height: calc(100% - 40px);
+  overflow-y: auto;
+
+}
+
+.dealboard .list li {
+  background: #FAFAFB;
+  border: 1px solid #e7eaec;
+  margin: 0 0 10px 0;
+  padding: 10px;
+  border-radius: 2px;
+
+}
+
+.dealboard .stage-header{
+  line-height: 20px;
+  position: relative;
+  padding: 5px 8px;
+  zoom: 1;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+
+}
+
+.dealboard .stage-name{
+  font-weight: bold;
+  white-space: normal;
+  width: 100%;
+}
+
+#root {
+  overflow-y: hidden;
 }

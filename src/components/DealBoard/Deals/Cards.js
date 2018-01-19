@@ -142,7 +142,7 @@ class Cards extends Component {
         }
 
         return connectDropTarget(
-            <ul className="sortable-list connectList agile-list stage-deals-list">
+            <ul>
                 {cardList}
             </ul>
         );
