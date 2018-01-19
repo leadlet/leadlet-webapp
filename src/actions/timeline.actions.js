@@ -1,5 +1,7 @@
 import {timelineConstants} from "../constants/timeline.constants";
 import {timelineService} from "../services/timeline.service";
+import {activityService} from "../services/activity.service";
+import {activityConstants} from "../constants/activity.constants";
 
 export function getPaginated(filter, page, size) {
     return dispatch => {
@@ -10,6 +12,56 @@ export function getPaginated(filter, page, size) {
                 response => dispatch(success({items: response[0], dataTotalSize: response[1]})),
                 error => dispatch(failure(error))
             );
+    };
+
+    function request() {
+        return {type: timelineConstants.GETALL_REQUEST}
+    }
+
+    function success(data) {
+        return {type: timelineConstants.GETALL_SUCCESS, data}
+    }
+
+    function failure(error) {
+        return {type: timelineConstants.GETALL_FAILURE, error}
+    }
+}
+
+export function getTimelineByPersonId(filter, page, size, id) {
+    return dispatch => {
+        dispatch(request());
+
+        timelineService.getByPersonId(filter, page, size, id)
+            .then(
+                response => dispatch(success({items: response[0], dataTotalSize: response[1]})),
+                error => dispatch(failure(error))
+            );
+
+    };
+
+    function request() {
+        return {type: timelineConstants.GETALL_REQUEST}
+    }
+
+    function success(data) {
+        return {type: timelineConstants.GETALL_SUCCESS, data}
+    }
+
+    function failure(error) {
+        return {type: timelineConstants.GETALL_FAILURE, error}
+    }
+}
+
+export function getTimelineByOrganizationId(filter, page, size, id) {
+    return dispatch => {
+        dispatch(request());
+
+        timelineService.getByOrganizationId(filter, page, size, id)
+            .then(
+                response => dispatch(success({items: response[0], dataTotalSize: response[1]})),
+                error => dispatch(failure(error))
+            );
+
     };
 
     function request() {

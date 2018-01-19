@@ -1,8 +1,29 @@
 import {authHeader} from '../helpers';
 
 export const timelineService = {
-    getPaginated
+    getPaginated,
+    getByPersonId,
+    getByOrganizationId
 };
+
+function getByPersonId(filter, page, size, personId) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    return fetch(`/api/timeLines/person/${personId}?filter=${filter}&page=${page}&size=${size}&sort=createdDate,desc`, requestOptions).then(handlePaginationResponse);
+}
+
+function getByOrganizationId(filter, page, size, organizationId) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    return fetch(`/api/timeLines/organization/${organizationId}?filter=${filter}&page=${page}&size=${size}&sort=createdDate,desc`, requestOptions).then(handlePaginationResponse);
+}
+
 
 function getPaginated(filter, page, size) {
     const requestOptions = {
