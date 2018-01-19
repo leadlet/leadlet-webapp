@@ -50,9 +50,6 @@ class TopHeader extends React.Component {
                             <li>
                                 <a aria-expanded="false" role="button" href="/activity">Activity</a>
                             </li>
-                            <li>
-                                <a aria-expanded="false" role="button" href="/deals2">Deals2</a>
-                            </li>
                         </ul>
                         <ul className="nav navbar-nav navbar-right">
                             <li className="dropdown">

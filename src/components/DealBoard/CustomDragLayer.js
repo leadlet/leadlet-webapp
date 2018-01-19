@@ -28,9 +28,11 @@ function getItemStyles(props) {
     [x, y] = snapToGrid(x, y);
     x += initialOffset.x;
     y += initialOffset.y;
+    // TODO important extract nav-bar and toolbar height
+    y = y - 100;
   }
 
-  const transform = `translate(${x}px, ${y}px)`;
+    const transform = `translate(${x}px, ${y-100}px)`;
   return {
     WebkitTransform: transform,
     transform

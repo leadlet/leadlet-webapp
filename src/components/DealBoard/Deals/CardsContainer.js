@@ -54,7 +54,6 @@ class CardsContainer extends Component {
     startScrolling: PropTypes.func,
     stopScrolling: PropTypes.func,
     isScrolling: PropTypes.bool,
-      editDeal: PropTypes.func.isRequired,
       deleteDeal: PropTypes.func.isRequired
 
   }
@@ -75,10 +74,9 @@ class CardsContainer extends Component {
           stopScrolling={this.props.stopScrolling}
           isScrolling={this.props.isScrolling}
           cards={this.props.cards}
-          editDeal={this.props.editDeal}
           deleteDeal={this.props.deleteDeal}
         />
-        <footer>Add a card...</footer>
+        <footer>Total potential: 1000$</footer>
       </div>
     ));
   }

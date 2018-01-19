@@ -74,10 +74,7 @@ class DealBoard extends Component {
 
     moveList(listId, nextX) {
         console.log(arguments);
-
     }
-
-
 
     startScrolling(direction) {
         // if (!this.state.isScrolling) {
@@ -122,7 +119,6 @@ class DealBoard extends Component {
         this.props.getAllPipelines();
         this.props.getAllStages();
         this.props.getAllDeals();
-
     }
 
     pipelineChanged(newPipelineId, _props = this.props) {
@@ -163,6 +159,12 @@ class DealBoard extends Component {
         return (
                 <div className="dealboard">
                     <div className="dealboard-toolbar">
+                        <div className="row row-flex pull-right">
+                            <Button bsStyle="primary" className="m-l-sm" onClick={this.toggleNewDealModal}>New Deal</Button>
+                            <PipelineSelector pipelines={this.props.pipelines}
+                                              onChange={this.pipelineChanged}
+                                              selectedPipelineId={this.state.selectedPipelineId}/>
+                        </div>
                     </div>
                     <div id="deals-board" className="lists">
                         <CustomDragLayer snapToGrid={false} />
@@ -179,7 +181,6 @@ class DealBoard extends Component {
                                 isScrolling={this.state.isScrolling}
                                 x={stage.id}
                                 cards={this.getStageDeals(stage)}
-                                editDeal={this.onDeleteDeal}
                                 deleteDeal={this.onDeleteDeal}
                             />
                         )}

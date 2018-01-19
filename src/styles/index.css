@@ -3652,7 +3652,7 @@ video {
   padding: 0 20px;
 }
 .wrapper-content {
-  padding: 50px 0px 40px 0px;
+  padding: 60px 0px 40px 0px;
   height: 100% ;
 }
 #page-wrapper {
@@ -8966,13 +8966,14 @@ body{
 
 .dealboard-toolbar{
   height: 40px;
+  padding: 0 10px;
 }
 
 .dealboard .lists {
   height: calc(100% - 40px);
   display: flex;
   overflow-x: auto;
-  padding: 10px;
+  padding: 5px 10px;
 
 }
 
@@ -9035,8 +9036,4 @@ body{
   font-weight: bold;
   white-space: normal;
   width: 100%;
-}
-
-#root {
-  overflow-y: hidden;
 }
