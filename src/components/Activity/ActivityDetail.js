@@ -4,6 +4,7 @@ import Modal from '../../modal-shim';
 import {connect} from 'react-redux';
 import {create, update, _delete} from '../../actions/activity.actions';
 import DatePicker from 'react-datepicker';
+import {SingleDatePicker} from 'react-dates';
 import moment from 'moment';
 import {ButtonToolbar} from "react-bootstrap";
 import SweetAlert from 'sweetalert-react';
@@ -17,6 +18,7 @@ import Select from '../../../node_modules/react-select';
 import 'react-select/dist/react-select.css';
 import {getAllOrganization} from "../../actions/organization.actions";
 import {getAllPerson} from "../../actions/person.actions";
+import 'react-dates/lib/css/_datepicker.css';
 
 const validate = values => {
     const errors = {}
@@ -24,7 +26,7 @@ const validate = values => {
         errors.title = 'Required'
     } else if (values.title.length > 45) {
         errors.title = 'Must be 45 characters or less!'
-    }else if(!values.activityType){
+    } else if (!values.activityType) {
         errors.title = "Please, select a type!"
     }
     return errors
@@ -60,6 +62,27 @@ const renderMemoField = ({
     </div>
 )
 
+
+const render_date = ({
+                         input,
+                         selected,
+                         label,
+                         customClass,
+                         date,
+                         focused,
+                         meta: {touched, error}
+                     }) => (
+    <div className={"form-group " + customClass}>
+        <label>{label}</label>
+        <SingleDatePicker
+            id="date_input"
+            date={date}
+            focused={focused}
+            onDateChange={input.onChange}
+            onFocusChange={input.onFocus}
+        />
+    </div>
+)
 const renderStartDateField = ({
                                   input,
                                   selected,
@@ -168,12 +191,16 @@ class ActivityDetail extends Component {
         this.cancelDeleteActivity = this.cancelDeleteActivity.bind(this);
         this.onDeleteActivity = this.onDeleteActivity.bind(this);
         this.onClose = this.onClose.bind(this);
-        this.checkDate = this.checkDate.bind(this);
+        this.onDateChange = this.onDateChange.bind(this);
         this.mapOrganization2Options = this.mapOrganization2Options.bind(this);
         this.mapPerson2Options = this.mapPerson2Options.bind(this);
+        this.onFocusChange = this.onFocusChange.bind(this);
 
         this.state = {
-            showDeleteDialog: false
+            showDeleteDialog: false,
+            startDate: null,
+            focused: false,
+            date: null
         };
     }
 
@@ -256,12 +283,17 @@ class ActivityDetail extends Component {
         this.props.close();
     }
 
-    checkDate() {
+    onDateChange(date) {
         if (this.props.initialValues) {
             if (this.props.initialValues.end < this.props.initialValues.start) {
                 this.props.initialValues.end = this.props.initialValues.start;
             }
         }
+        this.setState({ date });
+    }
+
+    onFocusChange({ focused }){
+        this.setState({ focused });
     }
 
     render() {
@@ -273,7 +305,7 @@ class ActivityDetail extends Component {
         }
 
         return (
-            <Modal show={this.props.showModal} onHide={this.onClose} onChange={this.checkDate()}>
+            <Modal show={this.props.showModal} onHide={this.onClose} onChange={this.onDateChange} onFocus={this.onFocusChange}>
                 <Modal.Header closeButton>
                     <Modal.Title>{title} New Activity</Modal.Title>
                 </Modal.Header>
@@ -293,13 +325,10 @@ class ActivityDetail extends Component {
                         <div className="form-inline">
                             <Field
                                 name="start"
-                                component={renderStartDateField}
+                                component={render_date}
                                 label="Start Date & Time"
-                                onChange={(newDate) => {
-                                    this.setState({
-                                        startDate: moment(newDate._d, 'DD/MM/YYYY')
-                                    });
-                                }}
+                                date={this.state.date}
+                                focused={this.state.focused}
                             />
                             <Field
                                 name="end"
