@@ -12,9 +12,13 @@ import {getAllOrganization} from "../../actions/organization.actions";
 
 const validate = values => {
     const errors = {}
+    let per_email_valid = true;
 
     const re_per = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const per_email_valid = re_per.test(values.email);
+
+    if (values.email !== "") {
+        per_email_valid = re_per.test(values.email);
+    }
 
     if (!values.name) {
         errors.name = 'Required'
@@ -185,7 +189,10 @@ class ContactNew extends React.Component {
         } else {
             return this.props.organizations.ids
                 .map(id => {
-                    return {label: this.props.organizations.items[id].name, value: this.props.organizations.items[id].id}
+                    return {
+                        label: this.props.organizations.items[id].name,
+                        value: this.props.organizations.items[id].id
+                    }
                 });
         }
     }
