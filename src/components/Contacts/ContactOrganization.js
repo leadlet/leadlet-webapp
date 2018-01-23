@@ -14,31 +14,29 @@ const validate = values => {
 
     const re_org = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    if (values.email !== "") {
+    if (values.email !== undefined) {
         org_email_valid = re_org.test(values.email);
     }
-
+    else {
+        errors.email = ""
+    }
     if (!values.name) {
         errors.name = 'Required'
     }
-    if (!values.type) {
-        errors.type = 'Required'
+    else {
+        errors.name = ""
     }
-    if (values.name && (values.name.length > 15)) {
-        errors.name = 'Must be 15 characters or less'
+    if (values.name && (values.name.length > 30)) {
+        errors.name = 'Must be 30 characters or less'
+    } else {
+        errors.name = ""
     }
     if (!org_email_valid) {
         errors.email = "mail is not valid"
+    } else {
+        errors.email = ""
     }
     return errors
-}
-
-const warn = values => {
-    const warnings = {}
-    if (values.title && values.title.length < 2) {
-        warnings.title = 'Hmm, you seem a bit young...'
-    }
-    return warnings
 }
 
 const renderField = ({
@@ -208,8 +206,7 @@ class ContactNew extends React.Component {
 
 export default reduxForm({
     form: 'simple', // a unique identifier for this form
-    validate, // <--- validation function given to redux-form
-    warn // <--- warning function given to redux-form
+    validate // <--- validation function given to redux-form
 })(
     connect(null, {updateOrganization, createOrganization, getByIdOrganization})(ContactNew)
 );

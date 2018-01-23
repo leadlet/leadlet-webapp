@@ -16,21 +16,27 @@ const validate = values => {
 
     const re_per = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    if (values.email !== "") {
+    if (values.email !== undefined) {
         per_email_valid = re_per.test(values.email);
     }
-
+    else {
+        errors.email = ""
+    }
     if (!values.name) {
         errors.name = 'Required'
     }
-    if (!values.type) {
-        errors.type = 'Required'
+    else {
+        errors.name = ""
     }
-    if (values.name && (values.name.length > 15)) {
-        errors.name = 'Must be 15 characters or less'
+    if (values.name && (values.name.length > 30)) {
+        errors.name = 'Must be 30 characters or less'
+    } else {
+        errors.name = ""
     }
     if (!per_email_valid) {
         errors.email = "mail is not valid"
+    } else {
+        errors.email = ""
     }
     return errors
 }
@@ -38,7 +44,7 @@ const validate = values => {
 const warn = values => {
     const warnings = {}
     if (values.title && values.title.length < 2) {
-        warnings.title = 'Hmm, you seem a bit young...'
+        warnings.title = 'too short!'
     }
     return warnings
 }
@@ -202,7 +208,7 @@ class ContactNew extends React.Component {
     }
 
     render() {
-        const {handleSubmit, pristine, submitting, contact, valid} = this.props;
+        const {handleSubmit, pristine, submitting, contact, valid, warn} = this.props;
 
         let title = "Create";
         if (contact && contact.id) {
@@ -261,7 +267,7 @@ class ContactNew extends React.Component {
                             label="Address"
                         />
                         <button className="btn btn-sm btn-primary pull-right"
-                                type="submit" disabled={pristine || submitting || !valid}><strong>Submit</strong>
+                                type="submit" disabled={pristine || submitting || !valid || !warn}><strong>Submit</strong>
                         </button>
                     </form>
                 </Modal.Body>
