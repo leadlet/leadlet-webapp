@@ -10,9 +10,13 @@ import {createOrganization, updateOrganization} from "../../actions/organization
 
 const validate = values => {
     const errors = {}
+    let org_email_valid = true;
 
     const re_org = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const org_email_valid = re_org.test(values.email);
+
+    if (values.email !== "") {
+        org_email_valid = re_org.test(values.email);
+    }
 
     if (!values.name) {
         errors.name = 'Required'
@@ -146,7 +150,7 @@ class ContactNew extends React.Component {
     }
 
     render() {
-        const {handleSubmit, pristine, submitting, contact} = this.props;
+        const {handleSubmit, pristine, submitting, contact, valid} = this.props;
 
         let title = "Create";
         if (contact && contact.id) {
@@ -191,7 +195,7 @@ class ContactNew extends React.Component {
                             label="Address"
                         />
                         <button className="btn btn-sm btn-primary pull-right"
-                                type="submit" disabled={pristine || submitting}><strong>Submit</strong>
+                                type="submit" disabled={pristine || submitting || !valid}><strong>Submit</strong>
                         </button>
                     </form>
                 </Modal.Body>
