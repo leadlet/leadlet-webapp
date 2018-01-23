@@ -11,7 +11,7 @@ import $ from 'jquery';
 import moment from 'moment';
 import Timeline from "../Timeline/Timeline";
 import {getByPersonId} from "../../actions/activity.actions";
-import {getTimelineByPersonId} from "../../actions/timeline.actions";
+import {getTimelineByPersonId, getTimelineByPersonIdAndRefresh} from "../../actions/timeline.actions";
 
 class ContactDetail extends Component {
 
@@ -43,7 +43,7 @@ class ContactDetail extends Component {
         this.props.createNote({
             content: this.state.value,
             personId: this.props.viewedPerson.id
-        });
+        }, () => this.props.getTimelineByPersonIdAndRefresh(null, null, null, this.props.match.params.personId));
         this.state.value = '';
     }
 
@@ -254,4 +254,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, {getById, createNote, getByIdOrganization, getByPersonId, getTimelineByPersonId})(ContactDetail);
+export default connect(mapStateToProps, {getById, createNote, getByIdOrganization, getByPersonId, getTimelineByPersonId,getTimelineByPersonIdAndRefresh})(ContactDetail);

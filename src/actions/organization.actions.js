@@ -41,6 +41,7 @@ export function createOrganization(organization, successCallback) {
         return organizationService.createOrganization(organization)
             .then(
                 organization => {
+                    dispatch(successCallback);
                     dispatch(success(organization));
                     dispatch(alertActions.success('Organization create successful'));
                 },
@@ -65,6 +66,7 @@ export function updateOrganization(organization, successCallback) {
         return organizationService.updateOrganization(organization)
             .then(
                 organization => {
+                    dispatch(successCallback);
                     dispatch(success(organization));
                     dispatch(alertActions.success('Organization update successful'));
                 },

@@ -9,7 +9,7 @@ import '../../../node_modules/fullcalendar/dist/fullcalendar.css';
 import $ from 'jquery';
 import Timeline from "../Timeline/Timeline";
 import ContactOrganization from "./ContactOrganization";
-import {getTimelineByOrganizationId} from "../../actions/timeline.actions";
+import {getTimelineByOrganizationId, getTimelineByOrganizationIdAndRefresh} from "../../actions/timeline.actions";
 
 class OrganizationDetail extends Component {
 
@@ -40,7 +40,7 @@ class OrganizationDetail extends Component {
         this.props.createNote({
             content: this.state.value,
             organizationId: this.props.viewedOrganization.id
-        });
+        }, () => this.props.getTimelineByOrganizationIdAndRefresh(null, null, null, this.props.match.params.organizationId));
         this.state.value = '';
     }
 
@@ -228,7 +228,6 @@ class OrganizationDetail extends Component {
                         <div>
                             <ContactOrganization showEditModal={this.state.showEditModal}
                                            close={this.closeEditModal}
-                                           contact={this.props.viewedOrganization}
                                            initialValues={this.props.viewedOrganization}
                             />
                         </div>
@@ -248,4 +247,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, {getByIdOrganization, createNote, getTimelineByOrganizationId})(OrganizationDetail);
+export default connect(mapStateToProps, {getByIdOrganization, createNote, getTimelineByOrganizationId, getTimelineByOrganizationIdAndRefresh})(OrganizationDetail);

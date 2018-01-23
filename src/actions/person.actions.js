@@ -41,6 +41,7 @@ export function createPerson(person, successCallback) {
         return personService.createPerson(person)
             .then(
                 person => {
+                    dispatch(successCallback);
                     dispatch(success(person));
                     dispatch(alertActions.success('Person create successful'));
                 },
@@ -65,6 +66,7 @@ export function updatePerson(person, successCallback) {
         return personService.updatePerson(person)
             .then(
                 person => {
+                    dispatch(successCallback);
                     dispatch(success(person));
                     dispatch(alertActions.success('Person update successful'));
                 },

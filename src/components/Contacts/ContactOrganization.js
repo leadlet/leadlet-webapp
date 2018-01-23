@@ -6,7 +6,7 @@ import FormGroup from "react-bootstrap/es/FormGroup";
 import InputGroup from "react-bootstrap/es/InputGroup";
 import FormControl from "react-bootstrap/es/FormControl";
 import Phone from 'react-phone-number-input';
-import {createOrganization, updateOrganization} from "../../actions/organization.actions";
+import {createOrganization, updateOrganization, getByIdOrganization} from "../../actions/organization.actions";
 
 const validate = values => {
     const errors = {}
@@ -143,17 +143,17 @@ class ContactNew extends React.Component {
         this.props.close();
 
         if (this.props.initialValues && this.props.initialValues.id) {
-            return this.props.updateOrganization(values, this.props.close);
+            return this.props.updateOrganization(values, () => this.props.getByIdOrganization(this.props.initialValues.id) && this.props.close);
         } else {
             return this.props.createOrganization(values, this.props.close);
         }
     }
 
     render() {
-        const {handleSubmit, pristine, submitting, contact, valid} = this.props;
+        const {handleSubmit, pristine, submitting, initialValues, valid} = this.props;
 
         let title = "Create";
-        if (contact && contact.id) {
+        if (initialValues && initialValues.id) {
             title = "Update";
         }
 
@@ -211,5 +211,5 @@ export default reduxForm({
     validate, // <--- validation function given to redux-form
     warn // <--- warning function given to redux-form
 })(
-    connect(null, {updateOrganization, createOrganization})(ContactNew)
+    connect(null, {updateOrganization, createOrganization, getByIdOrganization})(ContactNew)
 );

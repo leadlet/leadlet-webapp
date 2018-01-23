@@ -7,7 +7,7 @@ import FormGroup from "react-bootstrap/es/FormGroup";
 import InputGroup from "react-bootstrap/es/InputGroup";
 import FormControl from "react-bootstrap/es/FormControl";
 import Phone from 'react-phone-number-input';
-import {createPerson, getAllPerson, updatePerson} from "../../actions/person.actions";
+import {createPerson, updatePerson, getById} from "../../actions/person.actions";
 import {getAllOrganization} from "../../actions/organization.actions";
 
 const validate = values => {
@@ -176,7 +176,7 @@ class ContactNew extends React.Component {
         this.props.close();
 
         if (this.props.initialValues && this.props.initialValues.id) {
-            return this.props.updatePerson(values, this.props.close);
+            return this.props.updatePerson(values, () => this.props.getById(this.props.initialValues.id) && this.props.close);
         } else {
             return this.props.createPerson(values, this.props.close);
         }
@@ -283,5 +283,5 @@ export default reduxForm({
     validate, // <--- validation function given to redux-form
     warn // <--- warning function given to redux-form
 })(
-    connect(mapStateToProps, {updatePerson, getAllOrganization, createPerson})(ContactNew)
+    connect(mapStateToProps, {updatePerson, getAllOrganization, createPerson, getById})(ContactNew)
 );
