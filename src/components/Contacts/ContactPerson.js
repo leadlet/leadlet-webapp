@@ -1,6 +1,6 @@
 import React from 'react';
 import Modal from '../../modal-shim';
-import {Field, reduxForm} from 'redux-form'
+import {Field, reduxForm, reset} from 'redux-form'
 import {connect} from 'react-redux';
 import Select from '../../../node_modules/react-select';
 import FormGroup from "react-bootstrap/es/FormGroup";
@@ -173,19 +173,18 @@ class ContactNew extends React.Component {
         this.onClose = this.onClose.bind(this);
     }
 
-    componentDidMount() {
-        this.props.getAllOrganization();
-    }
-
     onSubmit = (values) => {
-        // print the form values to the console
-        this.props.close();
 
         if (this.props.initialValues && this.props.initialValues.id) {
             return this.props.updatePerson(values, () => this.props.getById(this.props.initialValues.id) && this.props.close);
         } else {
             return this.props.createPerson(values, this.props.close);
         }
+    }
+
+    componentWillUnmount() {
+        this.props.dispatch(reset('personForm'));
+        this.props.close;
     }
 
     mapOrganization2Options() {
@@ -204,6 +203,7 @@ class ContactNew extends React.Component {
     }
 
     onClose() {
+        this.props.dispatch(reset('personForm'));
         this.props.close();
     }
 
@@ -267,7 +267,8 @@ class ContactNew extends React.Component {
                             label="Address"
                         />
                         <button className="btn btn-sm btn-primary pull-right"
-                                type="submit" disabled={pristine || submitting || !valid || !warn}><strong>Submit</strong>
+                                type="submit" disabled={pristine || submitting || !valid || !warn}>
+                            <strong>Submit</strong>
                         </button>
                     </form>
                 </Modal.Body>
@@ -285,7 +286,7 @@ function mapStateToProps(state) {
 }
 
 export default reduxForm({
-    form: 'simple', // a unique identifier for this form
+    form: 'personForm', // a unique identifier for this form
     validate, // <--- validation function given to redux-form
     warn // <--- warning function given to redux-form
 })(

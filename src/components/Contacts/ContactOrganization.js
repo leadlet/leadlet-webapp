@@ -7,6 +7,7 @@ import InputGroup from "react-bootstrap/es/InputGroup";
 import FormControl from "react-bootstrap/es/FormControl";
 import Phone from 'react-phone-number-input';
 import {createOrganization, updateOrganization, getByIdOrganization} from "../../actions/organization.actions";
+import {reset} from 'redux-form';
 
 const validate = values => {
     const errors = {}
@@ -134,17 +135,21 @@ class ContactNew extends React.Component {
     constructor(props) {
         super(props);
         this.onSubmit = this.onSubmit.bind(this);
+        this.onClose = this.onClose.bind(this);
     }
 
     onSubmit = (values) => {
-        // print the form values to the console
-        this.props.close();
 
         if (this.props.initialValues && this.props.initialValues.id) {
             return this.props.updateOrganization(values, () => this.props.getByIdOrganization(this.props.initialValues.id) && this.props.close);
         } else {
             return this.props.createOrganization(values, this.props.close);
         }
+    }
+
+    onClose() {
+        this.props.dispatch(reset('organizationForm'));
+        this.props.close();
     }
 
     render() {
@@ -156,7 +161,7 @@ class ContactNew extends React.Component {
         }
 
         return (
-            <Modal show={this.props.showEditModal} onHide={this.props.close}>
+            <Modal show={this.props.showEditModal} onHide={this.onClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>{title} New Organization</Modal.Title>
                 </Modal.Header>
@@ -205,7 +210,7 @@ class ContactNew extends React.Component {
 }
 
 export default reduxForm({
-    form: 'simple', // a unique identifier for this form
+    form: 'organizationForm', // a unique identifier for this form
     validate // <--- validation function given to redux-form
 })(
     connect(null, {updateOrganization, createOrganization, getByIdOrganization})(ContactNew)
