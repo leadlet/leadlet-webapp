@@ -176,15 +176,14 @@ class ContactNew extends React.Component {
     onSubmit = (values) => {
 
         if (this.props.initialValues && this.props.initialValues.id) {
-            return this.props.updatePerson(values, () => this.props.getById(this.props.initialValues.id) && this.props.close);
+            return this.props.updatePerson(values, () =>
+            {
+                this.props.getById(this.props.initialValues.id);
+                this.onClose();
+            });
         } else {
-            return this.props.createPerson(values, this.props.close);
+            return this.props.createPerson(values, () => this.onClose());
         }
-    }
-
-    componentWillUnmount() {
-        this.props.dispatch(reset('personForm'));
-        this.props.close;
     }
 
     mapOrganization2Options() {
@@ -203,15 +202,16 @@ class ContactNew extends React.Component {
     }
 
     onClose() {
-        this.props.dispatch(reset('personForm'));
         this.props.close();
+
+        this.props.dispatch(reset('personForm'));
     }
 
     render() {
-        const {handleSubmit, pristine, submitting, contact, valid, warn} = this.props;
+        const {handleSubmit, pristine, submitting, initialValues, valid, warn} = this.props;
 
         let title = "Create";
-        if (contact && contact.id) {
+        if (initialValues && initialValues.id) {
             title = "Update";
         }
 
