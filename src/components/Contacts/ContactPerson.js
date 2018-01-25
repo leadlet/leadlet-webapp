@@ -203,7 +203,6 @@ class ContactNew extends React.Component {
 
     onClose() {
         this.props.close();
-
         this.props.dispatch(reset('personForm'));
     }
 

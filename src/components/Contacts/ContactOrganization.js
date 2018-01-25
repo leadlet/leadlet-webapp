@@ -141,15 +141,18 @@ class ContactNew extends React.Component {
     onSubmit = (values) => {
 
         if (this.props.initialValues && this.props.initialValues.id) {
-            return this.props.updateOrganization(values, () => this.props.getByIdOrganization(this.props.initialValues.id) && this.props.close);
+            return this.props.updateOrganization(values, () => {
+                this.props.getByIdOrganization(this.props.initialValues.id);
+                this.onClose();
+            });
         } else {
-            return this.props.createOrganization(values, this.props.close);
+            return this.props.createOrganization(values, () => this.onClose());
         }
     }
 
     onClose() {
-        this.props.dispatch(reset('organizationForm'));
         this.props.close();
+        this.props.dispatch(reset('organizationForm'));
     }
 
     render() {
