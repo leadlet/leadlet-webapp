@@ -3,7 +3,6 @@ import connect from "react-redux/es/connect/connect";
 import {createNote} from "../../actions/note.actions";
 import {getByIdOrganization} from "../../actions/organization.actions"
 import moment from 'moment';
-import ActivityDetail from "../Activity/ActivityDetail";
 import fullCalendar from 'fullcalendar';
 import '../../../node_modules/fullcalendar/dist/fullcalendar.css';
 import $ from 'jquery';
@@ -11,6 +10,7 @@ import Timeline from "../Timeline/Timeline";
 import ContactOrganization from "./ContactOrganization";
 import {getTimelineByOrganizationId, getTimelineByOrganizationIdAndRefresh} from "../../actions/timeline.actions";
 import {getActivitiesByOrganizationId} from "../../actions/activity.actions";
+import EditCreateActivityForOrganization from "../Activity/EditCreateActivityForOrganization";
 
 class OrganizationDetail extends Component {
 
@@ -29,8 +29,13 @@ class OrganizationDetail extends Component {
         this.closeActivityModal = this.closeActivityModal.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.refreshTimeline = this.refreshTimeline.bind(this);
+
     }
 
+    refreshTimeline(){
+        this.props.getTimelineByOrganizationIdAndRefresh(null, null, null, this.props.viewedOrganization.id);
+    }
     handleChange(event) {
         this.setState({value: event.target.value});
     }
@@ -224,9 +229,10 @@ class OrganizationDetail extends Component {
                         </div>
 
                         <div>
-                            <ActivityDetail showModal={this.state.showModal}
+                            <EditCreateActivityForOrganization showModal={this.state.showModal}
                                             close={this.closeActivityModal}
                                             organization={this.props.viewedOrganization}
+                                            createCallback={this.refreshTimeline}
                             />
                         </div>
                         <div>

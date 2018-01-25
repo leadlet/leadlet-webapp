@@ -4,7 +4,6 @@ import {createNote} from "../../actions/note.actions";
 import {getById} from "../../actions/person.actions";
 import {getByIdOrganization} from "../../actions/organization.actions";
 import ContactPerson from "./ContactPerson";
-import ActivityDetail from "../Activity/ActivityDetail";
 import fullCalendar from 'fullcalendar';
 import '../../../node_modules/fullcalendar/dist/fullcalendar.css';
 import $ from 'jquery';
@@ -12,6 +11,7 @@ import moment from 'moment';
 import Timeline from "../Timeline/Timeline";
 import {getActivitiesByPersonId} from "../../actions/activity.actions";
 import {getTimelineByPersonId, getTimelineByPersonIdAndRefresh} from "../../actions/timeline.actions";
+import EditCreateActivityForPerson from "../Activity/EditCreateActivityForPerson";
 
 class ContactDetail extends Component {
 
@@ -30,8 +30,13 @@ class ContactDetail extends Component {
         this.closeActivityModal = this.closeActivityModal.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.refreshTimeline = this.refreshTimeline.bind(this);
+
     }
 
+    refreshTimeline(){
+        this.props.getTimelineByPersonIdAndRefresh(null, null, null, this.props.viewedPerson.id)
+    }
 
     handleChange(event) {
         this.setState({value: event.target.value});
@@ -226,9 +231,10 @@ class ContactDetail extends Component {
                         </div>
 
                         <div>
-                            <ActivityDetail showModal={this.state.showModal}
+                            <EditCreateActivityForPerson showModal={this.state.showModal}
                                             close={this.closeActivityModal}
                                             person={this.props.viewedPerson}
+                                            createCallback={this.refreshTimeline}
                             />
                         </div>
 

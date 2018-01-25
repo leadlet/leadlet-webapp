@@ -61,7 +61,7 @@ class renderDatePicker extends React.Component {
         super(props)
         this.handleDateChange = this.handleDateChange.bind(this);
         this.handleTimeChange = this.handleTimeChange.bind(this);
-        this.checkDateRange = this.checkDateRange.bind(this);
+        this.isOutRange = this.isOutRange.bind(this);
         this.filterOptions = this.filterOptions.bind(this)
 
         this.state = {
@@ -84,8 +84,8 @@ class renderDatePicker extends React.Component {
         this.props.input.onChange(newDateTime);
     }
 
-    checkDateRange(day){
-        let checkMinimum = true;
+    isOutRange(day){
+        let checkMinimum = false;
         if(this.props.minimumDate){
             checkMinimum = day.isBefore(this.props.minimumDate);
         }
@@ -153,7 +153,7 @@ class renderDatePicker extends React.Component {
                         onDateChange={this.handleDateChange} // PropTypes.func.isRequired
                         focused={this.state.focused} // PropTypes.bool
                         onFocusChange={({focused}) => this.setState({focused})} // PropTypes.func.isRequired
-                        isOutsideRange={ this.checkDateRange }
+                        isOutsideRange={ this.isOutRange }
                     />
                 </div>
 
@@ -171,7 +171,6 @@ class renderDatePicker extends React.Component {
                         simpleValue
                     />
                 </div>
-
 
                 {touched && error && <span>{error}</span>}
             </div>

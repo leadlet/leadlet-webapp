@@ -18,17 +18,32 @@ import {getAllPerson} from "../../actions/person.actions";
 import 'react-dates/lib/css/_datepicker.css';
 import renderDatePicker from "./renderDatePicker";
 import formValueSelector from "redux-form/es/formValueSelector";
-import {getTimelineByOrganizationIdAndRefresh, getTimelineByPersonIdAndRefresh} from "../../actions/timeline.actions";
 
 const validate = values => {
     const errors = {}
+
+    /*  title validation */
     if (!values.title) {
-        errors.title = 'Required'
-    } else if (values.title.length > 45) {
-        errors.title = 'Must be 45 characters or less!'
-    } else if (!values.activityType) {
-        errors.title = "Please, select a type!"
+        errors.title = 'Please write a title'
+    } else if (values.title.length >= 64) {
+        errors.title = 'Must be 64 characters or less!'
     }
+
+    /* activity type */
+    if (!values.activityType) {
+        errors.title = "Please select a type"
+    }
+
+    /* start date */
+    if (!values.start) {
+        errors.start = "Please select a start date"
+    }
+
+    /* end date */
+    if (!values.end) {
+        errors.end = "Please select an end date"
+    }
+
     return errors
 }
 
@@ -106,7 +121,7 @@ const renderSelectField = ({
     </div>
 )
 
-class ActivityDetail extends Component {
+class EditOrCreateActivity extends Component {
 
     constructor(props) {
         super(props);
@@ -175,26 +190,13 @@ class ActivityDetail extends Component {
         activity.memo = formValue.memo;
         activity.type = formValue.activityType;
         activity.title = formValue.title;
-        if (!this.props.person) {
-            activity.personId = formValue.person;
-        } else {
-            activity.personId = this.props.person.id;
-        }
-        if (!this.props.organization) {
-            activity.organizationId = formValue.organization;
-        } else {
-            activity.organizationId = this.props.organization.id;
-        }
-
+        activity.personId = formValue.person;
+        activity.organizationId = formValue.organization;
 
         if (this.props.initialValues && this.props.initialValues.id) {
             this.props.update(activity);
         } else {
-            if(this.props.person){
-                this.props.create(activity, () => this.props.getTimelineByPersonIdAndRefresh(null, null, null, this.props.person.id));
-            }else{
-                this.props.create(activity, () => this.props.getTimelineByOrganizationIdAndRefresh(null, null, null, this.props.organization.id));
-            }
+            this.props.create(activity);
         }
         this.props.close();
     }
@@ -269,26 +271,20 @@ class ActivityDetail extends Component {
                             label="Deal"
                             multi={false}
                         />
-                        {
-                            (!this.props.person) &&
-                            <Field
-                                name="person"
-                                label="Person"
-                                multi={false}
-                                options={this.mapPerson2Options()}
-                                component={renderSelectField}
-                            />
-                        }
-                        {
-                            (!this.props.organization) &&
-                            <Field
-                                name="organization"
-                                label="Organization"
-                                multi={false}
-                                options={this.mapOrganization2Options()}
-                                component={renderSelectField}
-                            />
-                        }
+                        <Field
+                            name="person"
+                            label="Person"
+                            multi={false}
+                            options={this.mapPerson2Options()}
+                            component={renderSelectField}
+                        />
+                        <Field
+                            name="organization"
+                            label="Organization"
+                            multi={false}
+                            options={this.mapOrganization2Options()}
+                            component={renderSelectField}
+                        />
                         <div className="invisible form-group">
                             <Checkbox>Send invitations to attendees</Checkbox>
                         </div>
@@ -333,7 +329,7 @@ class ActivityDetail extends Component {
     }
 }
 
-const selector = formValueSelector('postNewActivityForm') // <-- same as form name
+const selector = formValueSelector('createEditActivityForm') // <-- same as form name
 
 function mapStateToProps(state) {
     return {
@@ -345,9 +341,9 @@ function mapStateToProps(state) {
 }
 
 export default reduxForm({
-    form: 'postNewActivityForm',
-    validate, // <--- validation function given to redux-form
+    form: 'createEditActivityForm',
+    validate,
     enableReinitialize: true
 })(
-    connect(mapStateToProps, {create, update, _delete, getAllOrganization, getAllPerson, getTimelineByPersonIdAndRefresh, getTimelineByOrganizationIdAndRefresh})(ActivityDetail)
+    connect(mapStateToProps, {create, update, _delete, getAllOrganization, getAllPerson})(EditOrCreateActivity)
 );

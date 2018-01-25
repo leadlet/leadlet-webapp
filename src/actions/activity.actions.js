@@ -9,7 +9,9 @@ export function create(activity, successCallback) {
         return activityService.create(activity)
             .then(
                 activity => {
-                    dispatch(successCallback);
+                    if(successCallback){
+                        dispatch(successCallback);
+                    }
                     dispatch(success(activity));
                     dispatch(alertActions.success('Activity successfully created'));
                 },

@@ -3,12 +3,12 @@ import {connect} from 'react-redux';
 import $ from 'jquery';
 import draggable from '../../../node_modules/jquery-ui/ui/widgets/draggable';
 import fullCalendar from 'fullcalendar';
-import ActivityDetail from "./ActivityDetail";
 import {getAll, update} from "../../actions/activity.actions";
 import moment from 'moment';
 import ToggleButton from "react-bootstrap/es/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/es/ToggleButtonGroup";
 import '../../../node_modules/fullcalendar/dist/fullcalendar.css';
+import EditOrCreateActivity from "./EditOrCreateActivity";
 
 class Activity extends Component {
 
@@ -156,7 +156,7 @@ class Activity extends Component {
                         </div>
 
                         <div>
-                            <ActivityDetail showModal={this.state.showModal}
+                            <EditOrCreateActivity showModal={this.state.showModal}
                                             close={this.closeModal}
                                             initialValues={this.state.activitySelectedForEdit}
                             />
