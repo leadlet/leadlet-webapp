@@ -27,6 +27,31 @@ export function getPaginated(filter, page, size) {
     }
 }
 
+export function getTimelineByPersonIdAndRefresh(filter, page, size, id) {
+    return dispatch => {
+        dispatch(request());
+
+        timelineService.getByPersonId(filter, page, size, id)
+            .then(
+                response => dispatch(success({items: response[0], dataTotalSize: response[1]})),
+                error => dispatch(failure(error))
+            );
+
+    };
+
+    function request() {
+        return {type: timelineConstants.GETALL_REQUEST_REFRESH}
+    }
+
+    function success(data) {
+        return {type: timelineConstants.GETALL_SUCCESS_REFRESH, data}
+    }
+
+    function failure(error) {
+        return {type: timelineConstants.GETALL_FAILURE_REFRESH, error}
+    }
+}
+
 export function getTimelineByPersonId(filter, page, size, id) {
     return dispatch => {
         dispatch(request());
@@ -49,6 +74,31 @@ export function getTimelineByPersonId(filter, page, size, id) {
 
     function failure(error) {
         return {type: timelineConstants.GETALL_FAILURE, error}
+    }
+}
+
+export function getTimelineByOrganizationIdAndRefresh(filter, page, size, id) {
+    return dispatch => {
+        dispatch(request());
+
+        timelineService.getByOrganizationId(filter, page, size, id)
+            .then(
+                response => dispatch(success({items: response[0], dataTotalSize: response[1]})),
+                error => dispatch(failure(error))
+            );
+
+    };
+
+    function request() {
+        return {type: timelineConstants.GETALL_REQUEST_REFRESH}
+    }
+
+    function success(data) {
+        return {type: timelineConstants.GETALL_SUCCESS_REFRESH, data}
+    }
+
+    function failure(error) {
+        return {type: timelineConstants.GETALL_FAILURE_REFRESH, error}
     }
 }
 
@@ -75,4 +125,5 @@ export function getTimelineByOrganizationId(filter, page, size, id) {
     function failure(error) {
         return {type: timelineConstants.GETALL_FAILURE, error}
     }
+
 }

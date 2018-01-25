@@ -15,7 +15,7 @@ export const dealConstants = {
     DELETE_SUCCESS: 'DEAL_DELETE_SUCCESS',
     DELETE_FAILURE: 'DEAL_DELETE_FAILURE',
 
-    CARD_HEIGHT : 100,  // height of a single card(excluding marginBottom/paddingBottom)
+    CARD_HEIGHT : 200,  // height of a single card(excluding marginBottom/paddingBottom)
     CARD_MARGIN : 5,  // height of a marginBottom+paddingBottom
     OFFSET_HEIGHT : 60 // height offset from the top of the page
 

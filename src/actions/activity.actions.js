@@ -2,13 +2,14 @@ import {activityConstants} from "../constants/activity.constants";
 import {activityService} from "../services/activity.service";
 import {alertActions} from "./alert.actions";
 
-export function create(activity) {
+export function create(activity, successCallback) {
     return dispatch => {
         dispatch(request());
 
         return activityService.create(activity)
             .then(
                 activity => {
+                    dispatch(successCallback);
                     dispatch(success(activity));
                     dispatch(alertActions.success('Activity successfully created'));
                 },
@@ -57,11 +58,36 @@ export function getAll() {
     }
 }
 
-export function getByPersonId(id) {
+export function getActivitiesByPersonId(id) {
     return dispatch => {
         dispatch(request());
 
-        activityService.getByPersonId(id)
+        activityService.getActivitiesByPersonId(id)
+            .then(
+                items => dispatch(success(items)),
+                error => dispatch(failure(error))
+            );
+
+    };
+
+    function request() {
+        return {type: activityConstants.GETALL_REQUEST}
+    }
+
+    function success(items) {
+        return {type: activityConstants.GETALL_SUCCESS, items}
+    }
+
+    function failure(error) {
+        return {type: activityConstants.GETALL_FAILURE, error}
+    }
+}
+
+export function getActivitiesByOrganizationId(id) {
+    return dispatch => {
+        dispatch(request());
+
+        activityService.getActivitiesByOrganizationId(id)
             .then(
                 items => dispatch(success(items)),
                 error => dispatch(failure(error))

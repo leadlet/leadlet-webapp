@@ -10,8 +10,8 @@ import '../../../node_modules/fullcalendar/dist/fullcalendar.css';
 import $ from 'jquery';
 import moment from 'moment';
 import Timeline from "../Timeline/Timeline";
-import {getByPersonId} from "../../actions/activity.actions";
-import {getTimelineByPersonId} from "../../actions/timeline.actions";
+import {getActivitiesByPersonId} from "../../actions/activity.actions";
+import {getTimelineByPersonId, getTimelineByPersonIdAndRefresh} from "../../actions/timeline.actions";
 
 class ContactDetail extends Component {
 
@@ -43,7 +43,7 @@ class ContactDetail extends Component {
         this.props.createNote({
             content: this.state.value,
             personId: this.props.viewedPerson.id
-        });
+        }, () => this.props.getTimelineByPersonIdAndRefresh(null, null, null, this.props.match.params.personId));
         this.state.value = '';
     }
 
@@ -65,7 +65,7 @@ class ContactDetail extends Component {
 
     componentDidMount() {
         this.props.getById(this.props.match.params.personId);
-        this.props.getByPersonId(this.props.match.params.personId);
+        this.props.getActivitiesByPersonId(this.props.match.params.personId);
     }
 
     componentDidUpdate() {
@@ -128,7 +128,8 @@ class ContactDetail extends Component {
                                             );
                                         })}
 
-                                        {this.props.viewedPerson && this.props.viewedPerson.email && <span><i className="fa fa-envelope"/> {this.props.viewedPerson.email}</span>}
+                                        {this.props.viewedPerson && this.props.viewedPerson.email &&
+                                        <span><i className="fa fa-envelope"/> {this.props.viewedPerson.email}</span>}
                                     </address>
                                 </a>
                                 <div className="contact-box-footer">
@@ -254,4 +255,11 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, {getById, createNote, getByIdOrganization, getByPersonId, getTimelineByPersonId})(ContactDetail);
+export default connect(mapStateToProps, {
+    getById,
+    createNote,
+    getByIdOrganization,
+    getActivitiesByPersonId,
+    getTimelineByPersonId,
+    getTimelineByPersonIdAndRefresh
+})(ContactDetail);

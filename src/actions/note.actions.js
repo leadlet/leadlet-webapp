@@ -41,6 +41,7 @@ export function createNote(note, successCallback) {
         return noteService.createNote(note)
             .then(
                 note => {
+                    dispatch(successCallback);
                     dispatch(success(note));
                     dispatch(alertActions.success('Note create successful'));
                 },

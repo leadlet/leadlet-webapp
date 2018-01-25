@@ -18,6 +18,7 @@ import {getAllPerson} from "../../actions/person.actions";
 import 'react-dates/lib/css/_datepicker.css';
 import renderDatePicker from "./renderDatePicker";
 import formValueSelector from "redux-form/es/formValueSelector";
+import {getTimelineByOrganizationIdAndRefresh, getTimelineByPersonIdAndRefresh} from "../../actions/timeline.actions";
 
 const validate = values => {
     const errors = {}
@@ -189,7 +190,11 @@ class ActivityDetail extends Component {
         if (this.props.initialValues && this.props.initialValues.id) {
             this.props.update(activity);
         } else {
-            this.props.create(activity);
+            if(this.props.person){
+                this.props.create(activity, () => this.props.getTimelineByPersonIdAndRefresh(null, null, null, this.props.person.id));
+            }else{
+                this.props.create(activity, () => this.props.getTimelineByOrganizationIdAndRefresh(null, null, null, this.props.organization.id));
+            }
         }
         this.props.close();
     }
@@ -344,5 +349,5 @@ export default reduxForm({
     validate, // <--- validation function given to redux-form
     enableReinitialize: true
 })(
-    connect(mapStateToProps, {create, update, _delete, getAllOrganization, getAllPerson})(ActivityDetail)
+    connect(mapStateToProps, {create, update, _delete, getAllOrganization, getAllPerson, getTimelineByPersonIdAndRefresh, getTimelineByOrganizationIdAndRefresh})(ActivityDetail)
 );

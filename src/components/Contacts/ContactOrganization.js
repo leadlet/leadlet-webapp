@@ -6,35 +6,38 @@ import FormGroup from "react-bootstrap/es/FormGroup";
 import InputGroup from "react-bootstrap/es/InputGroup";
 import FormControl from "react-bootstrap/es/FormControl";
 import Phone from 'react-phone-number-input';
-import {createOrganization, updateOrganization} from "../../actions/organization.actions";
+import {createOrganization, updateOrganization, getByIdOrganization} from "../../actions/organization.actions";
+import {reset} from 'redux-form';
 
 const validate = values => {
     const errors = {}
+    let org_email_valid = true;
 
     const re_org = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const org_email_valid = re_org.test(values.email);
 
+    if (values.email && values.email.length > 0) {
+        org_email_valid = re_org.test(values.email);
+    }
+    else {
+        errors.email = ""
+    }
     if (!values.name) {
         errors.name = 'Required'
     }
-    if (!values.type) {
-        errors.type = 'Required'
+    else {
+        errors.name = ""
     }
-    if (values.name && (values.name.length > 15)) {
-        errors.name = 'Must be 15 characters or less'
+    if (values.name && (values.name.length > 30)) {
+        errors.name = 'Must be 30 characters or less'
+    } else {
+        errors.name = ""
     }
     if (!org_email_valid) {
         errors.email = "mail is not valid"
+    } else {
+        errors.email = ""
     }
     return errors
-}
-
-const warn = values => {
-    const warnings = {}
-    if (values.title && values.title.length < 2) {
-        warnings.title = 'Hmm, you seem a bit young...'
-    }
-    return warnings
 }
 
 const renderField = ({
@@ -132,29 +135,36 @@ class ContactNew extends React.Component {
     constructor(props) {
         super(props);
         this.onSubmit = this.onSubmit.bind(this);
+        this.onClose = this.onClose.bind(this);
     }
 
     onSubmit = (values) => {
-        // print the form values to the console
-        this.props.close();
 
         if (this.props.initialValues && this.props.initialValues.id) {
-            return this.props.updateOrganization(values, this.props.close);
+            return this.props.updateOrganization(values, () => {
+                this.props.getByIdOrganization(this.props.initialValues.id);
+                this.onClose();
+            });
         } else {
-            return this.props.createOrganization(values, this.props.close);
+            return this.props.createOrganization(values, () => this.onClose());
         }
     }
 
+    onClose() {
+        this.props.close();
+        this.props.dispatch(reset('organizationForm'));
+    }
+
     render() {
-        const {handleSubmit, pristine, submitting, contact} = this.props;
+        const {handleSubmit, pristine, submitting, initialValues, valid} = this.props;
 
         let title = "Create";
-        if (contact && contact.id) {
+        if (initialValues && initialValues.id) {
             title = "Update";
         }
 
         return (
-            <Modal show={this.props.showEditModal} onHide={this.props.close}>
+            <Modal show={this.props.showEditModal} onHide={this.onClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>{title} New Organization</Modal.Title>
                 </Modal.Header>
@@ -185,13 +195,13 @@ class ContactNew extends React.Component {
                             label="Email"
                         />
                         <Field
-                            name="location"
+                            name="address"
                             type="text"
                             component={renderLocationField}
                             label="Address"
                         />
                         <button className="btn btn-sm btn-primary pull-right"
-                                type="submit" disabled={pristine || submitting}><strong>Submit</strong>
+                                type="submit" disabled={pristine || submitting || !valid}><strong>Submit</strong>
                         </button>
                     </form>
                 </Modal.Body>
@@ -203,9 +213,8 @@ class ContactNew extends React.Component {
 }
 
 export default reduxForm({
-    form: 'simple', // a unique identifier for this form
-    validate, // <--- validation function given to redux-form
-    warn // <--- warning function given to redux-form
+    form: 'organizationForm', // a unique identifier for this form
+    validate // <--- validation function given to redux-form
 })(
-    connect(null, {updateOrganization, createOrganization})(ContactNew)
+    connect(null, {updateOrganization, createOrganization, getByIdOrganization})(ContactNew)
 );

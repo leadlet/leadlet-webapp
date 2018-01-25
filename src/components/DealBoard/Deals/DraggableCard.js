@@ -65,7 +65,6 @@ class CardComponent extends Component {
     x: PropTypes.number.isRequired,
     y: PropTypes.number,
     stopScrolling: PropTypes.func,
-      editDeal: PropTypes.func.isRequired,
       deleteDeal: PropTypes.func.isRequired
   }
 
@@ -82,7 +81,6 @@ class CardComponent extends Component {
       <div>
         <Card style={getStyles(isDragging)}
               item={item}
-              editDeal={this.props.editDeal}
               deleteDeal={this.props.deleteDeal}
         />
       </div>

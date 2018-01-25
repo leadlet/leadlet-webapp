@@ -1,32 +1,42 @@
 import React from 'react';
 import Modal from '../../modal-shim';
-import {Field, reduxForm} from 'redux-form'
+import {Field, reduxForm, reset} from 'redux-form'
 import {connect} from 'react-redux';
 import Select from '../../../node_modules/react-select';
 import FormGroup from "react-bootstrap/es/FormGroup";
 import InputGroup from "react-bootstrap/es/InputGroup";
 import FormControl from "react-bootstrap/es/FormControl";
 import Phone from 'react-phone-number-input';
-import {createPerson, getAllPerson, updatePerson} from "../../actions/person.actions";
+import {createPerson, updatePerson, getById} from "../../actions/person.actions";
 import {getAllOrganization} from "../../actions/organization.actions";
 
 const validate = values => {
     const errors = {}
+    let per_email_valid = true;
 
     const re_per = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const per_email_valid = re_per.test(values.email);
 
+    if (values.email !== undefined) {
+        per_email_valid = re_per.test(values.email);
+    }
+    else {
+        errors.email = ""
+    }
     if (!values.name) {
         errors.name = 'Required'
     }
-    if (!values.type) {
-        errors.type = 'Required'
+    else {
+        errors.name = ""
     }
-    if (values.name && (values.name.length > 15)) {
-        errors.name = 'Must be 15 characters or less'
+    if (values.name && (values.name.length > 30)) {
+        errors.name = 'Must be 30 characters or less'
+    } else {
+        errors.name = ""
     }
     if (!per_email_valid) {
         errors.email = "mail is not valid"
+    } else {
+        errors.email = ""
     }
     return errors
 }
@@ -34,7 +44,7 @@ const validate = values => {
 const warn = values => {
     const warnings = {}
     if (values.title && values.title.length < 2) {
-        warnings.title = 'Hmm, you seem a bit young...'
+        warnings.title = 'too short!'
     }
     return warnings
 }
@@ -163,18 +173,16 @@ class ContactNew extends React.Component {
         this.onClose = this.onClose.bind(this);
     }
 
-    componentDidMount() {
-        this.props.getAllOrganization();
-    }
-
     onSubmit = (values) => {
-        // print the form values to the console
-        this.props.close();
 
         if (this.props.initialValues && this.props.initialValues.id) {
-            return this.props.updatePerson(values, this.props.close);
+            return this.props.updatePerson(values, () =>
+            {
+                this.props.getById(this.props.initialValues.id);
+                this.onClose();
+            });
         } else {
-            return this.props.createPerson(values, this.props.close);
+            return this.props.createPerson(values, () => this.onClose());
         }
     }
 
@@ -185,20 +193,24 @@ class ContactNew extends React.Component {
         } else {
             return this.props.organizations.ids
                 .map(id => {
-                    return {label: this.props.organizations.items[id].name, value: this.props.organizations.items[id].id}
+                    return {
+                        label: this.props.organizations.items[id].name,
+                        value: this.props.organizations.items[id].id
+                    }
                 });
         }
     }
 
     onClose() {
         this.props.close();
+        this.props.dispatch(reset('personForm'));
     }
 
     render() {
-        const {handleSubmit, pristine, submitting, contact, valid} = this.props;
+        const {handleSubmit, pristine, submitting, initialValues, valid, warn} = this.props;
 
         let title = "Create";
-        if (contact && contact.id) {
+        if (initialValues && initialValues.id) {
             title = "Update";
         }
 
@@ -248,13 +260,14 @@ class ContactNew extends React.Component {
                             label="Email"
                         />
                         <Field
-                            name="location"
+                            name="address"
                             type="text"
                             component={renderLocationField}
                             label="Address"
                         />
                         <button className="btn btn-sm btn-primary pull-right"
-                                type="submit" disabled={pristine || submitting || !valid}><strong>Submit</strong>
+                                type="submit" disabled={pristine || submitting || !valid || !warn}>
+                            <strong>Submit</strong>
                         </button>
                     </form>
                 </Modal.Body>
@@ -272,9 +285,9 @@ function mapStateToProps(state) {
 }
 
 export default reduxForm({
-    form: 'simple', // a unique identifier for this form
+    form: 'personForm', // a unique identifier for this form
     validate, // <--- validation function given to redux-form
     warn // <--- warning function given to redux-form
 })(
-    connect(mapStateToProps, {updatePerson, getAllOrganization, createPerson})(ContactNew)
+    connect(mapStateToProps, {updatePerson, getAllOrganization, createPerson, getById})(ContactNew)
 );

@@ -5,7 +5,6 @@ import Link from "react-router-dom/es/Link";
 const propTypes = {
     item: PropTypes.object.isRequired,
     style: PropTypes.object,
-    editDeal: PropTypes.func.isRequired,
     deleteDeal: PropTypes.func.isRequired
 };
 
@@ -20,7 +19,7 @@ const Card = (props) => {
             {item.name}
             <div className="agile-detail">
                 <a href="#" className="pull-right btn btn-xs btn-primary">Done</a>
-                <Link to={"/deals/"+item.id}><i className="btn fa fa-edit" /></Link>
+                <Link to={"/deal/"+item.id}><i className="btn fa fa-edit" /></Link>
                 <i className="btn fa fa-trash" onClick={() => props.deleteDeal(item.id)}/>
                 <i className="fa fa-clock-o"/> 08.04.2015
             </div>

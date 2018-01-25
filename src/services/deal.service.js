@@ -54,7 +54,8 @@ function getAll() {
         headers: authHeader()
     };
 
-    return fetch('/api/deals', requestOptions).then(handleResponse);
+    // TODO ygokirmak don't forget
+    return fetch('/api/deals?page=0&size=10000', requestOptions).then(handleResponse);
 }
 
 function _delete(id) {
