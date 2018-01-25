@@ -260,7 +260,7 @@ class ContactNew extends React.Component {
                             label="Email"
                         />
                         <Field
-                            name="location"
+                            name="address"
                             type="text"
                             component={renderLocationField}
                             label="Address"

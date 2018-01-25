@@ -15,7 +15,7 @@ const validate = values => {
 
     const re_org = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    if (values.email !== undefined) {
+    if (values.email && values.email.length > 0) {
         org_email_valid = re_org.test(values.email);
     }
     else {
@@ -195,7 +195,7 @@ class ContactNew extends React.Component {
                             label="Email"
                         />
                         <Field
-                            name="location"
+                            name="address"
                             type="text"
                             component={renderLocationField}
                             label="Address"
