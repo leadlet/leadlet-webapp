@@ -3,9 +3,6 @@ import {Field, reduxForm} from 'redux-form';
 import Modal from '../../modal-shim';
 import {connect} from 'react-redux';
 import {create, update, _delete} from '../../actions/activity.actions';
-import DatePicker from 'react-datepicker';
-import {SingleDatePicker} from 'react-dates';
-import moment from 'moment';
 import {ButtonToolbar} from "react-bootstrap";
 import SweetAlert from 'sweetalert-react';
 import ToggleButtonGroup from "react-bootstrap/es/ToggleButtonGroup";
@@ -19,6 +16,8 @@ import 'react-select/dist/react-select.css';
 import {getAllOrganization} from "../../actions/organization.actions";
 import {getAllPerson} from "../../actions/person.actions";
 import 'react-dates/lib/css/_datepicker.css';
+import renderDatePicker from "./renderDatePicker";
+import formValueSelector from "redux-form/es/formValueSelector";
 
 const validate = values => {
     const errors = {}
@@ -57,83 +56,8 @@ const renderMemoField = ({
     <div className="form-group m-t-sm">
         <label>{label}</label>
         <div>
-            <FormControl {...input} componentClass="textarea" placeholder=""/>
+            <FormControl {...input} componentclassName="textarea" placeholder=""/>
         </div>
-    </div>
-)
-
-
-const render_date = ({
-                         input,
-                         selected,
-                         label,
-                         customClass,
-                         date,
-                         focused,
-                         meta: {touched, error}
-                     }) => (
-    <div className={"form-group " + customClass}>
-        <label>{label}</label>
-        <SingleDatePicker
-            id="date_input"
-            date={date}
-            focused={focused}
-            onDateChange={input.onChange}
-            onFocusChange={input.onFocus}
-        />
-    </div>
-)
-const renderStartDateField = ({
-                                  input,
-                                  selected,
-                                  label,
-                                  customClass,
-                                  meta: {touched, error}
-                              }) => (
-    <div className={"form-group " + customClass}>
-        <label>{label}</label>
-        <DatePicker
-            className="form-control"
-            showMonthDropdown
-            showYearDropdown
-            dropdownMode="select"
-            placeholderText="Click to select a date"
-            dateFormat="DD/MM/YYYY HH:mm"
-            selected={input.value ? moment(input.value, 'DD/MM/YYYY') : moment()}
-            minDate={moment()}
-            onChange={input.onChange}
-            showTimeSelect
-            timeFormat="HH:mm"
-            timeIntervals={15}
-            shouldCloseOnSelect={false}
-        />
-    </div>
-)
-
-const renderEndDateField = ({
-                                input,
-                                label,
-                                minDate,
-                                customClass,
-                                meta: {touched, error}
-                            }) => (
-    <div className={"form-group " + customClass}>
-        <label>{label}</label>
-        <DatePicker
-            className="form-control"
-            showMonthDropdown
-            showYearDropdown
-            dropdownMode="select"
-            placeholderText="Click to select a date"
-            dateFormat="DD/MM/YYYY HH:mm"
-            selected={input.value ? moment(input.value, 'DD/MM/YYYY') : moment()}
-            minDate={minDate}
-            onChange={input.onChange}
-            showTimeSelect
-            timeFormat="HH:mm"
-            timeIntervals={15}
-            shouldCloseOnSelect={false}
-        />
     </div>
 )
 
@@ -144,11 +68,11 @@ const renderTypeField = ({
     <div className="form-group">
         <ButtonToolbar>
             <ToggleButtonGroup {...input} type="radio" value={input.value}>
-                <ToggleButton value="CALL">CALL <i className="fa fa-phone"></i></ToggleButton>
-                <ToggleButton value="MEETING">MEETING <i className="fa fa-users"></i></ToggleButton>
-                <ToggleButton value="TASK">TASK <i className="fa fa-clock-o"></i></ToggleButton>
-                <ToggleButton value="DEADLINE">DEADLINE <i className="fa fa-flag"></i></ToggleButton>
-                <ToggleButton value="EMAIL">EMAIL <i className="fa fa-paper-plane"></i></ToggleButton>
+                <ToggleButton value="CALL">CALL <i className="fa fa-phone"/></ToggleButton>
+                <ToggleButton value="MEETING">MEETING <i className="fa fa-users"/></ToggleButton>
+                <ToggleButton value="TASK">TASK <i className="fa fa-clock-o"/></ToggleButton>
+                <ToggleButton value="DEADLINE">DEADLINE <i className="fa fa-flag"/></ToggleButton>
+                <ToggleButton value="EMAIL">EMAIL <i className="fa fa-paper-plane"/></ToggleButton>
             </ToggleButtonGroup>
         </ButtonToolbar>
 
@@ -191,16 +115,11 @@ class ActivityDetail extends Component {
         this.cancelDeleteActivity = this.cancelDeleteActivity.bind(this);
         this.onDeleteActivity = this.onDeleteActivity.bind(this);
         this.onClose = this.onClose.bind(this);
-        this.onDateChange = this.onDateChange.bind(this);
         this.mapOrganization2Options = this.mapOrganization2Options.bind(this);
         this.mapPerson2Options = this.mapPerson2Options.bind(this);
-        this.onFocusChange = this.onFocusChange.bind(this);
 
         this.state = {
-            showDeleteDialog: false,
-            startDate: null,
-            focused: false,
-            date: null
+            showDeleteDialog: false
         };
     }
 
@@ -283,18 +202,6 @@ class ActivityDetail extends Component {
         this.props.close();
     }
 
-    onDateChange(date) {
-        if (this.props.initialValues) {
-            if (this.props.initialValues.end < this.props.initialValues.start) {
-                this.props.initialValues.end = this.props.initialValues.start;
-            }
-        }
-        this.setState({ date });
-    }
-
-    onFocusChange({ focused }){
-        this.setState({ focused });
-    }
 
     render() {
         const {handleSubmit, initialValues, submitting, pristine, valid} = this.props;
@@ -305,7 +212,7 @@ class ActivityDetail extends Component {
         }
 
         return (
-            <Modal show={this.props.showModal} onHide={this.onClose} onChange={this.onDateChange} onFocus={this.onFocusChange}>
+            <Modal show={this.props.showModal} onHide={this.onClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>{title} New Activity</Modal.Title>
                 </Modal.Header>
@@ -322,21 +229,23 @@ class ActivityDetail extends Component {
                             component={renderField}
                             label="Title"
                         />
-                        <div className="form-inline">
-                            <Field
-                                name="start"
-                                component={render_date}
-                                label="Start Date & Time"
-                                date={this.state.date}
-                                focused={this.state.focused}
-                            />
-                            <Field
-                                name="end"
-                                customClass="m-l-md"
-                                component={renderEndDateField}
-                                minDate={this.state.startDate || ((this.props.initialValues && this.props.initialValues.start) ? this.props.initialValues.start : moment())}
-                                label="End Date & Time"
-                            />
+                        <div className="form-horizontal">
+                            <div className="form-group">
+                                <Field
+                                    label="Start Date"
+                                    name="start"
+                                    maximumDate={this.props.end}
+                                    component={renderDatePicker}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <Field
+                                    label="End Date"
+                                    name="end"
+                                    minimumDate={this.props.start}
+                                    component={renderDatePicker}
+                                />
+                            </div>
                         </div>
                         <Field
                             name="memo"
@@ -419,10 +328,14 @@ class ActivityDetail extends Component {
     }
 }
 
+const selector = formValueSelector('postNewActivityForm') // <-- same as form name
+
 function mapStateToProps(state) {
     return {
         persons: state.persons,
-        organizations: state.organizations
+        organizations: state.organizations,
+        start : selector(state, 'start'),
+        end : selector(state, 'end')
     };
 }
 

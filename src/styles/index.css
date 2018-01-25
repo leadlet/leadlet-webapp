@@ -9011,3 +9011,8 @@ deals-toolbar {
   border: 0 !important;
 
 }
+
+
+.DateInput__small {
+  width: 100% !important;
+}
