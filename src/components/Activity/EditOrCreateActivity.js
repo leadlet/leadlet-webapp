@@ -16,8 +16,8 @@ import 'react-select/dist/react-select.css';
 import {getAllOrganization} from "../../actions/organization.actions";
 import {getAllPerson} from "../../actions/person.actions";
 import 'react-dates/lib/css/_datepicker.css';
-import renderDatePicker from "./renderDatePicker";
 import formValueSelector from "redux-form/es/formValueSelector";
+import renderDateTimePicker from "./renderDateTimePicker";
 
 const validate = values => {
     const errors = {}
@@ -242,7 +242,7 @@ class EditOrCreateActivity extends Component {
                                     label="Start Date"
                                     name="start"
                                     maximumDate={this.props.end}
-                                    component={renderDatePicker}
+                                    component={renderDateTimePicker}
                                 />
                             </div>
                             <div className="form-group">
@@ -250,7 +250,7 @@ class EditOrCreateActivity extends Component {
                                     label="End Date"
                                     name="end"
                                     minimumDate={this.props.start}
-                                    component={renderDatePicker}
+                                    component={renderDateTimePicker}
                                 />
                             </div>
                         </div>

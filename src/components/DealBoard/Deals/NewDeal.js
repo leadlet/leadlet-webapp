@@ -6,8 +6,21 @@ import SweetAlert from 'sweetalert-react';
 import DropdownButton from "react-bootstrap/es/DropdownButton";
 import MenuItem from "react-bootstrap/es/MenuItem";
 import Checkbox from "react-bootstrap/es/Checkbox";
+import Select from "react-select";
+
 import 'react-select/dist/react-select.css';
 import {createDeal} from "../../../actions/deal.actions";
+import FormGroup from "react-bootstrap/es/FormGroup";
+import InputGroup from "react-bootstrap/es/InputGroup";
+import InputMask from 'react-input-mask';
+import renderDatePicker from "../../Activity/renderDatePicker";
+
+
+let currencies = [
+    {value: 'USD', label: 'USD'},
+    {value: 'TL', label: 'TL'},
+    {value: 'EURO', label: 'EURO'}
+];
 
 const validate = values => {
     const errors = {}
@@ -18,6 +31,30 @@ const validate = values => {
     }
     return errors
 }
+
+const renderPhoneField = ({
+                              input,
+                              label,
+                              type,
+                              meta: {touched, error, warning}
+                          }) => (
+    <div className="form-group">
+        <label>{label}</label>
+        <div>
+            <FormGroup>
+                <InputGroup>
+                    <InputGroup.Addon><i class="fa fa-usd" aria-hidden="true"/></InputGroup.Addon>
+                    <InputMask {...input} type={type} className="form-control" mask="999999.99" />
+                </InputGroup>
+            </FormGroup>
+            <span className="help-block m-b-none">{touched &&
+            ((error && <span>{error}</span>) ||
+                (warning && <span>{warning}</span>))}
+                </span>
+
+        </div>
+    </div>
+)
 
 const renderField = ({
                          input,
@@ -99,6 +136,23 @@ class NewDeal extends Component {
                             component={renderField}
                             label="Name"
                         />
+                        <Field
+                            name="phones[1].phone"
+                            type="text"
+                            component={renderPhoneField}
+                            label="Potential Amount"
+                        />
+                        <div className="form-horizontal">
+                            <div className="form-group">
+                                <Field
+                                    label="Possible Close Date"
+                                    name="possibleCloseDate"
+                                    minimumDate={this.props.start}
+                                    component={renderDatePicker}
+                                />
+                            </div>
+
+                        </div>
                     </form>
                     <div>
                         <SweetAlert

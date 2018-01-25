@@ -55,7 +55,7 @@ let hours = [
     {value: '23:30', label: '23:30'}
 ];
 
-class renderDatePicker extends React.Component {
+class renderDateTimePicker extends React.Component {
 
     constructor(props) {
         super(props)
@@ -156,10 +156,26 @@ class renderDatePicker extends React.Component {
                         isOutsideRange={ this.isOutRange }
                     />
                 </div>
+
+                <div className="col-sm-4">
+                    <Select
+                        closeOnSelect={true}
+                        disabled={false}
+                        multi={false}
+                        placeholder="Select time"
+                        options={this.filterOptions(hours)}
+                        removeSelected={false}
+                        rtl={false}
+                        onChange={this.handleTimeChange}
+                        value={moment(this.props.input.value, "YYYY-MM-DDTHH:mm:ss+-HH:mm").format("HH:mm")}
+                        simpleValue
+                    />
+                </div>
+
                 {touched && error && <span>{error}</span>}
             </div>
         )
     }
 }
 
-export default renderDatePicker
+export default renderDateTimePicker
