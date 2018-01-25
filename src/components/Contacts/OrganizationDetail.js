@@ -10,6 +10,7 @@ import $ from 'jquery';
 import Timeline from "../Timeline/Timeline";
 import ContactOrganization from "./ContactOrganization";
 import {getTimelineByOrganizationId, getTimelineByOrganizationIdAndRefresh} from "../../actions/timeline.actions";
+import {getActivitiesByOrganizationId} from "../../actions/activity.actions";
 
 class OrganizationDetail extends Component {
 
@@ -18,7 +19,7 @@ class OrganizationDetail extends Component {
 
         this.state = {
             showEditModal: false,
-            showActivityModal: false,
+            showModal: false,
             value: ''
         };
 
@@ -53,15 +54,16 @@ class OrganizationDetail extends Component {
     }
 
     openActivityModal() {
-        this.setState({showActivityModal: true});
+        this.setState({showModal: true});
     }
 
     closeActivityModal() {
-        this.setState({showActivityModal: false});
+        this.setState({showModal: false});
     }
 
     componentDidMount() {
         this.props.getByIdOrganization(this.props.match.params.organizationId);
+        this.props.getActivitiesByOrganizationId(this.props.match.params.organizationId);
     }
 
     componentDidUpdate() {
@@ -123,7 +125,9 @@ class OrganizationDetail extends Component {
                                             );
                                         })}
 
-                                        {this.props.viewedOrganization && this.props.viewedOrganization.email && <span><i className="fa fa-envelope"/> {this.props.viewedOrganization.email}</span>}
+                                        {this.props.viewedOrganization && this.props.viewedOrganization.email &&
+                                        <span><i
+                                            className="fa fa-envelope"/> {this.props.viewedOrganization.email}</span>}
                                     </address>
                                 </a>
                                 <div className="contact-box-footer">
@@ -220,15 +224,15 @@ class OrganizationDetail extends Component {
                         </div>
 
                         <div>
-                            <ActivityDetail showActivityModal={this.state.showActivityModal}
+                            <ActivityDetail showModal={this.state.showModal}
                                             close={this.closeActivityModal}
                                             organization={this.props.viewedOrganization}
                             />
                         </div>
                         <div>
                             <ContactOrganization showEditModal={this.state.showEditModal}
-                                           close={this.closeEditModal}
-                                           initialValues={this.props.viewedOrganization}
+                                                 close={this.closeEditModal}
+                                                 initialValues={this.props.viewedOrganization}
                             />
                         </div>
                     </div>
@@ -247,4 +251,10 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, {getByIdOrganization, createNote, getTimelineByOrganizationId, getTimelineByOrganizationIdAndRefresh})(OrganizationDetail);
+export default connect(mapStateToProps, {
+    getByIdOrganization,
+    createNote,
+    getTimelineByOrganizationId,
+    getTimelineByOrganizationIdAndRefresh,
+    getActivitiesByOrganizationId
+})(OrganizationDetail);

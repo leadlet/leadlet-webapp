@@ -5,10 +5,11 @@ export const activityService = {
     create,
     update,
     _delete,
-    getByPersonId
+    getActivitiesByPersonId,
+    getActivitiesByOrganizationId
 };
 
-function create(activity) {
+function create(activity, callback) {
     const requestOptions = {
         method: 'POST',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
@@ -38,13 +39,22 @@ function getAll() {
     return fetch('/api/activities', requestOptions).then(handleResponse);
 }
 
-function getByPersonId(id) {
+function getActivitiesByPersonId(id) {
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
     };
 
     return fetch(`/api/activities/person/${id}`, requestOptions).then(handleResponse);
+}
+
+function getActivitiesByOrganizationId(id) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    return fetch(`/api/activities/organization/${id}`, requestOptions).then(handleResponse);
 }
 
 function _delete(id) {
