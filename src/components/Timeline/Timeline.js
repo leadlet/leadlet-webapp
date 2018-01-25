@@ -49,7 +49,7 @@ class Timeline extends Component {
                                     </p>
                                     <a href="#" className="btn btn-sm btn-primary"> More info</a>
                                     <span className="vertical-date">
-                                        {moment(timelineItem.createdDate).format('HH:MM').toString()} <br/>
+                                        {moment(timelineItem.createdDate).format('HH:mm').toString()} <br/>
                                         <small>{moment(timelineItem.createdDate).format('DD-MMM-YYYY').toString()}</small>
                     </span>
                                 </div>
