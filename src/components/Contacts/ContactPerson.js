@@ -6,9 +6,9 @@ import Select from '../../../node_modules/react-select';
 import FormGroup from "react-bootstrap/es/FormGroup";
 import InputGroup from "react-bootstrap/es/InputGroup";
 import FormControl from "react-bootstrap/es/FormControl";
-import Phone from 'react-phone-number-input';
 import {createPerson, updatePerson, getById} from "../../actions/person.actions";
 import {getAllOrganization} from "../../actions/organization.actions";
+import InputMask from 'react-input-mask';
 
 const validate = values => {
     const errors = {}
@@ -80,10 +80,7 @@ const renderPhoneField = ({
             <FormGroup>
                 <InputGroup>
                     <InputGroup.Addon><i class="fa fa-phone" aria-hidden="true"/></InputGroup.Addon>
-                    <Phone
-                        placeholder="enter phone number"
-                        value={input.value}
-                        onChange={input.onChange}/>
+                    <InputMask {...input} type={type} className="form-control" mask="+99 999 999 99 99" />
                 </InputGroup>
             </FormGroup>
             <span className="help-block m-b-none">{touched &&

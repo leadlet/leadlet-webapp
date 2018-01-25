@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import FormGroup from "react-bootstrap/es/FormGroup";
 import InputGroup from "react-bootstrap/es/InputGroup";
 import FormControl from "react-bootstrap/es/FormControl";
-import Phone from 'react-phone-number-input';
+import InputMask from 'react-input-mask';
 import {createOrganization, updateOrganization, getByIdOrganization} from "../../actions/organization.actions";
 import {reset} from 'redux-form';
 
@@ -71,13 +71,10 @@ const renderPhoneField = ({
             <FormGroup>
                 <InputGroup>
                     <InputGroup.Addon><i class="fa fa-phone" aria-hidden="true"/></InputGroup.Addon>
-
-                    <Phone
-                        placeholder="enter phone number"
-                        value={input.value}
-                        onChange={input.onChange}/>
+                    <InputMask {...input} type={type} className="form-control" mask="+99 999 999 99 99" />
                 </InputGroup>
             </FormGroup>
+
             <span className="help-block m-b-none">{touched &&
             ((error && <span>{error}</span>) ||
                 (warning && <span>{warning}</span>))}
