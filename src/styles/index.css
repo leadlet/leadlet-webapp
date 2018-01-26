@@ -9019,6 +9019,8 @@ body{
   margin: 0 0 10px 0;
   padding: 10px;
   border-radius: 2px;
+  height: 80px;
+  max-height: 80px;
 
 }
 
