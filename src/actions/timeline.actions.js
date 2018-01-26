@@ -27,6 +27,57 @@ export function getPaginated(filter, page, size) {
     }
 }
 
+export function getTimelineByDealIdAndRefresh(filter, page, size, id) {
+    return dispatch => {
+        dispatch(request());
+
+        timelineService.getByDealId(filter, page, size, id)
+            .then(
+                response => dispatch(success({items: response[0], dataTotalSize: response[1]})),
+                error => dispatch(failure(error))
+            );
+
+    };
+
+    function request() {
+        return {type: timelineConstants.GETALL_REQUEST_REFRESH}
+    }
+
+    function success(data) {
+        return {type: timelineConstants.GETALL_SUCCESS_REFRESH, data}
+    }
+
+    function failure(error) {
+        return {type: timelineConstants.GETALL_FAILURE_REFRESH, error}
+    }
+}
+
+export function getTimelineByDealId(filter, page, size, id) {
+    return dispatch => {
+        dispatch(request());
+
+        timelineService.getByDealId(filter, page, size, id)
+            .then(
+                response => dispatch(success({items: response[0], dataTotalSize: response[1]})),
+                error => dispatch(failure(error))
+            );
+
+    };
+
+    function request() {
+        return {type: timelineConstants.GETALL_REQUEST}
+    }
+
+    function success(data) {
+        return {type: timelineConstants.GETALL_SUCCESS, data}
+    }
+
+    function failure(error) {
+        return {type: timelineConstants.GETALL_FAILURE, error}
+    }
+}
+
+
 export function getTimelineByPersonIdAndRefresh(filter, page, size, id) {
     return dispatch => {
         dispatch(request());

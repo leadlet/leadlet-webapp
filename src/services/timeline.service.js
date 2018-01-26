@@ -3,8 +3,18 @@ import {authHeader} from '../helpers';
 export const timelineService = {
     getPaginated,
     getByPersonId,
-    getByOrganizationId
+    getByOrganizationId,
+    getByDealId
 };
+
+function getByDealId(filter, page, size, dealId) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    return fetch(`/api/timeLines/deal/${dealId}?filter=${filter}&page=${page}&size=${size}&sort=createdDate,desc`, requestOptions).then(handlePaginationResponse);
+}
 
 function getByPersonId(filter, page, size, personId) {
     const requestOptions = {
