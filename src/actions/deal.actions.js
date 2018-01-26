@@ -2,6 +2,25 @@ import {dealConstants} from "../constants/deal.constants";
 import {dealService} from "../services/deal.service";
 import {alertActions} from "./alert.actions";
 
+export function getDealById(dealId) {
+    return dispatch => {
+        dispatch(request(dealId));
+
+        dealService.getDealById(dealId)
+            .then(
+                deal => {
+                    dispatch(success(deal));
+                },
+                error => dispatch(failure(error))
+            );
+    };
+
+    function request() { return { type: dealConstants.GET_REQUEST } }
+    function success(deal) { return { type: dealConstants.GET_SUCCESS, deal } }
+    function failure(error) { return { type: dealConstants.GET_FAILURE, error } }
+}
+
+
 export function getAllDeals() {
     return dispatch => {
         dispatch(request());

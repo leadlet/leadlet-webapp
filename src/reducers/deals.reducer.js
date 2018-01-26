@@ -8,6 +8,21 @@ const dealListSchema = [dealSchema];
 
 export function deals(state = {}, action) {
     switch (action.type) {
+        /* get by id */
+        case dealConstants.GET_REQUEST:
+            return {
+                loading: true
+            };
+        case dealConstants.GET_SUCCESS:
+            return {
+                ...state,
+                viewedDeal: action.deal
+            };
+        case dealConstants.GET_FAILURE:
+            return {
+                error: action.error
+            };
+
         /* ALL dealS */
         case dealConstants.GETALL_REQUEST:
             return {

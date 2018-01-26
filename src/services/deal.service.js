@@ -2,7 +2,7 @@ import { authHeader } from '../helpers';
 
 export const dealService = {
     getAll,
-    getById,
+    getDealById,
     create,
     update,
     move,
@@ -39,7 +39,7 @@ function move(stage) {
     return fetch('/api/deals/move', requestOptions).then(handleResponse);
 }
 
-function getById(id) {
+function getDealById(id) {
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
