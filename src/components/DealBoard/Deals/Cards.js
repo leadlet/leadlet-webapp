@@ -15,6 +15,7 @@ function getPlaceholderIndex(y, scrollY) {
     } else {
         placeholderIndex = Math.floor((yPos - dealConstants.CARD_HEIGHT / 2) / (dealConstants.CARD_HEIGHT + dealConstants.CARD_MARGIN));
     }
+    console.log(`phindex: ${placeholderIndex} yPos: ${yPos}`);
     return placeholderIndex;
 }
 
@@ -109,7 +110,7 @@ class Cards extends Component {
             if (isOver && canDrop) {
                 isPlaceHold = false;
                 if (i === 0 && placeholderIndex === -1) {
-                    cardList.push(<li key="placeholder" className="info-element placeholder"/>);
+                    cardList.push(<li key="placeholder" className="placeholder"/>);
                 } else if (placeholderIndex > i) {
                     isPlaceHold = true;
                 }

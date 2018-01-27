@@ -8987,7 +8987,7 @@ body{
   margin-left: 10px;
   vertical-align: top;
   background-color: #ffffff;
-  padding: 15px 20px 20px 20px;
+  padding: 15px 10px 20px 10px;
   border-color: #e7eaec;
   border-image: none;
   border-style: solid solid none;
@@ -9006,7 +9006,7 @@ body{
 .dealboard .list ul {
   list-style: none;
   margin: 0;
-  padding: 10px 0;
+  padding: 10px 10px;
   height: calc(100% - 40px);
   max-height: calc(100% - 40px);
   overflow-y: auto;
@@ -9023,6 +9023,18 @@ body{
   max-height: 80px;
 
 }
+
+.dealboard .list li:hover  {
+  cursor: pointer;
+  background: #fff;
+}
+
+.dealboard .list .placeholder {
+  border: 1px dashed #cecece !important;
+  visibility: visible !important;
+  background: #e7eaec !important;
+}
+
 
 .dealboard .stage-header{
   line-height: 20px;
