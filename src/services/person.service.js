@@ -2,6 +2,7 @@ import { authHeader } from '../helpers';
 
 export const personService = {
     getAllPerson,
+    getAllPersonByOrganization,
     getById,
     createPerson,
     updatePerson,
@@ -36,6 +37,16 @@ function getById(id) {
 
     return fetch('/api/persons/' + id, requestOptions).then(handleResponse);
 }
+
+function getAllPersonByOrganization(organizationId , page, size) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    return fetch(`/api/persons/organization/${organizationId}?page=${page}&size=${size}` , requestOptions).then(handlePaginationResponse);
+}
+
 
 function getAllPerson(filter , page, size) {
     const requestOptions = {
