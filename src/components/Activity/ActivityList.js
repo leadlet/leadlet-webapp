@@ -67,6 +67,7 @@ class Activity extends Component {
             $('#calendar').fullCalendar('destroy');
 
             $('#calendar').fullCalendar({
+                aspectRatio: 3,
                 header: {
                     left: 'prev,next today',
                     center: 'title',
