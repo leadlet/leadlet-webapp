@@ -13,8 +13,8 @@ import Checkbox from "react-bootstrap/es/Checkbox";
 import FormControl from "../../../node_modules/react-bootstrap/es/FormControl";
 import Select from '../../../node_modules/react-select';
 import 'react-select/dist/react-select.css';
-import {getAllOrganization} from "../../actions/organization.actions";
-import {getAllPerson} from "../../actions/person.actions";
+import {getAllOrganization, getOrganizationByPersonId} from "../../actions/organization.actions";
+import {getAllPerson,getAllPersonByOrganizationId} from "../../actions/person.actions";
 import 'react-dates/lib/css/_datepicker.css';
 import formValueSelector from "redux-form/es/formValueSelector";
 import renderDateTimePicker from "./renderDateTimePicker";
@@ -137,6 +137,23 @@ class EditOrCreateActivity extends Component {
         this.state = {
             showDeleteDialog: false
         };
+    }
+
+    componentWillReceiveProps(nextProps){
+        if( this.props.person !== nextProps.person ){
+            if(nextProps.person){
+                this.props.getOrganizationByPersonId(nextProps.person);
+            }else{
+                this.props.getAllOrganization();
+            }
+        }
+        if( this.props.organization !== nextProps.organization ){
+            if(nextProps.organization){
+                this.props.getAllPersonByOrganizationId(nextProps.organization);
+            }else{
+                this.props.getAllPerson();
+            }
+        }
     }
 
     componentDidMount() {
@@ -336,7 +353,10 @@ function mapStateToProps(state) {
         persons: state.persons,
         organizations: state.organizations,
         start : selector(state, 'start'),
-        end : selector(state, 'end')
+        end : selector(state, 'end'),
+        person: selector(state, 'person'),
+        organization: selector(state, 'organization')
+
     };
 }
 
@@ -345,5 +365,5 @@ export default reduxForm({
     validate,
     enableReinitialize: true
 })(
-    connect(mapStateToProps, {create, update, _delete, getAllOrganization, getAllPerson})(EditOrCreateActivity)
+    connect(mapStateToProps, {create, update, _delete, getAllOrganization,getOrganizationByPersonId, getAllPerson, getAllPersonByOrganizationId})(EditOrCreateActivity)
 );

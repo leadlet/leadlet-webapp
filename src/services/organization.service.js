@@ -5,6 +5,7 @@ export const organizationService = {
     getByIdOrganization,
     createOrganization,
     updateOrganization,
+    getOrganizationByPersonId,
     _delete
 };
 
@@ -35,6 +36,15 @@ function getByIdOrganization(id) {
     };
 
     return fetch('/api/organizations/' + id, requestOptions).then(handleResponse);
+}
+
+function getOrganizationByPersonId(personId) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    return fetch(`/api/organizations/person/${personId}` , requestOptions).then(handlePaginationResponse);
 }
 
 function getAllOrganization(filter , page, size) {
