@@ -74,7 +74,7 @@ class Activity extends Component {
                 },
                 selectable: true,
                 selectHelper: true,
-                select: function(start, end) {
+                select: function (start, end) {
                     var title = openActivityModal();
 
                     var eventData;
@@ -100,7 +100,9 @@ class Activity extends Component {
                             memo: event.memo,
                             activityType: event.type,
                             person: event.personId,
-                            organization: event.organizationId
+                            organization: event.organizationId,
+                            location: event.location
+
                         }
                     );
                 },
@@ -115,6 +117,7 @@ class Activity extends Component {
                     activity.title = event.title;
                     activity.personId = event.personId;
                     activity.organizationId = event.organizationId;
+                    activity.location = event.location;
 
                     updateActivity(activity);
                 }
@@ -142,10 +145,14 @@ class Activity extends Component {
                                                            onChange={this.filterActivity}>
                                             <ToggleButton className="btn-sm" value={' '}>All </ToggleButton>
                                             <ToggleButton className="btn-sm" value={'CALL'}><i className="fa fa-phone"/></ToggleButton>
-                                            <ToggleButton className="btn-sm" value={'MEETING'}><i className="fa fa-users"/></ToggleButton>
-                                            <ToggleButton className="btn-sm" value={'TASK'}><i className="fa fa-clock-o"/></ToggleButton>
-                                            <ToggleButton className="btn-sm" value={'DEADLINE'}><i className="fa fa-flag"/></ToggleButton>
-                                            <ToggleButton className="btn-sm" value={'EMAIL'}><i className="fa fa-paper-plane"/></ToggleButton>
+                                            <ToggleButton className="btn-sm" value={'MEETING'}><i
+                                                className="fa fa-users"/></ToggleButton>
+                                            <ToggleButton className="btn-sm" value={'TASK'}><i
+                                                className="fa fa-clock-o"/></ToggleButton>
+                                            <ToggleButton className="btn-sm" value={'DEADLINE'}><i
+                                                className="fa fa-flag"/></ToggleButton>
+                                            <ToggleButton className="btn-sm" value={'EMAIL'}><i
+                                                className="fa fa-paper-plane"/></ToggleButton>
                                         </ToggleButtonGroup>
                                     </div>
                                 </div>
@@ -157,8 +164,8 @@ class Activity extends Component {
 
                         <div>
                             <EditOrCreateActivity showModal={this.state.showModal}
-                                            close={this.closeModal}
-                                            initialValues={this.state.activitySelectedForEdit}
+                                                  close={this.closeModal}
+                                                  initialValues={this.state.activitySelectedForEdit}
                             />
                         </div>
                     </div>
