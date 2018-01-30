@@ -332,7 +332,7 @@ class EditOrCreateActivity extends Component {
                             label="Location"
                             component={MapWithASearchBox}
                         />
-                        <em>{this.props.location && this.props.location.center && this.props.location.center.lat},{this.props.location && this.props.location.center && this.props.location.center.lng}</em>
+
                         <div className="invisible form-group">
                             <Checkbox>Send invitations to attendees</Checkbox>
                         </div>

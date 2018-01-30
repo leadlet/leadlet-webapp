@@ -61,6 +61,9 @@ const MapWithASearchBox = compose(
             lat: 41.9, lng: -87.624
         }}
         onBoundsChanged={props.onBoundsChanged}
+        defaultOptions={{
+            scrollwheel: false,
+        }}
     >
         <SearchBox
             ref={props.onSearchBoxMounted}
