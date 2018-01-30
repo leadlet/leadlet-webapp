@@ -14,10 +14,11 @@ import FormControl from "../../../node_modules/react-bootstrap/es/FormControl";
 import Select from '../../../node_modules/react-select';
 import 'react-select/dist/react-select.css';
 import {getAllOrganization, getOrganizationByPersonId} from "../../actions/organization.actions";
-import {getAllPerson,getAllPersonByOrganizationId} from "../../actions/person.actions";
+import {getAllPerson, getAllPersonByOrganizationId} from "../../actions/person.actions";
 import 'react-dates/lib/css/_datepicker.css';
 import formValueSelector from "redux-form/es/formValueSelector";
 import renderDateTimePicker from "./renderDateTimePicker";
+import MapWithASearchBox from "../Map/MapWithASearchBox";
 
 const validate = values => {
     const errors = {}
@@ -133,24 +134,33 @@ class EditOrCreateActivity extends Component {
         this.onClose = this.onClose.bind(this);
         this.mapOrganization2Options = this.mapOrganization2Options.bind(this);
         this.mapPerson2Options = this.mapPerson2Options.bind(this);
+//        this.mapValueChanged = this.mapValueChanged.bind(this);
 
         this.state = {
-            showDeleteDialog: false
+            showDeleteDialog: false,
+            /*
+            location: {
+                center: {
+                    lat: 41.9, lng: -87.624
+                },
+                markers: []
+            }
+            */
         };
     }
 
-    componentWillReceiveProps(nextProps){
-        if( this.props.person !== nextProps.person ){
-            if(nextProps.person){
+    componentWillReceiveProps(nextProps) {
+        if (this.props.person !== nextProps.person) {
+            if (nextProps.person) {
                 this.props.getOrganizationByPersonId(nextProps.person);
-            }else{
+            } else {
                 this.props.getAllOrganization();
             }
         }
-        if( this.props.organization !== nextProps.organization ){
-            if(nextProps.organization){
+        if (this.props.organization !== nextProps.organization) {
+            if (nextProps.organization) {
                 this.props.getAllPersonByOrganizationId(nextProps.organization);
-            }else{
+            } else {
                 this.props.getAllPerson();
             }
         }
@@ -209,6 +219,7 @@ class EditOrCreateActivity extends Component {
         activity.title = formValue.title;
         activity.personId = formValue.person;
         activity.organizationId = formValue.organization;
+        activity.location = formValue.location;
 
         if (this.props.initialValues && this.props.initialValues.id) {
             this.props.update(activity);
@@ -226,6 +237,19 @@ class EditOrCreateActivity extends Component {
         this.props.close();
     }
 
+    /*
+    mapValueChanged(center, markers) {
+        this.setState({
+            location: {
+                center: {
+                    lat: center.lat(),
+                    lng: center.lng()
+                },
+                markers: markers
+            }
+        });
+    }
+    */
 
     render() {
         const {handleSubmit, initialValues, submitting, pristine, valid} = this.props;
@@ -302,6 +326,13 @@ class EditOrCreateActivity extends Component {
                             options={this.mapOrganization2Options()}
                             component={renderSelectField}
                         />
+
+                        <Field
+                            name="location"
+                            label="Location"
+                            component={MapWithASearchBox}
+                        />
+                        <em>{this.props.location && this.props.location.center && this.props.location.center.lat},{this.props.location && this.props.location.center && this.props.location.center.lng}</em>
                         <div className="invisible form-group">
                             <Checkbox>Send invitations to attendees</Checkbox>
                         </div>
@@ -352,11 +383,11 @@ function mapStateToProps(state) {
     return {
         persons: state.persons,
         organizations: state.organizations,
-        start : selector(state, 'start'),
-        end : selector(state, 'end'),
+        start: selector(state, 'start'),
+        end: selector(state, 'end'),
         person: selector(state, 'person'),
-        organization: selector(state, 'organization')
-
+        organization: selector(state, 'organization'),
+        location: selector(state, 'location')
     };
 }
 
@@ -365,5 +396,13 @@ export default reduxForm({
     validate,
     enableReinitialize: true
 })(
-    connect(mapStateToProps, {create, update, _delete, getAllOrganization,getOrganizationByPersonId, getAllPerson, getAllPersonByOrganizationId})(EditOrCreateActivity)
+    connect(mapStateToProps, {
+        create,
+        update,
+        _delete,
+        getAllOrganization,
+        getOrganizationByPersonId,
+        getAllPerson,
+        getAllPersonByOrganizationId
+    })(EditOrCreateActivity)
 );
