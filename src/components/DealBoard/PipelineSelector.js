@@ -17,10 +17,6 @@ function PipelineSelector(props) {
         }
     }
 
-    function updateValue(newValue) {
-        props.onChange(newValue);
-    }
-
 
     if( !props.pipelines.ids)
         return <em>loading..</em>;
@@ -34,11 +30,10 @@ function PipelineSelector(props) {
                 simpleValue
                 clearable={false}
                 name="selected-state"
-                value={props.selectedPipelineId}
-                onChange={updateValue}
+                onChange={props.onChange}
                 openOnClick={false}
                 searchable={false}
-
+                value={props.value}
                 />);
 
 }

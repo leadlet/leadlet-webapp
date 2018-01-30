@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PipelineSelector from './PipelineSelector'
-import {getAllPipelines} from "../../actions/pipeline.actions";
+import {getAllPipelines, selectPipeline} from "../../actions/pipeline.actions";
 import {getAllStages} from "../../actions/stage.actions";
 import {connect} from "react-redux";
 import Button from "react-bootstrap/es/Button";
@@ -11,6 +11,7 @@ import CustomDragLayer from "./CustomDragLayer";
 import {deleteDeal, getAllDeals, moveDeal} from "../../actions/deal.actions";
 import SweetAlert from 'sweetalert-react';
 import NewDeal from "./Deals/NewDeal";
+import {getBoardByPipelineId, loadMoreDeals} from "../../actions/board.actions";
 
 
 class DealBoard extends Component {
@@ -19,22 +20,17 @@ class DealBoard extends Component {
         super(props);
 
         this.state = {
-            selectedPipelineId: null,
             isNewDealModalVisible: false,
-            activeStages: null,
             isScrolling: false,
             showDeleteDealDialog: false,
             deletingDealId: null
         };
 
-        this.pipelineChanged = this.pipelineChanged.bind(this);
-        this.selectedStages = this.selectedStages.bind(this);
         this.toggleNewDealModal = this.toggleNewDealModal.bind(this);
         this.scrollRight = this.scrollRight.bind(this);
         this.scrollLeft = this.scrollLeft.bind(this);
         this.stopScrolling = this.stopScrolling.bind(this);
         this.startScrolling = this.startScrolling.bind(this);
-        this.getStageDeals = this.getStageDeals.bind(this);
         this.moveCard = this.moveCard.bind(this);
         this.onDeleteDeal = this.onDeleteDeal.bind(this);
         this.moveList = this.moveList.bind(this);
@@ -63,13 +59,21 @@ class DealBoard extends Component {
     }
 
     moveCard(dealId, nextStageId, nextDealOrder) {
+
+        // TODO hack
+        if(nextDealOrder === -1){
+            nextDealOrder = 0;
+        }
+        const nextDealId = this.props.boards[this.props.pipelines.selectedPipelineId].entities.stages[nextStageId].dealList[nextDealOrder];
+        const prevDealId = this.props.boards[this.props.pipelines.selectedPipelineId].entities.stages[nextStageId].dealList[nextDealOrder-1];
+
+
         this.props.moveDeal({
             id: dealId,
-            newStageId: nextStageId,
-            newOrder: nextDealOrder
+            nextDealId: nextDealId,
+            prevDealId: prevDealId
         });
 
-        console.log(`Moving deal ${dealId} to new stage index : ${nextStageId} and new deal order: ${nextDealOrder}`);
     }
 
     moveList(listId, nextX) {
@@ -117,42 +121,12 @@ class DealBoard extends Component {
 
     componentDidMount() {
         this.props.getAllPipelines();
-        this.props.getAllStages();
-        this.props.getAllDeals();
-    }
-
-    pipelineChanged(newPipelineId, _props = this.props) {
-
-        const activeStages = _props.stages.ids
-            .filter( id => { return _props.stages.items[id].pipelineId === newPipelineId })
-            .map(id => { return _props.stages.items[id]; });
-
-        this.setState({
-            selectedPipelineId: newPipelineId,
-            activeStages: activeStages
-        });
-    }
-
-    selectedStages(){
-        return this.props.stages.ids
-            .filter( id => { return this.props.stages.items[id].pipelineId === this.state.selectedPipelineId })
-            .map(id => { return this.props.stages.items[id]; });
     }
 
     componentWillReceiveProps(nextProps) {
-        if(nextProps.pipelines.ids && nextProps.stages.ids && !this.state.selectedPipelineId){
-            this.pipelineChanged(nextProps.pipelines.ids[0], nextProps);
-
+        if(nextProps.pipelines.selectedPipelineId !== this.props.pipelines.selectedPipelineId){
+            this.props.getBoardByPipelineId(nextProps.pipelines.selectedPipelineId);
         }
-    }
-
-    getStageDeals( stage ){
-       return  this.props.deals.ids.filter(
-            id => this.props.deals.items[id].stageId === stage.id
-        )
-            .map(
-                id => this.props.deals.items[id]
-            );
     }
 
     render() {
@@ -162,28 +136,13 @@ class DealBoard extends Component {
                         <div className="row row-flex pull-right">
                             <Button bsStyle="primary" className="m-l-sm" onClick={this.toggleNewDealModal}>New Deal</Button>
                             <PipelineSelector pipelines={this.props.pipelines}
-                                              onChange={this.pipelineChanged}
-                                              selectedPipelineId={this.state.selectedPipelineId}/>
+                                              onChange={this.props.selectPipeline}
+                                            value={this.props.pipelines.selectedPipelineId}/>
                         </div>
                     </div>
                     <div id="deals-board" className="lists">
                         <CustomDragLayer snapToGrid={false} />
-                        { this.props.pipelines.ids && this.props.deals.ids && this.state.activeStages
-                        && this.state.activeStages.map((stage, i) =>
-                            <CardsContainer
-                                key={stage.id}
-                                id={stage.id}
-                                item={stage}
-                                moveCard={this.moveCard}
-                                moveList={this.moveList}
-                                startScrolling={this.startScrolling}
-                                stopScrolling={this.stopScrolling}
-                                isScrolling={this.state.isScrolling}
-                                x={stage.id}
-                                cards={this.getStageDeals(stage)}
-                                deleteDeal={this.onDeleteDeal}
-                            />
-                        )}
+                        { this.renderCards()}
                     </div>
                     <SweetAlert
                         title="Are you sure?"
@@ -210,15 +169,55 @@ class DealBoard extends Component {
         );
     }
 
+    renderCards() {
+
+        if( this.props.pipelines && this.props.pipelines.selectedPipelineId ){
+            if( this.props.boards
+                && this.props.boards[this.props.pipelines.selectedPipelineId]){
+                const _selectedBoard = this.props.boards[this.props.pipelines.selectedPipelineId];
+                if( _selectedBoard.loading ){
+                    return(
+                        <div>
+                            <i className="fa fa-spinner fa-pulse fa-3x fa-fw"/>
+                            <span className="sr-only">Loading Deal Board</span>
+                        </div>
+                    );
+                } else {
+                    return _selectedBoard.ids.stages.map( id =>
+                        <CardsContainer
+                            key={id}
+                            id={id}
+                            stage={_selectedBoard.entities.stages[id]}
+                            moveCard={this.moveCard}
+                            moveList={this.moveList}
+                            startScrolling={this.startScrolling}
+                            stopScrolling={this.stopScrolling}
+                            isScrolling={this.state.isScrolling}
+                            x={id}
+                            deals={_selectedBoard.entities.dealList}
+                            deleteDeal={this.onDeleteDeal}
+                            loadMoreDeals={this.props.loadMoreDeals}
+                        />
+                    );
+                }
+
+            }else{
+
+            }
+
+        }else{
+
+        }
+
+    }
 }
 
 function mapStateToProps(state) {
     return {
         pipelines: state.pipelines,
-        stages: state.stages,
-        deals: state.deals,
+        boards: state.boards
     }
 }
 
-export default connect(mapStateToProps, {getAllPipelines, getAllStages, getAllDeals,moveDeal, deleteDeal })(DragDropContext(HTML5Backend)(DealBoard));
+export default connect(mapStateToProps, {getAllPipelines, getAllStages, getAllDeals,moveDeal, deleteDeal, getBoardByPipelineId, selectPipeline, loadMoreDeals })(DragDropContext(HTML5Backend)(DealBoard));
 

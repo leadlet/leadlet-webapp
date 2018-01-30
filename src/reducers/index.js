@@ -14,6 +14,7 @@ import {activities} from './activities.reducer';
 import {deals} from './deals.reducer';
 import lists from "./lists";
 import {timeLines} from "./timelines.reducer";
+import {boards} from "./board.reducer";
 
 const rootReducer = combineReducers({
     authentication,
@@ -29,7 +30,8 @@ const rootReducer = combineReducers({
     activities,
     deals,
     lists,
-    timeLines
+    timeLines,
+    boards
 });
 
 export default rootReducer;

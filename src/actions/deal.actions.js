@@ -2,6 +2,7 @@ import {dealConstants} from "../constants/deal.constants";
 import {dealService} from "../services/deal.service";
 import {alertActions} from "./alert.actions";
 
+
 export function getDealById(dealId) {
     return dispatch => {
         dispatch(request(dealId));
@@ -77,9 +78,9 @@ export function moveDeal(deal) {
             );
     };
 
-    function request() { return { type: dealConstants.UPDATE_REQUEST } }
-    function success(deal) { return { type: dealConstants.UPDATE_SUCCESS, deal } }
-    function failure(error) { return { type: dealConstants.UPDATE_FAILURE, error } }
+    function request() { return { type: dealConstants.MOVE_REQUEST } }
+    function success(deal) { return { type: dealConstants.MOVE_SUCCESS, deal } }
+    function failure(error) { return { type: dealConstants.MOVE_FAILURE, error } }
 }
 
 

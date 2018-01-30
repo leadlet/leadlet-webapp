@@ -4,6 +4,7 @@ import {DropTarget} from 'react-dnd';
 import {findDOMNode} from 'react-dom'
 import {dealConstants} from "../../../constants/deal.constants";
 import PropTypes from 'prop-types';
+import Waypoint from 'react-waypoint';
 
 
 function getPlaceholderIndex(y, scrollY) {
@@ -15,7 +16,6 @@ function getPlaceholderIndex(y, scrollY) {
     } else {
         placeholderIndex = Math.floor((yPos - dealConstants.CARD_HEIGHT / 2) / (dealConstants.CARD_HEIGHT + dealConstants.CARD_MARGIN));
     }
-    console.log(`phindex: ${placeholderIndex} yPos: ${yPos}`);
     return placeholderIndex;
 }
 
@@ -82,7 +82,6 @@ class Cards extends Component {
         connectDropTarget: PropTypes.func.isRequired,
         moveCard: PropTypes.func.isRequired,
         deleteDeal: PropTypes.func.isRequired,
-        cards: PropTypes.array.isRequired,
         x: PropTypes.number.isRequired,
         isOver: PropTypes.bool,
         item: PropTypes.object,
@@ -97,16 +96,19 @@ class Cards extends Component {
         this.state = {
             placeholderIndex: undefined,
             isScrolling: false,
+            currentPage: 0
         };
+
+        this.loadMoreDeal = this.loadMoreDeal.bind(this);
     }
 
     render() {
-        const {connectDropTarget, cards, isOver, canDrop} = this.props;
+        const {connectDropTarget, isOver, canDrop, dealIds, deals, stage} = this.props;
         const {placeholderIndex} = this.state;
 
         let isPlaceHold = false;
         let cardList = [];
-        cards.forEach((item, i) => {
+        dealIds.forEach( (id,i) => {
             if (isOver && canDrop) {
                 isPlaceHold = false;
                 if (i === 0 && placeholderIndex === -1) {
@@ -115,6 +117,7 @@ class Cards extends Component {
                     isPlaceHold = true;
                 }
             }
+            const item = deals[id];
             if (item !== undefined) {
                 cardList.push(
                     <Card x={item.stageId} y={item.order}
@@ -130,21 +133,32 @@ class Cards extends Component {
             }
         });
 
+
         // if placeholder index is greater than array.length, display placeholder as last
         if (isPlaceHold) {
             cardList.push(<li key="placeholder" className="info-element placeholder"/>);
         }
 
         // if there is no items in cards currently, display a placeholder anyway
-        if (isOver && canDrop && cards.length === 0) {
+        if (isOver && canDrop && dealIds.length === 0) {
             cardList.push(<li key="placeholder" className="info-element placeholder"/>);
         }
 
         return connectDropTarget(
             <ul>
                 {cardList}
+                <Waypoint
+                    onEnter={this.loadMoreDeal}
+                />
             </ul>
         );
+    }
+
+    loadMoreDeal() {
+        if(this.state.currentPage+1 !== this.props.stage.dealPageCount){
+            this.setState({currentPage: this.state.currentPage + 1},
+                () => this.props.loadMoreDeals(this.props.stage.id,this.state.currentPage));
+        }
     }
 }
 

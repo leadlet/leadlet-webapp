@@ -8,6 +8,11 @@ const pipelineListSchema = [pipelineSchema];
 
 export function pipelines(state = {}, action) {
     switch (action.type) {
+        case pipelineConstants.SELECT_PIPELINE:
+            return {
+                ...state,
+                selectedPipelineId: action.id
+            }
         /* ALL STAGES */
         case pipelineConstants.GETALL_REQUEST:
             return {

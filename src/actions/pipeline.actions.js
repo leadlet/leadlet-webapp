@@ -2,6 +2,12 @@ import {pipelineConstants} from "../constants/pipeline.constants";
 import {pipelineService} from "../services/pipeline.service";
 import {alertActions} from "./alert.actions";
 
+export function selectPipeline(id) {
+    return dispatch => {
+        dispatch({ type: pipelineConstants.SELECT_PIPELINE, id });
+    };
+}
+
 export function getAllPipelines() {
     return dispatch => {
         dispatch(request());

@@ -9,6 +9,7 @@ export const dealService = {
     _delete
 };
 
+
 function create(stage) {
     const requestOptions = {
         method: 'POST',
@@ -54,8 +55,7 @@ function getAll() {
         headers: authHeader()
     };
 
-    // TODO ygokirmak don't forget
-    return fetch('/api/deals?page=0&size=10000', requestOptions).then(handleResponse);
+    return fetch('/api/deals', requestOptions).then(handleResponse);
 }
 
 function _delete(id) {

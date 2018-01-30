@@ -5,8 +5,7 @@ import moment from 'moment';
 
 const propTypes = {
     item: PropTypes.object.isRequired,
-    style: PropTypes.object,
-    deleteDeal: PropTypes.func.isRequired
+    style: PropTypes.object
 };
 
 
