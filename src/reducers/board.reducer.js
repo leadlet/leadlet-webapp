@@ -24,7 +24,17 @@ export function boards(state = {}, action) {
         case dealConstants.MOVE_REQUEST:
             return state;
         case dealConstants.MOVE_SUCCESS:
-            return state;
+            let _state = state;
+            let _newDeal = action.data.deal;
+            let _oldDeal = _state[action.data.pipelineId].entities.dealList[_newDeal.id];
+
+            _state[action.data.pipelineId].entities.stages[_oldDeal.stageId].dealList = _state[action.data.pipelineId].entities.stages[_oldDeal.stageId].dealList.filter(id => id !== _oldDeal.id);
+
+            _state[action.data.pipelineId].entities.dealList[action.data.deal.id]=_newDeal;
+
+            _state[action.data.pipelineId].entities.stages[_newDeal.stageId].dealList.splice(action.data.newOrder,0,_newDeal.id);
+
+            return _state;
         case dealConstants.MOVE_FAILURE:
             return state;
 

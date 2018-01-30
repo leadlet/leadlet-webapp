@@ -68,8 +68,9 @@ class DealBoard extends Component {
         const prevDealId = this.props.boards[this.props.pipelines.selectedPipelineId].entities.stages[nextStageId].dealList[nextDealOrder-1];
 
 
-        this.props.moveDeal({
+        this.props.moveDeal(this.props.pipelines.selectedPipelineId, nextDealOrder, {
             id: dealId,
+            newStageId: nextStageId,
             nextDealId: nextDealId,
             prevDealId: prevDealId
         });
@@ -124,6 +125,9 @@ class DealBoard extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        if(nextProps.pipelines.ids && nextProps.pipelines.selectedPipelineId === undefined){
+            this.props.selectPipeline(nextProps.pipelines.ids[0]);
+        }
         if(nextProps.pipelines.selectedPipelineId !== this.props.pipelines.selectedPipelineId){
             this.props.getBoardByPipelineId(nextProps.pipelines.selectedPipelineId);
         }
@@ -157,12 +161,12 @@ class DealBoard extends Component {
                     />
                     <div>
                         {this.state.activeStages &&
-                        <NewDeal showModal={this.state.isNewDealModalVisible}
-                                 close={this.toggleNewDealModal}
-                                 initialValues={{
-                                     stageId: this.state.activeStages[0].id
-                                 }}
-                        />
+                            <NewDeal showModal={this.state.isNewDealModalVisible}
+                                     close={this.toggleNewDealModal}
+                                     initialValues={{
+                                         stageId: this.state.activeStages[0].id
+                                     }}
+                            />
                         }
                     </div>
                 </div>

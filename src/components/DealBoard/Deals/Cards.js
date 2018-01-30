@@ -155,7 +155,7 @@ class Cards extends Component {
     }
 
     loadMoreDeal() {
-        if(this.state.currentPage+1 !== this.props.stage.dealPageCount){
+        if(this.state.currentPage + 1  < this.props.stage.dealPageCount){
             this.setState({currentPage: this.state.currentPage + 1},
                 () => this.props.loadMoreDeals(this.props.stage.id,this.state.currentPage));
         }

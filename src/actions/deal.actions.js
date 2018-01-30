@@ -61,14 +61,14 @@ export function updateDeal(deal) {
     function failure(error) { return { type: dealConstants.UPDATE_FAILURE, error } }
 }
 
-export function moveDeal(deal) {
+export function moveDeal(pipelineId, newOrder, deal) {
     return dispatch => {
         dispatch(request());
 
         return dealService.move(deal)
             .then(
                 deal => {
-                    dispatch(success(deal));
+                    dispatch(success(pipelineId, newOrder, deal));
                     dispatch(alertActions.success('Deal successfully updated'));
                 },
                 error => {
@@ -79,7 +79,7 @@ export function moveDeal(deal) {
     };
 
     function request() { return { type: dealConstants.MOVE_REQUEST } }
-    function success(deal) { return { type: dealConstants.MOVE_SUCCESS, deal } }
+    function success(pipelineId, newOrder, deal) { return { type: dealConstants.MOVE_SUCCESS, data: {pipelineId, newOrder, deal} } }
     function failure(error) { return { type: dealConstants.MOVE_FAILURE, error } }
 }
 
