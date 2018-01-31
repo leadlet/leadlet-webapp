@@ -2022,6 +2022,7 @@ div.dt-button-info {
 /* CIRCLE */
 .img-circle {
     border-radius: 50%;
+    margin-right:2px;
 }
 
 .btn-circle {
@@ -10856,4 +10857,16 @@ body {
     position: fixed;
     display: inline-block;
     float: left;
+}
+
+.card-body {
+    height: 35px;
+}
+
+.info-card .dl-horizontal dt {
+    width: 100px;
+}
+
+.info-card .dl-horizontal dd {
+    margin-left: 120px;
 }

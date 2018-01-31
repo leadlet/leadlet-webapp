@@ -4,7 +4,7 @@ import { DragSource } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 import PropTypes from 'prop-types';
 
-import Card from './Card';
+import Card from './DealCard';
 
 
 function getStyles(isDragging) {

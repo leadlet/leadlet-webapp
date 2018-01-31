@@ -107,22 +107,22 @@ export function createDeal(deal) {
     function failure(error) { return { type: dealConstants.CREATE_FAILURE, error } }
 }
 
-export function deleteDeal(id) {
+export function deleteDeal(deal) {
     return dispatch => {
-        dispatch(request(id));
+        dispatch(request(deal));
 
-        dealService._delete(id)
+        dealService._delete(deal.id)
             .then(
-                deal => {
-                    dispatch(success(id));
+                response => {
+                    dispatch(success(deal));
                 },
                 error => {
-                    dispatch(failure(id, error));
+                    dispatch(failure(deal, error));
                 }
             );
     };
 
-    function request(id) { return { type: dealConstants.DELETE_REQUEST, id } }
-    function success(id) { return { type: dealConstants.DELETE_SUCCESS, id } }
-    function failure(id, error) { return { type: dealConstants.DELETE_FAILURE, id, error } }
+    function request(deal) { return { type: dealConstants.DELETE_REQUEST, deal } }
+    function success(deal) { return { type: dealConstants.DELETE_SUCCESS, deal } }
+    function failure(deal, error) { return { type: dealConstants.DELETE_FAILURE, deal, error } }
 }

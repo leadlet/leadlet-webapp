@@ -10,7 +10,7 @@ export const personService = {
     _delete
 };
 
-function createPerson(person, callback) {
+function createPerson(person) {
     const requestOptions = {
         method: 'POST',
         headers: {...authHeader(), 'Content-Type': 'application/json'},
@@ -20,7 +20,7 @@ function createPerson(person, callback) {
     return fetch('/api/persons/', requestOptions).then(handleResponse);
 }
 
-function updatePerson(person, callback) {
+function updatePerson(person) {
     const requestOptions = {
         method: 'PUT',
         headers: {...authHeader(), 'Content-Type': 'application/json'},

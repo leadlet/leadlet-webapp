@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Card from './DraggableCard';
+import Card from './DraggableDealCard';
 import {DropTarget} from 'react-dnd';
 import {findDOMNode} from 'react-dom'
 import {dealConstants} from "../../../constants/deal.constants";

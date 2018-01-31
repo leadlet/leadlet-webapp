@@ -193,16 +193,11 @@ class ContactDetail extends Component {
                                 </div>
                             </div>
                             <div className="ibox">
-                                <div className="ibox-content">
-                                    <div id="vertical-timeline"
-                                         className="vertical-container dark-timeline center-orientation full-height">
-                                        <Timeline
-                                            pageSize={5}
-                                            getTimelineItems={this.props.getTimelineByPersonId}
-                                            itemId={this.props.viewedPerson.id}
-                                        />
-                                    </div>
-                                </div>
+                                <Timeline
+                                    pageSize={5}
+                                    getTimelineItems={this.props.getTimelineByPersonId}
+                                    itemId={this.props.viewedPerson.id}
+                                />
                             </div>
                         </div>
                         <div className="col-lg-4">

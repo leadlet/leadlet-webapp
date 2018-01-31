@@ -6,13 +6,12 @@ import {connect} from "react-redux";
 import Button from "react-bootstrap/es/Button";
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
-import CardsContainer from "./Deals/CardsContainer";
+import CardsContainer from "./DealList/DealCardsContainer";
 import CustomDragLayer from "./CustomDragLayer";
 import {deleteDeal, getAllDeals, moveDeal} from "../../actions/deal.actions";
 import SweetAlert from 'sweetalert-react';
-import NewDeal from "./Deals/NewDeal";
 import {getBoardByPipelineId, loadMoreDeals} from "../../actions/board.actions";
-
+import CreateEditDeal from '../DealDetail/CreateEditDeal'
 
 class DealBoard extends Component {
 
@@ -23,7 +22,7 @@ class DealBoard extends Component {
             isNewDealModalVisible: false,
             isScrolling: false,
             showDeleteDealDialog: false,
-            deletingDealId: null
+            deletingDeal: null
         };
 
         this.toggleNewDealModal = this.toggleNewDealModal.bind(this);
@@ -38,22 +37,22 @@ class DealBoard extends Component {
 
     cancelDeleteDeal(){
         this.setState({
-            deletingDealId: null,
+            deletingDeal: null,
             showDeleteDealDialog: false
         });
     }
 
     confirmDeleteDeal(){
-        this.props.deleteDeal(this.state.deletingDealId);
+        this.props.deleteDeal(this.state.deletingDeal);
         this.setState({
-            deletingDealId: null,
+            deletingDeal: null,
             showDeleteDealDialog: false
         });
     }
 
-    onDeleteDeal(dealId){
+    onDeleteDeal(deal){
         this.setState({
-           deletingDealId: dealId,
+           deletingDeal: deal,
            showDeleteDealDialog: true
         });
     }
@@ -159,16 +158,12 @@ class DealBoard extends Component {
                         onConfirm={() => this.confirmDeleteDeal()}
                         onCancel={() => this.cancelDeleteDeal()}
                     />
-                    <div>
-                        {this.state.activeStages &&
-                            <NewDeal showModal={this.state.isNewDealModalVisible}
-                                     close={this.toggleNewDealModal}
-                                     initialValues={{
-                                         stageId: this.state.activeStages[0].id
-                                     }}
-                            />
-                        }
-                    </div>
+                    {
+                        this.state.isNewDealModalVisible &&
+                        <CreateEditDeal showModal={this.state.isNewDealModalVisible}
+                             close={this.toggleNewDealModal}
+                        />
+                    }
                 </div>
         );
     }

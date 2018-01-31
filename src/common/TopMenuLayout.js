@@ -9,7 +9,7 @@ import Switch from "react-router-dom/es/Switch";
 import PipelinesPage from "../components/Pipelines/Pipelines";
 import PersonDetail from "../components/Contacts/PersonDetail";
 import OrganizationDetail from "../components/Contacts/OrganizationDetail";
-import DealDetail from "../components/DealBoard/DealDetail";
+import DealDetail from "../components/DealDetail/DealDetail";
 import ActivityList from "../components/Activity/ActivityList";
 
 class TopMenuLayout extends Component {

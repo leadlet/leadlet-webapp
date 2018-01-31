@@ -50,6 +50,14 @@ export function getAllPerson(filter, page, size) {
     function failure(error) { return { type: personConstants.GETALL_FAILURE, error } }
 }
 
+export function getAllPerson2(filter, callback) {
+    personService.getAllPerson(filter, 0, 20)
+        .then(
+            response => callback(null,response[0]),
+            error => callback(error,null)
+        );
+}
+
 export function createPerson(person, successCallback) {
     return dispatch => {
         dispatch(request());

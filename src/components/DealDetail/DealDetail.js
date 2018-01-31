@@ -7,8 +7,10 @@ import {getTimelineByDealId, getTimelineByDealIdAndRefresh} from "../../actions/
 import Timeline from "../Timeline/Timeline";
 import {getByIdOrganization} from "../../actions/organization.actions";
 import {getById} from "../../actions/person.actions";
-import EditCreateActivityForDeal from "../Activity/EditCreateActivityForDeal";
+import CreateEditDeal from '../DealDetail/CreateEditDeal'
 import moment from 'moment';
+import Link from "react-router-dom/es/Link";
+
 
 class DealDetail extends Component {
 
@@ -17,13 +19,27 @@ class DealDetail extends Component {
 
         this.state = {
             value: '',
-            showModal: false
+            isEditDealModalVisible: false
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.openActivityModal = this.openActivityModal.bind(this);
         this.closeActivityModal = this.closeActivityModal.bind(this);
+        this.openEditDealModal = this.openEditDealModal.bind(this);
+        this.closeEditDealModal = this.closeEditDealModal.bind(this);
+    }
+
+    closeEditDealModal(){
+        this.setState({
+            isEditDealModalVisible: false
+        });
+    }
+
+    openEditDealModal(){
+        this.setState({
+            isEditDealModalVisible: true
+        });
     }
 
     handleChange(event) {
@@ -53,47 +69,8 @@ class DealDetail extends Component {
         this.setState({showModal: false});
     }
 
-    refreshTimeline(){
+    refreshTimeline() {
         this.props.getTimelineByDealIdAndRefresh(null, null, null, this.props.viewedDeal.id)
-    }
-
-    getPossibleCloseDate(deal) {
-        if (deal.possibleCloseDate) {
-            return (
-                <em>
-                    <h2>
-                        {this.props.viewedDeal.possibleCloseDate}
-                        <small>(estimated close date)</small>
-                    </h2>
-                </em>
-            );
-        }
-    }
-
-    getDealValue(deal) {
-        if (deal.potentialValue) {
-            return (
-                <em>
-                    <h2>
-                        {deal.currency} {deal.potentialValue}
-                        <small>(potential value)</small>
-                    </h2>
-                </em>
-            )
-        }
-    }
-
-    getDealStage(deal) {
-        if (deal.stageName) {
-            return (
-                <em>
-                    <h2>
-                        {deal.stageName}
-                        <small>(stage)</small>
-                    </h2>
-                </em>
-            )
-        }
     }
 
     render() {
@@ -108,17 +85,34 @@ class DealDetail extends Component {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-md-3">
-                            <div className="contact-box center-version">
-                                <a>
-                                    <h3 className="m-b-xs">
-                                        {deal.ownerFirstName && deal.ownerLastName}
-                                        <small>(owner)</small>
-                                    </h3>
-                                </a>
-                                <div className="contact-box-footer">
-                                    {this.getDealValue(deal)}
-                                    {this.getDealStage(deal)}
-                                    {this.getPossibleCloseDate(deal)}
+                            <div className="ibox">
+                                <div className="ibox-content info-card">
+                                    <div className="row">
+                                        <dl className="dl-horizontal">
+                                            <dt>Title:</dt>
+                                            <dd>{deal.title}</dd>
+                                            <dt>Stage:</dt>
+                                            <dd>{deal.stage.name}</dd>
+                                            <dt>Assigned To:</dt>
+                                            <dd><Link className="text-navy" to={"/user/" + deal.owner.id}>{deal.owner.firstName} {deal.owner.lastName}</Link></dd>
+                                            <dt>Organization:</dt>
+                                            <dd><Link className="text-navy" to={"/organization/" + deal.organization.id}>{deal.organization.name}</Link></dd>
+                                            <dt>Last Updated:</dt>
+                                            <dd>{moment(deal.lastModifiedDate, "YYYY-MM-DDTHH:mm:ss+-HH:mm").format("DD.MM.YYYY")}</dd>
+                                            <dt>Created:</dt>
+                                            <dd>{moment(deal.createdDate, "YYYY-MM-DDTHH:mm:ss+-HH:mm").format("DD.MM.YYYY")}</dd>
+                                            <dt>Contact:</dt>
+                                            <dd className="project-people">
+                                                <Link className="text-navy" to={"/person/" + deal.person.id} data-toggle="tooltip" title={deal.person.name}>
+                                                    <img alt="image" className="img-circle" src={process.env.PUBLIC_URL + '/img/headshot-placeholder.jpg'}/>
+                                                </Link>
+                                            </dd>
+                                        </dl>
+                                    </div>
+                                    <div className="row">
+                                        <button onClick={this.openEditDealModal} className="btn btn-white btn-xs pull-right">Edit Deal</button>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -170,16 +164,11 @@ class DealDetail extends Component {
                                 </div>
                             </div>
                             <div className="ibox">
-                                <div className="ibox-content">
-                                    <div id="vertical-timeline"
-                                         className="vertical-container dark-timeline center-orientation full-height">
-                                        <Timeline
-                                            pageSize={5}
-                                            getTimelineItems={this.props.getTimelineByDealId}
-                                            itemId={this.props.viewedDeal.id}
-                                        />
-                                    </div>
-                                </div>
+                                <Timeline
+                                    pageSize={5}
+                                    getTimelineItems={this.props.getTimelineByDealId}
+                                    itemId={this.props.viewedDeal.id}
+                                />
                             </div>
                         </div>
                         <div className="col-lg-4">
@@ -199,13 +188,13 @@ class DealDetail extends Component {
                             </div>
                         </div>
 
-                        <div>
-                            <EditCreateActivityForDeal showModal={this.state.showModal}
-                                                       close={this.closeActivityModal}
-                                                       deal={this.props.viewedDeal}
-                                                       createCallback={this.refreshTimeline}
+                        {
+                            this.state.isEditDealModalVisible &&
+                            <CreateEditDeal showModal={this.state.isEditDealModalVisible}
+                                            close={this.closeEditDealModal}
+                                            initialValues={this.props.viewedDeal}
                             />
-                        </div>
+                        }
 
                     </div>
                 </div>

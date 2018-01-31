@@ -68,6 +68,26 @@ export function boards(state = {}, action) {
         case boardConstants.GET_FAILURE:
             return state;
 
+        /* NEW deal */
+        case dealConstants.CREATE_REQUEST:
+            return state;
+        case dealConstants.CREATE_SUCCESS:
+            return state;
+        case dealConstants.CREATE_FAILURE:
+            return state;
+
+        /* NEW deal */
+        case dealConstants.DELETE_REQUEST:
+            return state;
+        case dealConstants.DELETE_SUCCESS:
+            _state = state;
+            delete _state[action.deal.pipelineId].entities.dealList[action.deal.id];
+            _state[action.deal.pipelineId].entities.stages[action.deal.stageId].dealList = _state[action.deal.pipelineId].entities.stages[action.deal.stageId].dealList.filter(id => id!=action.deal.id);
+
+            return _state;
+        case dealConstants.DELETE_FAILURE:
+            return state;
+
         default:
             return state
     }

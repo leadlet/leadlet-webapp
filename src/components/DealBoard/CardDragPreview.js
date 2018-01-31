@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Card from "./Deals/Card";
+import Card from "./DealList/DealCard";
 
 const propTypes = {
     card: PropTypes.object

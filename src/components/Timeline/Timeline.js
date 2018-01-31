@@ -163,26 +163,33 @@ class Timeline extends Component {
     }
 
     _handleWaypointEnter(waypointUpdate) {
-        if (this.props.timeLineIds.length != this.props.dataTotalSize) {
+        if (this.props.timeLineIds.length !== this.props.dataTotalSize) {
             this.setState({currentPage: this.state.currentPage + 1},
                 this.loadMoreItems)
         }
     }
 
     render() {
-        if (!this.props.timeLineIds) {
+        if (this.props.timeLineIds && this.props.timeLineIds.length > 0)
+        {
             return (
-                <em>Loading Timeline Items</em>
-            );
-        } else {
-            return (
-                <div>
-                    {this.renderTimelineItems()}
-                    <Waypoint
-                        onEnter={this._handleWaypointEnter}
-                    />
+                <div className="ibox-content">
+                    <div id="vertical-timeline"
+                         className="vertical-container dark-timeline center-orientation full-height">
+                        <div>
+                            {this.renderTimelineItems()}
+                            <Waypoint
+                                onEnter={this._handleWaypointEnter}
+                            />
+                        </div>
+                    </div>
                 </div>
             )
+        }
+        else {
+            return (
+                <div></div>
+            );
         }
     }
 }

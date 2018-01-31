@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {DropTarget, DragSource} from 'react-dnd';
 import PropTypes from 'prop-types';
 
-import Cards from './Cards';
+import Cards from './DealCards';
 
 const listSource = {
     beginDrag(props) {
