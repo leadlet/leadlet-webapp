@@ -1,5 +1,7 @@
 import { authHeader } from '../helpers';
 
+import {userActions} from "../actions/user.actions";
+
 export const pipelineService = {
     getAll,
     getById,
@@ -58,6 +60,7 @@ function _delete(id) {
 
 function handleResponse(response) {
     if (response.ok !== true) {
+        userActions.logout();
         return Promise.reject(response.statusText);
     }
 

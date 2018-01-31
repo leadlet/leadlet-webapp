@@ -1,4 +1,5 @@
 import {authHeader} from '../helpers';
+import {userActions} from "../actions/user.actions";
 
 export const timelineService = {
     getPaginated,
@@ -46,6 +47,7 @@ function getPaginated(filter, page, size) {
 
 function handlePaginationResponse(response) {
     if (response.ok !== true) {
+        userActions.logout();
         return Promise.reject(response.statusText);
     }
 

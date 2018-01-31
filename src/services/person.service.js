@@ -1,4 +1,5 @@
-import { authHeader } from '../helpers';
+import {authHeader} from '../helpers';
+import {userActions} from "../actions/user.actions";
 
 export const personService = {
     getAllPerson,
@@ -12,7 +13,7 @@ export const personService = {
 function createPerson(person, callback) {
     const requestOptions = {
         method: 'POST',
-        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+        headers: {...authHeader(), 'Content-Type': 'application/json'},
         body: JSON.stringify(person)
     };
 
@@ -22,7 +23,7 @@ function createPerson(person, callback) {
 function updatePerson(person, callback) {
     const requestOptions = {
         method: 'PUT',
-        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+        headers: {...authHeader(), 'Content-Type': 'application/json'},
         body: JSON.stringify(person)
     };
 
@@ -38,23 +39,23 @@ function getById(id) {
     return fetch('/api/persons/' + id, requestOptions).then(handleResponse);
 }
 
-function getAllPersonByOrganization(organizationId , page, size) {
+function getAllPersonByOrganization(organizationId, page, size) {
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
     };
 
-    return fetch(`/api/persons/organization/${organizationId}?page=${page}&size=${size}` , requestOptions).then(handlePaginationResponse);
+    return fetch(`/api/persons/organization/${organizationId}?page=${page}&size=${size}`, requestOptions).then(handlePaginationResponse);
 }
 
 
-function getAllPerson(filter , page, size) {
+function getAllPerson(filter, page, size) {
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
     };
 
-    return fetch(`/api/persons?filter=${filter}&page=${page}&size=${size}` , requestOptions).then(handlePaginationResponse);
+    return fetch(`/api/persons?filter=${filter}&page=${page}&size=${size}`, requestOptions).then(handlePaginationResponse);
 }
 
 function _delete(idList) {
@@ -68,15 +69,17 @@ function _delete(idList) {
 
 function handlePaginationResponse(response) {
     if (response.ok !== true) {
+        userActions.logout();
         return Promise.reject(response.statusText);
     }
 
-    return Promise.all([ response.json(), response.headers.get("x-total-count")]);
+    return Promise.all([response.json(), response.headers.get("x-total-count")]);
 
 }
 
 function handleResponse(response) {
     if (response.ok !== true) {
+        userActions.logout();
         return Promise.reject(response.statusText);
     }
 

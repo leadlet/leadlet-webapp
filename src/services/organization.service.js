@@ -1,4 +1,5 @@
-import { authHeader } from '../helpers';
+import {authHeader} from '../helpers';
+import {userActions} from "../actions/user.actions";
 
 export const organizationService = {
     getAllOrganization,
@@ -12,7 +13,7 @@ export const organizationService = {
 function createOrganization(organization, callback) {
     const requestOptions = {
         method: 'POST',
-        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+        headers: {...authHeader(), 'Content-Type': 'application/json'},
         body: JSON.stringify(organization)
     };
 
@@ -22,7 +23,7 @@ function createOrganization(organization, callback) {
 function updateOrganization(organization, callback) {
     const requestOptions = {
         method: 'PUT',
-        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+        headers: {...authHeader(), 'Content-Type': 'application/json'},
         body: JSON.stringify(organization)
     };
 
@@ -44,16 +45,16 @@ function getOrganizationByPersonId(personId) {
         headers: authHeader()
     };
 
-    return fetch(`/api/organizations/person/${personId}` , requestOptions).then(handlePaginationResponse);
+    return fetch(`/api/organizations/person/${personId}`, requestOptions).then(handlePaginationResponse);
 }
 
-function getAllOrganization(filter , page, size) {
+function getAllOrganization(filter, page, size) {
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
     };
 
-    return fetch(`/api/organizations?filter=${filter}&page=${page}&size=${size}` , requestOptions).then(handlePaginationResponse);
+    return fetch(`/api/organizations?filter=${filter}&page=${page}&size=${size}`, requestOptions).then(handlePaginationResponse);
 }
 
 function _delete(idList) {
@@ -67,15 +68,17 @@ function _delete(idList) {
 
 function handlePaginationResponse(response) {
     if (response.ok !== true) {
+        userActions.logout();
         return Promise.reject(response.statusText);
     }
 
-    return Promise.all([ response.json(), response.headers.get("x-total-count")]);
+    return Promise.all([response.json(), response.headers.get("x-total-count")]);
 
 }
 
 function handleResponse(response) {
     if (response.ok !== true) {
+        userActions.logout();
         return Promise.reject(response.statusText);
     }
 
