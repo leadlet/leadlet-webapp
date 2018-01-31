@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
 import {Field, reduxForm} from 'redux-form';
+import { updateUser } from '../../actions/index';
+import {connect} from "react-redux";
+import {authentication} from "../../reducers/authentication.reducer";
 
 
 const renderField = ({
@@ -48,10 +51,18 @@ class Profile extends Component {
 
     onSubmit = (formValue) => {
         console.log(formValue);
+
+        let profile = {};
+        profile.id = formValue.id;
+        profile.firstName = formValue.firstName;
+        profile.lastName = formValue.lastName;
+        profile.password = formValue.newPassword;
+
+        this.props.updateUser(profile);
     }
 
     render() {
-        const {handleSubmit, initialValues, submitting, pristine, valid} = this.props;
+        const {handleSubmit} = this.props;
 
         return (
             <div className="container-fluid">
@@ -120,7 +131,7 @@ class Profile extends Component {
                                         component={renderPassField}
                                         label="Confirm Password"
                                     />
-                                    <div className="hr-line-dashed"></div>
+                                    <div className="hr-line-dashed"/>
                                     <div className="form-group">
                                         <div className="col-sm-4 col-sm-offset-4">
                                             <button className="btn btn-primary" type="submit" onClick={handleSubmit(this.onSubmit)}>Save Changes</button>
@@ -136,6 +147,18 @@ class Profile extends Component {
     }
 }
 
+function mapStateToProps(state) {
+    return {
+        initialValues: state.authentication
+     };
+}
+
+
 export default reduxForm({
-    form: 'profileForm' // a unique identifier for this form
-})(Profile)
+    form: 'profileForm'
+})(
+    connect(mapStateToProps, {
+        updateUser
+    })(Profile)
+);
+

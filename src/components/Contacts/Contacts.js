@@ -390,7 +390,9 @@ class Contacts extends Component {
 function mapStateToProps(state) {
     return {
         persons: state.persons,
-        organizations: state.organizations
+        organizations: state.organizations,
+        authentication: state.authentication
+
     };
 }
 

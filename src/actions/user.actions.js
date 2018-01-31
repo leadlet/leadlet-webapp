@@ -1,12 +1,13 @@
-import { userConstants } from '../constants';
-import { userService } from '../services';
 import { alertActions } from './';
+import {userConstants} from "../constants/user.constants";
+import {userService} from "../services/user.service";
 
 export const userActions = {
     login,
     logout,
     register,
     getAll,
+    updateUser,
     delete: _delete
 };
 
@@ -59,6 +60,29 @@ function register(user, props) {
     function success(user) { return { type: userConstants.REGISTER_SUCCESS, user } }
     function failure(error) { return { type: userConstants.REGISTER_FAILURE, error } }
 }
+
+export function updateUser(user) {
+    return dispatch => {
+        dispatch(request(user));
+
+        userService.update(user)
+            .then(
+                user => {
+                    dispatch(success(user));
+                    dispatch(alertActions.success('User update successful'));
+                },
+                error => {
+                    dispatch(failure(error));
+                    dispatch(alertActions.error(error));
+                }
+            );
+    };
+
+    function request(user) { return { type: userConstants.UPDATE_REQUEST, user } }
+    function success(user) { return { type: userConstants.UPDATE_SUCCESS, user } }
+    function failure(error) { return { type: userConstants.UPDATE_FAILURE, error } }
+}
+
 
 function getAll() {
     return dispatch => {
