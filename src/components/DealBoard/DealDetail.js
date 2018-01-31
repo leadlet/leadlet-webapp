@@ -61,10 +61,9 @@ class DealDetail extends Component {
         if (deal.possibleCloseDate) {
             return (
                 <em>
-                    <h2>
-                        {this.props.viewedDeal.possibleCloseDate}
-                        <small>(estimated close date)</small>
-                    </h2>
+                    <h3>
+                        {this.props.viewedDeal.possibleCloseDate} <small>(estimated close date)</small>
+                    </h3>
                 </em>
             );
         }
@@ -74,10 +73,9 @@ class DealDetail extends Component {
         if (deal.potentialValue) {
             return (
                 <em>
-                    <h2>
-                        {deal.currency} {deal.potentialValue}
-                        <small>(potential value)</small>
-                    </h2>
+                    <h3>
+                        {deal.currency} {deal.potentialValue} <small>(potential value)</small>
+                    </h3>
                 </em>
             )
         }
@@ -87,10 +85,9 @@ class DealDetail extends Component {
         if (deal.stageName) {
             return (
                 <em>
-                    <h2>
-                        {deal.stageName}
-                        <small>(stage)</small>
-                    </h2>
+                    <h3>
+                        {deal.stageName} <small>(stage)</small>
+                    </h3>
                 </em>
             )
         }
@@ -111,8 +108,7 @@ class DealDetail extends Component {
                             <div className="contact-box center-version">
                                 <a>
                                     <h3 className="m-b-xs">
-                                        {deal.ownerFirstName && deal.ownerLastName}
-                                        <small>(owner)</small>
+                                        {deal.ownerFirstName && deal.ownerLastName} <small>(owner)</small>
                                     </h3>
                                 </a>
                                 <div className="contact-box-footer">
