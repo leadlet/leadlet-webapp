@@ -59,7 +59,9 @@ function handlePaginationResponse(response) {
 
 function handleResponse(response) {
     if (response.ok !== true) {
-        userActions.logout();
+        if( response.status === 404 ) {
+            userActions.logout();
+        }
         return Promise.reject(response.statusText);
     }
 

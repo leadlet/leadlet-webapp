@@ -9,6 +9,7 @@ export const userService = {
     getAll,
     getById,
     update,
+    getCurrentUser,
     delete: _delete
 };
 
@@ -71,6 +72,15 @@ function getById(id) {
     return fetch('/users/' + id, requestOptions).then(handleResponse);
 }
 
+function getCurrentUser() {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    return fetch('/api/users/current', requestOptions).then(handleResponse);
+}
+
 function register(user) {
     const requestOptions = {
         method: 'POST',
@@ -88,7 +98,7 @@ function update(user) {
         body: JSON.stringify(user)
     };
 
-    return fetch('/users/' + user.id, requestOptions).then(handleResponse);
+    return fetch('/api/users', requestOptions).then(handleResponse);
 }
 
 // prefixed function name with underscore because delete is a reserved word in javascript
@@ -103,7 +113,9 @@ function _delete(id) {
 
 function handleResponse(response) {
     if (response.ok !== true) {
-        userActions.logout();
+        if( response.status === 404 ){
+            userActions.logout();
+        }
         return Promise.reject(response.statusText);
     }
 

@@ -11,6 +11,7 @@ import PersonDetail from "../components/Contacts/PersonDetail";
 import OrganizationDetail from "../components/Contacts/OrganizationDetail";
 import DealDetail from "../components/DealDetail/DealDetail";
 import ActivityList from "../components/Activity/ActivityList";
+import Profile from "../components/Profile/Profile";
 
 class TopMenuLayout extends Component {
 
@@ -30,6 +31,7 @@ class TopMenuLayout extends Component {
                                 <Route path="/deals" component={Deals}/>
                                 <Route path="/pipelines" component={PipelinesPage}/>
                                 <Route path="/activities" component={ActivityList}/>
+                                <Route path="/profile" component={Profile}/>
                             </Switch>
                         </div>
                         <Footer/>
