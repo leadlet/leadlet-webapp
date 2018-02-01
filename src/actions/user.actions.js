@@ -100,6 +100,22 @@ function getAll() {
     function failure(error) { return { type: userConstants.GETALL_FAILURE, error } }
 }
 
+export function getUser() {
+    return dispatch => {
+        dispatch(request());
+
+        userService.getCurrentUser()
+            .then(
+                user => dispatch(success(user)),
+                error => dispatch(failure(error))
+            );
+    };
+
+    function request() { return { type: userConstants.GET_REQUEST } }
+    function success(user) { return { type: userConstants.GET_SUCCESS, user } }
+    function failure(error) { return { type: userConstants.GET_FAILURE, error } }
+}
+
 // prefixed function name with underscore because delete is a reserved word in javascript
 function _delete(id) {
     return dispatch => {
