@@ -76,6 +76,14 @@ function getAll() {
     function failure(error) { return { type: userConstants.GETALL_FAILURE, error } }
 }
 
+export function getAllUserByFilterAndReturn(filter, successCallback, failCallback) {
+    userService.getAllUser(filter, 0, 20)
+        .then(
+            response => successCallback(response),
+            error => failCallback(error)
+        );
+}
+
 // prefixed function name with underscore because delete is a reserved word in javascript
 function _delete(id) {
     return dispatch => {

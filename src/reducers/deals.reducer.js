@@ -8,6 +8,17 @@ const dealListSchema = [dealSchema];
 
 export function deals(state = {}, action) {
     switch (action.type) {
+        case dealConstants.UPDATE_REQUEST:
+            return state;
+        case dealConstants.UPDATE_SUCCESS:
+            return {
+                ...state,
+                viewedDeal: action.deal
+
+            };
+        case dealConstants.UPDATE_FAILURE:
+            return state;
+
         /* get by id */
         case dealConstants.GET_REQUEST:
             return {
@@ -23,25 +34,6 @@ export function deals(state = {}, action) {
                 error: action.error
             };
 
-
-        /* UPDATE deal */
-        case dealConstants.UPDATE_REQUEST:
-            return state;
-        case dealConstants.UPDATE_SUCCESS:
-            let _state = {
-                ...state,
-                items: {
-                    ...state.items,
-                    [action.deal.id]: action.deal
-                }
-            };
-
-            return _state;
-        case dealConstants.UPDATE_FAILURE:
-            return {
-                ...state,
-                error: action.error
-            };
 
         default:
             return state

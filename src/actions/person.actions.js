@@ -50,11 +50,11 @@ export function getAllPerson(filter, page, size) {
     function failure(error) { return { type: personConstants.GETALL_FAILURE, error } }
 }
 
-export function getAllPerson2(filter, callback) {
+export function getAllPersonByFilterAndReturn(filter, successCallback, failCallback) {
     personService.getAllPerson(filter, 0, 20)
         .then(
-            response => callback(null,response[0]),
-            error => callback(error,null)
+            response => successCallback(response[0]),
+            error => failCallback(error)
         );
 }
 

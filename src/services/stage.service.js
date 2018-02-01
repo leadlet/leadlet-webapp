@@ -3,6 +3,7 @@ import {userActions} from "../actions/user.actions";
 
 export const stageService = {
     getAll,
+    getByPipelineId,
     getById,
     createStage,
     updateStage,
@@ -46,6 +47,16 @@ function getAll() {
     };
 
     return fetch('/api/stages', requestOptions).then(handleResponse);
+}
+
+function getByPipelineId(id) {
+    // TODO ygokirmak - add pipelineId filter
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    return fetch('/api/stages/pipeline/'+id, requestOptions).then(handleResponse);
 }
 
 function _delete(id) {

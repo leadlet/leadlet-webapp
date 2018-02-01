@@ -31,11 +31,11 @@ function update(stage) {
     return fetch('/api/deals/', requestOptions).then(handleResponse);
 }
 
-function move(stage) {
+function move(moveDealDto) {
     const requestOptions = {
         method: 'PUT',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
-        body: JSON.stringify(stage)
+        body: JSON.stringify(moveDealDto)
     };
 
     return fetch('/api/deals/move', requestOptions).then(handleResponse);
@@ -70,7 +70,9 @@ function _delete(id) {
 
 function handleResponse(response) {
     if (response.ok !== true) {
-        userActions.logout();
+        if( response.status === 404){
+            userActions.logout();
+        }
         return Promise.reject(response.statusText);
     }
 

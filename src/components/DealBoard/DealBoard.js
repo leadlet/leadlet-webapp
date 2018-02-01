@@ -59,15 +59,11 @@ class DealBoard extends Component {
 
     moveCard(dealId, nextStageId, nextDealOrder) {
 
-        // TODO hack
-        if(nextDealOrder === -1){
-            nextDealOrder = 0;
-        }
         const nextDealId = this.props.boards[this.props.pipelines.selectedPipelineId].entities.stages[nextStageId].dealList[nextDealOrder];
         const prevDealId = this.props.boards[this.props.pipelines.selectedPipelineId].entities.stages[nextStageId].dealList[nextDealOrder-1];
 
 
-        this.props.moveDeal(this.props.pipelines.selectedPipelineId, nextDealOrder, {
+        this.props.moveDeal({
             id: dealId,
             newStageId: nextStageId,
             nextDealId: nextDealId,
@@ -121,6 +117,7 @@ class DealBoard extends Component {
 
     componentDidMount() {
         this.props.getAllPipelines();
+        // get board
     }
 
     componentWillReceiveProps(nextProps) {

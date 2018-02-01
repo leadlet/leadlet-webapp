@@ -58,7 +58,6 @@ class DealDetail extends Component {
 
     componentDidMount() {
         this.props.getDealById(this.props.match.params.dealId);
-
     }
 
     openActivityModal() {
@@ -171,7 +170,7 @@ class DealDetail extends Component {
                                 />
                             </div>
                         </div>
-                        <div className="col-lg-4">
+                        <div className="col-md-4">
                             <div className="ibox">
                                 <div className="ibox-title">
                                     <i className="fa fa-plus pull-right" aria-hidden="true"
@@ -193,6 +192,7 @@ class DealDetail extends Component {
                             <CreateEditDeal showModal={this.state.isEditDealModalVisible}
                                             close={this.closeEditDealModal}
                                             initialValues={this.props.viewedDeal}
+                                            pipelineId={this.props.viewedDeal.pipelineId}
                             />
                         }
 

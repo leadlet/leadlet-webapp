@@ -8,7 +8,8 @@ import MenuItem from "react-bootstrap/es/MenuItem";
 import Checkbox from "react-bootstrap/es/Checkbox";
 
 import 'react-select/dist/react-select.css';
-import {createDeal} from "../../actions/deal.actions";
+import {createDeal,updateDeal} from "../../actions/deal.actions";
+import {getAllStagesByPipelineId} from "../../actions/stage.actions";
 
 import renderInputField from '../../formUtils/renderInputField'
 import renderPriceCurrencyField from '../../formUtils/renderPriceCurrencyField'
@@ -16,7 +17,9 @@ import formValueSelector from "redux-form/es/formValueSelector";
 import renderSelectField from "../../formUtils/renderSelectField";
 import renderAsyncSelectField  from "../../formUtils/renderAsyncSelectField";
 
-import {getAllPerson2} from "../../actions/person.actions"
+import {getAllPersonByFilterAndReturn} from "../../actions/person.actions"
+import {getAllOrganizationByFilterAndReturn} from "../../actions/organization.actions";
+import {getAllUserByFilterAndReturn} from "../../actions/user.actions";
 
 let currencies = [
     {value: 'USD', label: 'USD'},
@@ -42,27 +45,55 @@ class CreateEditDeal extends Component {
         this.onDeleteDeal = this.onDeleteDeal.bind(this);
         this.onClose = this.onClose.bind(this);
         this.loadPerson = this.loadPerson.bind(this);
+        this.loadUser = this.loadUser.bind(this);
 
         this.state = {
             showDeleteDialog: false
         };
     }
 
-    loadPerson = (input, callback) => {
+    loadUser(input, callback) {
 
-        setTimeout(() => {
-            callback(null, {
-                options: [
-                    { value: 'one', label: 'PERSON1' },
-                    { value: 'two', label: 'PERSON2' }
-                ],
-                // CAREFUL! Only set this to true when there are no more options,
-                // or more specific queries will not be sent to the server.
-            });
-        }, 500);
+        let successCallBack = (data) => {
+            callback(null, {options: data.map(user => ({value: user.id, label: `${user.firstName} ${user.lastName}`}))});
+        };
+        let failCallBack = (error) => {
+            callback(error, null);
+        };
+
+        getAllUserByFilterAndReturn(`name:${input}`, successCallBack, failCallBack);
 
     };
 
+    loadPerson(input, callback) {
+
+        let successCallBack = (data) => {
+            callback(null, {options: data.map(person => ({value: person.id, label: person.name}))});
+        };
+        let failCallBack = (error) => {
+            callback(error, null);
+        };
+
+        getAllPersonByFilterAndReturn(`name:${input}`, successCallBack, failCallBack);
+
+    };
+
+    loadOrganization(input, callback) {
+
+        let successCallBack = (data) => {
+            callback(null, {options: data.map(org => ({value: org.id, label: org.name}))});
+        };
+        let failCallBack = (error) => {
+            callback(error, null);
+        };
+
+        getAllOrganizationByFilterAndReturn(`name:${input}`, successCallBack, failCallBack);
+
+    };
+
+    componentDidMount(){
+        this.props.getAllStagesByPipelineId(this.props.pipelineId);
+    }
 
     confirmDeleteDeal() {
         this.setState({showDeleteDialog: false});
@@ -79,13 +110,23 @@ class CreateEditDeal extends Component {
     }
 
     onSubmit = (formValues) => {
-        // print the form values to the console
+
         let deal = {
-            name: formValues.name,
-            stageId: formValues.stageId
+            id: formValues.id,
+            title: formValues.title,
+            personId: formValues.person.id,
+            organizationId: formValues.organization.id,
+            stageId: formValues.stage.id,
+            ownerId: formValues.owner.id,
+//            possibleCloseDate: formValues.possibleCloseDate,
+            dealValue: formValues.dealValue
         }
 
-        this.props.createDeal(deal);
+        if( deal.id ){
+            this.props.updateDeal(deal);
+        }else {
+            this.props.createDeal(deal);
+        }
         this.props.close();
     }
 
@@ -119,51 +160,28 @@ class CreateEditDeal extends Component {
                             label="Stage"
                             placeholder="Select deal stage"
                             component={renderSelectField}
-                            options={[
-                                {label:"yavuz", value:"12"},
-                                {label:"2", value:"2"},
-                                {label:"3", value:"3"},
-                                {label:"4", value:"4"},
-                            ]}
+                            options={this.props.stages.ids && this.props.stages.ids.map(id => (
+                                {
+                                    value: id,
+                                    label: this.props.stages.items[id].name
+                                }
+                            ))}
                         />
 
                         <Field
                             name="owner.id"
                             label="Owner"
                             placeholder="Select deal owner"
-                            component={renderSelectField}
-                            options={[
-                                {label:"yavuz", value:"12"},
-                                {label:"2", value:"2"},
-                                {label:"3", value:"3"},
-                                {label:"4", value:"4"},
-                            ]}
+                            component={renderAsyncSelectField}
+                            loadOptions={this.loadUser}
                         />
 
                         <Field
                             name="person.id"
                             label="Contact Person"
                             placeholder="Select contact person"
-                            component={renderSelectField}
-                            options={[
-                                {label:"yavuz", value:"12"},
-                                {label:"2", value:"2"},
-                                {label:"3", value:"3"},
-                                {label:"4", value:"4"},
-                            ]}
-                        />
-
-                        <Field
-                            name="organization.id"
-                            label="Contact Organization"
-                            placeholder="Select contact organization"
-                            component={renderSelectField}
-                            options={[
-                                {label:"yavuz", value:"12"},
-                                {label:"2", value:"2"},
-                                {label:"3", value:"3"},
-                                {label:"4", value:"4"},
-                            ]}
+                            component={renderAsyncSelectField}
+                            loadOptions={this.loadPerson}
                         />
 
                         <Field
@@ -171,19 +189,8 @@ class CreateEditDeal extends Component {
                             label="Contact Organization"
                             placeholder="Select contact organization"
                             component={renderAsyncSelectField}
-                            loadOptions={this.loadPerson}
+                            loadOptions={this.loadOrganization}
                         />
-
-                        <div>
-                            <p>title: {this.props && this.props.title}</p>
-                            <p>potentialValue: {this.props.dealValue && this.props.dealValue.potentialValue}</p>
-                            <p>currency: {this.props.dealValue && this.props.dealValue.currency}</p>
-                            <p>owner: {this.props && this.props.ownerId}</p>
-                            <p>person: {this.props && this.props.personId}</p>
-                            <p>organization: {this.props && this.props.organizationId}</p>
-                            <p>stage: {this.props && this.props.stageId}</p>
-
-                        </div>
                     </form>
                     <div>
                         <SweetAlert
@@ -232,7 +239,8 @@ function mapStateToProps(state) {
         ownerId : selector(state, 'owner.id'),
         personId : selector(state, 'person.id'),
         organizationId : selector(state, 'organization.id'),
-        stageId : selector(state, 'stage.id')
+        stageId : selector(state, 'stage.id'),
+        stages: state.stages
 
     };
 }
@@ -242,5 +250,5 @@ export default reduxForm({
     validate, // <--- validation function given to redux-form
     enableReinitialize: true
 })(
-    connect(mapStateToProps, {createDeal, getAllPerson2})(CreateEditDeal)
+    connect(mapStateToProps, {createDeal, updateDeal,getAllStagesByPipelineId})(CreateEditDeal)
 );

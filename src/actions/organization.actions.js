@@ -34,6 +34,15 @@ export function getOrganizationByPersonId(personId) {
     function failure(error) { return { type: organizationConstants.GETALL_FAILURE, error } }
 }
 
+
+export function getAllOrganizationByFilterAndReturn(filter, successCallback, failCallback) {
+    organizationService.getAllOrganization(filter, 0, 20)
+        .then(
+            response => successCallback(response[0]),
+            error => failCallback(error)
+        );
+}
+
 export function getAllOrganization(filter, page, size) {
     return dispatch => {
         dispatch(request());

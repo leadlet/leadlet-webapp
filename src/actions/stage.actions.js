@@ -3,6 +3,26 @@ import {stageConstants} from "../constants/stage.constants";
 import {stageService} from "../services/stage.service"
 import {alertActions} from "./alert.actions";
 
+export function getAllStagesByPipelineId(id) {
+
+    return dispatch => {
+        // TODO ygokirmak detay ver
+        dispatch(request());
+
+        stageService.getByPipelineId(id)
+            .then(
+                items => dispatch(success(items)),
+                error => dispatch(failure(error))
+            );
+
+    };
+
+    function request() { return { type: stageConstants.GETALL_REQUEST } }
+    function success(items) { return { type: stageConstants.GETALL_SUCCESS, items } }
+    function failure(error) { return { type: stageConstants.GETALL_FAILURE, error } }
+
+}
+
 export function getAllStages() {
 
     return dispatch => {

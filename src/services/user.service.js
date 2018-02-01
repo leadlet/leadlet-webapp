@@ -2,6 +2,7 @@ import { authHeader } from '../helpers';
 import {userActions} from "../actions/user.actions";
 
 export const userService = {
+    getAllUser,
     login,
     logout,
     register,
@@ -50,6 +51,16 @@ function getAll() {
 
     return fetch('/users', requestOptions).then(handleResponse);
 }
+
+function getAllUser(filter, page, size) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    return fetch(`/api/users?filter=${filter}&page=${page}&size=${size}`, requestOptions).then(handleResponse);
+}
+
 
 function getById(id) {
     const requestOptions = {

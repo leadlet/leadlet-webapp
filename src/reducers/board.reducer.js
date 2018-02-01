@@ -16,26 +16,48 @@ const stages = new schema.Entity('stages', {
 // Define your article
 const board = new schema.Object({
     pipeline: pipeline,
-    stages: [ stages ]
+    stages: [stages]
 });
 
 export function boards(state = {}, action) {
     switch (action.type) {
-        case dealConstants.MOVE_REQUEST:
+        case dealConstants.UPDATE_REQUEST:
             return state;
-        case dealConstants.MOVE_SUCCESS:
-            let _state = state;
-            let _newDeal = action.data.deal;
-            let _oldDeal = _state[action.data.pipelineId].entities.dealList[_newDeal.id];
+        case dealConstants.UPDATE_SUCCESS:
+            if (state[action.deal.pipelineId]) {
+                let _state = state;
 
-            _state[action.data.pipelineId].entities.stages[_oldDeal.stageId].dealList = _state[action.data.pipelineId].entities.stages[_oldDeal.stageId].dealList.filter(id => id !== _oldDeal.id);
+                let _newDeal = action.deal;
 
-            _state[action.data.pipelineId].entities.dealList[action.data.deal.id]=_newDeal;
+                let _oldDeal = _state[_newDeal.pipelineId].entities.dealList[_newDeal.id];
+                let pipelineId = _newDeal.pipelineId;
+                let oldStageId = _oldDeal.stageId;
+                let newStageId = _newDeal.stageId;
 
-            _state[action.data.pipelineId].entities.stages[_newDeal.stageId].dealList.splice(action.data.newOrder,0,_newDeal.id);
 
-            return _state;
-        case dealConstants.MOVE_FAILURE:
+                if (oldStageId !== newStageId) {
+                    // remove from old stageList
+                    _state[pipelineId].entities.stages[oldStageId].dealList
+                        = _state[pipelineId].entities.stages[oldStageId].dealList.filter(id => id !== _oldDeal.id);
+                    // add to new list
+                    _state[pipelineId].entities.stages[newStageId].dealList.push(_newDeal.id);
+
+                }
+
+                // update deal
+                _state[pipelineId].entities.dealList[_newDeal.id] = _newDeal;
+
+                // sort list
+                _state[pipelineId].entities.stages[newStageId].dealList.sort((firstId, secondId) => {
+                    return _state[pipelineId].entities.dealList[firstId].priority -
+                        _state[pipelineId].entities.dealList[secondId].priority;
+                });
+
+                return _state;
+            }
+
+            return state;
+        case dealConstants.UPDATE_FAILURE:
             return state;
 
         case boardConstants.LOAD_MORE_DEALS_REQUEST:
@@ -50,7 +72,7 @@ export function boards(state = {}, action) {
 
             return {
                 ...state,
-                [action.pipelineId] : {
+                [action.pipelineId]: {
                     loading: true
                 }
             };
@@ -63,7 +85,7 @@ export function boards(state = {}, action) {
 
             return {
                 ...state,
-                [_board.ids.pipeline] : _board
+                [_board.ids.pipeline]: _board
             };
         case boardConstants.GET_FAILURE:
             return state;
@@ -80,9 +102,9 @@ export function boards(state = {}, action) {
         case dealConstants.DELETE_REQUEST:
             return state;
         case dealConstants.DELETE_SUCCESS:
-            _state = state;
+            let _state = state;
             delete _state[action.deal.pipelineId].entities.dealList[action.deal.id];
-            _state[action.deal.pipelineId].entities.stages[action.deal.stageId].dealList = _state[action.deal.pipelineId].entities.stages[action.deal.stageId].dealList.filter(id => id!=action.deal.id);
+            _state[action.deal.pipelineId].entities.stages[action.deal.stageId].dealList = _state[action.deal.pipelineId].entities.stages[action.deal.stageId].dealList.filter(id => id != action.deal.id);
 
             return _state;
         case dealConstants.DELETE_FAILURE:

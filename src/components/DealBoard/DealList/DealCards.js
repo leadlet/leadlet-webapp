@@ -27,12 +27,17 @@ const specs = {
         const lastY = monitor.getItem().y;
         const nextX = props.x;
         let nextY = placeholderIndex;
+        nextY += 1;
 
-        if (lastY > nextY) { // move top
-            nextY += 1;
-        } else if (lastX !== nextX) { // insert into another list
-            nextY += 1;
-        }
+        /*
+
+if (lastY > nextY) { // move top
+    nextY += 1;
+}
+else if (lastX !== nextX) { // insert into another list
+    nextY += 1;
+}
+*/
 
         if (lastX === nextX && lastY === nextY) { // if position equel
             return;
