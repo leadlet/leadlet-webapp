@@ -8,6 +8,7 @@ const propTypes = {
 
 const CardDragPreview = (props) => {
     let styles = {
+        listStyle: 'none',
         backgroundColor: '#FAFAFB',
         display: 'inline-block',
         transform: 'rotate(-3deg)',
@@ -17,7 +18,7 @@ const CardDragPreview = (props) => {
         padding: '10px',
         borderRadius: '2px',
         width: `${props.card.clientWidth || 243}px`,
-        height: `${props.card.clientHeight || 243}px`
+        height: `${props.card.clientHeight || 80}px`
     }
 
     return (

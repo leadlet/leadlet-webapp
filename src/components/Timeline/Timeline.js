@@ -37,7 +37,7 @@ class Timeline extends Component {
 
                     if (timelineItem.type === 'NOTE_CREATED') {
                         return (
-                            <div className="vertical-timeline-block">
+                            <div key={timelineId} className="vertical-timeline-block">
                                 <div className="vertical-timeline-icon navy-bg">
                                     <i className="fa fa-sticky-note-o" aria-hidden="true"/>
                                 </div>
@@ -58,7 +58,7 @@ class Timeline extends Component {
                         )
                     } else if (timelineItem.type === 'ACTIVITY_CREATED' && timelineItem.source.type === "CALL") {
                         return (
-                            <div className="vertical-timeline-block">
+                            <div key={timelineId} className="vertical-timeline-block">
                                 <div className="vertical-timeline-icon navy-bg">
                                     <i className="fa fa-phone"/>
                                 </div>
@@ -78,7 +78,7 @@ class Timeline extends Component {
                         );
                     } else if (timelineItem.type === 'ACTIVITY_CREATED' && timelineItem.source.type === "MEETING") {
                         return (
-                            <div className="vertical-timeline-block">
+                            <div key={timelineId}  className="vertical-timeline-block">
                                 <div className="vertical-timeline-icon navy-bg">
                                     <i className="fa fa-users"/>
                                 </div>
@@ -98,7 +98,7 @@ class Timeline extends Component {
                         );
                     } else if (timelineItem.type === 'ACTIVITY_CREATED' && timelineItem.source.type === "TASK") {
                         return (
-                            <div className="vertical-timeline-block">
+                            <div key={timelineId} className="vertical-timeline-block">
                                 <div className="vertical-timeline-icon navy-bg">
                                     <i className="fa fa-clock-o"/>
                                 </div>
@@ -118,7 +118,7 @@ class Timeline extends Component {
                         );
                     } else if (timelineItem.type === 'ACTIVITY_CREATED' && timelineItem.source.type === "DEADLINE") {
                         return (
-                            <div className="vertical-timeline-block">
+                            <div key={timelineId} className="vertical-timeline-block">
                                 <div className="vertical-timeline-icon navy-bg">
                                     <i className="fa fa-flag"/>
                                 </div>
@@ -138,7 +138,7 @@ class Timeline extends Component {
                         );
                     } else if (timelineItem.type === 'ACTIVITY_CREATED' && timelineItem.source.type === "EMAIL") {
                         return (
-                            <div className="vertical-timeline-block">
+                            <div key={timelineId} className="vertical-timeline-block">
                                 <div className="vertical-timeline-icon navy-bg">
                                     <i className="fa fa-paper-plane"/>
                                 </div>

@@ -100,6 +100,8 @@ class DealDetail extends Component {
                                             <dd>{moment(deal.lastModifiedDate, "YYYY-MM-DDTHH:mm:ss+-HH:mm").format("DD.MM.YYYY")}</dd>
                                             <dt>Created:</dt>
                                             <dd>{moment(deal.createdDate, "YYYY-MM-DDTHH:mm:ss+-HH:mm").format("DD.MM.YYYY")}</dd>
+                                            <dt>Possible Close:</dt>
+                                            <dd>{moment(deal.possibleCloseDate, "YYYY-MM-DDTHH:mm:ss+-HH:mm").format("DD.MM.YYYY")}</dd>
                                             <dt>Contact:</dt>
                                             <dd className="project-people">
                                                 <Link className="text-navy" to={"/person/" + deal.person.id} data-toggle="tooltip" title={deal.person.name}>

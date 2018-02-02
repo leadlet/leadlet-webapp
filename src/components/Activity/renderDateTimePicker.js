@@ -149,7 +149,11 @@ class renderDateTimePicker extends React.Component {
                         numberOfMonths={1}
                         small={true}
                         block={true}
-                        date={input.value ? input.value: null} // momentPropTypes.momentObj or null
+                        date={input.value ?
+                            (typeof(input.value) === moment ?
+                                input.value
+                                : moment(this.props.input.value, "YYYY-MM-DDTHH:mm:ss+-HH:mm"))
+                            : null} // momentPropTypes.momentObj or null
                         onDateChange={this.handleDateChange} // PropTypes.func.isRequired
                         focused={this.state.focused} // PropTypes.bool
                         onFocusChange={({focused}) => this.setState({focused})} // PropTypes.func.isRequired

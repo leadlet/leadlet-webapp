@@ -287,7 +287,7 @@ class Contacts extends Component {
     }
     render() {
         return (
-            <div className="container">
+            <div className="container-fluid">
                 <div className="ibox">
                     <div className="ibox-content">
                         <div className="row m-b-sm">

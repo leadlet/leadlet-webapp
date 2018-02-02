@@ -20,6 +20,7 @@ import renderAsyncSelectField  from "../../formUtils/renderAsyncSelectField";
 import {getAllPersonByFilterAndReturn} from "../../actions/person.actions"
 import {getAllOrganizationByFilterAndReturn} from "../../actions/organization.actions";
 import {getAllUserByFilterAndReturn} from "../../actions/user.actions";
+import renderDatePicker from "../Activity/renderDatePicker";
 
 let currencies = [
     {value: 'USD', label: 'USD'},
@@ -118,8 +119,8 @@ class CreateEditDeal extends Component {
             organizationId: formValues.organization.id,
             stageId: formValues.stage.id,
             ownerId: formValues.owner.id,
-//            possibleCloseDate: formValues.possibleCloseDate,
-            dealValue: formValues.dealValue
+            dealValue: formValues.dealValue,
+            possibleCloseDate: formValues.possibleCloseDate && formValues.possibleCloseDate._d
         }
 
         if( deal.id ){
@@ -190,6 +191,11 @@ class CreateEditDeal extends Component {
                             placeholder="Select contact organization"
                             component={renderAsyncSelectField}
                             loadOptions={this.loadOrganization}
+                        />
+                        <Field
+                            label="Start Date"
+                            name="possibleCloseDate"
+                            component={renderDatePicker}
                         />
                     </form>
                     <div>
