@@ -140,29 +140,35 @@ class CreateEditDeal extends Component {
                             ))}
                         />
 
-                        <Field
-                            name="owner.id"
-                            label="Owner"
-                            placeholder="Select deal owner"
-                            component={renderAsyncSelectField}
-                            loadOptions={loadUser}
-                        />
+                        { this.props.showUserSelection &&
+                            <Field
+                                name="owner.id"
+                                label="Owner"
+                                placeholder="Select deal owner"
+                                component={renderAsyncSelectField}
+                                loadOptions={loadUser}
+                            />
+                        }
 
-                        <Field
-                            name="person.id"
-                            label="Contact Person"
-                            placeholder="Select contact person"
-                            component={renderAsyncSelectField}
-                            loadOptions={loadPerson}
-                        />
+                        {this.props.showPersonSelection &&
+                            <Field
+                                name="person.id"
+                                label="Contact Person"
+                                placeholder="Select contact person"
+                                component={renderAsyncSelectField}
+                                loadOptions={loadPerson}
+                            />
+                        }
 
-                        <Field
-                            name="organization.id"
-                            label="Contact Organization"
-                            placeholder="Select contact organization"
-                            component={renderAsyncSelectField}
-                            loadOptions={loadOrganization}
-                        />
+                        { this.props.showOrganizationSelection &&
+                            <Field
+                                name="organization.id"
+                                label="Contact Organization"
+                                placeholder="Select contact organization"
+                                component={renderAsyncSelectField}
+                                loadOptions={loadOrganization}
+                            />
+                        }
                         <Field
                             label="Possible Close Date"
                             name="possibleCloseDate"
@@ -201,6 +207,13 @@ class CreateEditDeal extends Component {
         );
     }
 }
+
+CreateEditDeal.defaultProps = {
+    showPersonSelection: true,
+    showOrganizationSelection: true,
+    showUserSelection: true
+}
+
 
 const selector = formValueSelector('postNewDealForm');
 

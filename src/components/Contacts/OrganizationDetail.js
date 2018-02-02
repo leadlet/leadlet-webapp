@@ -11,6 +11,7 @@ import ContactOrganization from "./ContactOrganization";
 import {getTimelineByOrganizationId, getTimelineByOrganizationIdAndRefresh} from "../../actions/timeline.actions";
 import {getActivitiesByOrganizationId} from "../../actions/activity.actions";
 import EditOrCreateActivity from "../Activity/EditOrCreateActivity";
+import CreateEditDeal from "../DealDetail/CreateEditDeal";
 
 class OrganizationDetail extends Component {
 
@@ -18,8 +19,9 @@ class OrganizationDetail extends Component {
         super(props);
 
         this.state = {
-            showEditModal: false,
-            showModal: false,
+            isOrganizationModalVisible: false,
+            isDealModalVisible: false,
+            isActivityModalVisible: false,
             value: ''
         };
 
@@ -30,7 +32,8 @@ class OrganizationDetail extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.refreshTimeline = this.refreshTimeline.bind(this);
-
+        this.openDealModal = this.openDealModal.bind(this);
+        this.closeDealModal = this.closeDealModal.bind(this);
     }
 
     refreshTimeline(){
@@ -50,21 +53,30 @@ class OrganizationDetail extends Component {
         this.state.value = '';
     }
 
-    openEditModal(type) {
-        this.setState({showEditModal: true});
+    openEditModal() {
+        this.setState({isOrganizationModalVisible: true});
     }
 
     closeEditModal() {
-        this.setState({showEditModal: false});
+        this.setState({isOrganizationModalVisible: false});
     }
 
     openActivityModal() {
-        this.setState({showModal: true});
+        this.setState({isActivityModalVisible: true});
     }
 
     closeActivityModal() {
-        this.setState({showModal: false});
+        this.setState({isActivityModalVisible: false});
     }
+
+    openDealModal() {
+        this.setState({isDealModalVisible: true});
+    }
+
+    closeDealModal() {
+        this.setState({isDealModalVisible: false});
+    }
+
 
     componentDidMount() {
         this.props.getByIdOrganization(this.props.match.params.organizationId);
@@ -126,7 +138,7 @@ class OrganizationDetail extends Component {
                                         {this.props.viewedOrganization && this.props.viewedOrganization.address}<br/>
                                         {this.props.viewedOrganization && this.props.viewedOrganization.phones.map(phoneItem => {
                                             return (
-                                                <div><i class="fa fa-phone"/> {phoneItem.phone}<br/></div>
+                                                <div><i className="fa fa-phone"/> {phoneItem.phone}<br/></div>
                                             );
                                         })}
 
@@ -201,7 +213,7 @@ class OrganizationDetail extends Component {
                         <div className="col-lg-4">
                             <div className="ibox">
                                 <div className="ibox-title">
-                                    <i className="fa fa-plus pull-right" aria-hidden="true"/>
+                                    <i className="btn btn-sm fa fa-plus pull-right" aria-hidden="true" onClick={() => this.openDealModal()}/>
                                     <h5>Deals</h5>
                                 </div>
                                 <div className="ibox-content text-center">
@@ -210,7 +222,7 @@ class OrganizationDetail extends Component {
                             </div>
                             <div className="ibox">
                                 <div className="ibox-title">
-                                    <i className="fa fa-plus pull-right" aria-hidden="true"
+                                    <i className="btn btn-sm fa fa-plus pull-right" aria-hidden="true"
                                        onClick={() => this.openActivityModal({
                                            start: moment(),
                                            end: moment()
@@ -223,20 +235,29 @@ class OrganizationDetail extends Component {
                             </div>
                         </div>
 
-                        <div>
-                            <EditOrCreateActivity showModal={this.state.showModal}
-                                                  close={this.closeActivityModal}
-                                                  person={this.props.viewedPerson}
-                                                  createCallback={this.refreshTimeline}
-                                                  showPersonSelection={false}
-                            />
-                        </div>
-                        <div>
-                            <ContactOrganization showEditModal={this.state.showEditModal}
-                                                 close={this.closeEditModal}
-                                                 initialValues={this.props.viewedOrganization}
-                            />
-                        </div>
+                        <EditOrCreateActivity showModal={this.state.isActivityModalVisible}
+                                              close={this.closeActivityModal}
+                                              initialValues={{
+                                                  organizationId: this.props.viewedOrganization.id
+                                              }}
+                                              createCallback={this.refreshTimeline}
+                                              showOrganizationSelection={false}
+                        />
+                        <ContactOrganization showEditModal={this.state.isOrganizationModalVisible}
+                                             close={this.closeEditModal}
+                                             initialValues={this.props.viewedOrganization}
+                        />
+                        <CreateEditDeal showModal={this.state.isDealModalVisible}
+                                        close={this.closeDealModal}
+                                        initialValues={{
+                                            organization : {
+                                                id: this.props.viewedOrganization.id
+                                            }
+                                        }}
+                                        pipelineId={this.props.viewedOrganization.pipelineId}
+                                        showOrganizationSelection={false}
+                        />
+
                     </div>
                 </div>
             )

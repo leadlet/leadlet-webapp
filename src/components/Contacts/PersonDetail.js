@@ -12,6 +12,7 @@ import Timeline from "../Timeline/Timeline";
 import {getActivitiesByPersonId} from "../../actions/activity.actions";
 import {getTimelineByPersonId, getTimelineByPersonIdAndRefresh} from "../../actions/timeline.actions";
 import EditOrCreateActivity from "../Activity/EditOrCreateActivity";
+import CreateEditDeal from "../DealDetail/CreateEditDeal";
 
 class ContactDetail extends Component {
 
@@ -19,8 +20,9 @@ class ContactDetail extends Component {
         super(props);
 
         this.state = {
-            showPersonEditModal: false,
-            showModal: false,
+            isPersonModalVisible: false,
+            isDealModalVisible: false,
+            isActivityModalVisible: false,
             value: ''
         };
 
@@ -31,6 +33,8 @@ class ContactDetail extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.refreshTimeline = this.refreshTimeline.bind(this);
+        this.openDealModal = this.openDealModal.bind(this);
+        this.closeDealModal = this.closeDealModal.bind(this);
 
     }
 
@@ -52,20 +56,28 @@ class ContactDetail extends Component {
         this.state.value = '';
     }
 
-    openEditModal(type) {
-        this.setState({showPersonEditModal: true});
+    openEditModal() {
+        this.setState({isPersonModalVisible: true});
     }
 
     closeEditModal() {
-        this.setState({showPersonEditModal: false});
+        this.setState({isPersonModalVisible: false});
     }
 
     openActivityModal() {
-        this.setState({showModal: true});
+        this.setState({isActivityModalVisible: true});
     }
 
     closeActivityModal() {
-        this.setState({showModal: false});
+        this.setState({isActivityModalVisible: false});
+    }
+
+    openDealModal() {
+        this.setState({isDealModalVisible: true});
+    }
+
+    closeDealModal() {
+        this.setState({isDealModalVisible: false});
     }
 
     componentDidMount() {
@@ -129,7 +141,7 @@ class ContactDetail extends Component {
                                         {this.props.viewedPerson && this.props.viewedPerson.address}<br/>
                                         {this.props.viewedPerson && this.props.viewedPerson.phones.map(phoneItem => {
                                             return (
-                                                <div><i class="fa fa-phone"/> {phoneItem.phone}<br/></div>
+                                                <div><i className="fa fa-phone"/> {phoneItem.phone}<br/></div>
                                             );
                                         })}
 
@@ -139,7 +151,7 @@ class ContactDetail extends Component {
                                 </a>
                                 <div className="contact-box-footer">
                                     <div className="m-t-xs btn-group">
-                                        <a onClick={() => this.openEditModal(this.props.viewedPerson.type)}
+                                        <a onClick={() => this.openEditModal()}
                                            className="btn btn-primary btn-sm">Edit</a>
                                     </div>
                                 </div>
@@ -203,7 +215,8 @@ class ContactDetail extends Component {
                         <div className="col-lg-4">
                             <div className="ibox">
                                 <div className="ibox-title">
-                                    <i className="fa fa-plus pull-right" aria-hidden="true"/>
+                                    <i className="btn btn-sm fa fa-plus pull-right" aria-hidden="true"
+                                       onClick={() => this.openDealModal()}/>
                                     <h5>Deals</h5>
                                 </div>
                                 <div className="ibox-content text-center">
@@ -212,7 +225,7 @@ class ContactDetail extends Component {
                             </div>
                             <div className="ibox">
                                 <div className="ibox-title">
-                                    <i className="fa fa-plus pull-right" aria-hidden="true"
+                                    <i className="btn btn-sm fa fa-plus pull-right" aria-hidden="true"
                                        onClick={() => this.openActivityModal({
                                            start: moment(),
                                            end: moment()
@@ -225,22 +238,34 @@ class ContactDetail extends Component {
                             </div>
                         </div>
 
-                        <div>
-                            <EditOrCreateActivity showModal={this.state.showModal}
-                                            close={this.closeActivityModal}
-                                            person={this.props.viewedPerson}
-                                            createCallback={this.refreshTimeline}
-                                          showPersonSelection={false}
-                                          showOrganizationSelection={false}
-                            />
-                        </div>
+                        <EditOrCreateActivity showModal={this.state.isActivityModalVisible}
+                                        close={this.closeActivityModal}
+                                              initialValues={{
+                                                  personId: this.props.viewedPerson.id
+                                              }}
+                                        createCallback={this.refreshTimeline}
+                                        showPersonSelection={false}
+                                        showOrganizationSelection={false}
+                        />
 
-                        <div>
-                            <ContactPerson showEditModal={this.state.showPersonEditModal}
-                                           close={this.closeEditModal}
-                                           initialValues={this.props.viewedPerson}
-                            />
-                        </div>
+                        <ContactPerson showEditModal={this.state.isPersonModalVisible}
+                                       close={this.closeEditModal}
+                                       initialValues={this.props.viewedPerson}
+                        />
+
+                        <CreateEditDeal showModal={this.state.isDealModalVisible}
+                                        close={this.closeDealModal}
+                                        initialValues={{
+                                            person : {
+                                                id: this.props.viewedPerson.id
+                                            }
+                                        }}
+                                        pipelineId={this.props.viewedPerson.pipelineId}
+                                        showPersonSelection={false}
+                                        showOrganizationSelection={false}
+                        />
+
+
                     </div>
                 </div>
             )

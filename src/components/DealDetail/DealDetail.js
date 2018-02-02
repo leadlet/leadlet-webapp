@@ -103,8 +103,10 @@ class DealDetail extends Component {
                                             <dd>{deal.stage.name}</dd>
                                             <dt>Deal Value:</dt>
                                             <dd>{this.renderDealValue()}</dd>
-                                            <dt>Owner To:</dt>
+                                            <dt>Owner:</dt>
                                             <dd>{this.renderAssignee()}</dd>
+                                            <dt>Contact:</dt>
+                                            <dd>{this.renderPersons()}</dd>
                                             <dt>Organization:</dt>
                                             <dd>{this.renderOrganization()}</dd>
                                             <dt>Last Updated:</dt>
@@ -113,10 +115,6 @@ class DealDetail extends Component {
                                             <dd>{this.renderCreatedDate()}</dd>
                                             <dt>Possible Close:</dt>
                                             <dd>{this.renderLastUpdateDate()}</dd>
-                                            <dt>Contact:</dt>
-                                            <dd className="project-people">
-                                                {this.renderPersons()}
-                                            </dd>
                                         </dl>
                                     </div>
                                     <div className="row">
@@ -250,11 +248,10 @@ class DealDetail extends Component {
         const deal = this.props.viewedDeal;
 
         if(deal.person){
-            return (
-                <Link className="text-navy" to={"/person/" + deal.person.id} data-toggle="tooltip" title={deal.person.name}>
-                    <img alt="image" className="img-circle" src={process.env.PUBLIC_URL + '/img/headshot-placeholder.jpg'}/>
-                </Link>
-            );
+
+            return (<Link className="text-navy" to={"/person/" + deal.person.id}>{deal.person.name}</Link>);
+
+
         }else{
             return (<em>Not set</em>);
         }
