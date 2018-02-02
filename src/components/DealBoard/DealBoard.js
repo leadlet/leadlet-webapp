@@ -8,7 +8,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
 import CardsContainer from "./DealList/DealCardsContainer";
 import CustomDragLayer from "./CustomDragLayer";
-import {deleteDeal, getAllDeals, moveDeal} from "../../actions/deal.actions";
+import {deleteDeal, moveDeal} from "../../actions/deal.actions";
 import SweetAlert from 'sweetalert-react';
 import {getBoardByPipelineId, loadMoreDeals} from "../../actions/board.actions";
 import CreateEditDeal from '../DealDetail/CreateEditDeal'
@@ -159,6 +159,7 @@ class DealBoard extends Component {
                         this.state.isNewDealModalVisible &&
                         <CreateEditDeal showModal={this.state.isNewDealModalVisible}
                              close={this.toggleNewDealModal}
+                                        pipelineId={this.props.pipelines.selectedPipelineId}
                         />
                     }
                 </div>
@@ -215,5 +216,5 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, {getAllPipelines, getAllStages, getAllDeals,moveDeal, deleteDeal, getBoardByPipelineId, selectPipeline, loadMoreDeals })(DragDropContext(HTML5Backend)(DealBoard));
+export default connect(mapStateToProps, {getAllPipelines, getAllStages ,moveDeal, deleteDeal, getBoardByPipelineId, selectPipeline, loadMoreDeals })(DragDropContext(HTML5Backend)(DealBoard));
 

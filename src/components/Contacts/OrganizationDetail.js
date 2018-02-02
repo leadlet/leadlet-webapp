@@ -10,7 +10,7 @@ import Timeline from "../Timeline/Timeline";
 import ContactOrganization from "./ContactOrganization";
 import {getTimelineByOrganizationId, getTimelineByOrganizationIdAndRefresh} from "../../actions/timeline.actions";
 import {getActivitiesByOrganizationId} from "../../actions/activity.actions";
-import EditCreateActivityForOrganization from "../Activity/EditCreateActivityForOrganization";
+import EditOrCreateActivity from "../Activity/EditOrCreateActivity";
 
 class OrganizationDetail extends Component {
 
@@ -224,10 +224,11 @@ class OrganizationDetail extends Component {
                         </div>
 
                         <div>
-                            <EditCreateActivityForOrganization showModal={this.state.showModal}
-                                            close={this.closeActivityModal}
-                                            organization={this.props.viewedOrganization}
-                                            createCallback={this.refreshTimeline}
+                            <EditOrCreateActivity showModal={this.state.showModal}
+                                                  close={this.closeActivityModal}
+                                                  person={this.props.viewedPerson}
+                                                  createCallback={this.refreshTimeline}
+                                                  showPersonSelection={false}
                             />
                         </div>
                         <div>

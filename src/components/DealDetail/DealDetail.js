@@ -10,6 +10,7 @@ import {getById} from "../../actions/person.actions";
 import CreateEditDeal from '../DealDetail/CreateEditDeal'
 import moment from 'moment';
 import Link from "react-router-dom/es/Link";
+import EditOrCreateActivity from "../Activity/EditOrCreateActivity";
 
 
 class DealDetail extends Component {
@@ -19,7 +20,8 @@ class DealDetail extends Component {
 
         this.state = {
             value: '',
-            isEditDealModalVisible: false
+            isEditDealModalVisible: false,
+            isActivityModalVisible: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -28,6 +30,13 @@ class DealDetail extends Component {
         this.closeActivityModal = this.closeActivityModal.bind(this);
         this.openEditDealModal = this.openEditDealModal.bind(this);
         this.closeEditDealModal = this.closeEditDealModal.bind(this);
+        this.renderAssignee = this.renderAssignee.bind(this);
+        this.renderOrganization = this.renderOrganization.bind(this);
+        this.renderLastUpdateDate = this.renderLastUpdateDate.bind(this);
+        this.renderPossibleCloseDate = this.renderPossibleCloseDate.bind(this);
+        this.refreshTimeline = this.refreshTimeline.bind(this);
+        this.renderCreatedDate = this.renderCreatedDate.bind(this);
+        this.renderDealValue = this.renderDealValue.bind(this);
     }
 
     closeEditDealModal(){
@@ -61,11 +70,11 @@ class DealDetail extends Component {
     }
 
     openActivityModal() {
-        this.setState({showModal: true});
+        this.setState({isActivityModalVisible: true});
     }
 
     closeActivityModal() {
-        this.setState({showModal: false});
+        this.setState({isActivityModalVisible: false});
     }
 
     refreshTimeline() {
@@ -92,21 +101,21 @@ class DealDetail extends Component {
                                             <dd>{deal.title}</dd>
                                             <dt>Stage:</dt>
                                             <dd>{deal.stage.name}</dd>
-                                            <dt>Assigned To:</dt>
-                                            <dd><Link className="text-navy" to={"/user/" + deal.owner.id}>{deal.owner.firstName} {deal.owner.lastName}</Link></dd>
+                                            <dt>Deal Value:</dt>
+                                            <dd>{this.renderDealValue()}</dd>
+                                            <dt>Owner To:</dt>
+                                            <dd>{this.renderAssignee()}</dd>
                                             <dt>Organization:</dt>
-                                            <dd><Link className="text-navy" to={"/organization/" + deal.organization.id}>{deal.organization.name}</Link></dd>
+                                            <dd>{this.renderOrganization()}</dd>
                                             <dt>Last Updated:</dt>
-                                            <dd>{moment(deal.lastModifiedDate, "YYYY-MM-DDTHH:mm:ss+-HH:mm").format("DD.MM.YYYY")}</dd>
+                                            <dd>{this.renderLastUpdateDate()}</dd>
                                             <dt>Created:</dt>
-                                            <dd>{moment(deal.createdDate, "YYYY-MM-DDTHH:mm:ss+-HH:mm").format("DD.MM.YYYY")}</dd>
+                                            <dd>{this.renderCreatedDate()}</dd>
                                             <dt>Possible Close:</dt>
-                                            <dd>{moment(deal.possibleCloseDate, "YYYY-MM-DDTHH:mm:ss+-HH:mm").format("DD.MM.YYYY")}</dd>
+                                            <dd>{this.renderLastUpdateDate()}</dd>
                                             <dt>Contact:</dt>
                                             <dd className="project-people">
-                                                <Link className="text-navy" to={"/person/" + deal.person.id} data-toggle="tooltip" title={deal.person.name}>
-                                                    <img alt="image" className="img-circle" src={process.env.PUBLIC_URL + '/img/headshot-placeholder.jpg'}/>
-                                                </Link>
+                                                {this.renderPersons()}
                                             </dd>
                                         </dl>
                                     </div>
@@ -197,6 +206,18 @@ class DealDetail extends Component {
                                             pipelineId={this.props.viewedDeal.pipelineId}
                             />
                         }
+                        {
+                            this.state.isActivityModalVisible &&
+                            <EditOrCreateActivity showModal={this.state.isActivityModalVisible}
+                                                  close={this.closeActivityModal}
+                                                  initialValues={{dealId: this.props.viewedDeal.id}}
+                                                  createCallback={this.refreshTimeline}
+                                                  showDealSelection={false}
+                            />
+                        }
+
+
+
 
                     </div>
                 </div>
@@ -205,6 +226,86 @@ class DealDetail extends Component {
     }
 
 
+    renderAssignee() {
+        const deal = this.props.viewedDeal;
+
+        if(deal.owner){
+            return (<Link className="text-navy" to={"/user/" + deal.owner.id}>{deal.owner.firstName} {deal.owner.lastName}</Link>);
+        }else{
+            return (<em>Not set</em>);
+        }
+    }
+
+    renderOrganization() {
+        const deal = this.props.viewedDeal;
+
+        if(deal.organization){
+            return (<Link className="text-navy" to={"/organization/" + deal.organization.id}>{deal.organization.name}</Link>);
+        }else{
+            return (<em>Not set</em>);
+        }
+    }
+
+    renderPersons() {
+        const deal = this.props.viewedDeal;
+
+        if(deal.person){
+            return (
+                <Link className="text-navy" to={"/person/" + deal.person.id} data-toggle="tooltip" title={deal.person.name}>
+                    <img alt="image" className="img-circle" src={process.env.PUBLIC_URL + '/img/headshot-placeholder.jpg'}/>
+                </Link>
+            );
+        }else{
+            return (<em>Not set</em>);
+        }
+    }
+
+    renderLastUpdateDate() {
+        const deal = this.props.viewedDeal;
+
+        if(deal.lastModifiedDate){
+            return (
+                moment(deal.lastModifiedDate, "YYYY-MM-DDTHH:mm:ss+-HH:mm").format("DD.MM.YYYY")
+            );
+        }else{
+            return (<em>Not set</em>);
+        }
+    }
+
+    renderPossibleCloseDate() {
+        const deal = this.props.viewedDeal;
+
+        if(deal.possibleCloseDate){
+            return (
+                moment(deal.possibleCloseDate, "YYYY-MM-DDTHH:mm:ss+-HH:mm").format("DD.MM.YYYY")
+            );
+        }else{
+            return (<em>Not set</em>);
+        }
+    }
+    renderCreatedDate() {
+        const deal = this.props.viewedDeal;
+
+        if(deal.createdDate){
+            return (
+                moment(deal.createdDate, "YYYY-MM-DDTHH:mm:ss+-HH:mm").format("DD.MM.YYYY")
+            );
+        }else{
+            return (<em>Not set</em>);
+        }
+    }
+
+    renderDealValue() {
+        const deal = this.props.viewedDeal;
+
+        if(deal.dealValue){
+            return (
+                <b>{deal.dealValue.potentialValue}</b>
+            );
+        }else{
+            return (<em>Not set</em>);
+        }
+    }
 }
 
 function mapStateToProps(state) {

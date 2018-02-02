@@ -2,7 +2,7 @@ import { authHeader } from '../helpers';
 import {userActions} from "../actions/user.actions";
 
 export const dealService = {
-    getAll,
+    getAllDeals,
     getDealById,
     create,
     update,
@@ -50,14 +50,16 @@ function getDealById(id) {
     return fetch('/api/deals/' + id, requestOptions).then(handleResponse);
 }
 
-function getAll() {
+
+function getAllDeals(filter, page, size) {
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
     };
 
-    return fetch('/api/deals', requestOptions).then(handleResponse);
+    return fetch(`/api/deals?filter=${filter}&page=${page}&size=${size}`, requestOptions).then(handlePaginationResponse);
 }
+
 
 function _delete(id) {
     const requestOptions = {
@@ -80,4 +82,16 @@ function handleResponse(response) {
     // a Promise is returned since the reading of the stream will happen asynchronously.
 
     return response.json();
+}
+
+function handlePaginationResponse(response) {
+    if (response.ok !== true) {
+        if( response.status === 404 ) {
+            userActions.logout();
+        }
+        return Promise.reject(response.statusText);
+    }
+
+    return Promise.all([response.json(), response.headers.get("x-total-count")]);
+
 }

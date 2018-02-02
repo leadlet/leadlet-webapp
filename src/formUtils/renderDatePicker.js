@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {SingleDatePicker} from 'react-dates';
 import moment from 'moment';
 import 'react-select/dist/react-select.css';
+import 'react-dates/lib/css/_datepicker.css';
 
 class renderDatePicker extends React.Component {
 
@@ -82,6 +83,7 @@ class renderDatePicker extends React.Component {
             <div className="form-group">
                 <label>{label}</label>
                 <SingleDatePicker
+                    placeholder={placeholder}
                     numberOfMonths={1}
                     small={true}
                     block={true}

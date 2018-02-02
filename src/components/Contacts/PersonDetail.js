@@ -11,7 +11,7 @@ import moment from 'moment';
 import Timeline from "../Timeline/Timeline";
 import {getActivitiesByPersonId} from "../../actions/activity.actions";
 import {getTimelineByPersonId, getTimelineByPersonIdAndRefresh} from "../../actions/timeline.actions";
-import EditCreateActivityForPerson from "../Activity/EditCreateActivityForPerson";
+import EditOrCreateActivity from "../Activity/EditOrCreateActivity";
 
 class ContactDetail extends Component {
 
@@ -226,10 +226,12 @@ class ContactDetail extends Component {
                         </div>
 
                         <div>
-                            <EditCreateActivityForPerson showModal={this.state.showModal}
+                            <EditOrCreateActivity showModal={this.state.showModal}
                                             close={this.closeActivityModal}
                                             person={this.props.viewedPerson}
                                             createCallback={this.refreshTimeline}
+                                          showPersonSelection={false}
+                                          showOrganizationSelection={false}
                             />
                         </div>
 

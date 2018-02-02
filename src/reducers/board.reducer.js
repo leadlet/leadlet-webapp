@@ -39,8 +39,15 @@ export function boards(state = {}, action) {
                     // remove from old stageList
                     _state[pipelineId].entities.stages[oldStageId].dealList
                         = _state[pipelineId].entities.stages[oldStageId].dealList.filter(id => id !== _oldDeal.id);
+
                     // add to new list
                     _state[pipelineId].entities.stages[newStageId].dealList.push(_newDeal.id);
+
+                    if(_newDeal.dealValue && _newDeal.dealValue.potentialValue){
+                        _state[pipelineId].entities.stages[newStageId].dealTotalPotential += _newDeal.dealValue.potentialValue;
+                        _state[pipelineId].entities.stages[oldStageId].dealTotalPotential -= _newDeal.dealValue.potentialValue;
+
+                    }
 
                 }
 
@@ -94,7 +101,35 @@ export function boards(state = {}, action) {
         case dealConstants.CREATE_REQUEST:
             return state;
         case dealConstants.CREATE_SUCCESS:
+            if (state[action.deal.pipelineId]) {
+                let _state = state;
+
+                let _newDeal = action.deal;
+
+                let pipelineId = _newDeal.pipelineId;
+                let newStageId = _newDeal.stageId;
+
+
+                _state[pipelineId].entities.stages[newStageId].dealList.push(_newDeal.id);
+
+                if(_newDeal.dealValue && _newDeal.dealValue.potentialValue){
+                    _state[pipelineId].entities.stages[newStageId].dealTotalPotential += _newDeal.dealValue.potentialValue;
+                }
+
+                // update deal
+                _state[pipelineId].entities.dealList[_newDeal.id] = _newDeal;
+
+                // sort list
+                _state[pipelineId].entities.stages[newStageId].dealList.sort((firstId, secondId) => {
+                    return _state[pipelineId].entities.dealList[firstId].priority -
+                        _state[pipelineId].entities.dealList[secondId].priority;
+                });
+
+                return _state;
+            }
+
             return state;
+
         case dealConstants.CREATE_FAILURE:
             return state;
 

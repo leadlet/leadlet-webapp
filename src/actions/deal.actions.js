@@ -22,21 +22,12 @@ export function getDealById(dealId) {
 }
 
 
-export function getAllDeals() {
-    return dispatch => {
-        dispatch(request());
-
-        dealService.getAll()
-            .then(
-                items => dispatch(success(items)),
-                error => dispatch(failure(error))
-            );
-    };
-
-    function request() { return { type: dealConstants.GETALL_REQUEST } }
-    function success(items) { return { type: dealConstants.GETALL_SUCCESS, items } }
-    function failure(error) { return { type: dealConstants.GETALL_FAILURE, error } }
-
+export function getAllDealByFilterAndReturn(filter, successCallback, failCallback) {
+    dealService.getAllDeals(filter, 0, 20)
+        .then(
+            response => successCallback(response[0]),
+            error => failCallback(error)
+        );
 }
 
 export function updateDeal(deal) {

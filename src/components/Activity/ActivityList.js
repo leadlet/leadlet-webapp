@@ -100,8 +100,10 @@ class Activity extends Component {
                             end: event.end,
                             memo: event.memo,
                             activityType: event.type,
-                            person: event.personId,
-                            organization: event.organizationId,
+                            userId: event.userId,
+                            personId: event.personId,
+                            dealId: event.dealId,
+                            organizationId: event.organizationId,
                             location: event.location
 
                         }

@@ -19,6 +19,9 @@ const renderSelectField = (props) => (
             simpleValue
             onBlur={() => props.input.onBlur(props.input.value)}
         />
+        <span className="help-block m-b-none">
+                {props.meta.touched && ((props.meta.error && <span>{props.meta.error}</span>))}
+            </span>
     </div>
 );
 

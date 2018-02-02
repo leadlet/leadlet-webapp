@@ -3,9 +3,6 @@ import {Field, Fields, reduxForm} from 'redux-form';
 import Modal from '../../modal-shim';
 import {connect} from 'react-redux';
 import SweetAlert from 'sweetalert-react';
-import DropdownButton from "react-bootstrap/es/DropdownButton";
-import MenuItem from "react-bootstrap/es/MenuItem";
-import Checkbox from "react-bootstrap/es/Checkbox";
 
 import 'react-select/dist/react-select.css';
 import {createDeal,updateDeal} from "../../actions/deal.actions";
@@ -17,10 +14,8 @@ import formValueSelector from "redux-form/es/formValueSelector";
 import renderSelectField from "../../formUtils/renderSelectField";
 import renderAsyncSelectField  from "../../formUtils/renderAsyncSelectField";
 
-import {getAllPersonByFilterAndReturn} from "../../actions/person.actions"
-import {getAllOrganizationByFilterAndReturn} from "../../actions/organization.actions";
-import {getAllUserByFilterAndReturn} from "../../actions/user.actions";
-import renderDatePicker from "../Activity/renderDatePicker";
+import renderDatePicker from "../../formUtils/renderDatePicker";
+import {loadOrganization, loadPerson, loadUser} from "../../formUtils/form.actions";
 
 let currencies = [
     {value: 'USD', label: 'USD'},
@@ -29,7 +24,24 @@ let currencies = [
 ];
 
 const validate = values => {
-    return {};
+    const errors = {}
+
+    /*  title validation */
+    if (!values.title) {
+        errors.title = 'Please write a title'
+    } else if (values.title.length >= 64) {
+        errors.title = 'Must be 64 characters or less!'
+    }
+
+    /* activity type */
+    if (!values.stage || !values.stage.id) {
+        errors.stage ={
+            id: "Please select a stage"
+        }
+    }
+
+    return errors
+
 };
 
 
@@ -45,52 +57,11 @@ class CreateEditDeal extends Component {
         this.cancelDeleteDeal = this.cancelDeleteDeal.bind(this);
         this.onDeleteDeal = this.onDeleteDeal.bind(this);
         this.onClose = this.onClose.bind(this);
-        this.loadPerson = this.loadPerson.bind(this);
-        this.loadUser = this.loadUser.bind(this);
 
         this.state = {
             showDeleteDialog: false
         };
     }
-
-    loadUser(input, callback) {
-
-        let successCallBack = (data) => {
-            callback(null, {options: data.map(user => ({value: user.id, label: `${user.firstName} ${user.lastName}`}))});
-        };
-        let failCallBack = (error) => {
-            callback(error, null);
-        };
-
-        getAllUserByFilterAndReturn(`name:${input}`, successCallBack, failCallBack);
-
-    };
-
-    loadPerson(input, callback) {
-
-        let successCallBack = (data) => {
-            callback(null, {options: data.map(person => ({value: person.id, label: person.name}))});
-        };
-        let failCallBack = (error) => {
-            callback(error, null);
-        };
-
-        getAllPersonByFilterAndReturn(`name:${input}`, successCallBack, failCallBack);
-
-    };
-
-    loadOrganization(input, callback) {
-
-        let successCallBack = (data) => {
-            callback(null, {options: data.map(org => ({value: org.id, label: org.name}))});
-        };
-        let failCallBack = (error) => {
-            callback(error, null);
-        };
-
-        getAllOrganizationByFilterAndReturn(`name:${input}`, successCallBack, failCallBack);
-
-    };
 
     componentDidMount(){
         this.props.getAllStagesByPipelineId(this.props.pipelineId);
@@ -115,10 +86,10 @@ class CreateEditDeal extends Component {
         let deal = {
             id: formValues.id,
             title: formValues.title,
-            personId: formValues.person.id,
-            organizationId: formValues.organization.id,
-            stageId: formValues.stage.id,
-            ownerId: formValues.owner.id,
+            personId: formValues.person && formValues.person.id,
+            organizationId: formValues.organization && formValues.organization.id,
+            stageId: formValues.stage && formValues.stage.id,
+            ownerId: formValues.owner && formValues.owner.id,
             dealValue: formValues.dealValue,
             possibleCloseDate: formValues.possibleCloseDate && formValues.possibleCloseDate._d
         }
@@ -174,7 +145,7 @@ class CreateEditDeal extends Component {
                             label="Owner"
                             placeholder="Select deal owner"
                             component={renderAsyncSelectField}
-                            loadOptions={this.loadUser}
+                            loadOptions={loadUser}
                         />
 
                         <Field
@@ -182,7 +153,7 @@ class CreateEditDeal extends Component {
                             label="Contact Person"
                             placeholder="Select contact person"
                             component={renderAsyncSelectField}
-                            loadOptions={this.loadPerson}
+                            loadOptions={loadPerson}
                         />
 
                         <Field
@@ -190,11 +161,12 @@ class CreateEditDeal extends Component {
                             label="Contact Organization"
                             placeholder="Select contact organization"
                             component={renderAsyncSelectField}
-                            loadOptions={this.loadOrganization}
+                            loadOptions={loadOrganization}
                         />
                         <Field
-                            label="Start Date"
+                            label="Possible Close Date"
                             name="possibleCloseDate"
+                            placeholder="Select Possible Close Date"
                             component={renderDatePicker}
                         />
                     </form>
@@ -215,18 +187,12 @@ class CreateEditDeal extends Component {
                 <Modal.Footer>
 
                     <div className="row">
-                        <div className="col-md-1">
-                            <DropdownButton noCaret id="detail-operations" className="btn-primary" title="...">
-                                <MenuItem href="#" onClick={this.onDeleteDeal}>Delete</MenuItem>
-                            </DropdownButton>
-                        </div>
                         <div className="col-md-6 pull-right">
                             <div className="pull-right activity-detail-submit">
                                 <button className="btn btn-sm btn-default" onClick={this.props.close}>Cancel</button>
                                 <button className="btn btn-sm btn-primary" onClick={handleSubmit(this.onSubmit)}>
                                     <strong>Submit</strong></button>
                             </div>
-                            <Checkbox className="mark pull-left">Mark as done</Checkbox>
                         </div>
                     </div>
 

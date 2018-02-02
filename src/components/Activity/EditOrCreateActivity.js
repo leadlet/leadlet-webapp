@@ -9,16 +9,12 @@ import ToggleButtonGroup from "react-bootstrap/es/ToggleButtonGroup";
 import ToggleButton from "react-bootstrap/es/ToggleButton";
 import DropdownButton from "react-bootstrap/es/DropdownButton";
 import MenuItem from "react-bootstrap/es/MenuItem";
-import Checkbox from "react-bootstrap/es/Checkbox";
-import FormControl from "../../../node_modules/react-bootstrap/es/FormControl";
-import Select from '../../../node_modules/react-select';
-import 'react-select/dist/react-select.css';
-import {getAllOrganization, getOrganizationByPersonId} from "../../actions/organization.actions";
-import {getAllPerson, getAllPersonByOrganizationId} from "../../actions/person.actions";
-import 'react-dates/lib/css/_datepicker.css';
 import formValueSelector from "redux-form/es/formValueSelector";
-import renderDateTimePicker from "./renderDateTimePicker";
+import renderDateTimePicker from "../../formUtils/renderDateTimePicker";
 import MapWithASearchBox from "../Map/MapWithASearchBox";
+import renderInputField from "../../formUtils/renderInputField";
+import renderAsyncSelectField from "../../formUtils/renderAsyncSelectField";
+import {loadDeal, loadOrganization, loadPerson, loadUser} from "../../formUtils/form.actions";
 
 const validate = values => {
     const errors = {}
@@ -46,37 +42,8 @@ const validate = values => {
     }
 
     return errors
-}
+};
 
-const renderField = ({
-                         input,
-                         label,
-                         type,
-                         meta: {touched, error}
-                     }) => (
-    <div className="form-group">
-        <div>
-            <input {...input} placeholder={label} type={type} className="form-control"/>
-            <span className="help-block m-b-none">{touched &&
-            ((error && <span>{error}</span>))}
-                </span>
-        </div>
-    </div>
-)
-
-const renderMemoField = ({
-                             label,
-                             input,
-                             editorState,
-                             meta: {touched, error}
-                         }) => (
-    <div className="form-group m-t-sm">
-        <label>{label}</label>
-        <div>
-            <FormControl {...input} componentclassName="textarea" placeholder=""/>
-        </div>
-    </div>
-)
 
 const renderTypeField = ({
                              input,
@@ -99,28 +66,6 @@ const renderTypeField = ({
     </div>
 )
 
-const renderSelectField = ({
-                               input,
-                               options,
-                               label,
-                               multi
-                           }) => (
-    <div className="form-group">
-        <label>{label}</label>
-        <Select
-            closeOnSelect={true}
-            disabled={false}
-            multi={multi}
-            placeholder="Select..."
-            options={options}
-            removeSelected={true}
-            rtl={false}
-            onChange={input.onChange}
-            value={input.value}
-            simpleValue
-        />
-    </div>
-)
 
 class EditOrCreateActivity extends Component {
 
@@ -132,66 +77,12 @@ class EditOrCreateActivity extends Component {
         this.cancelDeleteActivity = this.cancelDeleteActivity.bind(this);
         this.onDeleteActivity = this.onDeleteActivity.bind(this);
         this.onClose = this.onClose.bind(this);
-        this.mapOrganization2Options = this.mapOrganization2Options.bind(this);
-        this.mapPerson2Options = this.mapPerson2Options.bind(this);
-//        this.mapValueChanged = this.mapValueChanged.bind(this);
 
         this.state = {
             showDeleteDialog: false,
-            /*
-            location: {
-                center: {
-                    lat: 41.9, lng: -87.624
-                },
-                markers: []
-            }
-            */
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (this.props.person !== nextProps.person) {
-            if (nextProps.person) {
-                this.props.getOrganizationByPersonId(nextProps.person);
-            } else {
-                this.props.getAllOrganization();
-            }
-        }
-        if (this.props.organization !== nextProps.organization) {
-            if (nextProps.organization) {
-                this.props.getAllPersonByOrganizationId(nextProps.organization);
-            } else {
-                this.props.getAllPerson();
-            }
-        }
-    }
-
-    componentDidMount() {
-        this.props.getAllOrganization();
-        this.props.getAllPerson();
-    }
-
-    mapPerson2Options() {
-
-        if (!this.props.persons.ids) {
-            return [];
-        } else {
-            return this.props.persons.ids.map(id => {
-                return {label: this.props.persons.items[id].name, value: this.props.persons.items[id].id}
-            });
-        }
-    }
-
-    mapOrganization2Options() {
-
-        if (!this.props.organizations.ids) {
-            return [];
-        } else {
-            return this.props.organizations.ids.map(id => {
-                return {label: this.props.organizations.items[id].name, value: this.props.organizations.items[id].id}
-            });
-        }
-    }
 
     confirmDeleteActivity() {
         this.props._delete(this.props.initialValues.id);
@@ -217,8 +108,10 @@ class EditOrCreateActivity extends Component {
         activity.memo = formValue.memo;
         activity.type = formValue.activityType;
         activity.title = formValue.title;
-        activity.personId = formValue.person;
-        activity.organizationId = formValue.organization;
+        activity.personId = formValue.personId;
+        activity.organizationId = formValue.organizationId;
+        activity.userId = formValue.userId;
+        activity.dealId = formValue.dealId;
         activity.location = formValue.location;
 
         if (this.props.initialValues && this.props.initialValues.id) {
@@ -236,20 +129,6 @@ class EditOrCreateActivity extends Component {
         this.props.reset();
         this.props.close();
     }
-
-    /*
-    mapValueChanged(center, markers) {
-        this.setState({
-            location: {
-                center: {
-                    lat: center.lat(),
-                    lng: center.lng()
-                },
-                markers: markers
-            }
-        });
-    }
-    */
 
     render() {
         const {handleSubmit, initialValues, submitting, pristine, valid} = this.props;
@@ -274,7 +153,7 @@ class EditOrCreateActivity extends Component {
                         <Field
                             name="title"
                             type="text"
-                            component={renderField}
+                            component={renderInputField}
                             label="Title"
                         />
                         <div className="form-horizontal">
@@ -295,37 +174,46 @@ class EditOrCreateActivity extends Component {
                                 />
                             </div>
                         </div>
+
+                        {this.props.showDealSelection &&
                         <Field
-                            name="memo"
-                            component={renderMemoField}
-                            label="Description"
-                        />
-                        <Field
-                            name="assign"
-                            component={renderSelectField}
-                            label="Assigned To"
-                            multi={false}
-                        />
-                        <Field
-                            name="deal"
-                            component={renderSelectField}
+                            name="dealId"
                             label="Deal"
-                            multi={false}
+                            placeholder="Select deal"
+                            component={renderAsyncSelectField}
+                            loadOptions={loadDeal}
                         />
+                        }
+
+                        {this.props.showUserSelection &&
                         <Field
-                            name="person"
-                            label="Person"
-                            multi={false}
-                            options={this.mapPerson2Options()}
-                            component={renderSelectField}
+                            name="userId"
+                            label="Owner"
+                            placeholder="Select deal owner"
+                            component={renderAsyncSelectField}
+                            loadOptions={loadUser}
                         />
-                        <Field
-                            name="organization"
-                            label="Organization"
-                            multi={false}
-                            options={this.mapOrganization2Options()}
-                            component={renderSelectField}
-                        />
+                        }
+
+                        {this.props.showPersonSelection &&
+                            <Field
+                                name="personId"
+                                label="Contact Person"
+                                placeholder="Select contact person"
+                                component={renderAsyncSelectField}
+                                loadOptions={loadPerson}
+                            />
+                        }
+
+                        {this.props.showOrganizationSelection &&
+                            <Field
+                                name="organizationId"
+                                label="Contact Organization"
+                                placeholder="Select contact organization"
+                                component={renderAsyncSelectField}
+                                loadOptions={loadOrganization}
+                            />
+                        }
 
                         <Field
                             name="location"
@@ -333,9 +221,6 @@ class EditOrCreateActivity extends Component {
                             component={MapWithASearchBox}
                         />
 
-                        <div className="invisible form-group">
-                            <Checkbox>Send invitations to attendees</Checkbox>
-                        </div>
                     </form>
                     <div>
                         <SweetAlert
@@ -367,7 +252,6 @@ class EditOrCreateActivity extends Component {
                                         onClick={handleSubmit(this.onSubmit)}>
                                     <strong>Submit</strong></button>
                             </div>
-                            <Checkbox className="mark pull-left invisible">Mark as done</Checkbox>
                         </div>
                     </div>
 
@@ -377,7 +261,15 @@ class EditOrCreateActivity extends Component {
     }
 }
 
-const selector = formValueSelector('createEditActivityForm') // <-- same as form name
+EditOrCreateActivity.defaultProps = {
+    showPersonSelection: true,
+    showOrganizationSelection: true,
+    showDealSelection: true,
+    showUserSelection: true
+}
+
+
+const selector = formValueSelector('createEditActivityForm');
 
 function mapStateToProps(state) {
     return {
@@ -399,10 +291,6 @@ export default reduxForm({
     connect(mapStateToProps, {
         create,
         update,
-        _delete,
-        getAllOrganization,
-        getOrganizationByPersonId,
-        getAllPerson,
-        getAllPersonByOrganizationId
+        _delete
     })(EditOrCreateActivity)
 );

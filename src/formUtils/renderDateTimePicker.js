@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {SingleDatePicker} from 'react-dates';
 import moment from 'moment';
-import Select from '../../../node_modules/react-select';
+import Select from '../../node_modules/react-select/dist/react-select.es';
 import 'react-select/dist/react-select.css';
+import 'react-dates/lib/css/_datepicker.css';
 
 let hours = [
     {value: '00:00', label: '00:00'},
@@ -78,7 +79,8 @@ class renderDateTimePicker extends React.Component {
 
         const newTime = moment(timeStr, 'HH:mm');
         // TODO kancere anlat
-        let newDateTime = this.props.input.value.clone();
+        let newDateTime = this.props.input.value? this.props.input.value.clone()
+                                : moment();
         newDateTime.set('hour', newTime.hour());
         newDateTime.set('minute', newTime.minute());
         this.props.input.onChange(newDateTime);
@@ -176,7 +178,9 @@ class renderDateTimePicker extends React.Component {
                     />
                 </div>
 
-                {touched && error && <span>{error}</span>}
+                <span className="help-block m-b-none">
+                    {this.props.meta.error && <span>{this.props.meta.error}</span>}
+                </span>
             </div>
         )
     }
