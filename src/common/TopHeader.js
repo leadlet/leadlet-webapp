@@ -52,12 +52,10 @@ class TopHeader extends React.Component {
                             </li>
                         </ul>
                         <ul className="nav navbar-nav navbar-right">
-                            <li className="dropdown">
-                                <DropdownButton className="btn-link" id="sample-menu" title="Settings">
-                                    <MenuItem href="/pipelines">Pipelines & Stages</MenuItem>
-                                    <MenuItem href="/profile">Profile</MenuItem>
-                                    <MenuItem href="/body1">Billing</MenuItem>
-                                </DropdownButton>
+                            <li>
+                                <a aria-expanded="false" role="button" href="/preferences">
+                                    <i className="fa fa-cog"/> Settings
+                                </a>
                             </li>
                             <li>
                                 <a href="#" onClick={this.handleLogOut}>

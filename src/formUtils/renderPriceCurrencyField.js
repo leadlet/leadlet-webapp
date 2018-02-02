@@ -1,6 +1,6 @@
 import React from 'react';
 
-const renderTextInputField = (props) => (
+const renderPriceCurrenctField = (props) => (
     <div className="form-group">
         <label>{props.label}</label>
         <input {...props.dealValue.potentialValue.input}
@@ -15,6 +15,6 @@ const renderTextInputField = (props) => (
     </div>
 );
 
-export default renderTextInputField;
+export default renderPriceCurrenctField;
 
 

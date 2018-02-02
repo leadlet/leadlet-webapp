@@ -78,8 +78,8 @@ class Pipelines extends React.Component {
                          title={
                              <span>{pipelineItem.name}
                                  <div className="btn-group btn-group-xs" role="group" aria-label="...">
-                                    <i className="btn fa fa-edit"  onClick={() => this.onEditPipeline(pipelineItem)}></i>
-                                    <i className="btn fa fa-trash" onClick={() => this.onDeletePipeline(pipelineItem.id)}></i>
+                                    <i className="btn fa fa-edit"  onClick={() => this.onEditPipeline(pipelineItem)}/>
+                                    <i className="btn fa fa-trash" onClick={() => this.onDeletePipeline(pipelineItem.id)}/>
                                 </div>
                              </span>
                          }>
@@ -100,31 +100,11 @@ class Pipelines extends React.Component {
     render() {
 
         return (
-            <div className="wrapper wrapper-content">
-                <div className="container">
-
-                    <div className="row">
-                    <div className="ibox ">
-                        <div className="ibox-title">
-                            <h5>Configure your Pipeline and Stages</h5>
-                        </div>
-                        <div className="ibox-content">
-
-                            <p className="m-b-lg">
-                                Ut at lorem ut diam molestie laoreet. Donec ut nibh ac risus euismod semper a ut metus. Phasellus faucibus dapibus felis, viverra tincidunt felis pellentesque posuere.
-                            </p>
-                            <div className="row">
-                                <Tabs id="pipeline-tabs">
-                                    {this.renderPipelines()}
-                                    <Tab title={this.newPipelineTab()} ></Tab>
-                                </Tabs>
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
-                </div>
+            <div className="m-t">
+                <Tabs id="pipeline-tabs">
+                    {this.renderPipelines()}
+                    <Tab title={this.newPipelineTab()} ></Tab>
+                </Tabs>
 
                 <div>
                     <PipelineNewOrEdit showModal={this.state.showPipelineModal}

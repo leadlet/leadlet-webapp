@@ -15,6 +15,7 @@ import MapWithASearchBox from "../Map/MapWithASearchBox";
 import renderInputField from "../../formUtils/renderInputField";
 import renderAsyncSelectField from "../../formUtils/renderAsyncSelectField";
 import {loadDeal, loadOrganization, loadPerson, loadUser} from "../../formUtils/form.actions";
+import renderTextAreaField from "../../formUtils/renderTextAreaField";
 
 const validate = values => {
     const errors = {}
@@ -155,6 +156,12 @@ class EditOrCreateActivity extends Component {
                             type="text"
                             component={renderInputField}
                             label="Title"
+                        />
+                        <Field
+                            name="memo"
+                            component={renderTextAreaField}
+                            label="Description"
+                            rows="3"
                         />
                         <div className="form-horizontal">
                             <div className="form-group">
