@@ -21,6 +21,7 @@
     "react": "^16.2.0",
     "react-bootstrap": "^0.31.3",
     "react-bootstrap-table": "^4.3.1",
+    "react-bootstrap-toggle": "^2.2.6",
     "react-color": "^2.13.8",
     "react-datepicker": "^0.61.0",
     "react-dates": "^16.2.0",

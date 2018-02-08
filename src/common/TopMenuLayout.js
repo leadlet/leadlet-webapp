@@ -12,6 +12,8 @@ import OrganizationDetail from "../components/Contacts/OrganizationDetail";
 import DealDetail from "../components/DealDetail/DealDetail";
 import ActivityList from "../components/Activity/ActivityList";
 import Preferences from "../components/Preferences/Preferences";
+import TeamAgentManagement from "../components/Teams/TeamAgentManagement";
+import {PrivateRoute} from "../components/PrivateRoute";
 
 class TopMenuLayout extends Component {
 
@@ -23,15 +25,16 @@ class TopMenuLayout extends Component {
                         <TopHeader/>
                         <div className="wrapper-content">
                             <Switch>
-                                <Route exact path="/" component={Dashboard}/>
-                                <Route path="/person/:personId" component={PersonDetail}/>
-                                <Route path="/organization/:organizationId" component={OrganizationDetail}/>
-                                <Route path="/contacts" component={Contacts}/>
-                                <Route path="/deal/:dealId" component={DealDetail}/>
-                                <Route path="/deals" component={Deals}/>
-                                <Route path="/pipelines" component={PipelinesPage}/>
-                                <Route path="/activities" component={ActivityList}/>
-                                <Route path="/preferences" component={Preferences}/>
+                                <PrivateRoute exact path="/" component={Dashboard}/>
+                                <PrivateRoute path="/person/:personId" component={PersonDetail}/>
+                                <PrivateRoute path="/organization/:organizationId" component={OrganizationDetail}/>
+                                <PrivateRoute path="/contacts" component={Contacts}/>
+                                <PrivateRoute path="/deal/:dealId" component={DealDetail}/>
+                                <PrivateRoute path="/deals" component={Deals}/>
+                                <PrivateRoute authorize={['ROLE_MANAGER']} path="/teams" component={TeamAgentManagement}/>
+                                <PrivateRoute path="/pipelines" component={PipelinesPage}/>
+                                <PrivateRoute path="/activities" component={ActivityList}/>
+                                <PrivateRoute path="/preferences" component={Preferences}/>
                             </Switch>
                         </div>
                         <Footer/>

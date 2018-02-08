@@ -5,6 +5,7 @@ import $ from 'jquery';
 import {userActions} from "../actions/user.actions";
 import { connect } from 'react-redux';
 import {Link} from "react-router-dom";
+import {isAuthorized} from "../helpers/auth-check";
 
 class TopHeader extends React.Component {
 
@@ -51,6 +52,11 @@ class TopHeader extends React.Component {
                             <li>
                                 <Link aria-expanded="false" role="button" to="/activities">Activities</Link>
                             </li>
+                            { isAuthorized(['ROLE_MANAGER']) &&
+                                <li>
+                                    <Link aria-expanded="false" role="button" to="/teams">Teams</Link>
+                                </li>
+                            }
                         </ul>
                         <ul className="nav navbar-nav navbar-right">
                             <li>
@@ -72,9 +78,8 @@ class TopHeader extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { registering } = state.registration;
     return {
-        registering
+        authorization: state.authorization,
     };
 }
 

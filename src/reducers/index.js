@@ -12,7 +12,6 @@ import {stages} from "./stages.reducer";
 import {chats} from './chats.reducer';
 import {activities} from './activities.reducer';
 import {deals} from './deals.reducer';
-import lists from "./lists";
 import {timeLines} from "./timelines.reducer";
 import {boards} from "./board.reducer";
 
@@ -29,7 +28,6 @@ const rootReducer = combineReducers({
     chats,
     activities,
     deals,
-    lists,
     timeLines,
     boards
 });

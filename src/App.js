@@ -8,6 +8,7 @@ import { PrivateRoute } from './components';
 import { LoginPage } from './components/Login';
 import { RegisterPage } from './components/Register';
 import { Switch, Route } from 'react-router-dom';
+import {NotPermitted} from "./components/ErrorPages/NotPermitted";
 
 var NotificationSystem = require('react-notification-system');
 
@@ -35,7 +36,8 @@ class App extends React.Component {
                 <Switch key="appSwitch">
                     <Route exact={true} path="/login" component={LoginPage} />
                     <Route exact={true} path="/register" component={RegisterPage} />
-                    <PrivateRoute path="/" component={TopMenuLayout} />
+                    <Route exact={true} path="/notpermitted" component={NotPermitted} />
+                    <Route path="/" component={TopMenuLayout} />
                 </Switch>
             ]
         );
