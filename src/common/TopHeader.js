@@ -4,6 +4,7 @@ import { DropdownButton,MenuItem } from 'react-bootstrap';
 import $ from 'jquery';
 import {userActions} from "../actions/user.actions";
 import { connect } from 'react-redux';
+import {Link} from "react-router-dom";
 
 class TopHeader extends React.Component {
 
@@ -37,30 +38,30 @@ class TopHeader extends React.Component {
                         <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" className="navbar-toggle collapsed" type="button">
                             <i className="fa fa-reorder"/>
                         </button>
-                        <a href="/" className="navbar-brand">Leadlet</a>
+                        <Link to="/" className="navbar-brand">Leadlet</Link>
                     </div>
                     <div className="navbar-collapse collapse" id="navbar">
                         <ul className="nav navbar-nav">
                             <li>
-                                <a aria-expanded="false" role="button" href="/contacts">Contacts</a>
+                                <Link aria-expanded="false" role="button" to="/contacts">Contacts</Link>
                             </li>
                             <li>
-                                <a aria-expanded="false" role="button" href="/deals">Deals</a>
+                                <Link aria-expanded="false" role="button" to="/deals">Deals</Link>
                             </li>
                             <li>
-                                <a aria-expanded="false" role="button" href="/activities">Activities</a>
+                                <Link aria-expanded="false" role="button" to="/activities">Activities</Link>
                             </li>
                         </ul>
                         <ul className="nav navbar-nav navbar-right">
                             <li>
-                                <a aria-expanded="false" role="button" href="/preferences">
+                                <Link aria-expanded="false" role="button" to="/preferences">
                                     <i className="fa fa-cog"/> Settings
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#" onClick={this.handleLogOut}>
+                                <Link to="#" onClick={this.handleLogOut}>
                                     <i className="fa fa-sign-out"/> Log out
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     </div>

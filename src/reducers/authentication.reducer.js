@@ -2,7 +2,7 @@ import {userConstants} from '../constants';
 import {dealConstants} from "../constants/deal.constants";
 
 let user = JSON.parse(localStorage.getItem('user'));
-const initialState = user ? {loggedIn: true, user} : {};
+const initialState = user ? {loggedIn: true, user: user} : {};
 
 export function authentication(state = initialState, action) {
     switch (action.type) {
