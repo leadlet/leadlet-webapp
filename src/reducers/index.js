@@ -14,6 +14,7 @@ import {activities} from './activities.reducer';
 import {deals} from './deals.reducer';
 import {timeLines} from "./timelines.reducer";
 import {boards} from "./board.reducer";
+import {teams} from "./team.reducer";
 
 const rootReducer = combineReducers({
     authentication,
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
     activities,
     deals,
     timeLines,
+    teams,
     boards
 });
 
