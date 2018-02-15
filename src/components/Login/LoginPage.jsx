@@ -60,7 +60,7 @@ class LoginPage extends React.Component {
                         </div>
                         <div className="col-md-6">
                             <div className="ibox-content">
-                                <form className="m-t" role="form" onSubmit={this.handleSubmit}>
+                                <form className="m-t" onSubmit={this.handleSubmit}>
                                     <div className="form-group">
                                         <input type="email" className="form-control" placeholder="Username" name="username" required="" onChange={this.handleChange}/>
                                     </div>
@@ -69,7 +69,7 @@ class LoginPage extends React.Component {
                                     </div>
                                     <button type="submit" className="btn btn-primary block full-width m-b">Login</button>
 
-                                    <a href="#">
+                                    <a href="/#">
                                         <small>Forgot password?</small>
                                     </a>
 

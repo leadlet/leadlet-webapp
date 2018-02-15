@@ -50,7 +50,7 @@ class OrganizationDetail extends Component {
             content: this.state.value,
             organizationId: this.props.viewedOrganization.id
         }, () => this.props.getTimelineByOrganizationIdAndRefresh(null, null, null, this.props.match.params.organizationId));
-        this.state.value = '';
+        this.setState({value: ''});
     }
 
     openEditModal() {
@@ -176,7 +176,7 @@ class OrganizationDetail extends Component {
                                                     <div className="tab-content">
                                                         <div className="tab-pane active" id="tab-1">
                                                             <div className="note-form">
-                                                                <form role="form" onSubmit={this.handleSubmit}>
+                                                                <form onSubmit={this.handleSubmit}>
                                                                     <div className="form-group">
                                                                             <textarea placeholder="Please enter a note."
                                                                                       className="form-control"

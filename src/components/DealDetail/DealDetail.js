@@ -62,7 +62,7 @@ class DealDetail extends Component {
             content: this.state.value,
             dealId: this.props.viewedDeal.id
         }, () => this.props.getTimelineByDealIdAndRefresh(null, null, null, this.props.match.params.dealId));
-        this.state.value = '';
+        this.setState({value: ''});
     }
 
     componentDidMount() {
@@ -145,7 +145,7 @@ class DealDetail extends Component {
                                                     <div className="tab-content">
                                                         <div className="tab-pane active" id="tab-1">
                                                             <div className="note-form">
-                                                                <form role="form" onSubmit={this.handleSubmit}>
+                                                                <form onSubmit={this.handleSubmit}>
                                                                     <div className="form-group">
                                                                             <textarea placeholder="Please enter a note."
                                                                                       className="form-control"

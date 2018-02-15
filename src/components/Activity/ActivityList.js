@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import $ from 'jquery';
-import draggable from '../../../node_modules/jquery-ui/ui/widgets/draggable';
 import fullCalendar from 'fullcalendar';
 import {getAll, update} from "../../actions/activity.actions";
 import moment from 'moment';
@@ -53,7 +52,7 @@ class Activity extends Component {
             return this.props.activities[item];
         }, this);
 
-        if (this.state.selectedType && this.state.selectedType != ' ') {
+        if (this.state.selectedType && this.state.selectedType !== ' ') {
             events = events.filter(event => (
                 event.type === this.state.selectedType
             ));

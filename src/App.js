@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import './App.css';
 import TopMenuLayout from "./common/TopMenuLayout";
 import { alertActions } from './actions';
-import { PrivateRoute } from './components';
 import { LoginPage } from './components/Login';
 import { RegisterPage } from './components/Register';
 import { Switch, Route } from 'react-router-dom';

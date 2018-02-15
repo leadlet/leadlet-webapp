@@ -4,10 +4,6 @@ import {getAll} from "../../actions/user.actions";
 
 class AgentList extends Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     componentDidMount() {
         this.props.getAll();
     }
@@ -17,10 +13,10 @@ class AgentList extends Component {
             return this.props.users.ids.map(id => {
                 let item = this.props.users.items[id];
                 return (
-                    <div className="col-lg-2">
+                    <div className="col-lg-2" key={id}>
                         <div className="contact-box center-version">
                             <a href="profile.html">
-                                <img alt="image" className="img-circle" src="img/headshot-placeholder.jpg"/>
+                                <img alt="agent-img" className="img-circle" src="img/headshot-placeholder.jpg"/>
                                 <h3 className="m-b-xs"><strong>{item.firstName} {item.lastName}</strong></h3>
 
                                 <div className="font-bold">Graphics designer</div>

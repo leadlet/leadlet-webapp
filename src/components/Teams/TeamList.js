@@ -4,10 +4,6 @@ import {getAllTeams} from "../../actions/team.actions";
 
 class TeamList extends Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     componentDidMount() {
         this.props.getAllTeams();
     }
@@ -17,8 +13,8 @@ class TeamList extends Component {
             return this.props.teams.ids.map(id => {
                 let item = this.props.teams.items[id];
                 return (
-                    <div className="col-lg-4">
-                        <div className="ibox" key={id}>
+                    <div className="col-lg-4"  key={id}>
+                        <div className="ibox">
                             <div className="ibox-title">
                                 <span className="label label-primary pull-right">NEW</span>
                                 <h5>

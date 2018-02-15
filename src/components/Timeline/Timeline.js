@@ -156,6 +156,10 @@ class Timeline extends Component {
                                 </div>
                             </div>
                         );
+                    }else {
+                        return (
+                            <em>Loading...</em>
+                        );
                     }
                 })}
             </div>

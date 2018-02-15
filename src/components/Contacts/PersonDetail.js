@@ -53,7 +53,7 @@ class ContactDetail extends Component {
             content: this.state.value,
             personId: this.props.viewedPerson.id
         }, () => this.props.getTimelineByPersonIdAndRefresh(null, null, null, this.props.match.params.personId));
-        this.state.value = '';
+        this.setState({value: ''});
     }
 
     openEditModal() {
@@ -178,7 +178,7 @@ class ContactDetail extends Component {
                                                     <div className="tab-content">
                                                         <div className="tab-pane active" id="tab-1">
                                                             <div className="note-form">
-                                                                <form role="form" onSubmit={this.handleSubmit}>
+                                                                <form onSubmit={this.handleSubmit}>
                                                                     <div className="form-group">
                                                                             <textarea placeholder="Please enter a note."
                                                                                       className="form-control"

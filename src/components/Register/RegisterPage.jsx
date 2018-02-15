@@ -54,7 +54,7 @@ class RegisterPage extends React.Component {
                     </div>
                     <h3>Register to Leadlet</h3>
                     <p>Create account to see it in action.</p>
-                    <form className="m-t" role="form" onSubmit={this.handleSubmit}>
+                    <form className="m-t" onSubmit={this.handleSubmit}>
                         <div className="form-group">
                             <input type="email" className="form-control" name="login" placeholder="E-mail" required="" onChange={this.handleChange} />
                         </div>

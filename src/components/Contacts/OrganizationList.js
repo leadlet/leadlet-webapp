@@ -39,7 +39,7 @@ export const OrganizationList = function (props) {
             pagination={true}
             keyField='id'
             selectRow={selectRowProp}
-            fetchInfo={{dataTotalSize: parseInt(props.data.dataTotalSize)}}
+            fetchInfo={{dataTotalSize: parseInt(props.data.dataTotalSize, 10)}}
             options={{
                 sizePerPage: props.sizePerPage,
                 onPageChange: props.onPageChange,

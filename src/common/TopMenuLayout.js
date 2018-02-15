@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {TopHeader} from "./TopHeader";
 import Footer from "./Footer";
-import {Route} from 'react-router-dom'
 import Contacts from "../components/Contacts/Contacts";
 import Dashboard from "../Dashboard/Dashboard";
 import Deals from "../components/DealBoard/DealBoard";
