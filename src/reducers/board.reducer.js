@@ -139,7 +139,7 @@ export function boards(state = {}, action) {
         case dealConstants.DELETE_SUCCESS:
             let _state = state;
             delete _state[action.deal.pipelineId].entities.dealList[action.deal.id];
-            _state[action.deal.pipelineId].entities.stages[action.deal.stageId].dealList = _state[action.deal.pipelineId].entities.stages[action.deal.stageId].dealList.filter(id => id != action.deal.id);
+            _state[action.deal.pipelineId].entities.stages[action.deal.stageId].dealList = _state[action.deal.pipelineId].entities.stages[action.deal.stageId].dealList.filter(id => id !== action.deal.id);
 
             return _state;
         case dealConstants.DELETE_FAILURE:

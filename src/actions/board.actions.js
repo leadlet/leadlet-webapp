@@ -1,6 +1,5 @@
 import {boardConstants} from "../constants/board.constants";
 import {boardService} from "../services/board.service";
-import {alertActions} from "./alert.actions";
 
 export function loadMoreDeals(stageId, page) {
     return dispatch => {

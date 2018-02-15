@@ -69,7 +69,7 @@ function _delete(idList) {
 
 function handlePaginationResponse(response) {
     if (response.ok !== true) {
-        if( response.status === 404 ) {
+        if( response.status === 401 ) {
             userActions.logout();
         }
         return Promise.reject(response.statusText);
@@ -81,7 +81,7 @@ function handlePaginationResponse(response) {
 
 function handleResponse(response) {
     if (response.ok !== true) {
-        if( response.status === 404 ) {
+        if( response.status === 401 ) {
             userActions.logout();
         }
         return Promise.reject(response.statusText);

@@ -8,8 +8,6 @@ const propTypes = {
     style: PropTypes.object
 };
 
-
-
 const Card = (props) => {
     const { style, item } = props;
 
@@ -20,7 +18,7 @@ const Card = (props) => {
         <li style={style} className="info-element" id={style ? item.id : null}>
             <div className="card-body">{item.title}</div>
             <div className="agile-detail">
-                <a href="#" className="pull-right btn btn-xs btn-primary">Done</a>
+                <a href="/done" className="pull-right btn btn-xs btn-primary">Done</a>
                 <Link to={"/deal/"+item.id}><i className="btn fa fa-edit" /></Link>
                 <i className="btn fa fa-trash" onClick={() => props.deleteDeal(item)}/>
                 <i className="fa fa-clock-o"/> {formattedDate}

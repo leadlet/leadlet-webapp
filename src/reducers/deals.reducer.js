@@ -1,10 +1,11 @@
 import {dealConstants} from "../constants/deal.constants";
-import {normalize, schema} from 'normalizr';
+
+/*import {schema} from 'normalizr';
 
 const dealSchema = new schema.Entity('deals');
 
 // or use shorthand syntax:
-const dealListSchema = [dealSchema];
+const dealListSchema = [dealSchema];*/
 
 export function deals(state = {}, action) {
     switch (action.type) {

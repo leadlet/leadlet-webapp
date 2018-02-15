@@ -1,7 +1,5 @@
 import {timelineConstants} from "../constants/timeline.constants";
 import {timelineService} from "../services/timeline.service";
-import {activityService} from "../services/activity.service";
-import {activityConstants} from "../constants/activity.constants";
 
 export function getPaginated(filter, page, size) {
     return dispatch => {

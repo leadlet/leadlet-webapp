@@ -17,11 +17,11 @@ import renderAsyncSelectField  from "../../formUtils/renderAsyncSelectField";
 import renderDatePicker from "../../formUtils/renderDatePicker";
 import {loadOrganization, loadPerson, loadUser} from "../../formUtils/form.actions";
 
-let currencies = [
+/*let currencies = [
     {value: 'USD', label: 'USD'},
     {value: 'TL', label: 'TL'},
     {value: 'EURO', label: 'EURO'}
-];
+];*/
 
 const validate = values => {
     const errors = {}
@@ -43,9 +43,6 @@ const validate = values => {
     return errors
 
 };
-
-
-
 
 class CreateEditDeal extends Component {
 

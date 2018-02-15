@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {getAllTeams} from "../../actions/team.actions";
 
-
 class TeamList extends Component {
 
     constructor(props) {
@@ -14,23 +13,20 @@ class TeamList extends Component {
     }
 
     render() {
-
         if (this.props.teams.ids) {
             return this.props.teams.ids.map(id => {
                 let item = this.props.teams.items[id];
                 return (
-                    <div className="row">
-                        <div className="col-lg-4">
-                            <div className="ibox">
-                                <div className="ibox-title">
-                                    <span className="label label-primary pull-right">NEW</span>
-                                    <h5>
-                                        {item.name}
-                                    </h5>
-                                </div>
-                                <div className="ibox-content">
+                    <div className="col-lg-4">
+                        <div className="ibox" key={id}>
+                            <div className="ibox-title">
+                                <span className="label label-primary pull-right">NEW</span>
+                                <h5>
+                                    {item.name}
+                                </h5>
+                            </div>
+                            <div className="ibox-content">
 
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -41,9 +37,7 @@ class TeamList extends Component {
                 <em>Loading...</em>
             );
         }
-
     }
-
 }
 
 

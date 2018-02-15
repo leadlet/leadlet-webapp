@@ -47,7 +47,7 @@ class Timeline extends Component {
                                     <p>
                                         {timelineItem.source.content}
                                     </p>
-                                    <a href="#" className="btn btn-sm btn-primary"> More info</a>
+                                    <a href="/#" className="btn btn-sm btn-primary"> More info</a>
                                     <span className="vertical-date">
                                         {moment(timelineItem.createdDate).format('HH:mm').toString()} <br/>
                                         <small>{moment(timelineItem.createdDate).format('DD-MMM-YYYY').toString()}</small>
@@ -68,7 +68,7 @@ class Timeline extends Component {
                                     <p>
                                         {timelineItem.source.memo}
                                     </p>
-                                    <a href="#" className="btn btn-sm btn-primary"> More info</a>
+                                    <a href="/#" className="btn btn-sm btn-primary"> More info</a>
                                     <span className="vertical-date">
                                         {moment(timelineItem.createdDate).format('HH:mm').toString()} <br/>
                                         <small>{moment(timelineItem.createdDate).format('DD-MMM-YYYY').toString()}</small>
@@ -88,7 +88,7 @@ class Timeline extends Component {
                                     <p>
                                         {timelineItem.source.memo}
                                     </p>
-                                    <a href="#" className="btn btn-sm btn-primary"> More info</a>
+                                    <a href="/#" className="btn btn-sm btn-primary"> More info</a>
                                     <span className="vertical-date">
                                         {moment(timelineItem.createdDate).format('HH:mm').toString()} <br/>
                                         <small>{moment(timelineItem.createdDate).format('DD-MMM-YYYY').toString()}</small>
@@ -108,7 +108,7 @@ class Timeline extends Component {
                                     <p>
                                         {timelineItem.source.memo}
                                     </p>
-                                    <a href="#" className="btn btn-sm btn-primary"> More info</a>
+                                    <a href="/#" className="btn btn-sm btn-primary"> More info</a>
                                     <span className="vertical-date">
                                         {moment(timelineItem.createdDate).format('HH:mm').toString()} <br/>
                                         <small>{moment(timelineItem.createdDate).format('DD-MMM-YYYY').toString()}</small>
@@ -128,7 +128,7 @@ class Timeline extends Component {
                                     <p>
                                         {timelineItem.source.memo}
                                     </p>
-                                    <a href="#" className="btn btn-sm btn-primary"> More info</a>
+                                    <a href="/#" className="btn btn-sm btn-primary"> More info</a>
                                     <span className="vertical-date">
                                         {moment(timelineItem.createdDate).format('HH:mm').toString()} <br/>
                                         <small>{moment(timelineItem.createdDate).format('DD-MMM-YYYY').toString()}</small>
@@ -148,7 +148,7 @@ class Timeline extends Component {
                                     <p>
                                         {timelineItem.source.memo}
                                     </p>
-                                    <a href="#" className="btn btn-sm btn-primary"> More info</a>
+                                    <a href="/#" className="btn btn-sm btn-primary"> More info</a>
                                     <span className="vertical-date">
                                         {moment(timelineItem.createdDate).format('HH:mm').toString()} <br/>
                                         <small>{moment(timelineItem.createdDate).format('DD-MMM-YYYY').toString()}</small>

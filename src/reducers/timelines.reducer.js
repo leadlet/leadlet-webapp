@@ -1,6 +1,5 @@
 import {timelineConstants} from "../constants/timeline.constants";
 import {normalize, schema} from 'normalizr';
-import {dealConstants} from "../constants/deal.constants";
 
 const timeLineSchema = new schema.Entity('timeLines');
 

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {SingleDatePicker} from 'react-dates';
 import moment from 'moment';
 import Select from '../../node_modules/react-select/dist/react-select.es';
@@ -139,7 +139,7 @@ class renderDateTimePicker extends React.Component {
     }
     render() {
         const {
-            input, placeholder, label,
+            input, label,
             meta: {touched, error}
         } = this.props
 

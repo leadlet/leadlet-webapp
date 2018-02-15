@@ -108,7 +108,7 @@ class Cards extends Component {
     }
 
     render() {
-        const {connectDropTarget, isOver, canDrop, dealIds, deals, stage} = this.props;
+        const {connectDropTarget, isOver, canDrop, dealIds, deals} = this.props;
         const {placeholderIndex} = this.state;
 
         let isPlaceHold = false;

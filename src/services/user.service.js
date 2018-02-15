@@ -50,7 +50,7 @@ function getAll() {
         headers: authHeader()
     };
 
-    return fetch('/users', requestOptions).then(handleResponse);
+    return fetch('/api/users', requestOptions).then(handleResponse);
 }
 
 function getAllUser(filter, page, size) {
@@ -113,7 +113,7 @@ function _delete(id) {
 
 function handleResponse(response) {
     if (response.ok !== true) {
-        if( response.status === 404 ){
+        if( response.status === 401 ){
             userActions.logout();
         }
         return Promise.reject(response.statusText);

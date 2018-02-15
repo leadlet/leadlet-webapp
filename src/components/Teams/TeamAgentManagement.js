@@ -11,15 +11,15 @@ class TeamAgentManagement extends Component {
 
     render() {
         return (
-            <div className="dealboard">
-                <Tabs defaultActiveKey={1} animation={false} id="pipeline-tabs" >
+            <div className="teamboard">
+                <Tabs defaultActiveKey={1} animation={false} id="team-tabs">
                     <Tab eventKey={1} title="Teams">
-                        <div className="teamlist flex">
+                        <div className="row teamlist">
                             <TeamList/>
                         </div>
                     </Tab>
                     <Tab eventKey={2} title="Agents">
-                        <div className="teamlist">
+                        <div className="row teamlist">
                             <AgentList/>
                         </div>
                     </Tab>

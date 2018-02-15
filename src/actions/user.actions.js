@@ -84,7 +84,7 @@ export function updateUser(user) {
 }
 
 
-function getAll() {
+export function getAll() {
     return dispatch => {
         dispatch(request());
 
