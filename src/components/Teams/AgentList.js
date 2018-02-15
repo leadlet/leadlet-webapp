@@ -1,8 +1,30 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {getAll} from "../../actions/user.actions";
+import CreateEditAgent from "./CreateEditAgent";
 
 class AgentList extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isAgentModalVisible: false,
+            agentSelectedForEdit: null
+        };
+
+        this.openEditAgentForm = this.openEditAgentForm.bind(this);
+        this.closeAgentModal = this.closeAgentModal.bind(this);
+    }
+
+    openEditAgentForm() {
+        this.setState({isAgentModalVisible: true});
+        //this.setState({agentSelectedForEdit: agent});
+    }
+
+    closeAgentModal(){
+        this.setState({isAgentModalVisible: false});
+    }
 
     componentDidMount() {
         this.props.getAll();
@@ -30,14 +52,20 @@ class AgentList extends Component {
                             </a>
                             <div className="contact-box-footer">
                                 <div className="m-t-xs btn-group">
-                                    <a className="btn btn-xs btn-white"><i className="fa fa-pencil"/> Edit </a>
+                                    <a className="btn btn-xs btn-white" onClick={() => this.openEditAgentForm()}><i
+                                        className="fa fa-pencil"/> Edit </a>
                                     <a className="btn btn-xs btn-white"><i className="fa fa-trash"/> Delete</a>
                                 </div>
                             </div>
 
                         </div>
+                        <CreateEditAgent
+                            showModal = {this.state.isAgentModalVisible}
+                            close={this.closeAgentModal}
+                        />
                     </div>
-                );
+            )
+                ;
             });
         } else {
             return (
