@@ -1,4 +1,4 @@
-import { Modal as ReactOverlayModal } from 'react-overlays';
+import { Modal as ReactOverlayModal } from '../node_modules/react-overlays';
 import { Modal } from 'react-bootstrap';
 
 const focus = () => {};

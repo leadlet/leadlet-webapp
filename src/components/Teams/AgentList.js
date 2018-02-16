@@ -15,6 +15,7 @@ class AgentList extends Component {
 
         this.openEditAgentForm = this.openEditAgentForm.bind(this);
         this.closeAgentModal = this.closeAgentModal.bind(this);
+        this.renderAgentList = this.renderAgentList.bind(this);
     }
 
     openEditAgentForm() {
@@ -22,7 +23,7 @@ class AgentList extends Component {
         //this.setState({agentSelectedForEdit: agent});
     }
 
-    closeAgentModal(){
+    closeAgentModal() {
         this.setState({isAgentModalVisible: false});
     }
 
@@ -31,6 +32,20 @@ class AgentList extends Component {
     }
 
     render() {
+        return (
+            <div>
+                {this.renderAgentList()}
+                <CreateEditAgent
+                    showModal={this.state.isAgentModalVisible}
+                    close={this.closeAgentModal}
+                />
+
+            </div>
+        );
+
+    }
+
+    renderAgentList() {
         if (this.props.users.ids) {
             return this.props.users.ids.map(id => {
                 let item = this.props.users.items[id];
@@ -59,13 +74,9 @@ class AgentList extends Component {
                             </div>
 
                         </div>
-                        <CreateEditAgent
-                            showModal = {this.state.isAgentModalVisible}
-                            close={this.closeAgentModal}
-                        />
                     </div>
-            )
-                ;
+                )
+                    ;
             });
         } else {
             return (
