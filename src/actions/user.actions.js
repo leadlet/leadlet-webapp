@@ -17,7 +17,7 @@ function login(username, password, props) {
 
         userService.login(username, password)
             .then(
-                user => { 
+                user => {
                     dispatch(success(user));
                     props.history.push("/")
                 },
@@ -44,7 +44,7 @@ function register(user, props) {
 
         userService.register(user)
             .then(
-                user => { 
+                user => {
                     dispatch(success());
                     props.history.push("/login")
                     dispatch(alertActions.success('Registration successful'));
@@ -83,6 +83,35 @@ export function updateUser(user) {
     function failure(error) { return { type: userConstants.UPDATE_FAILURE, error } }
 }
 
+export function createUser(user) {
+    return dispatch => {
+        dispatch(request());
+
+        userService.create(user)
+            .then(
+                user => {
+                    dispatch(success(user));
+                    dispatch(alertActions.success('User successfully created'));
+                },
+                error => {
+                    dispatch(failure(error));
+                    dispatch(alertActions.error(error));
+                }
+            );
+    };
+
+    function request() {
+        return {type: userConstants.CREATE_REQUEST}
+    }
+
+    function success(user) {
+        return {type: userConstants.CREATE_SUCCESS, user}
+    }
+
+    function failure(error) {
+        return {type: userConstants.CREATE_FAILURE, error}
+    }
+}
 
 export function getAll() {
     return dispatch => {
@@ -125,13 +154,13 @@ export function getUser() {
 }
 
 // prefixed function name with underscore because delete is a reserved word in javascript
-function _delete(id) {
+export function _delete(id) {
     return dispatch => {
         dispatch(request(id));
 
         userService.delete(id)
             .then(
-                user => { 
+                user => {
                     dispatch(success(id));
                 },
                 error => {

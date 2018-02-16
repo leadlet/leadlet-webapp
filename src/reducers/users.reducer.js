@@ -24,22 +24,33 @@ export function users(state = {}, action) {
             return {
                 error: action.error
             };
-        case userConstants.DELETE_REQUEST:
-            // add 'deleting:true' property to user being deleted
+
+        /* NEW user */
+        case userConstants.CREATE_REQUEST:
+            return state;
+        case userConstants.CREATE_SUCCESS:
+            let _state = {
+                ...state,
+                items: {
+                    ...state.items,
+                    [action.user.id]: action.user
+                },
+                ids: [...state.ids, action.user.id]
+            };
+
+            return _state;
+
+        case userConstants.CREATE_FAILURE:
             return {
                 ...state,
-                items: state.items.map(user =>
-                    user.id === action.id
-                        ? {...user, deleting: true}
-                        : user
-                )
+                error: action.error
             };
 
         /* UPDATE user */
         case userConstants.UPDATE_REQUEST:
             return state;
         case userConstants.UPDATE_SUCCESS:
-            let _state = {
+            let update_state = {
                 ...state,
                 items: {
                     ...state.items,
@@ -47,33 +58,25 @@ export function users(state = {}, action) {
                 }
             };
 
-            return _state;
+            return update_state;
+
         case userConstants.UPDATE_FAILURE:
             return {
                 ...state,
                 error: action.error
             };
 
+        /* DELETE user */
+        case userConstants.DELETE_REQUEST:
+            return state;
         case userConstants.DELETE_SUCCESS:
-            // remove deleted user from state
-            return {
-                items: state.items.filter(user => user.id !== action.id)
-            };
-        case userConstants.DELETE_FAILURE:
-            // remove 'deleting:true' property and add 'deleteError:[error]' property to user
+            delete state.items[action.id];
             return {
                 ...state,
-                items: state.items.map(user => {
-                    if (user.id === action.id) {
-                        // make copy of user without 'deleting:true' property
-                        const {deleting, ...userCopy} = user;
-                        // return copy of user with 'deleteError:[error]' property
-                        return {...userCopy, deleteError: action.error};
-                    }
-
-                    return user;
-                })
+                items: state.items,
+                ids: state.ids.filter(item => item !== action.id),
             };
+
         default:
             return state
     }

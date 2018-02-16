@@ -10884,3 +10884,7 @@ body {
 {
     background: none;
 }
+
+.agent-create-box {
+    height: 100%;
+}

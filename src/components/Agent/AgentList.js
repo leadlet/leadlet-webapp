@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import {getAll} from "../../actions/user.actions";
-import CreateEditAgent from "./CreateEditAgent";
+import {getAll, _delete} from "../../actions/user.actions";
+import CreateAgent from "./CreateAgent";
+import Link from "react-router-dom/es/Link";
+import SweetAlert from 'sweetalert-react';
 
 class AgentList extends Component {
 
@@ -10,21 +12,41 @@ class AgentList extends Component {
 
         this.state = {
             isAgentModalVisible: false,
-            agentSelectedForEdit: null
+            showDeleteDialog: false,
+            selectedAgentForDelete: null
         };
 
         this.openEditAgentForm = this.openEditAgentForm.bind(this);
         this.closeAgentModal = this.closeAgentModal.bind(this);
         this.renderAgentList = this.renderAgentList.bind(this);
+        this.onDeleteAgent = this.onDeleteAgent.bind(this);
+        this.confirmDeleteAgent = this.confirmDeleteAgent.bind(this);
+        this.cancelDeleteAgent = this.cancelDeleteAgent.bind(this);
     }
 
     openEditAgentForm() {
         this.setState({isAgentModalVisible: true});
-        //this.setState({agentSelectedForEdit: agent});
+        //this.setState({agentSelectedForEdit: null});
     }
 
     closeAgentModal() {
         this.setState({isAgentModalVisible: false});
+        //this.setState({agentSelectedForEdit: null});
+    }
+
+    confirmDeleteAgent() {
+        this.props._delete(this.state.selectedAgentForDelete);
+        this.setState({showDeleteDialog: false});
+        this.props.getAll();
+    }
+
+    cancelDeleteAgent() {
+        this.setState({showDeleteDialog: false});
+    }
+
+    onDeleteAgent(login) {
+        this.setState({showDeleteDialog: true});
+        this.setState({selectedAgentForDelete: login});
     }
 
     componentDidMount() {
@@ -35,11 +57,30 @@ class AgentList extends Component {
         return (
             <div>
                 {this.renderAgentList()}
-                <CreateEditAgent
+                <div className="col-lg-2 agent-create-box">
+                    <div className="contact-box center-version">
+                        <a onClick={() => this.openEditAgentForm()}>
+                            <img alt="plus-img" src="img/plus_icon.png"/>
+                        </a>
+                    </div>
+                </div>
+                <CreateAgent
                     showModal={this.state.isAgentModalVisible}
                     close={this.closeAgentModal}
                 />
-
+                <div>
+                    <SweetAlert
+                        title="Are you sure?"
+                        text="You will not be able to recover this recording!"
+                        type="warning"
+                        showCancelButton={true}
+                        confirmButtonColor="#DD6B55"
+                        confirmButtonText="Yes, delete it!"
+                        show={this.state.showDeleteDialog}
+                        onConfirm={this.confirmDeleteAgent}
+                        onCancel={this.cancelDeleteAgent}
+                    />
+                </div>
             </div>
         );
 
@@ -56,7 +97,7 @@ class AgentList extends Component {
                                 <img alt="agent-img" className="img-circle" src="img/headshot-placeholder.jpg"/>
                                 <h3 className="m-b-xs"><strong>{item.firstName} {item.lastName}</strong></h3>
 
-                                <div className="font-bold">Graphics designer</div>
+                                <div className="font-bold">{item.login}</div>
                                 <address className="m-t-md">
                                     <strong>Twitter, Inc.</strong><br/>
                                     795 Folsom Ave, Suite 600<br/>
@@ -67,9 +108,8 @@ class AgentList extends Component {
                             </a>
                             <div className="contact-box-footer">
                                 <div className="m-t-xs btn-group">
-                                    <a className="btn btn-xs btn-white" onClick={() => this.openEditAgentForm()}><i
-                                        className="fa fa-pencil"/> Edit </a>
-                                    <a className="btn btn-xs btn-white"><i className="fa fa-trash"/> Delete</a>
+                                    <Link to={"/user/"+item.id}><i className="fa fa-pencil"/> Edit</Link>
+                                    <a className="btn btn-xs btn-white" onClick={ () => this.onDeleteAgent(item.login)}><i className="fa fa-trash"/> Delete</a>
                                 </div>
                             </div>
 
@@ -93,4 +133,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, {getAll})(AgentList);
+export default connect(mapStateToProps, {getAll, _delete})(AgentList);

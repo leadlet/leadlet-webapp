@@ -20,23 +20,6 @@ const renderField = ({
     </div>
 )
 
-const renderPassField = ({
-                             input,
-                             label,
-                             type,
-                             meta: {touched, error}
-                         }) => (
-    <div className="form-group">
-        <label className="col-sm-2 control-label">{label}</label>
-        <div className="col-sm-4">
-            <input {...input} placeholder={label} type={type} className="form-control"/>
-            <span className="help-block m-b-none">{touched &&
-            ((error && <span>{error}</span>))}
-                </span>
-        </div>
-    </div>
-)
-
 class Profile extends Component {
 
     constructor(props) {
@@ -84,13 +67,13 @@ class Profile extends Component {
                     <Field
                         name="newPassword"
                         type="password"
-                        component={renderPassField}
+                        component={renderField}
                         label="New Password"
                     />
                     <Field
                         name="confirmPassword"
                         type="password"
-                        component={renderPassField}
+                        component={renderField}
                         label="Confirm Password"
                     />
                     <div className="hr-line-dashed"/>
