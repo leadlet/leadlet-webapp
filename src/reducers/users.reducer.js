@@ -8,6 +8,21 @@ const userListSchema = [userSchema];
 
 export function users(state = {}, action) {
     switch (action.type) {
+
+        /* get by id */
+        case userConstants.GET_REQUEST:
+            return {
+                loading: true
+            };
+        case userConstants.GET_SUCCESS:
+            return {
+                ...state,
+                viewedUser: action.user
+            };
+        case userConstants.GET_FAILURE:
+            return {
+                error: action.error
+            };
         case userConstants.GETALL_REQUEST:
             return {
                 ...state,

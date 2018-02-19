@@ -1,16 +1,13 @@
 import React, {Component} from 'react';
 import '../../../node_modules/fullcalendar/dist/fullcalendar.css';
 import connect from "react-redux/es/connect/connect";
-import {getDealById} from "../../actions/deal.actions";
-import {createNote} from "../../actions/note.actions";
-import {getTimelineByDealId, getTimelineByDealIdAndRefresh} from "../../actions/timeline.actions";
 import Timeline from "../Timeline/Timeline";
-import {getByIdOrganization} from "../../actions/organization.actions";
-import {getById} from "../../actions/person.actions";
-import CreateEditDeal from '../DealDetail/CreateEditDeal'
 import moment from 'moment';
-import Link from "react-router-dom/es/Link";
 import EditOrCreateActivity from "../Activity/EditOrCreateActivity";
+import {getUser} from "../../actions/user.actions";
+import {getTimelineByPersonId, getTimelineByPersonIdAndRefresh} from "../../actions/timeline.actions";
+import {createNote} from "../../actions/note.actions";
+import CreateEditAgent from "./CreateEditAgent";
 
 
 class AgentDetail extends Component {
@@ -20,7 +17,7 @@ class AgentDetail extends Component {
 
         this.state = {
             value: '',
-            isEditDealModalVisible: false,
+            isAgentModalVisible: false,
             isActivityModalVisible: false
         };
 
@@ -28,26 +25,20 @@ class AgentDetail extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.openActivityModal = this.openActivityModal.bind(this);
         this.closeActivityModal = this.closeActivityModal.bind(this);
-        this.openEditDealModal = this.openEditDealModal.bind(this);
-        this.closeEditDealModal = this.closeEditDealModal.bind(this);
-        this.renderAssignee = this.renderAssignee.bind(this);
-        this.renderOrganization = this.renderOrganization.bind(this);
-        this.renderLastUpdateDate = this.renderLastUpdateDate.bind(this);
-        this.renderPossibleCloseDate = this.renderPossibleCloseDate.bind(this);
+        this.openEditAgentModal = this.openEditAgentModal.bind(this);
+        this.closeAgentModal = this.closeAgentModal.bind(this);
         this.refreshTimeline = this.refreshTimeline.bind(this);
-        this.renderCreatedDate = this.renderCreatedDate.bind(this);
-        this.renderDealValue = this.renderDealValue.bind(this);
     }
 
-    closeEditDealModal(){
+    closeAgentModal() {
         this.setState({
-            isEditDealModalVisible: false
+            isAgentModalVisible: false
         });
     }
 
-    openEditDealModal(){
+    openEditAgentModal() {
         this.setState({
-            isEditDealModalVisible: true
+            isAgentModalVisible: true
         });
     }
 
@@ -60,13 +51,13 @@ class AgentDetail extends Component {
         console.log("Note Event: ", event.target);
         this.props.createNote({
             content: this.state.value,
-            dealId: this.props.viewedDeal.id
-        }, () => this.props.getTimelineByDealIdAndRefresh(null, null, null, this.props.match.params.dealId));
+            userId: this.props.viewedUser.id
+        }, () => this.props.getTimelineByPersonIdAndRefresh(null, null, null, this.props.match.params.userId));
         this.setState({value: ''});
     }
 
     componentDidMount() {
-        this.props.getDealById(this.props.match.params.dealId);
+        this.props.getUser(this.props.match.params.userId);
     }
 
     openActivityModal() {
@@ -78,14 +69,14 @@ class AgentDetail extends Component {
     }
 
     refreshTimeline() {
-        this.props.getTimelineByDealIdAndRefresh(null, null, null, this.props.viewedDeal.id)
+        this.props.getTimelineByPersonIdAndRefresh(null, null, null, this.props.viewedUser.id)
     }
 
     render() {
-        const deal = this.props.viewedDeal;
-        if (!deal) {
+        const user = this.props.viewedUser;
+        if (!user) {
             return (
-                <em>Loading details for {this.props.match.params.dealId}</em>
+                <em>Loading details for {this.props.match.params.userId}</em>
             );
         } else {
 
@@ -97,28 +88,18 @@ class AgentDetail extends Component {
                                 <div className="ibox-content info-card">
                                     <div className="row">
                                         <dl className="dl-horizontal">
-                                            <dt>Title:</dt>
-                                            <dd>{deal.title}</dd>
-                                            <dt>Stage:</dt>
-                                            <dd>{deal.stage.name}</dd>
-                                            <dt>Deal Value:</dt>
-                                            <dd>{this.renderDealValue()}</dd>
-                                            <dt>Owner:</dt>
-                                            <dd>{this.renderAssignee()}</dd>
-                                            <dt>Contact:</dt>
-                                            <dd>{this.renderPersons()}</dd>
-                                            <dt>Organization:</dt>
-                                            <dd>{this.renderOrganization()}</dd>
-                                            <dt>Last Updated:</dt>
-                                            <dd>{this.renderLastUpdateDate()}</dd>
-                                            <dt>Created:</dt>
-                                            <dd>{this.renderCreatedDate()}</dd>
-                                            <dt>Possible Close:</dt>
-                                            <dd>{this.renderLastUpdateDate()}</dd>
+                                            <dt>First Name:</dt>
+                                            <dd>{user.firstName}</dd>
+                                            <dt>Last Name:</dt>
+                                            <dd>{user.lastName}</dd>
+                                            <dt>Email:</dt>
+                                            <dd>{user.login}</dd>
                                         </dl>
                                     </div>
                                     <div className="row">
-                                        <button onClick={this.openEditDealModal} className="btn btn-white btn-xs pull-right">Edit Deal</button>
+                                        <button onClick={this.openEditAgentModal}
+                                                className="btn btn-white btn-xs pull-right">Edit Agent
+                                        </button>
                                     </div>
 
                                 </div>
@@ -174,8 +155,8 @@ class AgentDetail extends Component {
                             <div className="ibox">
                                 <Timeline
                                     pageSize={5}
-                                    getTimelineItems={this.props.getTimelineByDealId}
-                                    itemId={this.props.viewedDeal.id}
+                                    getTimelineItems={this.props.getTimelineByPersonId}
+                                    itemId={this.props.viewedUser.id}
                                 />
                             </div>
                         </div>
@@ -197,24 +178,20 @@ class AgentDetail extends Component {
                         </div>
 
                         {
-                            this.state.isEditDealModalVisible &&
-                            <CreateEditDeal showModal={this.state.isEditDealModalVisible}
-                                            close={this.closeEditDealModal}
-                                            initialValues={this.props.viewedDeal}
-                                            pipelineId={this.props.viewedDeal.pipelineId}
+                            this.state.isAgentModalVisible &&
+                            <CreateEditAgent showModal={this.state.isAgentModalVisible}
+                                         close={this.closeAgentModal}
                             />
                         }
                         {
                             this.state.isActivityModalVisible &&
                             <EditOrCreateActivity showModal={this.state.isActivityModalVisible}
                                                   close={this.closeActivityModal}
-                                                  initialValues={{dealId: this.props.viewedDeal.id}}
+                                                  initialValues={{userId: this.props.viewedUser.id}}
                                                   createCallback={this.refreshTimeline}
-                                                  showDealSelection={false}
+                                                  showDealSelection={true} // ????
                             />
                         }
-
-
 
 
                     </div>
@@ -222,100 +199,17 @@ class AgentDetail extends Component {
             )
         }
     }
-
-
-    renderAssignee() {
-        const deal = this.props.viewedDeal;
-
-        if(deal.owner){
-            return (<Link className="text-navy" to={"/user/" + deal.owner.id}>{deal.owner.firstName} {deal.owner.lastName}</Link>);
-        }else{
-            return (<em>Not set</em>);
-        }
-    }
-
-    renderOrganization() {
-        const deal = this.props.viewedDeal;
-
-        if(deal.organization){
-            return (<Link className="text-navy" to={"/organization/" + deal.organization.id}>{deal.organization.name}</Link>);
-        }else{
-            return (<em>Not set</em>);
-        }
-    }
-
-    renderPersons() {
-        const deal = this.props.viewedDeal;
-
-        if(deal.person){
-
-            return (<Link className="text-navy" to={"/person/" + deal.person.id}>{deal.person.name}</Link>);
-
-
-        }else{
-            return (<em>Not set</em>);
-        }
-    }
-
-    renderLastUpdateDate() {
-        const deal = this.props.viewedDeal;
-
-        if(deal.lastModifiedDate){
-            return (
-                moment(deal.lastModifiedDate, "YYYY-MM-DDTHH:mm:ss+-HH:mm").format("DD.MM.YYYY")
-            );
-        }else{
-            return (<em>Not set</em>);
-        }
-    }
-
-    renderPossibleCloseDate() {
-        const deal = this.props.viewedDeal;
-
-        if(deal.possibleCloseDate){
-            return (
-                moment(deal.possibleCloseDate, "YYYY-MM-DDTHH:mm:ss+-HH:mm").format("DD.MM.YYYY")
-            );
-        }else{
-            return (<em>Not set</em>);
-        }
-    }
-    renderCreatedDate() {
-        const deal = this.props.viewedDeal;
-
-        if(deal.createdDate){
-            return (
-                moment(deal.createdDate, "YYYY-MM-DDTHH:mm:ss+-HH:mm").format("DD.MM.YYYY")
-            );
-        }else{
-            return (<em>Not set</em>);
-        }
-    }
-
-    renderDealValue() {
-        const deal = this.props.viewedDeal;
-
-        if(deal.dealValue){
-            return (
-                <b>{deal.dealValue.potentialValue}</b>
-            );
-        }else{
-            return (<em>Not set</em>);
-        }
-    }
 }
 
 function mapStateToProps(state) {
     return {
-        viewedDeal: state.deals.viewedDeal
+        viewedUser: state.users.viewedUser
     };
 }
 
 export default connect(mapStateToProps, {
-    getDealById,
+    getUser,
     createNote,
-    getTimelineByDealId,
-    getTimelineByDealIdAndRefresh,
-    getByIdOrganization,
-    getById
+    getTimelineByPersonId,
+    getTimelineByPersonIdAndRefresh
 })(AgentDetail);

@@ -41,7 +41,7 @@ const renderAgentField = ({
 )
 
 
-class CreateAgent extends Component {
+class CreateEditAgent extends Component {
 
     constructor(props) {
         super(props);
@@ -127,7 +127,7 @@ class CreateAgent extends Component {
     }
 }
 
-CreateAgent.defaultProps = {
+CreateEditAgent.defaultProps = {
     showUserSelection: true
 }
 
@@ -148,5 +148,5 @@ export default reduxForm({
     validate, // <--- validation function given to redux-form
     enableReinitialize: true
 })(
-    connect(mapStateToProps, {createUser})(CreateAgent)
+    connect(mapStateToProps, {createUser})(CreateEditAgent)
 );

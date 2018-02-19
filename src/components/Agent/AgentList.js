@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {getAll, _delete} from "../../actions/user.actions";
-import CreateAgent from "./CreateAgent";
+import CreateEditAgent from "./CreateEditAgent";
 import Link from "react-router-dom/es/Link";
 import SweetAlert from 'sweetalert-react';
 
@@ -26,18 +26,15 @@ class AgentList extends Component {
 
     openEditAgentForm() {
         this.setState({isAgentModalVisible: true});
-        //this.setState({agentSelectedForEdit: null});
     }
 
     closeAgentModal() {
         this.setState({isAgentModalVisible: false});
-        //this.setState({agentSelectedForEdit: null});
     }
 
     confirmDeleteAgent() {
         this.props._delete(this.state.selectedAgentForDelete);
         this.setState({showDeleteDialog: false});
-        this.props.getAll();
     }
 
     cancelDeleteAgent() {
@@ -64,7 +61,7 @@ class AgentList extends Component {
                         </a>
                     </div>
                 </div>
-                <CreateAgent
+                <CreateEditAgent
                     showModal={this.state.isAgentModalVisible}
                     close={this.closeAgentModal}
                 />
