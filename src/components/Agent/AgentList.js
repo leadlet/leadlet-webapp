@@ -33,7 +33,7 @@ class AgentList extends Component {
     }
 
     confirmDeleteAgent() {
-        this.props._delete(this.state.selectedAgentForDelete);
+        this.props._delete(this.state.selectedAgentForDelete.id);
         this.setState({showDeleteDialog: false});
     }
 
@@ -41,9 +41,9 @@ class AgentList extends Component {
         this.setState({showDeleteDialog: false});
     }
 
-    onDeleteAgent(login) {
+    onDeleteAgent(agent) {
         this.setState({showDeleteDialog: true});
-        this.setState({selectedAgentForDelete: login});
+        this.setState({selectedAgentForDelete: agent});
     }
 
     componentDidMount() {
@@ -106,7 +106,7 @@ class AgentList extends Component {
                             <div className="contact-box-footer">
                                 <div className="m-t-xs btn-group">
                                     <Link to={"/user/"+item.id}><i className="fa fa-pencil"/> Edit</Link>
-                                    <a className="btn btn-xs btn-white" onClick={ () => this.onDeleteAgent(item.login)}><i className="fa fa-trash"/> Delete</a>
+                                    <a className="btn btn-xs btn-white" onClick={ () => this.onDeleteAgent(item)}><i className="fa fa-trash"/> Delete</a>
                                 </div>
                             </div>
 
