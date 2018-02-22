@@ -4,6 +4,7 @@ import {getAll, _delete} from "../../actions/user.actions";
 import CreateEditAgent from "./CreateEditAgent";
 import Link from "react-router-dom/es/Link";
 import SweetAlert from 'sweetalert-react';
+import {reset} from "redux-form";
 
 class AgentList extends Component {
 

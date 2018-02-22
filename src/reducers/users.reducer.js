@@ -10,16 +10,16 @@ export function users(state = {}, action) {
     switch (action.type) {
 
         /* get by id */
-        case userConstants.GET_REQUEST:
+        case userConstants.GET_USER_REQUEST:
             return {
                 loading: true
             };
-        case userConstants.GET_SUCCESS:
+        case userConstants.GET_USER_SUCCESS:
             return {
                 ...state,
                 viewedUser: action.user
             };
-        case userConstants.GET_FAILURE:
+        case userConstants.GET_USER_FAILURE:
             return {
                 error: action.error
             };

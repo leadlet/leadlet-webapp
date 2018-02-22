@@ -74,12 +74,19 @@ class CreateEditAgent extends Component {
     }
 
     render() {
-        const {handleSubmit} = this.props;
+        const {handleSubmit, initialValues} = this.props;
+
+        let title = "";
+        if (initialValues && initialValues.id) {
+            title = "Update";
+        } else {
+            title = "Create";
+        }
 
         return (
             <Modal show={this.props.showModal} onHide={this.onClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Create New Agent</Modal.Title>
+                    <Modal.Title>{title} Agent</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <form>
@@ -114,7 +121,7 @@ class CreateEditAgent extends Component {
                     <div className="row">
                         <div className="col-md-6 pull-right">
                             <div className="pull-right activity-detail-submit">
-                                <button className="btn btn-sm btn-default" onClick={this.props.close}>Cancel</button>
+                                <button className="btn btn-sm btn-default" onClick={this.onClose}>Cancel</button>
                                 <button className="btn btn-sm btn-primary" onClick={handleSubmit(this.onSubmit)}>
                                     <strong>Submit</strong></button>
                             </div>

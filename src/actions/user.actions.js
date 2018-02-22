@@ -1,6 +1,8 @@
 import { alertActions } from './';
 import {userConstants} from "../constants/user.constants";
 import {userService} from "../services/user.service";
+import {dealConstants} from "../constants/deal.constants";
+import {dealService} from "../services/deal.service";
 
 export const userActions = {
     login,
@@ -152,6 +154,23 @@ export function getUser() {
     function success(user) { return { type: userConstants.GET_SUCCESS, user } }
     function failure(error) { return { type: userConstants.GET_FAILURE, error } }
 }
+
+export function getUserById(userId) {
+    return dispatch => {
+        dispatch(request(userId));
+
+        userService.getById(userId)
+            .then(
+                user => dispatch(success(user)),
+                error => dispatch(failure(error))
+            );
+    };
+
+    function request() { return { type: userConstants.GET_USER_REQUEST } }
+    function success(user) { return { type: userConstants.GET_USER_SUCCESS, user } }
+    function failure(error) { return { type: userConstants.GET_USER_FAILURE, error } }
+}
+
 
 // prefixed function name with underscore because delete is a reserved word in javascript
 export function _delete(id) {

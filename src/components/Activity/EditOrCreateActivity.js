@@ -142,7 +142,7 @@ class EditOrCreateActivity extends Component {
         return (
             <Modal show={this.props.showModal} onHide={this.onClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>{title} New Activity</Modal.Title>
+                    <Modal.Title>{title} Activity</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <form>

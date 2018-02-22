@@ -4,7 +4,7 @@ import connect from "react-redux/es/connect/connect";
 import Timeline from "../Timeline/Timeline";
 import moment from 'moment';
 import EditOrCreateActivity from "../Activity/EditOrCreateActivity";
-import {getUser} from "../../actions/user.actions";
+import {getUserById} from "../../actions/user.actions";
 import {getTimelineByPersonId, getTimelineByPersonIdAndRefresh} from "../../actions/timeline.actions";
 import {createNote} from "../../actions/note.actions";
 import CreateEditAgent from "./CreateEditAgent";
@@ -57,7 +57,7 @@ class AgentDetail extends Component {
     }
 
     componentDidMount() {
-        this.props.getUser(this.props.match.params.userId);
+        this.props.getUserById(this.props.match.params.userId);
     }
 
     openActivityModal() {
@@ -73,7 +73,10 @@ class AgentDetail extends Component {
     }
 
     render() {
+
         const user = this.props.viewedUser;
+        console.log("USER: ", user);
+
         if (!user) {
             return (
                 <em>Loading details for {this.props.match.params.userId}</em>
@@ -180,7 +183,8 @@ class AgentDetail extends Component {
                         {
                             this.state.isAgentModalVisible &&
                             <CreateEditAgent showModal={this.state.isAgentModalVisible}
-                                         close={this.closeAgentModal}
+                                             close={this.closeAgentModal}
+                                             initialValues={this.props.viewedUser}
                             />
                         }
                         {
@@ -208,7 +212,7 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-    getUser,
+    getUserById,
     createNote,
     getTimelineByPersonId,
     getTimelineByPersonIdAndRefresh

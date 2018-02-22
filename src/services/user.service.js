@@ -70,7 +70,7 @@ function getById(id) {
         headers: authHeader()
     };
 
-    return fetch('/users/' + id, requestOptions).then(handleResponse);
+    return fetch('/api/users/' + id, requestOptions).then(handleResponse);
 }
 
 function getCurrentUser() {
