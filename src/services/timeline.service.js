@@ -5,8 +5,18 @@ export const timelineService = {
     getPaginated,
     getByPersonId,
     getByOrganizationId,
-    getByDealId
+    getByDealId,
+    getByUserId
 };
+
+function getByUserId(filter, page, size, userId) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    return fetch(`/api/timeLines/user/${userId}?filter=${filter}&page=${page}&size=${size}&sort=createdDate,desc`, requestOptions).then(handlePaginationResponse);
+}
 
 function getByDealId(filter, page, size, dealId) {
     const requestOptions = {

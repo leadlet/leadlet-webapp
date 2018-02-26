@@ -5,9 +5,11 @@ import Timeline from "../Timeline/Timeline";
 import moment from 'moment';
 import EditOrCreateActivity from "../Activity/EditOrCreateActivity";
 import {getUserById} from "../../actions/user.actions";
-import {getTimelineByPersonId, getTimelineByPersonIdAndRefresh} from "../../actions/timeline.actions";
+import {getTimelineByUserId} from "../../actions/timeline.actions";
 import {createNote} from "../../actions/note.actions";
 import CreateEditAgent from "./CreateEditAgent";
+import {getActivitiesByAgentId} from "../../actions/activity.actions";
+import $ from "jquery";
 
 
 class AgentDetail extends Component {
@@ -52,12 +54,50 @@ class AgentDetail extends Component {
         this.props.createNote({
             content: this.state.value,
             userId: this.props.viewedUser.id
-        }, () => this.props.getTimelineByPersonIdAndRefresh(null, null, null, this.props.match.params.userId));
+        }, () => this.props.getTimelineByUserId(null, null, null, this.props.match.params.userId));
         this.setState({value: ''});
     }
 
     componentDidMount() {
         this.props.getUserById(this.props.match.params.userId);
+        /*
+        if(this.props.viewedUser){
+            this.props.getActivitiesByAgentId(this.props.viewedUser.id);
+        } // ????
+        * */
+    }
+
+    componentDidUpdate() {
+
+        if (!this.props.ids) {
+            return;
+        }
+
+        let events = this.props.ids.map(function (item) {
+            return this.props.activities[item];
+        }, this);
+
+        if (events) {
+            $('#contact-calendar').fullCalendar('destroy');
+
+            $('#contact-calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    right: 'listDay,listWeek,month'
+                },
+                // customize the button names,
+                // otherwise they'd all just say "list"
+                views: {
+                    listDay: {buttonText: 'list day'},
+                    listWeek: {buttonText: 'list week'}
+                },
+                defaultView: 'listWeek',
+                navLinks: true, // can click day/week names to navigate views
+                editable: true,
+                eventLimit: true, // allow "more" link when too many events
+                events
+            });
+        }
     }
 
     openActivityModal() {
@@ -158,7 +198,7 @@ class AgentDetail extends Component {
                             <div className="ibox">
                                 <Timeline
                                     pageSize={5}
-                                    getTimelineItems={this.props.getTimelineByPersonId}
+                                    getTimelineItems={this.props.getTimelineByUserId}
                                     itemId={this.props.viewedUser.id}
                                 />
                             </div>
@@ -207,13 +247,15 @@ class AgentDetail extends Component {
 
 function mapStateToProps(state) {
     return {
-        viewedUser: state.users.viewedUser
+        viewedUser: state.users.viewedUser,
+        activities: state.activities.items,
+        ids: state.activities.ids
     };
 }
 
 export default connect(mapStateToProps, {
     getUserById,
     createNote,
-    getTimelineByPersonId,
-    getTimelineByPersonIdAndRefresh
+    getTimelineByUserId,
+    getActivitiesByAgentId
 })(AgentDetail);
