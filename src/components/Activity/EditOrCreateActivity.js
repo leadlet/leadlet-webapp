@@ -16,6 +16,7 @@ import renderInputField from "../../formUtils/renderInputField";
 import renderAsyncSelectField from "../../formUtils/renderAsyncSelectField";
 import {loadDeal, loadOrganization, loadPerson, loadUser} from "../../formUtils/form.actions";
 import renderTextAreaField from "../../formUtils/renderTextAreaField";
+import {getTimelineByUserIdAndRefresh} from "../../actions/timeline.actions";
 
 const validate = values => {
     const errors = {}
@@ -118,7 +119,7 @@ class EditOrCreateActivity extends Component {
         if (this.props.initialValues && this.props.initialValues.id) {
             this.props.update(activity);
         } else {
-            this.props.create(activity);
+            this.props.create(activity, () => this.props.getTimelineByUserIdAndRefresh(null, null, null, activity.userId));
         }
         this.props.close();
     }
@@ -298,6 +299,7 @@ export default reduxForm({
     connect(mapStateToProps, {
         create,
         update,
-        _delete
+        _delete,
+        getTimelineByUserIdAndRefresh
     })(EditOrCreateActivity)
 );

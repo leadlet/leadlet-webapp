@@ -5,7 +5,7 @@ import Timeline from "../Timeline/Timeline";
 import moment from 'moment';
 import EditOrCreateActivity from "../Activity/EditOrCreateActivity";
 import {getUserById} from "../../actions/user.actions";
-import {getTimelineByUserId} from "../../actions/timeline.actions";
+import {getTimelineByUserId, getTimelineByUserIdAndRefresh} from "../../actions/timeline.actions";
 import {createNote} from "../../actions/note.actions";
 import CreateEditAgent from "./CreateEditAgent";
 import {getActivitiesByAgentId} from "../../actions/activity.actions";
@@ -23,13 +23,15 @@ class AgentDetail extends Component {
             isActivityModalVisible: false
         };
 
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.openActivityModal = this.openActivityModal.bind(this);
         this.closeActivityModal = this.closeActivityModal.bind(this);
         this.openEditAgentModal = this.openEditAgentModal.bind(this);
         this.closeAgentModal = this.closeAgentModal.bind(this);
         this.refreshTimeline = this.refreshTimeline.bind(this);
+    }
+
+    refreshTimeline() {
+        this.props.getTimelineByUserIdAndRefresh(null, null, null, this.props.viewedUser.id)
     }
 
     closeAgentModal() {
@@ -44,27 +46,9 @@ class AgentDetail extends Component {
         });
     }
 
-    handleChange(event) {
-        this.setState({value: event.target.value});
-    }
-
-    handleSubmit(event) {
-        event.preventDefault();
-        console.log("Note Event: ", event.target);
-        this.props.createNote({
-            content: this.state.value,
-            userId: this.props.viewedUser.id
-        }, () => this.props.getTimelineByUserId(null, null, null, this.props.match.params.userId));
-        this.setState({value: ''});
-    }
-
     componentDidMount() {
         this.props.getUserById(this.props.match.params.userId);
-        /*
-        if(this.props.viewedUser){
-            this.props.getActivitiesByAgentId(this.props.viewedUser.id);
-        } // ????
-        * */
+        this.props.getActivitiesByAgentId(this.props.match.params.userId);
     }
 
     componentDidUpdate() {
@@ -77,6 +61,7 @@ class AgentDetail extends Component {
             return this.props.activities[item];
         }, this);
 
+        console.log("EVENTS: ", events);
         if (events) {
             $('#contact-calendar').fullCalendar('destroy');
 
@@ -113,9 +98,7 @@ class AgentDetail extends Component {
     }
 
     render() {
-
         const user = this.props.viewedUser;
-        console.log("USER: ", user);
 
         if (!user) {
             return (
@@ -149,52 +132,6 @@ class AgentDetail extends Component {
                             </div>
                         </div>
                         <div className="col-md-5">
-                            <div className="ibox">
-                                <div className="ibox-content">
-                                    <div className="row m-t-sm">
-                                        <div className="col-lg-12">
-                                            <div className="panel blank-panel">
-                                                <div className="panel-heading">
-                                                    <div className="panel-options">
-                                                        <ul className="nav nav-tabs">
-                                                            <li className="active"><a href="#tab-1"
-                                                                                      data-toggle="tab">Add
-                                                                a Note</a></li>
-                                                            <li className="disabled"><a href="#tab-2">Send an
-                                                                Email</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div className="panel-body">
-                                                    <div className="tab-content">
-                                                        <div className="tab-pane active" id="tab-1">
-                                                            <div className="note-form">
-                                                                <form onSubmit={this.handleSubmit}>
-                                                                    <div className="form-group">
-                                                                            <textarea placeholder="Please enter a note."
-                                                                                      className="form-control"
-                                                                                      value={this.state.value}
-                                                                                      onChange={this.handleChange}
-                                                                            />
-                                                                    </div>
-                                                                    <div className="text-right">
-                                                                        <button type="submit"
-                                                                                className="btn btn-sm btn-primary m-t-n-xs">
-                                                                            <strong>Save</strong></button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                        <div className="tab-pane" id="tab-2">
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <div className="ibox">
                                 <Timeline
                                     pageSize={5}
@@ -232,7 +169,6 @@ class AgentDetail extends Component {
                             <EditOrCreateActivity showModal={this.state.isActivityModalVisible}
                                                   close={this.closeActivityModal}
                                                   initialValues={{userId: this.props.viewedUser.id}}
-                                                  createCallback={this.refreshTimeline}
                                                   showDealSelection={true} // ????
                             />
                         }
@@ -257,5 +193,6 @@ export default connect(mapStateToProps, {
     getUserById,
     createNote,
     getTimelineByUserId,
+    getTimelineByUserIdAndRefresh,
     getActivitiesByAgentId
 })(AgentDetail);
