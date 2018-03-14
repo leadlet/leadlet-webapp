@@ -4,6 +4,7 @@ import Modal from '../../modal-shim';
 import {connect} from 'react-redux';
 import {createUser} from "../../actions/user.actions";
 import formValueSelector from "redux-form/es/formValueSelector";
+import renderInputField from "../../formUtils/renderInputField";
 
 const validate = values => {
     const errors = {}
@@ -34,23 +35,6 @@ const validate = values => {
     }
     return errors
 };
-
-const renderAgentField = ({
-                              input,
-                              label,
-                              type,
-                              meta: {touched, error}
-                          }) => (
-    <div className="form-group">
-        <label>{label}</label>
-        <input {...input} placeholder={label} type={type} className="form-control"/>
-        <span className="help-block m-b-none">{touched &&
-        ((error && <span>{error}</span>))}
-                </span>
-
-    </div>
-)
-
 
 class CreateEditAgent extends Component {
 
@@ -104,25 +88,25 @@ class CreateEditAgent extends Component {
                         <Field
                             name="firstName"
                             type="text"
-                            component={renderAgentField}
+                            component={renderInputField}
                             label="First Name"
                         />
                         <Field
                             name="lastName"
                             type="text"
-                            component={renderAgentField}
+                            component={renderInputField}
                             label="Last Name"
                         />
                         <Field
                             name="password"
                             type="password"
-                            component={renderAgentField}
+                            component={renderInputField}
                             label="New Password"
                         />
                         <Field
                             name="login"
                             type="email"
-                            component={renderAgentField}
+                            component={renderInputField}
                             label="Email"
                         />
                     </form>

@@ -17,7 +17,7 @@ class Timeline extends Component {
         };
 
         this.renderTimelineItems = this.renderTimelineItems.bind(this);
-        this.loadMoreItems = this.loadMoreItems.bind(this);
+        //this.loadMoreItems = this.loadMoreItems.bind(this);
 
         this._handleWaypointEnter = this._handleWaypointEnter.bind(this);
     }
@@ -26,9 +26,9 @@ class Timeline extends Component {
         this.props.getTimelineItems(null, this.state.currentPage, this.PAGE_SIZE, this.props.itemId);
     }
 
-    loadMoreItems() {
+    /*loadMoreItems() {
         this.props.loadMoreTimeline(null, this.state.currentPage, this.PAGE_SIZE, this.props.itemId);
-    }
+    }*/
 
     renderTimelineItems() {
         return (
