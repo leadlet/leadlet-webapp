@@ -10,9 +10,13 @@ import $ from 'jquery';
 import moment from 'moment';
 import Timeline from "../Timeline/Timeline";
 import {getActivitiesByPersonId} from "../../actions/activity.actions";
-import {getTimelineByPersonId, getTimelineByPersonIdAndRefresh} from "../../actions/timeline.actions";
+
 import EditOrCreateActivity from "../Activity/EditOrCreateActivity";
 import CreateEditDeal from "../DealDetail/CreateEditDeal";
+import {
+    getTimelineByPersonId, getTimelineByPersonIdAndRefresh,
+    getTimelineLoadMoreByPersonId
+} from "../../actions/timeline.actions";
 
 class ContactDetail extends Component {
 
@@ -209,6 +213,7 @@ class ContactDetail extends Component {
                                     pageSize={5}
                                     getTimelineItems={this.props.getTimelineByPersonId}
                                     itemId={this.props.viewedPerson.id}
+                                    loadMoreTimeline={this.props.getTimelineLoadMoreByPersonId}
                                 />
                             </div>
                         </div>
@@ -289,5 +294,6 @@ export default connect(mapStateToProps, {
     getByIdOrganization,
     getActivitiesByPersonId,
     getTimelineByPersonId,
+    getTimelineLoadMoreByPersonId,
     getTimelineByPersonIdAndRefresh
 })(ContactDetail);

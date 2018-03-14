@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import moment from 'moment';
 import connect from "react-redux/es/connect/connect";
 import Waypoint from 'react-waypoint';
+import {timelineService} from "../../services/timeline.service";
 
 
 class Timeline extends Component {
@@ -22,11 +23,11 @@ class Timeline extends Component {
     }
 
     componentDidMount() {
-        this.loadMoreItems();
+        this.props.getTimelineItems(null, this.state.currentPage, this.PAGE_SIZE, this.props.itemId);
     }
 
     loadMoreItems() {
-        this.props.getTimelineItems(null, this.state.currentPage, this.PAGE_SIZE, this.props.itemId);
+        this.props.loadMoreTimeline(null, this.state.currentPage, this.PAGE_SIZE, this.props.itemId);
     }
 
     renderTimelineItems() {
@@ -47,7 +48,6 @@ class Timeline extends Component {
                                     <p>
                                         {timelineItem.source.content}
                                     </p>
-                                    <a href="/#" className="btn btn-sm btn-primary"> More info</a>
                                     <span className="vertical-date">
                                         {moment(timelineItem.createdDate).format('HH:mm').toString()} <br/>
                                         <small>{moment(timelineItem.createdDate).format('DD-MMM-YYYY').toString()}</small>
@@ -68,7 +68,6 @@ class Timeline extends Component {
                                     <p>
                                         {timelineItem.source.memo}
                                     </p>
-                                    <a href="/#" className="btn btn-sm btn-primary"> More info</a>
                                     <span className="vertical-date">
                                         {moment(timelineItem.createdDate).format('HH:mm').toString()} <br/>
                                         <small>{moment(timelineItem.createdDate).format('DD-MMM-YYYY').toString()}</small>
@@ -78,7 +77,7 @@ class Timeline extends Component {
                         );
                     } else if (timelineItem.type === 'ACTIVITY_CREATED' && timelineItem.source.type === "MEETING") {
                         return (
-                            <div key={timelineId}  className="vertical-timeline-block">
+                            <div key={timelineId} className="vertical-timeline-block">
                                 <div className="vertical-timeline-icon navy-bg">
                                     <i className="fa fa-users"/>
                                 </div>
@@ -88,7 +87,6 @@ class Timeline extends Component {
                                     <p>
                                         {timelineItem.source.memo}
                                     </p>
-                                    <a href="/#" className="btn btn-sm btn-primary"> More info</a>
                                     <span className="vertical-date">
                                         {moment(timelineItem.createdDate).format('HH:mm').toString()} <br/>
                                         <small>{moment(timelineItem.createdDate).format('DD-MMM-YYYY').toString()}</small>
@@ -108,7 +106,6 @@ class Timeline extends Component {
                                     <p>
                                         {timelineItem.source.memo}
                                     </p>
-                                    <a href="/#" className="btn btn-sm btn-primary"> More info</a>
                                     <span className="vertical-date">
                                         {moment(timelineItem.createdDate).format('HH:mm').toString()} <br/>
                                         <small>{moment(timelineItem.createdDate).format('DD-MMM-YYYY').toString()}</small>
@@ -128,7 +125,6 @@ class Timeline extends Component {
                                     <p>
                                         {timelineItem.source.memo}
                                     </p>
-                                    <a href="/#" className="btn btn-sm btn-primary"> More info</a>
                                     <span className="vertical-date">
                                         {moment(timelineItem.createdDate).format('HH:mm').toString()} <br/>
                                         <small>{moment(timelineItem.createdDate).format('DD-MMM-YYYY').toString()}</small>
@@ -148,7 +144,6 @@ class Timeline extends Component {
                                     <p>
                                         {timelineItem.source.memo}
                                     </p>
-                                    <a href="/#" className="btn btn-sm btn-primary"> More info</a>
                                     <span className="vertical-date">
                                         {moment(timelineItem.createdDate).format('HH:mm').toString()} <br/>
                                         <small>{moment(timelineItem.createdDate).format('DD-MMM-YYYY').toString()}</small>
@@ -156,7 +151,7 @@ class Timeline extends Component {
                                 </div>
                             </div>
                         );
-                    }else {
+                    } else {
                         return (
                             <em>Loading...</em>
                         );
@@ -174,8 +169,7 @@ class Timeline extends Component {
     }
 
     render() {
-        if (this.props.timeLineIds && this.props.timeLineIds.length > 0)
-        {
+        if (this.props.timeLineIds && this.props.timeLineIds.length > 0) {
             return (
                 <div className="ibox-content">
                     <div id="vertical-timeline"

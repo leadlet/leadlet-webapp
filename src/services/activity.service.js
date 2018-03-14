@@ -66,7 +66,7 @@ function getActivitiesByAgentId(id) {
         headers: authHeader()
     };
 
-    return fetch(`/api/activities/user/${id}`, requestOptions).then(handleResponse);
+    return fetch(`/api/activities/user/${id}?size=1000`, requestOptions).then(handleResponse);
 }
 function _delete(id) {
     const requestOptions = {

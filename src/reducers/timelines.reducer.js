@@ -17,21 +17,40 @@ export function timeLines(state = {}, action) {
         case timelineConstants.GETALL_SUCCESS:
             const _items = normalize(action.data.items, timelineListSchema);
 
+            return {
+                ...state,
+                items: _items.entities.timeLines,
+                ids: _items.result,
+                dataTotalSize: action.data.dataTotalSize
+
+            };
+        case timelineConstants.GETALL_FAILURE:
+            return {
+                error: action.error
+            };
+        case timelineConstants.LOAD_MORE_REQUEST:
+            return {
+                ...state,
+                loading: true
+            };
+        case timelineConstants.LOAD_MORE_SUCCESS:
+            const _items3 = normalize(action.data.items, timelineListSchema);
+
             let newIds = state.ids;
 
             if (newIds) {
-                newIds = newIds.concat(_items.result);
+                newIds = newIds.concat(_items3.result);
             } else {
-                newIds = _items.result
+                newIds = _items3.result
             }
 
             let newItems = state.items;
             if (newItems) {
-                _items.result.forEach(id => {
-                    newItems[id] = _items.entities.timeLines[id];
+                _items3.result.forEach(id => {
+                    newItems[id] = _items3.entities.timeLines[id];
                 });
             } else {
-                newItems = _items.entities.timeLines;
+                newItems = _items3.entities.timeLines;
             }
 
             return {
@@ -41,11 +60,10 @@ export function timeLines(state = {}, action) {
                 dataTotalSize: action.data.dataTotalSize
 
             };
-        case timelineConstants.GETALL_FAILURE:
+        case timelineConstants.LOAD_MORE_FAILURE:
             return {
                 error: action.error
             };
-
         case timelineConstants.GETALL_REQUEST_REFRESH:
             return {
                 ...state,

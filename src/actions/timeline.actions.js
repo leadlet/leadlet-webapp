@@ -125,6 +125,30 @@ export function getTimelineByPersonId(filter, page, size, id) {
         return {type: timelineConstants.GETALL_FAILURE, error}
     }
 }
+export function getTimelineLoadMoreByPersonId(filter, page, size, id) {
+    return dispatch => {
+        dispatch(request());
+
+        timelineService.getByPersonId(filter, page, size, id)
+            .then(
+                response => dispatch(success({items: response[0], dataTotalSize: response[1]})),
+                error => dispatch(failure(error))
+            );
+
+    };
+
+    function request() {
+        return {type: timelineConstants.LOAD_MORE_REQUEST}
+    }
+
+    function success(data) {
+        return {type: timelineConstants.LOAD_MORE_SUCCESS, data}
+    }
+
+    function failure(error) {
+        return {type: timelineConstants.LOAD_MORE_FAILURE, error}
+    }
+}
 
 export function getTimelineByOrganizationIdAndRefresh(filter, page, size, id) {
     return dispatch => {
