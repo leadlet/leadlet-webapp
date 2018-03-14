@@ -9,6 +9,8 @@ const timelineListSchema = [timeLineSchema];
 export function timeLines(state = {}, action) {
     switch (action.type) {
         /* ALL timelineS */
+        case timelineConstants.RESET_TIMELINES:
+            return {};
         case timelineConstants.GETALL_REQUEST:
             return {
                 ...state,

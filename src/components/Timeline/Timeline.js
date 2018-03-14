@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import moment from 'moment';
 import connect from "react-redux/es/connect/connect";
 import Waypoint from 'react-waypoint';
+import {resetTimelines} from "../../actions/timeline.actions";
 
 
 class Timeline extends Component {
@@ -21,7 +22,12 @@ class Timeline extends Component {
         this._handleWaypointEnter = this._handleWaypointEnter.bind(this);
     }
 
+    componentWillUnmount(){
+        this.props.resetTimelines();
+    }
+
     componentDidMount() {
+        console.log("component mount: " + this.props.itemId);
         this.loadMoreItems();
     }
 
@@ -206,4 +212,6 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps)(Timeline);
+export default connect(mapStateToProps,{
+    resetTimelines
+})(Timeline);

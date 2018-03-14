@@ -201,6 +201,21 @@ export function getTimelineByUserId(filter, page, size, id) {
     }
 }
 
+
+export function resetTimelines() {
+    return dispatch => {
+        dispatch(request());
+
+
+    };
+
+    function request() {
+        return {type: timelineConstants.RESET_TIMELINES}
+    }
+
+
+}
+
 export function getTimelineByUserIdAndRefresh(filter, page, size, id) {
     return dispatch => {
         dispatch(request());

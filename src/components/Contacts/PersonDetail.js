@@ -208,7 +208,7 @@ class ContactDetail extends Component {
                                 <Timeline
                                     pageSize={5}
                                     getTimelineItems={this.props.getTimelineByPersonId}
-                                    itemId={this.props.viewedPerson.id}
+                                    itemId={this.props.match.params.personId}
                                 />
                             </div>
                         </div>
@@ -241,7 +241,7 @@ class ContactDetail extends Component {
                         <EditOrCreateActivity showModal={this.state.isActivityModalVisible}
                                         close={this.closeActivityModal}
                                               initialValues={{
-                                                  personId: this.props.viewedPerson.id
+                                                  personId: this.props.match.params.personId
                                               }}
                                         createCallback={this.refreshTimeline}
                                         showPersonSelection={false}
@@ -257,7 +257,7 @@ class ContactDetail extends Component {
                                         close={this.closeDealModal}
                                         initialValues={{
                                             person : {
-                                                id: this.props.viewedPerson.id
+                                                id: this.props.match.params.personId
                                             }
                                         }}
                                         pipelineId={this.props.viewedPerson.pipelineId}
