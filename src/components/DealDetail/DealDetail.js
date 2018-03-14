@@ -11,6 +11,8 @@ import CreateEditDeal from '../DealDetail/CreateEditDeal'
 import moment from 'moment';
 import Link from "react-router-dom/es/Link";
 import EditOrCreateActivity from "../Activity/EditOrCreateActivity";
+import {getActivitiesByDealId} from "../../actions/activity.actions";
+import $ from "jquery";
 
 
 class DealDetail extends Component {
@@ -67,6 +69,40 @@ class DealDetail extends Component {
 
     componentDidMount() {
         this.props.getDealById(this.props.match.params.dealId);
+        this.props.getActivitiesByDealId(this.props.match.params.dealId);
+    }
+
+    componentDidUpdate() {
+
+        if (!this.props.ids) {
+            return;
+        }
+
+        let events = this.props.ids.map(function (item) {
+            return this.props.activities[item];
+        }, this);
+
+        if (events) {
+            $('#contact-calendar').fullCalendar('destroy');
+
+            $('#contact-calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    right: 'listDay,listWeek,month'
+                },
+                // customize the button names,
+                // otherwise they'd all just say "list"
+                views: {
+                    listDay: {buttonText: 'list day'},
+                    listWeek: {buttonText: 'list week'}
+                },
+                defaultView: 'listWeek',
+                navLinks: true, // can click day/week names to navigate views
+                editable: true,
+                eventLimit: true, // allow "more" link when too many events
+                events
+            });
+        }
     }
 
     openActivityModal() {
@@ -307,7 +343,9 @@ class DealDetail extends Component {
 
 function mapStateToProps(state) {
     return {
-        viewedDeal: state.deals.viewedDeal
+        viewedDeal: state.deals.viewedDeal,
+        activities: state.activities.items,
+        ids: state.activities.ids
     };
 }
 
@@ -317,5 +355,6 @@ export default connect(mapStateToProps, {
     getTimelineByDealId,
     getTimelineByDealIdAndRefresh,
     getByIdOrganization,
-    getById
+    getById,
+    getActivitiesByDealId
 })(DealDetail);

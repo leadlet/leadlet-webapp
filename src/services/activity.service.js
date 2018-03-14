@@ -9,7 +9,8 @@ export const activityService = {
     _delete,
     getActivitiesByPersonId,
     getActivitiesByOrganizationId,
-    getActivitiesByAgentId
+    getActivitiesByAgentId,
+    getActivitiesByDealId
 };
 
 function create(activity, callback) {
@@ -68,6 +69,17 @@ function getActivitiesByAgentId(id) {
 
     return fetch(`/api/activities/user/${id}?size=1000`, requestOptions).then(handleResponse);
 }
+
+function getActivitiesByDealId(id) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    return fetch(`/api/activities/deal/${id}?size=1000`, requestOptions).then(handleResponse);
+}
+
+
 function _delete(id) {
     const requestOptions = {
         method: 'DELETE',
