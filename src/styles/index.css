@@ -2022,7 +2022,7 @@ div.dt-button-info {
 /* CIRCLE */
 .img-circle {
     border-radius: 50%;
-    margin-right:2px;
+    margin-right: 2px;
 }
 
 .btn-circle {
@@ -10714,10 +10714,10 @@ body {
     z-index: 0;
 }
 
-.pipeline-selector{
-  width: 150px;
-  display: inline-block;
-  margin-left: 10px;
+.pipeline-selector {
+    width: 150px;
+    display: inline-block;
+    margin-left: 10px;
 }
 
 .row-flex {
@@ -10776,20 +10776,20 @@ body {
 }
 
 .dealboard .list {
-  width: 270px;
-  max-height:100%;
-  height: 100%;
-  flex: 0 0 auto;
-  border-radius: 3px;
-  margin-right: 10px;
-  margin-left: 10px;
-  vertical-align: top;
-  background-color: #ffffff;
-  padding: 15px 10px 20px 10px;
-  border-color: #e7eaec;
-  border-image: none;
-  border-style: solid solid none;
-  border-width: 1px 0;
+    width: 270px;
+    max-height: 100%;
+    height: 100%;
+    flex: 0 0 auto;
+    border-radius: 3px;
+    margin-right: 10px;
+    margin-left: 10px;
+    vertical-align: top;
+    background-color: #ffffff;
+    padding: 15px 10px 20px 10px;
+    border-color: #e7eaec;
+    border-image: none;
+    border-style: solid solid none;
+    border-width: 1px 0;
 
 }
 
@@ -10802,37 +10802,36 @@ body {
 }
 
 .dealboard .list ul {
-  list-style: none;
-  margin: 0;
-  padding: 10px 10px;
-  height: calc(100% - 40px);
-  max-height: calc(100% - 40px);
-  overflow-y: auto;
+    list-style: none;
+    margin: 0;
+    padding: 10px 10px;
+    height: calc(100% - 40px);
+    max-height: calc(100% - 40px);
+    overflow-y: auto;
 
 }
 
 .dealboard .list li {
-  background: #FAFAFB;
-  border: 1px solid #e7eaec;
-  margin: 0 0 10px 0;
-  padding: 10px;
-  border-radius: 2px;
-  height: 80px;
-  max-height: 80px;
+    background: #FAFAFB;
+    border: 1px solid #e7eaec;
+    margin: 0 0 10px 0;
+    padding: 10px;
+    border-radius: 2px;
+    height: 80px;
+    max-height: 80px;
 
 }
 
-.dealboard .list li:hover  {
-  cursor: pointer;
-  background: #fff;
+.dealboard .list li:hover {
+    cursor: pointer;
+    background: #fff;
 }
 
 .dealboard .list .placeholder {
-  border: 1px dashed #cecece !important;
-  visibility: visible !important;
-  background: #e7eaec !important;
+    border: 1px dashed #cecece !important;
+    visibility: visible !important;
+    background: #e7eaec !important;
 }
-
 
 .dealboard .stage-header {
     line-height: 20px;
@@ -10880,11 +10879,17 @@ body {
 
 .top-navigation .nav > li.active,
 .top-navigation .nav > li.hover,
-.top-navigation .nav > li.focus
-{
+.top-navigation .nav > li.focus {
     background: none;
 }
 
 .agent-create-box {
     height: 100%;
+}
+
+.load-icon-container > i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -50px 0px 0px -50px;
 }

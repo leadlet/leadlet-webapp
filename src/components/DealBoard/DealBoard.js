@@ -176,9 +176,8 @@ class DealBoard extends Component {
                 const _selectedBoard = this.props.boards[this.props.pipelines.selectedPipelineId];
                 if (_selectedBoard.loading) {
                     return (
-                        <div>
+                        <div className="load-icon-container">
                             <i className="fa fa-spinner fa-pulse fa-3x fa-fw"/>
-                            <span className="sr-only">Loading Deal Board</span>
                         </div>
                     );
                 } else {
