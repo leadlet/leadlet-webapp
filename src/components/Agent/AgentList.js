@@ -65,6 +65,7 @@ class AgentList extends Component {
                 <CreateEditAgent
                     showModal={this.state.isAgentModalVisible}
                     close={this.closeAgentModal}
+                    initialValues={{}}
                 />
                 <div>
                     <SweetAlert
@@ -91,30 +92,23 @@ class AgentList extends Component {
                 return (
                     <div className="col-lg-2" key={id}>
                         <div className="contact-box center-version">
-                            <a href="profile.html">
+                            <Link to={"/user/" + item.id}>
                                 <img alt="agent-img" className="img-circle" src="img/headshot-placeholder.jpg"/>
                                 <h3 className="m-b-xs"><strong>{item.firstName} {item.lastName}</strong></h3>
 
                                 <div className="font-bold">{item.login}</div>
-                                <address className="m-t-md">
-                                    <strong>Twitter, Inc.</strong><br/>
-                                    795 Folsom Ave, Suite 600<br/>
-                                    San Francisco, CA 94107<br/>
-                                    <abbr title="Phone">P:</abbr> (123) 456-7890
-                                </address>
-
-                            </a>
+                            </Link>
                             <div className="contact-box-footer">
                                 <div className="m-t-xs btn-group">
-                                    <Link to={"/user/"+item.id}><i className="fa fa-pencil"/> Edit</Link>
-                                    <a className="m-l-md" onClick={ () => this.onDeleteAgent(item)}><i className="fa fa-trash"/> Delete</a>
+                                    <Link to={"/user/" + item.id}><i className="fa fa-pencil"/> Edit</Link>
+                                    <a className="m-l-md" onClick={() => this.onDeleteAgent(item)}><i
+                                        className="fa fa-trash"/> Delete</a>
                                 </div>
                             </div>
 
                         </div>
                     </div>
-                )
-                    ;
+                );
             });
         } else {
             return (
