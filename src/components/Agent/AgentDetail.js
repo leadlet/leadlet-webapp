@@ -93,10 +93,6 @@ class AgentDetail extends Component {
         this.setState({isActivityModalVisible: false});
     }
 
-    refreshTimeline() {
-        this.props.getTimelineByPersonIdAndRefresh(null, null, null, this.props.viewedUser.id)
-    }
-
     render() {
         const user = this.props.viewedUser;
 
@@ -170,6 +166,7 @@ class AgentDetail extends Component {
                                                   close={this.closeActivityModal}
                                                   initialValues={{userId: this.props.viewedUser.id}}
                                                   showDealSelection={true} // ????
+                                                  createCallback={this.refreshTimeline}
                             />
                         }
 
