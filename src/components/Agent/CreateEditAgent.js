@@ -8,18 +8,29 @@ import formValueSelector from "redux-form/es/formValueSelector";
 const validate = values => {
     const errors = {}
 
-    /*  name validation */
+    let per_email_valid = true;
+
+    const re_per = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    if (values.login !== undefined) {
+        per_email_valid = re_per.test(values.login);
+    }
+    else {
+        errors.login = ""
+    }
     if (!values.firstName) {
-        errors.title = 'Please write a name'
+        errors.firstName = 'Please write a name'
     }
     if (!values.lastName) {
-        errors.title = 'Please write a name'
-    }
-    if (!values.password) {
-        errors.title = 'Please write a password'
+        errors.lastName = 'Please write a name'
     }
     if (!values.login) {
-        errors.title = 'Please write a email'
+        errors.login = 'Please write a email'
+    }
+    if (!per_email_valid) {
+        errors.login = "mail is not valid"
+    } else {
+        errors.login = ""
     }
     return errors
 };
@@ -74,7 +85,7 @@ class CreateEditAgent extends Component {
     }
 
     render() {
-        const {handleSubmit, initialValues} = this.props;
+        const {handleSubmit, initialValues, pristine, submitting, valid} = this.props;
 
         let title = "";
         if (initialValues && initialValues.id) {
@@ -122,7 +133,8 @@ class CreateEditAgent extends Component {
                         <div className="col-md-6 pull-right">
                             <div className="pull-right activity-detail-submit">
                                 <button className="btn btn-sm btn-default" onClick={this.onClose}>Cancel</button>
-                                <button className="btn btn-sm btn-primary" onClick={handleSubmit(this.onSubmit)}>
+                                <button className="btn btn-sm btn-primary" onClick={handleSubmit(this.onSubmit)}
+                                        disabled={pristine || submitting || !valid}>
                                     <strong>Submit</strong></button>
                             </div>
                         </div>

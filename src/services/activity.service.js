@@ -8,7 +8,8 @@ export const activityService = {
     update,
     _delete,
     getActivitiesByPersonId,
-    getActivitiesByOrganizationId
+    getActivitiesByOrganizationId,
+    getActivitiesByAgentId
 };
 
 function create(activity, callback) {
@@ -59,6 +60,14 @@ function getActivitiesByOrganizationId(id) {
     return fetch(`/api/activities/organization/${id}`, requestOptions).then(handleResponse);
 }
 
+function getActivitiesByAgentId(id) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    return fetch(`/api/activities/user/${id}`, requestOptions).then(handleResponse);
+}
 function _delete(id) {
     const requestOptions = {
         method: 'DELETE',
