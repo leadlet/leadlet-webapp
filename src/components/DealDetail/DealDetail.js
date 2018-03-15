@@ -60,7 +60,7 @@ class DealDetail extends Component {
         console.log("Note Event: ", event.target);
         this.props.createNote({
             content: this.state.value,
-            dealId: this.props.viewedDeal.id
+            dealId: this.props.match.params.dealId
         }, () => this.props.getTimelineByDealIdAndRefresh(null, null, null, this.props.match.params.dealId));
         this.setState({value: ''});
     }
@@ -78,7 +78,7 @@ class DealDetail extends Component {
     }
 
     refreshTimeline() {
-        this.props.getTimelineByDealIdAndRefresh(null, null, null, this.props.viewedDeal.id)
+        this.props.getTimelineByDealIdAndRefresh(null, null, null, this.props.match.params.dealId)
     }
 
     render() {
@@ -175,7 +175,7 @@ class DealDetail extends Component {
                                 <Timeline
                                     pageSize={5}
                                     getTimelineItems={this.props.getTimelineByDealId}
-                                    itemId={this.props.viewedDeal.id}
+                                    itemId={this.props.match.params.dealId}
                                 />
                             </div>
                         </div>
@@ -208,7 +208,7 @@ class DealDetail extends Component {
                             this.state.isActivityModalVisible &&
                             <EditOrCreateActivity showModal={this.state.isActivityModalVisible}
                                                   close={this.closeActivityModal}
-                                                  initialValues={{dealId: this.props.viewedDeal.id}}
+                                                  initialValues={{dealId: this.props.match.params.dealId}}
                                                   createCallback={this.refreshTimeline}
                                                   showDealSelection={false}
                             />

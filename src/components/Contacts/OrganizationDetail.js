@@ -37,7 +37,7 @@ class OrganizationDetail extends Component {
     }
 
     refreshTimeline(){
-        this.props.getTimelineByOrganizationIdAndRefresh(null, null, null, this.props.viewedOrganization.id);
+        this.props.getTimelineByOrganizationIdAndRefresh(null, null, null, this.props.match.params.organizationId);
     }
     handleChange(event) {
         this.setState({value: event.target.value});
@@ -48,7 +48,7 @@ class OrganizationDetail extends Component {
         console.log("Note Event: ", event.target);
         this.props.createNote({
             content: this.state.value,
-            organizationId: this.props.viewedOrganization.id
+            organizationId: this.props.match.params.organizationId
         }, () => this.props.getTimelineByOrganizationIdAndRefresh(null, null, null, this.props.match.params.organizationId));
         this.setState({value: ''});
     }
@@ -206,7 +206,7 @@ class OrganizationDetail extends Component {
                                 <Timeline
                                     pageSize={5}
                                     getTimelineItems={this.props.getTimelineByOrganizationId}
-                                    itemId={this.props.viewedOrganization.id}
+                                    itemId={this.props.match.params.organizationId}
                                 />
                             </div>
                         </div>
@@ -238,7 +238,7 @@ class OrganizationDetail extends Component {
                         <EditOrCreateActivity showModal={this.state.isActivityModalVisible}
                                               close={this.closeActivityModal}
                                               initialValues={{
-                                                  organizationId: this.props.viewedOrganization.id
+                                                  organizationId: this.props.match.params.organizationId
                                               }}
                                               createCallback={this.refreshTimeline}
                                               showOrganizationSelection={false}
@@ -251,7 +251,7 @@ class OrganizationDetail extends Component {
                                         close={this.closeDealModal}
                                         initialValues={{
                                             organization : {
-                                                id: this.props.viewedOrganization.id
+                                                id: this.props.match.params.organizationId
                                             }
                                         }}
                                         pipelineId={this.props.viewedOrganization.pipelineId}

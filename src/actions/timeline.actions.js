@@ -107,7 +107,7 @@ export function getTimelineByPersonId(filter, page, size, id) {
 
         timelineService.getByPersonId(filter, page, size, id)
             .then(
-                response => dispatch(success({items: response[0], dataTotalSize: response[1]})),
+                response => dispatch(success({items: response[0], dataTotalSize: parseInt(response[1])})),
                 error => dispatch(failure(error))
             );
 

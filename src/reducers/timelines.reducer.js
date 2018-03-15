@@ -6,11 +6,11 @@ const timeLineSchema = new schema.Entity('timeLines');
 // or use shorthand syntax:
 const timelineListSchema = [timeLineSchema];
 
-export function timeLines(state = {}, action) {
+export function timeLines(state = { items: {}, ids: []}, action) {
     switch (action.type) {
         /* ALL timelineS */
         case timelineConstants.RESET_TIMELINES:
-            return {};
+            return { items: [], ids: []};
         case timelineConstants.GETALL_REQUEST:
             return {
                 ...state,
@@ -19,27 +19,10 @@ export function timeLines(state = {}, action) {
         case timelineConstants.GETALL_SUCCESS:
             const _items = normalize(action.data.items, timelineListSchema);
 
-            let newIds = state.ids;
-
-            if (newIds) {
-                newIds = newIds.concat(_items.result);
-            } else {
-                newIds = _items.result
-            }
-
-            let newItems = state.items;
-            if (newItems) {
-                _items.result.forEach(id => {
-                    newItems[id] = _items.entities.timeLines[id];
-                });
-            } else {
-                newItems = _items.entities.timeLines;
-            }
-
             return {
                 ...state,
-                items: newItems,
-                ids: newIds,
+                items: { ...state.items, ..._items.entities.timeLines},
+                ids: [ ...new Set([...state.ids, ..._items.result]) ],
                 dataTotalSize: action.data.dataTotalSize
 
             };
