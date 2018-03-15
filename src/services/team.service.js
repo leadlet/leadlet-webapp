@@ -46,8 +46,6 @@ function getAll(filter , page, size) {
     return fetch(`/api/teams?filter=${filter}&page=${page}&size=${size}` , requestOptions).then(handlePaginationResponse);
 }
 
-
-
 function handlePaginationResponse(response) {
     if (response.ok !== true) {
         if( response.status === 401 ) {
