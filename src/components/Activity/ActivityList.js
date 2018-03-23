@@ -90,6 +90,7 @@ class Activity extends Component {
                 },
                 editable: true,
                 events,
+                timezone: 'local',
                 eventClick: function (event) {
                     openActivityModal(
                         {

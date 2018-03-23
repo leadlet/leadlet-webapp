@@ -17,6 +17,7 @@ import renderAsyncSelectField from "../../formUtils/renderAsyncSelectField";
 import {loadDeal, loadOrganization, loadPerson, loadUser} from "../../formUtils/form.actions";
 import renderTextAreaField from "../../formUtils/renderTextAreaField";
 import {getTimelineByUserIdAndRefresh} from "../../actions/timeline.actions";
+import moment from 'moment';
 
 const validate = values => {
     const errors = {}

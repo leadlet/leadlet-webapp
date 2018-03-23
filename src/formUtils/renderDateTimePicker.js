@@ -86,18 +86,19 @@ class renderDateTimePicker extends React.Component {
         this.props.input.onChange(newDateTime);
     }
 
-    isOutRange(day){
-        let checkMinimum = false;
+    isOutRange(calendarDate){
+        let isLessThenMinimumDate = false;
+
         if(this.props.minimumDate){
-            checkMinimum = day.isBefore(this.props.minimumDate);
+            isLessThenMinimumDate = calendarDate.isBefore(this.props.minimumDate,'day');
         }
 
-        let checkMaximum = true;
+        let isMoreThenMaximumDate = true;
         if(this.props.maximumDate){
-            checkMaximum = day.isAfter(this.props.maximumDate);
+            isMoreThenMaximumDate = calendarDate.isAfter(this.props.maximumDate);
         }
 
-        return checkMinimum && checkMaximum;
+        return isLessThenMinimumDate && isMoreThenMaximumDate;
     }
 
     filterOptions(hours){
@@ -105,12 +106,11 @@ class renderDateTimePicker extends React.Component {
         var filteredHours = JSON.parse(JSON.stringify(hours))
 
         if( this.props.minimumDate ){
-            const dateDiff = this.props.minimumDate.diff(this.props.input.value, 'days');
-            if( dateDiff === 0){
+            if( this.props.minimumDate.isSame(this.props.input.value, 'day') ){
                 // same day, we should filter some hours
                 threshold = this.props.minimumDate.format('HH:mm');
                 filteredHours = filteredHours.map((hour) => {
-                    if( hour.value < threshold ){
+                    if( hour.value <= threshold ){
                         hour.disabled = true;
                     }else{
                         delete hour.disabled;
@@ -121,12 +121,11 @@ class renderDateTimePicker extends React.Component {
         }
 
         if( this.props.maximumDate ){
-            const dateDiff = this.props.maximumDate.diff(this.props.input.value, 'days');
-            if( dateDiff === 0){
+            if( this.props.maximumDate.isSame(this.props.input.value, 'day') ){
                 // same day, we should filter some hours
                 threshold = this.props.maximumDate.format('HH:mm');
                 filteredHours = filteredHours.map((hour) => {
-                    if( hour.value > threshold ){
+                    if( hour.value >= threshold ){
                         hour.disabled = true;
                     }else{
                         delete hour.disabled;
@@ -148,6 +147,7 @@ class renderDateTimePicker extends React.Component {
                 <label  className="col-sm-2 control-label">{label}</label>
                 <div className="col-sm-6">
                     <SingleDatePicker
+                        isDayHighlighted={date => {return moment().isSame(date, 'day')}}
                         numberOfMonths={1}
                         small={true}
                         block={true}
