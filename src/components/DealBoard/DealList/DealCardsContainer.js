@@ -63,7 +63,7 @@ class CardsContainer extends Component {
         const opacity = isDragging ? 0.5 : 1;
 
         return connectDragSource(connectDropTarget(
-            <div className="deal-list" style={{opacity}}>
+            <div className="list" style={{opacity}}>
                 <div className="stage-header">
                     <div className="stage-name">{stage.name}</div>
                 </div>
