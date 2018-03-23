@@ -109,3 +109,11 @@ export function deleteStage(id) {
     function success(id) { return { type: stageConstants.DELETE_SUCCESS, id } }
     function failure(id, error) { return { type: stageConstants.DELETE_FAILURE, id, error } }
 }
+
+export function getAllStageReturn(successCallback, failCallback) {
+    stageService.getAll()
+        .then(
+            response => successCallback(response),
+            error => failCallback(error)
+        );
+}

@@ -117,7 +117,7 @@ class ContactDetail extends Component {
                 navLinks: true, // can click day/week names to navigate views
                 editable: true,
                 eventLimit: true, // allow "more" link when too many events
-                timezone: 'local',
+
                 events
             });
         }

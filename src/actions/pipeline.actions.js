@@ -93,3 +93,11 @@ export function deletePipeline(id) {
     function success(id) { return { type: pipelineConstants.DELETE_SUCCESS, id } }
     function failure(id, error) { return { type: pipelineConstants.DELETE_FAILURE, id, error } }
 }
+
+export function getAllPipelineAndReturn(successCallback, failCallback) {
+    pipelineService.getAll()
+        .then(
+            response => successCallback(response),
+            error => failCallback(error)
+        );
+}

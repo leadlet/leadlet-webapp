@@ -15,7 +15,7 @@ import renderSelectField from "../../formUtils/renderSelectField";
 import renderAsyncSelectField  from "../../formUtils/renderAsyncSelectField";
 
 import renderDatePicker from "../../formUtils/renderDatePicker";
-import {loadOrganization, loadPerson, loadUser} from "../../formUtils/form.actions";
+import {loadOrganization, loadPerson, loadPipeline, loadStage, loadUser} from "../../formUtils/form.actions";
 
 /*let currencies = [
     {value: 'USD', label: 'USD'},
@@ -124,18 +124,28 @@ class CreateEditDeal extends Component {
                             label="Potential Value"
                             names={[ 'dealValue.potentialValue', 'dealValue.currency' ]}
                                 component={renderPriceCurrencyField}/>
-                        <Field
-                            name="stage.id"
-                            label="Stage"
-                            placeholder="Select deal stage"
-                            component={renderSelectField}
-                            options={this.props.stages.ids && this.props.stages.ids.map(id => (
-                                {
-                                    value: id,
-                                    label: this.props.stages.items[id].name
-                                }
-                            ))}
-                        />
+
+
+                        { this.props.showPipelineSelection &&
+                            <Field
+                                name="pipeline.id"
+                                label="Pipeline"
+                                placeholder="Select pipeline"
+                                component={renderAsyncSelectField}
+                                loadOptions={loadPipeline}
+                            />
+                        }
+
+                        { this.props.showStageSelection &&
+                            <Field
+                                name="stage.id"
+                                label="Stage"
+                                placeholder="Select stage"
+                                component={renderAsyncSelectField}
+                                loadOptions={loadStage}
+                            />
+                        }
+
 
                         { this.props.showUserSelection &&
                             <Field
@@ -206,6 +216,8 @@ class CreateEditDeal extends Component {
 }
 
 CreateEditDeal.defaultProps = {
+    showPipelineSelection: true,
+    showStageSelection: true,
     showPersonSelection: true,
     showOrganizationSelection: true,
     showUserSelection: true
