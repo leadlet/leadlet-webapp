@@ -7,9 +7,18 @@ export const dealService = {
     create,
     update,
     move,
-    _delete
+    _delete,
+    getDealsByPersonId
 };
 
+function getDealsByPersonId(personId) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    return fetch('/api/deals/person/' + personId, requestOptions).then(handleResponse);
+}
 
 function create(stage) {
     const requestOptions = {
@@ -50,7 +59,6 @@ function getDealById(id) {
     return fetch('/api/deals/' + id, requestOptions).then(handleResponse);
 }
 
-
 function getAllDeals(filter, page, size) {
     const requestOptions = {
         method: 'GET',
@@ -59,7 +67,6 @@ function getAllDeals(filter, page, size) {
 
     return fetch(`/api/deals?filter=${filter}&page=${page}&size=${size}`, requestOptions).then(handlePaginationResponse);
 }
-
 
 function _delete(id) {
     const requestOptions = {

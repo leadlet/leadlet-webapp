@@ -2,6 +2,23 @@ import {dealConstants} from "../constants/deal.constants";
 import {dealService} from "../services/deal.service";
 import {alertActions} from "./alert.actions";
 
+export function getDealsByPersonId(personId) {
+    return dispatch => {
+        dispatch(request(personId));
+
+        dealService.getDealsByPersonId(personId)
+            .then(
+                deals => {
+                    dispatch(success({ personId, 'items': deals}));
+                },
+                error => dispatch(failure(error))
+            );
+    };
+
+    function request() { return { type: dealConstants.GET_REQUEST_FOR_PERSON } }
+    function success(data) { return { type: dealConstants.GET_SUCCESS_FOR_PERSON, data } }
+    function failure(error) { return { type: dealConstants.GET_FAILURE_FOR_PERSON, error } }
+}
 
 export function getDealById(dealId) {
     return dispatch => {
@@ -20,7 +37,6 @@ export function getDealById(dealId) {
     function success(deal) { return { type: dealConstants.GET_SUCCESS, deal } }
     function failure(error) { return { type: dealConstants.GET_FAILURE, error } }
 }
-
 
 export function getAllDealByFilterAndReturn(filter, successCallback, failCallback) {
     dealService.getAllDeals(filter, 0, 20)
