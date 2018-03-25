@@ -50,15 +50,14 @@ export function getAllTeams(filter, page, size) {
     }
 }
 
-export function createTeam(team, successCallback) {
+export function createTeam(team) {
     return dispatch => {
         dispatch(request());
 
         return teamService.createTeam(team)
             .then(
-                team => {
-                    dispatch(successCallback);
-                    dispatch(success(team));
+                response => {
+                    dispatch(success(response));
                     dispatch(alertActions.success('Team create successful'));
                 },
                 error => {
@@ -74,8 +73,8 @@ export function createTeam(team, successCallback) {
         return {type: teamConstants.CREATE_REQUEST}
     }
 
-    function success(team) {
-        return {type: teamConstants.CREATE_SUCCESS, team}
+    function success(response) {
+        return {type: teamConstants.CREATE_SUCCESS, response}
     }
 
     function failure(error) {
@@ -83,7 +82,7 @@ export function createTeam(team, successCallback) {
     }
 }
 
-export function updateTeam(team, successCallback) {
+export function updateTeam(team) {
     return dispatch => {
         dispatch(request());
 
