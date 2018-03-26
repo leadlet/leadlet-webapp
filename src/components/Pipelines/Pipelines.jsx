@@ -67,7 +67,7 @@ class Pipelines extends React.Component {
     }
 
     renderPipelines(){
-        if( this.props.ids && this.props.pipelines.loading ) {
+        if( !this.props.ids ) {
             return ( <em>Loading Pipelines.. </em>);
         }else if(this.props.ids) {
             return this.props.ids.map( pipelineId => {
