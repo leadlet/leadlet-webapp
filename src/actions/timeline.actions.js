@@ -107,7 +107,7 @@ export function getTimelineByPersonId(filter, page, size, id) {
 
         timelineService.getByPersonId(filter, page, size, id)
             .then(
-                response => dispatch(success({items: response[0], dataTotalSize: response[1]})),
+                response => dispatch(success({items: response[0], dataTotalSize: parseInt(response[1])})),
                 error => dispatch(failure(error))
             );
 
@@ -223,6 +223,21 @@ export function getTimelineByUserId(filter, page, size, id) {
     function failure(error) {
         return {type: timelineConstants.GETALL_FAILURE, error}
     }
+}
+
+
+export function resetTimelines() {
+    return dispatch => {
+        dispatch(request());
+
+
+    };
+
+    function request() {
+        return {type: timelineConstants.RESET_TIMELINES}
+    }
+
+
 }
 
 export function getTimelineByUserIdAndRefresh(filter, page, size, id) {
