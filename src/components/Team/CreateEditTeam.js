@@ -76,20 +76,24 @@ class CreateEditTeam extends Component {
                             component={renderAsyncSelectField}
                             loadOptions={loadUser}
                             format={(members) => {
-                                return members.map(member => {
-                                    return {
-                                        'value': member.id,
-                                        'label': member.firstName
-                                    }
-                                });
+                                if (members) {
+                                    return members.map(member => {
+                                        return {
+                                            'value': member.id,
+                                            'label': member.firstName
+                                        }
+                                    });
+                                }
                             }}
                             parse={(members) => {
-                                return members.map(member => {
-                                    return {
-                                        'id': member.value,
-                                        'firstName': member.label
-                                    }
-                                });
+                                if (members) {
+                                    return members.map(member => {
+                                        return {
+                                            'id': member.value,
+                                            'firstName': member.label
+                                        }
+                                    });
+                                }
                             }}
 
 
