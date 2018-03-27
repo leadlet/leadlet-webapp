@@ -87,10 +87,7 @@ class TeamList extends Component {
 
                                     <h4>Info about Design Team</h4>
                                     <p>
-                                        It is a long established fact that a reader will be distracted by the readable
-                                        content
-                                        of a page when looking at its layout. The point of using Lorem Ipsum is that it
-                                        has.
+                                        {item.description}
                                     </p>
                                     <div>
                                         <span>Status of current project:</span>

@@ -22,7 +22,8 @@ class CreateEditTeam extends Component {
         let team = {
             id: formValues.id,
             name: formValues.name,
-            members: formValues.members.split(",").map(id => { return { "id": id}})
+            description: formValues.description,
+            members: formValues.members
         }
 
         if (team.id) {
@@ -62,12 +63,32 @@ class CreateEditTeam extends Component {
                             label="Team Name"
                         />
                         <Field
+                            name="description"
+                            type="text"
+                            component={renderInputField}
+                            label="Description"
+                        />
+                        <Field
                             name="members"
                             label="Members"
                             placeholder="Select members"
                             multi={true}
                             component={renderAsyncSelectField}
                             loadOptions={loadUser}
+                            format={(members) => {
+                                if (members instanceof Array) {
+                                    return members.map(member => {
+                                        return {
+                                            'value': member.id,
+                                            'label': member.firstName
+                                        }
+                                    });
+                                } else {
+                                    return members;
+                                }
+                            }}
+
+
                         />
                     </form>
                 </Modal.Body>

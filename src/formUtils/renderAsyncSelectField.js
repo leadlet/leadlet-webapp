@@ -17,7 +17,7 @@ const renderAsyncSelectField = (props) => (
             rtl={false}
             onChange={props.input.onChange}
             value={props.input.value}
-            simpleValue
+            simpleValue={false}
             onBlur={() => props.input.onBlur(props.input.value)}
         />
     </div>
