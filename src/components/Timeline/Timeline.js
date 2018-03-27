@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import moment from 'moment';
 import connect from "react-redux/es/connect/connect";
 import Waypoint from 'react-waypoint';
-import {resetTimelines} from "../../actions/timeline.actions";
+import {timelineService} from "../../services/timeline.service";
 
 
 class Timeline extends Component {
@@ -17,23 +17,18 @@ class Timeline extends Component {
         };
 
         this.renderTimelineItems = this.renderTimelineItems.bind(this);
-        this.loadMoreItems = this.loadMoreItems.bind(this);
+        //this.loadMoreItems = this.loadMoreItems.bind(this);
 
         this._handleWaypointEnter = this._handleWaypointEnter.bind(this);
     }
 
-    componentWillUnmount(){
-        this.props.resetTimelines();
-    }
-
     componentDidMount() {
-        console.log("component mount: " + this.props.itemId);
-        this.loadMoreItems();
-    }
-
-    loadMoreItems() {
         this.props.getTimelineItems(null, this.state.currentPage, this.PAGE_SIZE, this.props.itemId);
     }
+
+    /*loadMoreItems() {
+        this.props.loadMoreTimeline(null, this.state.currentPage, this.PAGE_SIZE, this.props.itemId);
+    }*/
 
     renderTimelineItems() {
         return (
@@ -174,8 +169,7 @@ class Timeline extends Component {
     }
 
     render() {
-        if (this.props.timeLineIds && this.props.timeLineIds.length > 0)
-        {
+        if (this.props.timeLineIds && this.props.timeLineIds.length > 0) {
             return (
                 <div className="ibox-content">
                     <div id="vertical-timeline"
@@ -206,6 +200,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps,{
-    resetTimelines
-})(Timeline);
+export default connect(mapStateToProps)(Timeline);

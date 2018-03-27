@@ -43,7 +43,7 @@ class ContactDetail extends Component {
     }
 
     refreshTimeline(){
-        this.props.getTimelineByPersonIdAndRefresh(null, null, null, this.props.match.params.personId)
+        this.props.getTimelineByPersonIdAndRefresh(null, null, null, this.props.viewedPerson.id)
     }
 
     handleChange(event) {
@@ -117,6 +117,7 @@ class ContactDetail extends Component {
                 navLinks: true, // can click day/week names to navigate views
                 editable: true,
                 eventLimit: true, // allow "more" link when too many events
+
                 events
             });
         }
@@ -243,36 +244,28 @@ class ContactDetail extends Component {
                             </div>
                         </div>
 
-                        {
-                            this.state.isActivityModalVisible &&
-                            <EditOrCreateActivity showModal={this.state.isActivityModalVisible}
-                                                  close={this.closeActivityModal}
-                                                  initialValues={{
-                                                      personId: this.props.match.params.personId
-                                                  }}
-                                                  createCallback={this.refreshTimeline}
-                                                  showPersonSelection={false}
-                                                  showOrganizationSelection={false}
-                            />
+                        <EditOrCreateActivity showModal={this.state.isActivityModalVisible}
+                                        close={this.closeActivityModal}
+                                              initialValues={{
+                                                  personId: this.props.viewedPerson.id
+                                              }}
+                                        createCallback={this.refreshTimeline}
+                                        showPersonSelection={false}
+                                        showOrganizationSelection={false}
+                        />
 
-                        }
-
-                        {
-                            this.state.isPersonModalVisible &&
-                            <ContactPerson showEditModal={this.state.isPersonModalVisible}
-                                           close={this.closeEditModal}
-                                           initialValues={this.props.viewedPerson}
-                            />
-                        }
+                        <ContactPerson showEditModal={this.state.isPersonModalVisible}
+                                       close={this.closeEditModal}
+                                       initialValues={this.props.viewedPerson}
+                        />
 
                         <CreateEditDeal showModal={this.state.isDealModalVisible}
                                         close={this.closeDealModal}
                                         initialValues={{
                                             person : {
-                                                id: this.props.match.params.personId
+                                                id: this.props.viewedPerson.id
                                             },
                                             organization: this.props.viewedPerson && this.props.viewedPerson.organization,
-
                                         }}
                                         showPersonSelection={false}
                                         showOrganizationSelection={false}
