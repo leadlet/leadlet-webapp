@@ -10,13 +10,16 @@ import $ from 'jquery';
 import moment from 'moment';
 import Timeline from "../Timeline/Timeline";
 import {getActivitiesByPersonId} from "../../actions/activity.actions";
-
 import EditOrCreateActivity from "../Activity/EditOrCreateActivity";
 import CreateEditDeal from "../DealDetail/CreateEditDeal";
 import {
     getTimelineByPersonId, getTimelineByPersonIdAndRefresh,
     getTimelineLoadMoreByPersonId
 } from "../../actions/timeline.actions";
+import {BootstrapTable, TableHeaderColumn} from "react-bootstrap-table";
+import {deleteDeal, getDealsByPersonId} from "../../actions/deal.actions";
+import Link from "react-router-dom/es/Link";
+import SweetAlert from 'sweetalert-react';
 
 class ContactDetail extends Component {
 
@@ -27,7 +30,9 @@ class ContactDetail extends Component {
             isPersonModalVisible: false,
             isDealModalVisible: false,
             isActivityModalVisible: false,
-            value: ''
+            value: '',
+            deletingDeal: null,
+            showDeleteDealDialog: false
         };
 
         this.openEditModal = this.openEditModal.bind(this);
@@ -39,11 +44,63 @@ class ContactDetail extends Component {
         this.refreshTimeline = this.refreshTimeline.bind(this);
         this.openDealModal = this.openDealModal.bind(this);
         this.closeDealModal = this.closeDealModal.bind(this);
+        this.dataMapper = this.dataMapper.bind(this);
+        this.titleFormatter = this.titleFormatter.bind(this);
+        this.deleteDealFormatter = this.deleteDealFormatter.bind(this);
+        this.deleteDeal = this.deleteDeal.bind(this);
+
+    }
+
+    cancelDeleteDeal() {
+        this.setState({
+            deletingDeal: null,
+            showDeleteDealDialog: false
+        });
+    }
+
+    confirmDeleteDeal() {
+        this.props.deleteDeal(this.state.deletingDeal);
+        this.setState({
+            deletingDeal: null,
+            showDeleteDealDialog: false
+        });
+    }
+
+    deleteDeal(deal){
+        this.setState({
+            deletingDeal: deal,
+            showDeleteDealDialog: true
+        });
+    }
+
+    deleteDealFormatter(cell, row){
+        return(
+            <i className="btn fa fa-trash" onClick={() => this.deleteDeal(row)}/>
+        );
+    }
+
+    titleFormatter(cell, row) {
+        return (<Link to={"/deal/" + row.id}>{cell}</Link>);
+    }
+
+    dataMapper() {
+
+        if( this.props.deals && this.props.deals[this.props.match.params.personId] ) {
+            return this.props.deals[this.props.match.params.personId].ids.map(id => {
+                let deal = this.props.deals[this.props.match.params.personId].items[id];
+                return {
+                    id: id,
+                    title: deal.title,
+                    dealValue: deal.dealValue.potentialValue,
+                    stageId: deal.stage.name
+                };
+            });
+        }
 
     }
 
     refreshTimeline(){
-        this.props.getTimelineByPersonIdAndRefresh(null, null, null, this.props.viewedPerson.id)
+        this.props.getTimelineByPersonIdAndRefresh(null, null, null, this.props.match.params.personId)
     }
 
     handleChange(event) {
@@ -87,6 +144,8 @@ class ContactDetail extends Component {
     componentDidMount() {
         this.props.getById(this.props.match.params.personId);
         this.props.getActivitiesByPersonId(this.props.match.params.personId);
+        this.props.getDealsByPersonId(this.props.match.params.personId);
+
     }
 
     componentDidUpdate() {
@@ -213,7 +272,7 @@ class ContactDetail extends Component {
                                 <Timeline
                                     pageSize={5}
                                     getTimelineItems={this.props.getTimelineByPersonId}
-                                    itemId={this.props.viewedPerson.id}
+                                    itemId={this.props.match.params.personId}
                                     loadMoreTimeline={this.props.getTimelineLoadMoreByPersonId}
                                 />
                             </div>
@@ -226,7 +285,31 @@ class ContactDetail extends Component {
                                     <h5>Deals</h5>
                                 </div>
                                 <div className="ibox-content text-center">
-                                    Deals
+                                    <BootstrapTable
+                                        tableHeaderClass='client-table-header'
+                                        containerClass='client-table-container'
+                                        tableContainerClass='client-table'
+                                        tableBodyClass='table-hover'
+
+                                        data={this.dataMapper()}
+                                        remote={true}
+                                        pagination={true}
+                                        keyField='id'
+                                        fetchInfo={{dataTotalSize: parseInt(this.props.viewedPerson.dataTotalSize, 10)}}
+                                        options={{
+                                            sizePerPage: 5,
+                                            onPageChange: this.props.viewedPerson.onPageChange,
+                                            sizePerPageList: [5, 10],
+                                            page: this.props.viewedPerson.currentPage,
+                                            onSizePerPageList: this.props.viewedPerson.onSizePerPageList
+                                        }}
+
+                                    >
+                                        <TableHeaderColumn dataField='title' dataFormat={this.titleFormatter}>Title</TableHeaderColumn>
+                                        <TableHeaderColumn dataField='dealValue'>Deal Value</TableHeaderColumn>
+                                        <TableHeaderColumn dataField='stageId'>Stage</TableHeaderColumn>
+                                        <TableHeaderColumn dataFormat={this.deleteDealFormatter}></TableHeaderColumn>
+                                    </BootstrapTable>
                                 </div>
                             </div>
                             <div className="ibox">
@@ -244,32 +327,43 @@ class ContactDetail extends Component {
                             </div>
                         </div>
 
-                        <EditOrCreateActivity showModal={this.state.isActivityModalVisible}
-                                        close={this.closeActivityModal}
-                                              initialValues={{
-                                                  personId: this.props.viewedPerson.id
-                                              }}
-                                        createCallback={this.refreshTimeline}
-                                        showPersonSelection={false}
-                                        showOrganizationSelection={false}
-                        />
+                        {
+                            this.state.isActivityModalVisible &&
+                            <EditOrCreateActivity showModal={this.state.isActivityModalVisible}
+                                                  close={this.closeActivityModal}
+                                                  initialValues={{
+                                                      personId: this.props.match.params.personId
+                                                  }}
+                                                  createCallback={this.refreshTimeline}
+                                                  showPersonSelection={false}
+                                                  showOrganizationSelection={false}
+                            />
 
-                        <ContactPerson showEditModal={this.state.isPersonModalVisible}
-                                       close={this.closeEditModal}
-                                       initialValues={this.props.viewedPerson}
-                        />
+                        }
 
-                        <CreateEditDeal showModal={this.state.isDealModalVisible}
-                                        close={this.closeDealModal}
-                                        initialValues={{
-                                            person : {
-                                                id: this.props.viewedPerson.id
-                                            },
-                                            organization: this.props.viewedPerson && this.props.viewedPerson.organization,
-                                        }}
-                                        showPersonSelection={false}
-                                        showOrganizationSelection={false}
-                        />
+                        {
+                            this.state.isPersonModalVisible &&
+                            <ContactPerson showEditModal={this.state.isPersonModalVisible}
+                                           close={this.closeEditModal}
+                                           initialValues={this.props.viewedPerson}
+                            />
+                        }
+
+                        {
+                            this.state.isDealModalVisible &&
+                            <CreateEditDeal showModal={this.state.isDealModalVisible}
+                                                                             close={this.closeDealModal}
+                                                                             initialValues={{
+                                                                                 person : {
+                                                                                     id: this.props.match.params.personId
+                                                                                 },
+                                                                                 organization: this.props.viewedPerson && this.props.viewedPerson.organization,
+
+                                                                             }}
+                                                                             showPersonSelection={false}
+                                                                             showOrganizationSelection={false}
+                            />
+                        }
 
 
                     </div>
@@ -285,7 +379,8 @@ function mapStateToProps(state) {
         viewedPerson: state.persons.viewedPerson,
         activities: state.activities.items,
         ids: state.activities.ids,
-        viewedOrganization: state.viewedOrganization
+        viewedOrganization: state.viewedOrganization,
+        deals: state.deals.personDeals
     };
 }
 
@@ -296,5 +391,7 @@ export default connect(mapStateToProps, {
     getActivitiesByPersonId,
     getTimelineByPersonId,
     getTimelineLoadMoreByPersonId,
-    getTimelineByPersonIdAndRefresh
+    getTimelineByPersonIdAndRefresh,
+    getDealsByPersonId,
+    deleteDeal
 })(ContactDetail);

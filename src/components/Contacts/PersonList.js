@@ -27,21 +27,23 @@ export const PersonList = function (props) {
     }
 
     function nameFormatter(cell, row) {
-        return (<Link to={"person/"+row.id}>{cell}</Link>);
+        return (<Link to={"/person/" + row.id}>{cell}</Link>);
     }
+
     function phonesFormatter(cell, row) {
-        return row.phones.reduce(function(result, cur) {
-            if( result.length > 0 ){
+        return row.phones.reduce(function (result, cur) {
+            if (result.length > 0) {
                 return result + ";" + cur.phone;
-            }else{
+            } else {
                 return cur.phone;
             }
-        },"");
+        }, "");
     }
 
     function organizationFormatter(cell, row) {
-        return (<Link to={"organization/"+row.organizationId}>{row.organizationName}</Link>);
+        return (<Link to={"organization/" + row.organizationId}>{row.organizationName}</Link>);
     }
+
     return (
         <BootstrapTable
             tableHeaderClass='client-table-header'
@@ -49,24 +51,26 @@ export const PersonList = function (props) {
             tableContainerClass='client-table'
             tableBodyClass='table-hover'
 
-            data={ dataMapper(props.data) }
-                        remote={ true }
-                        pagination={ true }
-                        keyField='id'
-                        selectRow={ selectRowProp }
-                        fetchInfo={{dataTotalSize: parseInt(props.data.dataTotalSize, 10)}}
-                        options={ {
-                            sizePerPage: props.sizePerPage,
-                            onPageChange: props.onPageChange,
-                            sizePerPageList: [ 5, 10 ],
-                            page: props.currentPage,
-                            onSizePerPageList: props.onSizePerPageList } }
+            data={dataMapper(props.data)}
+            remote={true}
+            pagination={true}
+            keyField='id'
+            selectRow={selectRowProp}
+            fetchInfo={{dataTotalSize: parseInt(props.data.dataTotalSize, 10)}}
+            options={{
+                sizePerPage: props.sizePerPage,
+                onPageChange: props.onPageChange,
+                sizePerPageList: [5, 10],
+                page: props.currentPage,
+                onSizePerPageList: props.onSizePerPageList
+            }}
 
         >
             <TableHeaderColumn dataField='name' dataFormat={nameFormatter}>Name</TableHeaderColumn>
             <TableHeaderColumn dataField='email'>Email</TableHeaderColumn>
             <TableHeaderColumn dataField='phones' dataFormat={phonesFormatter}>Phones</TableHeaderColumn>
-            <TableHeaderColumn dataField='organizationId' dataFormat={organizationFormatter}>Organization</TableHeaderColumn>
+            <TableHeaderColumn dataField='organizationId'
+                               dataFormat={organizationFormatter}>Organization</TableHeaderColumn>
         </BootstrapTable>
     );
 }

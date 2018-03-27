@@ -6,18 +6,25 @@ const teamSchema = new schema.Entity('teams');
 // or use shorthand syntax:
 const teamListSchema = [teamSchema];
 
-export function teams(state = {}, action) {
+export function teams(state = {items: {}, ids: []}, action) {
     switch (action.type) {
         /* get by id */
         case teamConstants.GET_REQUEST:
             return {
+                ...state,
                 loading: true
             };
         case teamConstants.GET_SUCCESS:
-            return {
+            let _state2 = {
                 ...state,
-                viewedTeam: action.team
+                items: {
+                    ...state.items,
+                    [action.team.id]: action.team
+                },
+                ids: [...state.ids, action.team.id]
             };
+
+            return _state2;
         case teamConstants.GET_FAILURE:
             return {
                 error: action.error

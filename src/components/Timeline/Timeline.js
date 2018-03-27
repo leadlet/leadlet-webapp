@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import moment from 'moment';
 import connect from "react-redux/es/connect/connect";
 import Waypoint from 'react-waypoint';
-import {timelineService} from "../../services/timeline.service";
+import {resetTimelines} from "../../actions/timeline.actions";
 
 
 class Timeline extends Component {
@@ -17,18 +17,23 @@ class Timeline extends Component {
         };
 
         this.renderTimelineItems = this.renderTimelineItems.bind(this);
-        //this.loadMoreItems = this.loadMoreItems.bind(this);
+        this.loadMoreItems = this.loadMoreItems.bind(this);
 
         this._handleWaypointEnter = this._handleWaypointEnter.bind(this);
     }
 
-    componentDidMount() {
-        this.props.getTimelineItems(null, this.state.currentPage, this.PAGE_SIZE, this.props.itemId);
+    componentWillUnmount(){
+        this.props.resetTimelines();
     }
 
-    /*loadMoreItems() {
-        this.props.loadMoreTimeline(null, this.state.currentPage, this.PAGE_SIZE, this.props.itemId);
-    }*/
+    componentDidMount() {
+        console.log("component mount: " + this.props.itemId);
+        this.loadMoreItems();
+    }
+
+    loadMoreItems() {
+        this.props.getTimelineItems(null, this.state.currentPage, this.PAGE_SIZE, this.props.itemId);
+    }
 
     renderTimelineItems() {
         return (
@@ -200,4 +205,6 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps)(Timeline);
+export default connect(mapStateToProps,{
+    resetTimelines
+})(Timeline);
