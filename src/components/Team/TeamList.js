@@ -58,6 +58,17 @@ class TeamList extends Component {
     }
 
     renderTeamItems() {
+
+        const styles = {
+            link: {
+                color: "#676a6c",
+                ":hover": {
+                    textDecoration: "none",
+                    color: "#676a6c",
+                },
+            },
+        };
+
         if (this.props.teams.ids) {
             return this.props.teams.ids.map(id => {
                 let item = this.props.teams.items[id];
@@ -69,7 +80,7 @@ class TeamList extends Component {
                                 <span className="label label-primary pull-right">NEW</span>
                             </div>
                             <div className="ibox-content">
-                                <Link to={"/team/" + item.id}>
+                                <Link style={styles.link} to={"/team/" + item.id}>
                                     <div className="team-members">
                                         {this.teamMembers(item.members)}
                                     </div>
