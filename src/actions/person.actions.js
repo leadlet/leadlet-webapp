@@ -18,21 +18,6 @@ export function getById(personId) {
     function failure(error) { return { type: personConstants.GET_FAILURE, error } }
 }
 
-export function getAllPersonByOrganizationId(organizationId, page, size) {
-    return dispatch => {
-        dispatch(request());
-
-        personService.getAllPersonByOrganization(organizationId, page, size)
-            .then(
-                response => dispatch(success({ items: response[0], dataTotalSize: response[1]})),
-                error => dispatch(failure(error))
-            );
-    };
-
-    function request() { return { type: personConstants.GETALL_REQUEST } }
-    function success(data) { return { type: personConstants.GETALL_SUCCESS, data } }
-    function failure(error) { return { type: personConstants.GETALL_FAILURE, error } }
-}
 
 export function getAllPerson(filter, page, size) {
     return dispatch => {

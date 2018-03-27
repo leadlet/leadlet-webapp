@@ -161,7 +161,12 @@ class DealBoard extends Component {
                     this.state.isNewDealModalVisible &&
                     <CreateEditDeal showModal={this.state.isNewDealModalVisible}
                                     close={this.toggleNewDealModal}
-                                    pipelineId={this.props.pipelines.selectedPipelineId}
+                                    showPipelineSelection={false}
+                                    initialValues={{
+                                        pipeline : {
+                                            id: this.props.pipelines.selectedPipelineId
+                                        }
+                                    }}
                     />
                 }
             </div>

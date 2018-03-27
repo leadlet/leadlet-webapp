@@ -264,9 +264,9 @@ class ContactDetail extends Component {
                                         initialValues={{
                                             person : {
                                                 id: this.props.viewedPerson.id
-                                            }
+                                            },
+                                            organization: this.props.viewedPerson && this.props.viewedPerson.organization,
                                         }}
-                                        pipelineId={this.props.viewedPerson.pipelineId}
                                         showPersonSelection={false}
                                         showOrganizationSelection={false}
                         />

@@ -136,6 +136,8 @@ class DealDetail extends Component {
                                         <dl className="dl-horizontal">
                                             <dt>Title:</dt>
                                             <dd>{deal.title}</dd>
+                                            <dt>Pipeline:</dt>
+                                            <dd>{deal.pipeline.name}</dd>
                                             <dt>Stage:</dt>
                                             <dd>{deal.stage.name}</dd>
                                             <dt>Deal Value:</dt>
@@ -238,7 +240,7 @@ class DealDetail extends Component {
                             <CreateEditDeal showModal={this.state.isEditDealModalVisible}
                                             close={this.closeEditDealModal}
                                             initialValues={this.props.viewedDeal}
-                                            pipelineId={this.props.viewedDeal.pipelineId}
+                                            showPipelineSelection={false}
                             />
                         }
                         {

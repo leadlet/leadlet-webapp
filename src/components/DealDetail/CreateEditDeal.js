@@ -6,16 +6,16 @@ import SweetAlert from 'sweetalert-react';
 
 import 'react-select/dist/react-select.css';
 import {createDeal,updateDeal} from "../../actions/deal.actions";
-import {getAllStagesByPipelineId} from "../../actions/stage.actions";
 
 import renderInputField from '../../formUtils/renderInputField'
 import renderPriceCurrencyField from '../../formUtils/renderPriceCurrencyField'
 import formValueSelector from "redux-form/es/formValueSelector";
-import renderSelectField from "../../formUtils/renderSelectField";
 import renderAsyncSelectField  from "../../formUtils/renderAsyncSelectField";
 
 import renderDatePicker from "../../formUtils/renderDatePicker";
 import {loadOrganization, loadPerson, loadPipeline, loadStage, loadUser} from "../../formUtils/form.actions";
+import renderPipelineAndStageFields from "../../formUtils/renderPipelineAndStageFields";
+import renderPersonAndOrganizationFields from "../../formUtils/renderPersonAndOrganizationFields";
 
 /*let currencies = [
     {value: 'USD', label: 'USD'},
@@ -60,10 +60,6 @@ class CreateEditDeal extends Component {
         };
     }
 
-    componentDidMount(){
-        this.props.getAllStagesByPipelineId(this.props.pipelineId);
-    }
-
     confirmDeleteDeal() {
         this.setState({showDeleteDialog: false});
         this.props.close();
@@ -86,6 +82,7 @@ class CreateEditDeal extends Component {
             personId: formValues.person && formValues.person.id,
             organizationId: formValues.organization && formValues.organization.id,
             stageId: formValues.stage && formValues.stage.id,
+            pipelineId: formValues.pipeline && formValues.pipeline.id,
             ownerId: formValues.owner && formValues.owner.id,
             dealValue: formValues.dealValue,
             possibleCloseDate: formValues.possibleCloseDate && formValues.possibleCloseDate._d
@@ -105,7 +102,7 @@ class CreateEditDeal extends Component {
     }
 
     render() {
-        const {handleSubmit} = this.props;
+        const {handleSubmit, pipelineId} = this.props;
 
         return (
             <Modal show={this.props.showModal} onHide={this.onClose} >
@@ -127,22 +124,20 @@ class CreateEditDeal extends Component {
 
 
                         { this.props.showPipelineSelection &&
-                            <Field
-                                name="pipeline.id"
-                                label="Pipeline"
-                                placeholder="Select pipeline"
-                                component={renderAsyncSelectField}
-                                loadOptions={loadPipeline}
+                            <Fields
+                                names={[ 'pipeline.id', 'stage.id' ]}
+                                component={renderPipelineAndStageFields}
                             />
                         }
 
-                        { this.props.showStageSelection &&
+                        { !this.props.showPipelineSelection &&
                             <Field
                                 name="stage.id"
                                 label="Stage"
-                                placeholder="Select stage"
+                                placeholder="Select deal stage"
                                 component={renderAsyncSelectField}
-                                loadOptions={loadStage}
+                                loadOptions={(input, callback)=>loadStage(input, callback, pipelineId)}
+
                             />
                         }
 
@@ -157,25 +152,46 @@ class CreateEditDeal extends Component {
                             />
                         }
 
-                        {this.props.showPersonSelection &&
-                            <Field
-                                name="person.id"
-                                label="Contact Person"
-                                placeholder="Select contact person"
-                                component={renderAsyncSelectField}
-                                loadOptions={loadPerson}
-                            />
-                        }
 
-                        { this.props.showOrganizationSelection &&
-                            <Field
-                                name="organization.id"
-                                label="Contact Organization"
-                                placeholder="Select contact organization"
-                                component={renderAsyncSelectField}
-                                loadOptions={loadOrganization}
-                            />
-                        }
+                        <Fields
+                            names={[ 'person', 'organization' ]}
+                            component={renderPersonAndOrganizationFields}
+                            showPersonSelection={this.props.showPersonSelection}
+                            showOrganizationSelection={this.props.showOrganizationSelection}
+                            parse={(value, name) => {
+                                if( value ) {
+
+                                    if (name === "person") {
+                                        return {
+                                            'id': value.value,
+                                            'name': value.label
+                                        };
+                                    } else {
+                                        return {
+                                            'id': value.value,
+                                            'name': value.label
+                                        };
+                                    }
+                                }
+                            }}
+                            format={(value, name) => {
+                                if( value ){
+                                    if( name === "person"){
+                                        return {
+                                            'value': value.id,
+                                            'label': value.name
+                                        }
+                                    } else {
+                                        return {
+                                            'value': value.id,
+                                            'label': value.name
+                                        }
+                                    }
+                                }
+                            }}
+                        />
+
+
                         <Field
                             label="Possible Close Date"
                             name="possibleCloseDate"
@@ -217,7 +233,6 @@ class CreateEditDeal extends Component {
 
 CreateEditDeal.defaultProps = {
     showPipelineSelection: true,
-    showStageSelection: true,
     showPersonSelection: true,
     showOrganizationSelection: true,
     showUserSelection: true
@@ -234,8 +249,7 @@ function mapStateToProps(state) {
         personId : selector(state, 'person.id'),
         organizationId : selector(state, 'organization.id'),
         stageId : selector(state, 'stage.id'),
-        stages: state.stages
-
+        pipelineId : selector(state, 'pipeline.id')
     };
 }
 
@@ -244,5 +258,5 @@ export default reduxForm({
     validate, // <--- validation function given to redux-form
     enableReinitialize: true
 })(
-    connect(mapStateToProps, {createDeal, updateDeal,getAllStagesByPipelineId})(CreateEditDeal)
+    connect(mapStateToProps, {createDeal, updateDeal})(CreateEditDeal)
 );

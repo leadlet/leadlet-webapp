@@ -5,6 +5,8 @@ import {getAllOrganizationByFilterAndReturn} from "../actions/organization.actio
 import {getAllDealByFilterAndReturn} from "../actions/deal.actions";
 import {getAllPipelineAndReturn} from "../actions/pipeline.actions";
 import {getAllStageReturn} from "../actions/stage.actions";
+import {organizationService} from "../services/organization.service";
+import {personService} from "../services/person.service";
 
 export function loadUser(input, callback) {
 
@@ -19,7 +21,7 @@ export function loadUser(input, callback) {
 
 };
 
-export function loadPerson(input, callback) {
+export function loadPerson(input, callback, organization) {
 
     let successCallBack = (data) => {
         callback(null, {options: data.map(person => ({value: person.id, label: person.name}))});
@@ -28,11 +30,18 @@ export function loadPerson(input, callback) {
         callback(error, null);
     };
 
-    getAllPersonByFilterAndReturn(`name:${input}`, successCallBack, failCallBack);
+    let organizationId = ""
+
+    // TODO ygokirmak
+    if( organization !== undefined){
+        organizationId = organization.value;
+    }
+
+    getAllPersonByFilterAndReturn(`name:${input},organization:${organizationId}`, successCallBack, failCallBack);
 
 };
 
-export function loadOrganization(input, callback) {
+export function loadOrganization(input, callback, personId) {
 
     let successCallBack = (data) => {
         callback(null, {options: data.map(org => ({value: org.id, label: org.name}))});
@@ -41,7 +50,12 @@ export function loadOrganization(input, callback) {
         callback(error, null);
     };
 
-    getAllOrganizationByFilterAndReturn(`name:${input}`, successCallBack, failCallBack);
+    organizationService.getAllOrganization(`name:${input}`, 0, 20)
+        .then(
+            response => successCallBack(response[0]),
+            error => failCallBack(error)
+        );
+
 
 };
 
@@ -71,8 +85,9 @@ export function loadPipeline(input, callback) {
 
 };
 
-export function loadStage(input, callback) {
+export function loadStage(input, callback, pipelineId) {
 
+    console.log("load stage " + pipelineId);
     let successCallBack = (data) => {
         callback(null, {options: data.map(stage => ({value: stage.id, label: stage.name}))});
     };
@@ -80,6 +95,6 @@ export function loadStage(input, callback) {
         callback(error, null);
     };
 
-    getAllStageReturn(successCallBack, failCallBack);
+    getAllStageReturn(pipelineId, successCallBack, failCallBack);
 
 };
