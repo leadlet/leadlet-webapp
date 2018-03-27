@@ -14,6 +14,7 @@ import Preferences from "../components/Preferences/Preferences";
 import TeamAgentManagement from "../components/Team/TeamAgentManagement";
 import {PrivateRoute} from "../components/PrivateRoute";
 import AgentDetail from "../components/Agent/AgentDetail";
+import TeamDetail from "../components/Team/TeamDetail";
 
 class TopMenuLayout extends Component {
 
@@ -31,6 +32,7 @@ class TopMenuLayout extends Component {
                                 <PrivateRoute path="/contacts" component={Contacts}/>
                                 <PrivateRoute path="/deal/:dealId" component={DealDetail}/>
                                 <PrivateRoute path="/user/:userId" component={AgentDetail}/>
+                                <PrivateRoute path="/team/:teamId" component={TeamDetail}/>
                                 <PrivateRoute path="/deals" component={Deals}/>
                                 <PrivateRoute authorize={['ROLE_MANAGER']} path="/teams" component={TeamAgentManagement}/>
                                 <PrivateRoute path="/pipelines" component={PipelinesPage}/>
