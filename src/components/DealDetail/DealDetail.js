@@ -62,7 +62,7 @@ class DealDetail extends Component {
         console.log("Note Event: ", event.target);
         this.props.createNote({
             content: this.state.value,
-            dealId: this.props.match.params.dealId
+            dealId: this.props.viewedDeal.id
         }, () => this.props.getTimelineByDealIdAndRefresh(null, null, null, this.props.match.params.dealId));
         this.setState({value: ''});
     }
@@ -115,7 +115,7 @@ class DealDetail extends Component {
     }
 
     refreshTimeline() {
-        this.props.getTimelineByDealIdAndRefresh(null, null, null, this.props.match.params.dealId)
+        this.props.getTimelineByDealIdAndRefresh(null, null, null, this.props.viewedDeal.id)
     }
 
     render() {
@@ -136,6 +136,8 @@ class DealDetail extends Component {
                                         <dl className="dl-horizontal">
                                             <dt>Title:</dt>
                                             <dd>{deal.title}</dd>
+                                            <dt>Pipeline:</dt>
+                                            <dd>{deal.pipeline.name}</dd>
                                             <dt>Stage:</dt>
                                             <dd>{deal.stage.name}</dd>
                                             <dt>Deal Value:</dt>
@@ -212,7 +214,7 @@ class DealDetail extends Component {
                                 <Timeline
                                     pageSize={5}
                                     getTimelineItems={this.props.getTimelineByDealId}
-                                    itemId={this.props.match.params.dealId}
+                                    itemId={this.props.viewedDeal.id}
                                 />
                             </div>
                         </div>
@@ -238,14 +240,14 @@ class DealDetail extends Component {
                             <CreateEditDeal showModal={this.state.isEditDealModalVisible}
                                             close={this.closeEditDealModal}
                                             initialValues={this.props.viewedDeal}
-                                            pipelineId={this.props.viewedDeal.pipelineId}
+                                            showPipelineSelection={false}
                             />
                         }
                         {
                             this.state.isActivityModalVisible &&
                             <EditOrCreateActivity showModal={this.state.isActivityModalVisible}
                                                   close={this.closeActivityModal}
-                                                  initialValues={{dealId: this.props.match.params.dealId}}
+                                                  initialValues={{dealId: this.props.viewedDeal.id}}
                                                   createCallback={this.refreshTimeline}
                                                   showDealSelection={false}
                             />

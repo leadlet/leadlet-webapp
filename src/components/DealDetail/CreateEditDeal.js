@@ -6,7 +6,6 @@ import SweetAlert from 'sweetalert-react';
 
 import 'react-select/dist/react-select.css';
 import {createDeal,updateDeal} from "../../actions/deal.actions";
-import {getAllStagesByPipelineId} from "../../actions/stage.actions";
 
 import renderInputField from '../../formUtils/renderInputField'
 import renderPriceCurrencyField from '../../formUtils/renderPriceCurrencyField'
@@ -15,6 +14,8 @@ import renderAsyncSelectField  from "../../formUtils/renderAsyncSelectField";
 
 import renderDatePicker from "../../formUtils/renderDatePicker";
 import {loadOrganization, loadPerson, loadPipeline, loadStage, loadUser} from "../../formUtils/form.actions";
+import renderPipelineAndStageFields from "../../formUtils/renderPipelineAndStageFields";
+import renderPersonAndOrganizationFields from "../../formUtils/renderPersonAndOrganizationFields";
 
 /*let currencies = [
     {value: 'USD', label: 'USD'},
@@ -33,10 +34,8 @@ const validate = values => {
     }
 
     /* activity type */
-    if (!values.stage || !values.stage.id) {
-        errors.stage ={
-            id: "Please select a stage"
-        }
+    if (!values.stage) {
+        errors.stage = "Please select a stage";
     }
 
     return errors
@@ -57,10 +56,6 @@ class CreateEditDeal extends Component {
         this.state = {
             showDeleteDialog: false
         };
-    }
-
-    componentDidMount(){
-        this.props.getAllStagesByPipelineId(this.props.pipelineId);
     }
 
     confirmDeleteDeal() {
@@ -85,6 +80,7 @@ class CreateEditDeal extends Component {
             personId: formValues.person && formValues.person.id,
             organizationId: formValues.organization && formValues.organization.id,
             stageId: formValues.stage && formValues.stage.id,
+            pipelineId: formValues.pipeline && formValues.pipeline.id,
             ownerId: formValues.owner && formValues.owner.id,
             dealValue: formValues.dealValue,
             possibleCloseDate: formValues.possibleCloseDate && formValues.possibleCloseDate._d
@@ -104,7 +100,7 @@ class CreateEditDeal extends Component {
     }
 
     render() {
-        const {handleSubmit} = this.props;
+        const {handleSubmit, pipelineId} = this.props;
 
         return (
             <Modal show={this.props.showModal} onHide={this.onClose} >
@@ -125,30 +121,33 @@ class CreateEditDeal extends Component {
                                 component={renderPriceCurrencyField}/>
 
 
-                        { this.props.showPipelineSelection &&
-                            <Field
-                                name="pipeline.id"
-                                label="Pipeline"
-                                placeholder="Select pipeline"
-                                component={renderAsyncSelectField}
-                                loadOptions={loadPipeline}
-                            />
-                        }
+                        <Fields
+                            names={[ 'pipeline', 'stage' ]}
+                            component={renderPipelineAndStageFields}
+                            showPipelineSelection={this.props.showPipelineSelection}
+                            showStageSelection={this.props.showStageSelection}
+                            parse={(value, name) => {
+                                if( value ) {
+                                    return {
+                                        'id': value.value,
+                                        'name': value.label
+                                    };
+                                }
+                            }}
+                            format={(value, name) => {
+                                if( value ){
+                                    return {
+                                        'value': value.id,
+                                        'label': value.name
+                                    }
+                                }
 
-                        { this.props.showStageSelection &&
-                            <Field
-                                name="stage.id"
-                                label="Stage"
-                                placeholder="Select stage"
-                                component={renderAsyncSelectField}
-                                loadOptions={loadStage}
-                            />
-                        }
-
+                            }}
+                        />
 
                         { this.props.showUserSelection &&
                             <Field
-                                name="owner.id"
+                                name="owner"
                                 label="Owner"
                                 placeholder="Select deal owner"
                                 component={renderAsyncSelectField}
@@ -156,25 +155,32 @@ class CreateEditDeal extends Component {
                             />
                         }
 
-                        {this.props.showPersonSelection &&
-                            <Field
-                                name="person.id"
-                                label="Contact Person"
-                                placeholder="Select contact person"
-                                component={renderAsyncSelectField}
-                                loadOptions={loadPerson}
-                            />
-                        }
 
-                        { this.props.showOrganizationSelection &&
-                            <Field
-                                name="organization.id"
-                                label="Contact Organization"
-                                placeholder="Select contact organization"
-                                component={renderAsyncSelectField}
-                                loadOptions={loadOrganization}
-                            />
-                        }
+                        <Fields
+                            names={[ 'person', 'organization' ]}
+                            component={renderPersonAndOrganizationFields}
+                            showPersonSelection={this.props.showPersonSelection}
+                            showOrganizationSelection={this.props.showOrganizationSelection}
+                            parse={(value, name) => {
+                                if( value ) {
+                                    return {
+                                        'id': value.value,
+                                        'name': value.label
+                                    };
+                                }
+                            }}
+                            format={(value, name) => {
+                                if( value ){
+                                    return {
+                                        'value': value.id,
+                                        'label': value.name
+                                    }
+                                }
+
+                            }}
+                        />
+
+
                         <Field
                             label="Possible Close Date"
                             name="possibleCloseDate"
@@ -227,14 +233,6 @@ const selector = formValueSelector('postNewDealForm');
 
 function mapStateToProps(state) {
     return {
-        title : selector(state, 'title'),
-        dealValue : selector(state, 'dealValue'),
-        ownerId : selector(state, 'owner.id'),
-        personId : selector(state, 'person.id'),
-        organizationId : selector(state, 'organization.id'),
-        stageId : selector(state, 'stage.id'),
-        stages: state.stages
-
     };
 }
 
@@ -243,5 +241,5 @@ export default reduxForm({
     validate, // <--- validation function given to redux-form
     enableReinitialize: true
 })(
-    connect(mapStateToProps, {createDeal, updateDeal,getAllStagesByPipelineId})(CreateEditDeal)
+    connect(mapStateToProps, {createDeal, updateDeal})(CreateEditDeal)
 );

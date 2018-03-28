@@ -110,8 +110,8 @@ export function deleteStage(id) {
     function failure(id, error) { return { type: stageConstants.DELETE_FAILURE, id, error } }
 }
 
-export function getAllStageReturn(successCallback, failCallback) {
-    stageService.getAll()
+export function getAllStageReturn(pipelineId, successCallback, failCallback) {
+    stageService.getByPipelineId(pipelineId)
         .then(
             response => successCallback(response),
             error => failCallback(error)

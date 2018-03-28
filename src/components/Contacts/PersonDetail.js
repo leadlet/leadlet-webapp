@@ -91,7 +91,7 @@ class ContactDetail extends Component {
                 return {
                     id: id,
                     title: deal.title,
-                    dealValue: deal.dealValue.potentialValue,
+                    dealValue: deal.dealValue && deal.dealValue.potentialValue,
                     stageId: deal.stage.name
                 };
             });
@@ -176,6 +176,7 @@ class ContactDetail extends Component {
                 navLinks: true, // can click day/week names to navigate views
                 editable: true,
                 eventLimit: true, // allow "more" link when too many events
+
                 events
             });
         }
@@ -272,6 +273,7 @@ class ContactDetail extends Component {
                                     pageSize={5}
                                     getTimelineItems={this.props.getTimelineByPersonId}
                                     itemId={this.props.match.params.personId}
+                                    loadMoreTimeline={this.props.getTimelineLoadMoreByPersonId}
                                 />
                             </div>
                         </div>
@@ -306,7 +308,7 @@ class ContactDetail extends Component {
                                         <TableHeaderColumn dataField='title' dataFormat={this.titleFormatter}>Title</TableHeaderColumn>
                                         <TableHeaderColumn dataField='dealValue'>Deal Value</TableHeaderColumn>
                                         <TableHeaderColumn dataField='stageId'>Stage</TableHeaderColumn>
-                                        <TableHeaderColumn dataFormat={this.deleteDealFormatter}></TableHeaderColumn>
+                                        <TableHeaderColumn disabled dataFormat={this.deleteDealFormatter}></TableHeaderColumn>
                                     </BootstrapTable>
                                 </div>
                             </div>
@@ -330,7 +332,11 @@ class ContactDetail extends Component {
                             <EditOrCreateActivity showModal={this.state.isActivityModalVisible}
                                                   close={this.closeActivityModal}
                                                   initialValues={{
-                                                      personId: this.props.match.params.personId
+                                                      person : {
+                                                          id: this.props.match.params.personId
+                                                      },
+                                                      organization: this.props.viewedPerson && this.props.viewedPerson.organization,
+
                                                   }}
                                                   createCallback={this.refreshTimeline}
                                                   showPersonSelection={false}
@@ -354,24 +360,15 @@ class ContactDetail extends Component {
                                                                              initialValues={{
                                                                                  person : {
                                                                                      id: this.props.match.params.personId
-                                                                                 }
+                                                                                 },
+                                                                                 organization: this.props.viewedPerson && this.props.viewedPerson.organization,
+
                                                                              }}
-                                                                             pipelineId={this.props.viewedPerson.pipelineId}
                                                                              showPersonSelection={false}
                                                                              showOrganizationSelection={false}
                             />
                         }
-                        <SweetAlert
-                            title="Are you sure?"
-                            text="You will loose information related to deal!"
-                            type="warning"
-                            showCancelButton={true}
-                            confirmButtonColor="#DD6B55"
-                            confirmButtonText="Yes, delete it!"
-                            show={this.state.showDeleteDealDialog}
-                            onConfirm={() => this.confirmDeleteDeal()}
-                            onCancel={() => this.cancelDeleteDeal()}
-                        />
+
 
                     </div>
                 </div>

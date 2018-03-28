@@ -131,7 +131,7 @@ class Activity extends Component {
     render() {
         return (
             <div className="wrapper wrapper-content">
-                <div className="row animated fadeInDown">
+                <div className="row">
                     <div>
                         <div className="ibox float-e-margins">
                             <div className="ibox-title">

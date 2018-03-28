@@ -18,31 +18,6 @@ export function getByIdOrganization(organizationId) {
     function failure(error) { return { type: organizationConstants.GET_FAILURE, error } }
 }
 
-export function getOrganizationByPersonId(personId) {
-    return dispatch => {
-        dispatch(request());
-
-        organizationService.getOrganizationByPersonId(personId)
-            .then(
-                response => dispatch(success({ items: response[0], dataTotalSize: response[1]})),
-                error => dispatch(failure(error))
-            );
-    };
-
-    function request() { return { type: organizationConstants.GETALL_REQUEST } }
-    function success(data) { return { type: organizationConstants.GETALL_SUCCESS, data } }
-    function failure(error) { return { type: organizationConstants.GETALL_FAILURE, error } }
-}
-
-
-export function getAllOrganizationByFilterAndReturn(filter, successCallback, failCallback) {
-    organizationService.getAllOrganization(filter, 0, 20)
-        .then(
-            response => successCallback(response[0]),
-            error => failCallback(error)
-        );
-}
-
 export function getAllOrganization(filter, page, size) {
     return dispatch => {
         dispatch(request());
