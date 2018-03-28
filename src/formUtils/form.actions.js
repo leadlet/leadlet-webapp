@@ -103,4 +103,3 @@ export function loadStage(input, callback, pipeline) {
     }
 
 };
-loadActionName

@@ -49,7 +49,12 @@ class CreateObjective extends Component {
                             name="name"
                             component={renderSelectField}
                             label="Objective Name"
-                            options={loadActionName}
+                            options={[
+                                {label: "CALL", value: "CALL"},
+                                {label: "MEETING", value: "MEETING"},
+                                {label: "TASK", value: "TASK"},
+                                {label: "DEADLINE", value: "DEADLINE"},
+                                {label: "EMAIL", value: "EMAIL"} ]}
                         />
                         <Field
                             name="dailyAmount"
@@ -89,9 +94,7 @@ class CreateObjective extends Component {
 }
 
 function mapStateToProps(state) {
-    return {
-
-    }
+    return {}
 }
 
 export default reduxForm({
