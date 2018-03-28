@@ -34,10 +34,8 @@ const validate = values => {
     }
 
     /* activity type */
-    if (!values.stage || !values.stage.id) {
-        errors.stage ={
-            id: "Please select a stage"
-        }
+    if (!values.stage) {
+        errors.stage = "Please select a stage";
     }
 
     return errors
@@ -123,28 +121,33 @@ class CreateEditDeal extends Component {
                                 component={renderPriceCurrencyField}/>
 
 
-                        { this.props.showPipelineSelection &&
-                            <Fields
-                                names={[ 'pipeline.id', 'stage.id' ]}
-                                component={renderPipelineAndStageFields}
-                            />
-                        }
+                        <Fields
+                            names={[ 'pipeline', 'stage' ]}
+                            component={renderPipelineAndStageFields}
+                            showPipelineSelection={this.props.showPipelineSelection}
+                            showStageSelection={this.props.showStageSelection}
+                            parse={(value, name) => {
+                                if( value ) {
+                                    return {
+                                        'id': value.value,
+                                        'name': value.label
+                                    };
+                                }
+                            }}
+                            format={(value, name) => {
+                                if( value ){
+                                    return {
+                                        'value': value.id,
+                                        'label': value.name
+                                    }
+                                }
 
-                        { !this.props.showPipelineSelection &&
-                            <Field
-                                name="stage.id"
-                                label="Stage"
-                                placeholder="Select deal stage"
-                                component={renderAsyncSelectField}
-                                loadOptions={(input, callback)=>loadStage(input, callback, pipelineId)}
-
-                            />
-                        }
-
+                            }}
+                        />
 
                         { this.props.showUserSelection &&
                             <Field
-                                name="owner.id"
+                                name="owner"
                                 label="Owner"
                                 placeholder="Select deal owner"
                                 component={renderAsyncSelectField}
@@ -160,34 +163,20 @@ class CreateEditDeal extends Component {
                             showOrganizationSelection={this.props.showOrganizationSelection}
                             parse={(value, name) => {
                                 if( value ) {
-
-                                    if (name === "person") {
-                                        return {
-                                            'id': value.value,
-                                            'name': value.label
-                                        };
-                                    } else {
-                                        return {
-                                            'id': value.value,
-                                            'name': value.label
-                                        };
-                                    }
+                                    return {
+                                        'id': value.value,
+                                        'name': value.label
+                                    };
                                 }
                             }}
                             format={(value, name) => {
                                 if( value ){
-                                    if( name === "person"){
-                                        return {
-                                            'value': value.id,
-                                            'label': value.name
-                                        }
-                                    } else {
-                                        return {
-                                            'value': value.id,
-                                            'label': value.name
-                                        }
+                                    return {
+                                        'value': value.id,
+                                        'label': value.name
                                     }
                                 }
+
                             }}
                         />
 
@@ -233,6 +222,7 @@ class CreateEditDeal extends Component {
 
 CreateEditDeal.defaultProps = {
     showPipelineSelection: true,
+    showStageSelection: true,
     showPersonSelection: true,
     showOrganizationSelection: true,
     showUserSelection: true
@@ -243,13 +233,6 @@ const selector = formValueSelector('postNewDealForm');
 
 function mapStateToProps(state) {
     return {
-        title : selector(state, 'title'),
-        dealValue : selector(state, 'dealValue'),
-        ownerId : selector(state, 'owner.id'),
-        personId : selector(state, 'person.id'),
-        organizationId : selector(state, 'organization.id'),
-        stageId : selector(state, 'stage.id'),
-        pipelineId : selector(state, 'pipeline.id')
     };
 }
 

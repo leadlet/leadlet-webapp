@@ -239,7 +239,9 @@ class OrganizationDetail extends Component {
                         <EditOrCreateActivity showModal={this.state.isActivityModalVisible}
                                               close={this.closeActivityModal}
                                               initialValues={{
-                                                  organizationId: this.props.viewedOrganization.id
+                                                  organization : {
+                                                      id: this.props.viewedOrganization.id
+                                                  }
                                               }}
                                               createCallback={this.refreshTimeline}
                                               showOrganizationSelection={false}

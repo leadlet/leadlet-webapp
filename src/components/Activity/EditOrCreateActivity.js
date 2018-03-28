@@ -18,6 +18,8 @@ import {loadDeal, loadOrganization, loadPerson, loadUser} from "../../formUtils/
 import renderTextAreaField from "../../formUtils/renderTextAreaField";
 import {getTimelineByUserIdAndRefresh} from "../../actions/timeline.actions";
 import moment from 'moment';
+import Fields from "redux-form/es/Fields";
+import renderPersonAndOrganizationFields from "../../formUtils/renderPersonAndOrganizationFields";
 
 const validate = values => {
     const errors = {}
@@ -111,10 +113,10 @@ class EditOrCreateActivity extends Component {
         activity.memo = formValue.memo;
         activity.type = formValue.activityType;
         activity.title = formValue.title;
-        activity.personId = formValue.personId;
-        activity.organizationId = formValue.organizationId;
-        activity.userId = formValue.userId;
-        activity.dealId = formValue.dealId;
+        activity.personId = formValue.person && formValue.person.id;
+        activity.organizationId = formValue.organization && formValue.organization.id;
+        activity.userId = formValue.user && formValue.user.id;
+        activity.dealId = formValue.deal && formValue.deal.id;
         activity.location = formValue.location;
 
         if (this.props.initialValues && this.props.initialValues.id) {
@@ -186,43 +188,81 @@ class EditOrCreateActivity extends Component {
 
                         {this.props.showDealSelection &&
                         <Field
-                            name="dealId"
+                            name="deal"
                             label="Deal"
                             placeholder="Select deal"
                             component={renderAsyncSelectField}
                             loadOptions={loadDeal}
+                            parse={(value, name) => {
+                                if( value ) {
+                                    return {
+                                        'id': value.value,
+                                        'name': value.label
+                                    };
+                                }
+                            }}
+                            format={(value, name) => {
+                                if( value ){
+                                    return {
+                                        'value': value.id,
+                                        'label': value.name
+                                    }
+                                }
+
+                            }}
                         />
                         }
 
                         {this.props.showUserSelection &&
                         <Field
-                            name="userId"
+                            name="user"
                             label="Owner"
                             placeholder="Select deal owner"
                             component={renderAsyncSelectField}
                             loadOptions={loadUser}
+                            parse={(value, name) => {
+                                if( value ) {
+                                    return {
+                                        'id': value.value,
+                                        'name': value.label
+                                    };
+                                }
+                            }}
+                            format={(value, name) => {
+                                if( value ){
+                                    return {
+                                        'value': value.id,
+                                        'label': value.name
+                                    }
+                                }
+
+                            }}
                         />
                         }
 
-                        {this.props.showPersonSelection &&
-                            <Field
-                                name="personId"
-                                label="Contact Person"
-                                placeholder="Select contact person"
-                                component={renderAsyncSelectField}
-                                loadOptions={loadPerson}
-                            />
-                        }
+                        <Fields
+                            names={[ 'person', 'organization' ]}
+                            component={renderPersonAndOrganizationFields}
+                            showPersonSelection={this.props.showPersonSelection}
+                            showOrganizationSelection={this.props.showOrganizationSelection}
+                            parse={(value, name) => {
+                                if( value ) {
+                                    return {
+                                        'id': value.value,
+                                        'name': value.label
+                                    };
+                                }
+                            }}
+                            format={(value, name) => {
+                                if( value ){
+                                    return {
+                                        'value': value.id,
+                                        'label': value.name
+                                    }
+                                }
 
-                        {this.props.showOrganizationSelection &&
-                            <Field
-                                name="organizationId"
-                                label="Contact Organization"
-                                placeholder="Select contact organization"
-                                component={renderAsyncSelectField}
-                                loadOptions={loadOrganization}
-                            />
-                        }
+                            }}
+                        />
 
                         <Field
                             name="location"

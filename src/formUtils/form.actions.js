@@ -85,16 +85,21 @@ export function loadPipeline(input, callback) {
 
 };
 
-export function loadStage(input, callback, pipelineId) {
+export function loadStage(input, callback, pipeline) {
 
-    console.log("load stage " + pipelineId);
-    let successCallBack = (data) => {
-        callback(null, {options: data.map(stage => ({value: stage.id, label: stage.name}))});
-    };
-    let failCallBack = (error) => {
-        callback(error, null);
-    };
+    if(!pipeline){
+        callback(null, {options: []});
+    }
+    else {
+        let successCallBack = (data) => {
+            callback(null, {options: data.map(stage => ({value: stage.id, label: stage.name}))});
+        };
+        let failCallBack = (error) => {
+            callback(error, null);
+        };
 
-    getAllStageReturn(pipelineId, successCallBack, failCallBack);
+        getAllStageReturn(pipeline.value, successCallBack, failCallBack);
+
+    }
 
 };

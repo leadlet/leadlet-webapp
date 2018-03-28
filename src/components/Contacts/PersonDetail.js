@@ -91,7 +91,7 @@ class ContactDetail extends Component {
                 return {
                     id: id,
                     title: deal.title,
-                    dealValue: deal.dealValue.potentialValue,
+                    dealValue: deal.dealValue && deal.dealValue.potentialValue,
                     stageId: deal.stage.name
                 };
             });
@@ -308,7 +308,7 @@ class ContactDetail extends Component {
                                         <TableHeaderColumn dataField='title' dataFormat={this.titleFormatter}>Title</TableHeaderColumn>
                                         <TableHeaderColumn dataField='dealValue'>Deal Value</TableHeaderColumn>
                                         <TableHeaderColumn dataField='stageId'>Stage</TableHeaderColumn>
-                                        <TableHeaderColumn dataFormat={this.deleteDealFormatter}></TableHeaderColumn>
+                                        <TableHeaderColumn disabled dataFormat={this.deleteDealFormatter}></TableHeaderColumn>
                                     </BootstrapTable>
                                 </div>
                             </div>
@@ -332,7 +332,11 @@ class ContactDetail extends Component {
                             <EditOrCreateActivity showModal={this.state.isActivityModalVisible}
                                                   close={this.closeActivityModal}
                                                   initialValues={{
-                                                      personId: this.props.match.params.personId
+                                                      person : {
+                                                          id: this.props.match.params.personId
+                                                      },
+                                                      organization: this.props.viewedPerson && this.props.viewedPerson.organization,
+
                                                   }}
                                                   createCallback={this.refreshTimeline}
                                                   showPersonSelection={false}

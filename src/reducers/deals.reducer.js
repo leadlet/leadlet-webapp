@@ -1,5 +1,6 @@
 import {dealConstants} from "../constants/deal.constants";
 import {normalize, schema} from 'normalizr';
+import {personConstants} from "../constants/person.constants";
 
 const dealSchema = new schema.Entity('deals');
 
@@ -54,6 +55,19 @@ export function deals(state = {personDeals: []}, action) {
                 ...state,
                 personDeals: personDeals
             };
+        case dealConstants.CREATE_SUCCESS:
+                let personDeals2 = state.personDeals;
+                if( personDeals2[action.deal.person.id] === undefined){
+                    personDeals2[action.deal.person.id] = { ids: [], items: {}};
+                }
+
+            personDeals2[action.deal.person.id].ids.push(action.deal.id);
+            personDeals2[action.deal.person.id].items[action.deal.id]=action.deal;
+                return {
+                    ...state,
+                    personDeals: personDeals2
+                };
+
         case dealConstants.GET_FAILURE_FOR_PERSON:
             return {
                 ...state,
