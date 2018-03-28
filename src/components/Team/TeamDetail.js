@@ -3,6 +3,7 @@ import connect from "react-redux/es/connect/connect";
 import {getByTeamId} from "../../actions/team.actions";
 import CreateEditTeam from "./CreateEditTeam";
 import Link from "react-router-dom/es/Link";
+import CreateObjective from "../Objective/CreateObjective";
 
 class TeamDetail extends Component {
 
@@ -10,12 +11,27 @@ class TeamDetail extends Component {
         super(props);
 
         this.state = {
-            isEditTeamModalVisible: false
+            isEditTeamModalVisible: false,
+            isEditObjectiveModalVisible: false
         };
 
         this.openEditTeamModal = this.openEditTeamModal.bind(this);
         this.closeEditTeamModal = this.closeEditTeamModal.bind(this);
         this.renderMembersTable = this.renderMembersTable.bind(this);
+        this.openObjectiveModal = this.openObjectiveModal.bind(this);
+        this.closeObjectiveModal = this.closeObjectiveModal.bind(this);
+    }
+
+    openObjectiveModal() {
+        this.setState({
+            isEditObjectiveModalVisible: true
+        });
+    }
+
+    closeObjectiveModal() {
+        this.setState({
+            isEditObjectiveModalVisible: false
+        });
     }
 
     openEditTeamModal() {
@@ -34,9 +50,9 @@ class TeamDetail extends Component {
         this.props.getByTeamId(this.props.match.params.teamId);
     }
 
-    renderMembersTable(members){
+    renderMembersTable(members) {
         return members.map(member => {
-            return(
+            return (
                 <tr>
                     <td>{member.firstName} {member.lastName}</td>
                     <td>{member.login}</td>
@@ -86,6 +102,9 @@ class TeamDetail extends Component {
                             <div className="ibox float-e-margins">
                                 <div className="ibox-title">
                                     <h5>Objectives</h5>
+                                    <button className="btn btn-primary btn-xs pull-right" aria-hidden="true"
+                                            onClick={() => this.openObjectiveModal()}>Add objective
+                                    </button>
                                 </div>
                                 <div className="ibox-content">
                                     <table className="table table-hover">
@@ -133,15 +152,6 @@ class TeamDetail extends Component {
                                 </div>
                             </div>
                         </div>
-
-                        {
-                            this.state.isEditTeamModalVisible &&
-                            <CreateEditTeam showModal={this.state.isEditTeamModalVisible}
-                                            close={this.closeEditTeamModal}
-                                            initialValues={this.props.teams[this.props.match.params.teamId]}
-                            />
-                        }
-
                     </div>
                     <div className="row">
                         <div className="col-md-3">
@@ -169,6 +179,19 @@ class TeamDetail extends Component {
                                 </div>
                             </div>
                         </div>
+                        {
+                            this.state.isEditTeamModalVisible &&
+                            <CreateEditTeam showModal={this.state.isEditTeamModalVisible}
+                                            close={this.closeEditTeamModal}
+                                            initialValues={this.props.teams[this.props.match.params.teamId]}
+                            />
+                        }
+                        {
+                            this.state.isEditObjectiveModalVisible &&
+                            <CreateObjective showModal={this.state.isEditObjectiveModalVisible}
+                                             close={this.closeObjectiveModal}
+                            />
+                        }
                     </div>
                 </div>
             )

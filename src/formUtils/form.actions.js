@@ -83,3 +83,4 @@ export function loadStage(input, callback) {
     getAllStageReturn(successCallBack, failCallBack);
 
 };
+loadActionName

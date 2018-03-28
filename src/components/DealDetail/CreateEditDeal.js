@@ -11,7 +11,6 @@ import {getAllStagesByPipelineId} from "../../actions/stage.actions";
 import renderInputField from '../../formUtils/renderInputField'
 import renderPriceCurrencyField from '../../formUtils/renderPriceCurrencyField'
 import formValueSelector from "redux-form/es/formValueSelector";
-import renderSelectField from "../../formUtils/renderSelectField";
 import renderAsyncSelectField  from "../../formUtils/renderAsyncSelectField";
 
 import renderDatePicker from "../../formUtils/renderDatePicker";

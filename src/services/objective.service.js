@@ -1,61 +1,60 @@
 import { authHeader } from '../helpers';
 import {userActions} from "../actions/user.actions";
 
-export const teamService = {
-    getAll,
-    getByTeamId,
-    createTeam,
-    updateTeam,
-    deleteTeam
+export const objectiveService = {
+    getAllObjectives,
+    getByObjectiveId,
+    createObjective,
+    updateObjective,
+    deleteObjective
 };
 
-function createTeam(team, callback) {
+function createObjective(objective, callback) {
     const requestOptions = {
         method: 'POST',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
-        body: JSON.stringify(team)
+        body: JSON.stringify(objective)
     };
 
-    return fetch('/api/teams/', requestOptions).then(handleResponse);
+    return fetch('/api/objectives/', requestOptions).then(handleResponse);
 }
 
-function updateTeam(team, callback) {
+function updateObjective(objective, callback) {
     const requestOptions = {
         method: 'PUT',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
-        body: JSON.stringify(team)
+        body: JSON.stringify(objective)
     };
 
-    return fetch('/api/teams/', requestOptions).then(handleResponse);
+    return fetch('/api/objectives/', requestOptions).then(handleResponse);
 }
 
-function getByTeamId(id) {
+function getByObjectiveId(id) {
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
     };
 
-    return fetch('/api/teams/' + id, requestOptions).then(handleResponse);
+    return fetch('/api/objectives/' + id, requestOptions).then(handleResponse);
 }
 
-function getAll(filter , page, size) {
+function getAllObjectives(filter , page, size) {
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
     };
 
-    return fetch(`/api/teams?filter=${filter}&page=${page}&size=${size}` , requestOptions).then(handlePaginationResponse);
+    return fetch(`/api/objectives?filter=${filter}&page=${page}&size=${size}` , requestOptions).then(handlePaginationResponse);
 }
 
-function deleteTeam(id) {
+function deleteObjective(id) {
     const requestOptions = {
         method: 'DELETE',
         headers: authHeader()
     };
 
-    return fetch('/api/teams/' + id, requestOptions).then(handleResponse);
+    return fetch('/api/objectives/' + id, requestOptions).then(handleResponse);
 }
-
 
 function handlePaginationResponse(response) {
     if (response.ok !== true) {
