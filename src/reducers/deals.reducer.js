@@ -47,7 +47,7 @@ export function deals(state = {personDeals: []}, action) {
             let personDeals = state.personDeals;
             const _items = normalize(action.data.items, dealListSchema);
 
-            personDeals[action.data.personId] = {};
+            personDeals[action.data.personId]  = { ids: [], items: {}};
             personDeals[action.data.personId].ids = _items.result;
             personDeals[action.data.personId].items = _items.entities.deals;
 
