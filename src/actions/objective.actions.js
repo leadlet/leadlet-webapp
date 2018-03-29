@@ -2,6 +2,30 @@ import {alertActions} from "./alert.actions";
 import {objectiveService} from "../services/objective.service";
 import {objectiveConstants} from "../constants/objective.constants";
 
+export function getObjectivesByTeamId(teamId) {
+    return dispatch => {
+        dispatch(request(teamId));
+
+        objectiveService.getObjectivesByTeamId(teamId)
+            .then(
+                objectives => dispatch(success({objectives, teamId})),
+                error => dispatch(failure(error))
+            );
+    };
+
+    function request() {
+        return {type: objectiveConstants.GET_OBJ_REQUEST}
+    }
+
+    function success(data) {
+        return {type: objectiveConstants.GET_OBJ_SUCCESS, data}
+    }
+
+    function failure(error) {
+        return {type: objectiveConstants.GET_OBJ_FAILURE, error}
+    }
+}
+
 export function getByObjectiveId(objectiveId) {
     return dispatch => {
         dispatch(request(objectiveId));

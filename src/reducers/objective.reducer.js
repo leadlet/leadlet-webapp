@@ -6,7 +6,7 @@ const objectiveSchema = new schema.Entity('objectives');
 // or use shorthand syntax:
 const objectiveListSchema = [objectiveSchema];
 
-export function objectives(state = {items: {}, ids: []}, action) {
+export function objectives(state = {teamObjectives: []}, action) {
     switch (action.type) {
 
         /* get by id */
@@ -29,9 +29,35 @@ export function objectives(state = {items: {}, ids: []}, action) {
 
         case objectiveConstants.GET_FAILURE:
             return {
+                ...state,
                 error: action.error
             };
 
+            /* get objectives by team id*/
+
+        case objectiveConstants.GET_OBJ_REQUEST:
+            return {
+                ...state,
+                loading: true
+            };
+
+        case objectiveConstants.GET_OBJ_SUCCESS:
+
+            let teamObjectives = state.teamObjectives;
+
+            teamObjectives[action.data.teamId] = {items: []};
+            teamObjectives[action.data.teamId].items = action.data.objectives;
+
+            return {
+                ...state,
+                teamObjectives: teamObjectives
+            };
+
+        case objectiveConstants.GET_OBJ_FAILURE:
+            return {
+                ...state,
+                error: action.error
+            };
         /* ALL objectiveS */
         case objectiveConstants.GETALL_REQUEST:
             return {
@@ -50,6 +76,7 @@ export function objectives(state = {items: {}, ids: []}, action) {
 
         case objectiveConstants.GETALL_FAILURE:
             return {
+                ...state,
                 error: action.error
             };
 
@@ -58,16 +85,26 @@ export function objectives(state = {items: {}, ids: []}, action) {
             return state;
 
         case objectiveConstants.CREATE_SUCCESS:
-            let _state = {
-                ...state,
-                items: {
-                    ...state.items,
-                    [action.objective.id]: action.objective
-                },
-                ids: [...state.ids, action.objective.id]
-            };
-            return _state;
+            let teamObjectives2 = state.teamObjectives;
+            if (teamObjectives2[action.response.teamId] === undefined) {
+                teamObjectives2[action.response.teamId] = {items: []};
+            }
 
+            var found = false;
+            for( var i = 0; i < teamObjectives2[action.response.teamId].items.length; i++){
+                if( teamObjectives2[action.response.teamId].items[i].name === action.response.name){
+                    teamObjectives2[action.response.teamId].items[i] = action.response;
+                    found = true;
+                }
+            }
+            if( !found ){
+                teamObjectives2[action.response.teamId].items.push(action.response);
+            }
+
+            return {
+                ...state,
+                teamObjectives: teamObjectives2
+            };
         case objectiveConstants.CREATE_FAILURE:
             return {
                 ...state,
@@ -79,7 +116,7 @@ export function objectives(state = {items: {}, ids: []}, action) {
             return state;
 
         case objectiveConstants.UPDATE_SUCCESS:
-            _state = {
+            let _state = {
                 ...state,
                 items: {
                     ...state.items,

@@ -4,7 +4,7 @@ import {getByTeamId} from "../../actions/team.actions";
 import CreateEditTeam from "./CreateEditTeam";
 import Link from "react-router-dom/es/Link";
 import CreateObjective from "../Objective/CreateObjective";
-import Editable from 'react-x-editable';
+import {getObjectivesByTeamId} from "../../actions/objective.actions";
 
 class TeamDetail extends Component {
 
@@ -21,6 +21,7 @@ class TeamDetail extends Component {
         this.renderMembersTable = this.renderMembersTable.bind(this);
         this.openObjectiveModal = this.openObjectiveModal.bind(this);
         this.closeObjectiveModal = this.closeObjectiveModal.bind(this);
+        this.renderTeamObjectivesAmount = this.renderTeamObjectivesAmount.bind(this);
     }
 
     openObjectiveModal() {
@@ -49,6 +50,7 @@ class TeamDetail extends Component {
 
     componentDidMount() {
         this.props.getByTeamId(this.props.match.params.teamId);
+        this.props.getObjectivesByTeamId(this.props.match.params.teamId);
     }
 
     renderMembersTable(members) {
@@ -63,6 +65,27 @@ class TeamDetail extends Component {
                     </td>
                 </tr>
             );
+        });
+    }
+
+    renderTeamObjectivesAmount(teamObjectives) {
+        return teamObjectives.map(teamObjective => {
+            return teamObjective.items.map(item => {
+                return (
+                    <tr>
+                        <td>{item.name}</td>
+                        <td>
+                            <span className="pie">{item.dailyAmount}</span>
+                        </td>
+                        <td>
+                            <span className="pie">{item.weeklyAmount}</span>
+                        </td>
+                        <td>
+                            <span className="pie">{item.monthlyAmount}</span>
+                        </td>
+                    </tr>
+                )
+            });
         });
     }
 
@@ -118,47 +141,9 @@ class TeamDetail extends Component {
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
-                                            <td>Mail</td>
-                                            <td>
-                                                <Editable
-                                                    name="dailyAmount"
-                                                    dataType="text"
-                                                    mode="inline"
-                                                    title="Please enter username"
-                                                    display={(value) => {
-                                                        return (<strong>{value}</strong>);
-                                                    }}
-                                                    value="10"
-                                                    showButtons={false}
-                                                /></td>
-                                            <td><span className="pie">100</span></td>
-                                            <td><span className="pie">1000</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Phone</td>
-                                            <td><span className="pie">20</span></td>
-                                            <td><span className="pie">200</span></td>
-                                            <td><span className="pie">2000</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Meeting</td>
-                                            <td><span className="pie">30</span></td>
-                                            <td><span className="pie">300</span></td>
-                                            <td><span className="pie">3000</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Task</td>
-                                            <td><span className="pie">40</span></td>
-                                            <td><span className="pie">400</span></td>
-                                            <td><span className="pie">4000</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Deadline</td>
-                                            <td><span className="pie">50</span></td>
-                                            <td><span className="pie">500</span></td>
-                                            <td><span className="pie">5000</span></td>
-                                        </tr>
+
+                                        {this.renderTeamObjectivesAmount(this.props.objectives)}
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -218,11 +203,12 @@ function
 
 mapStateToProps(state) {
     return {
-        teams: state.teams.items
+        teams: state.teams.items,
+        objectives: state.objectives.teamObjectives
     };
 }
 
-export default connect(mapStateToProps, {getByTeamId})
+export default connect(mapStateToProps, {getByTeamId, getObjectivesByTeamId})
 
 (
     TeamDetail

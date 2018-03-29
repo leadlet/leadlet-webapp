@@ -6,7 +6,8 @@ export const objectiveService = {
     getByObjectiveId,
     createObjective,
     updateObjective,
-    deleteObjective
+    deleteObjective,
+    getObjectivesByTeamId
 };
 
 function createObjective(objective, callback) {
@@ -45,6 +46,15 @@ function getAllObjectives(filter , page, size) {
     };
 
     return fetch(`/api/objectives?filter=${filter}&page=${page}&size=${size}` , requestOptions).then(handlePaginationResponse);
+}
+
+function getObjectivesByTeamId(id) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    return fetch(`/api/objectives/team/` + id, requestOptions).then(handleResponse);
 }
 
 function deleteObjective(id) {

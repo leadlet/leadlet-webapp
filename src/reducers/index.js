@@ -15,6 +15,7 @@ import {deals} from './deals.reducer';
 import {timeLines} from "./timelines.reducer";
 import {boards} from "./board.reducer";
 import {teams} from "./team.reducer";
+import {objectives} from "./objective.reducer";
 
 const rootReducer = combineReducers({
     authentication,
@@ -31,7 +32,8 @@ const rootReducer = combineReducers({
     deals,
     timeLines,
     teams,
-    boards
+    boards,
+    objectives
 });
 
 export default rootReducer;
