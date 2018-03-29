@@ -16,7 +16,7 @@ function createObjective(objective, callback) {
         body: JSON.stringify(objective)
     };
 
-    return fetch('/api/objectives/', requestOptions).then(handleResponse);
+    return fetch('/api/objectives/team', requestOptions).then(handleResponse);
 }
 
 function updateObjective(objective, callback) {

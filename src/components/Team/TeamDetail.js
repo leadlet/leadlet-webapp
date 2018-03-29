@@ -4,6 +4,7 @@ import {getByTeamId} from "../../actions/team.actions";
 import CreateEditTeam from "./CreateEditTeam";
 import Link from "react-router-dom/es/Link";
 import CreateObjective from "../Objective/CreateObjective";
+import Editable from 'react-x-editable';
 
 class TeamDetail extends Component {
 
@@ -53,10 +54,10 @@ class TeamDetail extends Component {
     renderMembersTable(members) {
         return members.map(member => {
             return (
-                <tr>
+                <tr key={member.id}>
                     <td>{member.firstName} {member.lastName}</td>
                     <td>{member.login}</td>
-                    <td><a href="#">{member.teamLead && <i class="fa fa-check text-navy"></i>}</a></td>
+                    <td><a>{member.teamLead && <i className="fa fa-check text-navy"></i>}</a></td>
                     <td>
                         <Link to={"/user/" + member.id}>edit</Link> | <a>delete</a>
                     </td>
@@ -119,7 +120,18 @@ class TeamDetail extends Component {
                                         <tbody>
                                         <tr>
                                             <td>Mail</td>
-                                            <td><span className="pie">10</span></td>
+                                            <td>
+                                                <Editable
+                                                    name="dailyAmount"
+                                                    dataType="text"
+                                                    mode="inline"
+                                                    title="Please enter username"
+                                                    display={(value) => {
+                                                        return (<strong>{value}</strong>);
+                                                    }}
+                                                    value="10"
+                                                    showButtons={false}
+                                                /></td>
                                             <td><span className="pie">100</span></td>
                                             <td><span className="pie">1000</span></td>
                                         </tr>
@@ -190,6 +202,9 @@ class TeamDetail extends Component {
                             this.state.isEditObjectiveModalVisible &&
                             <CreateObjective showModal={this.state.isEditObjectiveModalVisible}
                                              close={this.closeObjectiveModal}
+                                             initialValues={{
+                                                 teamId: this.props.match.params.teamId
+                                             }}
                             />
                         }
                     </div>

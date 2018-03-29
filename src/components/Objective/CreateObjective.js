@@ -18,14 +18,15 @@ class CreateObjective extends Component {
 
     onSubmit = (formValues) => {
 
-        let objective = {
+        let teamObjective = {
+            teamId: formValues.teamId,
             name: formValues.name,
             dailyAmount: formValues.dailyAmount,
             weeklyAmount: formValues.weeklyAmount,
             monthlyAmount: formValues.monthlyAmount
         }
 
-        this.props.createObjective(objective);
+        this.props.createObjective(teamObjective);
 
         this.props.close();
     }
