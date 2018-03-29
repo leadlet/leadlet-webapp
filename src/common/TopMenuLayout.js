@@ -15,6 +15,8 @@ import TeamAgentManagement from "../components/Team/TeamAgentManagement";
 import {PrivateRoute} from "../components/PrivateRoute";
 import AgentDetail from "../components/Agent/AgentDetail";
 import TeamDetail from "../components/Team/TeamDetail";
+import {Redirect, Route} from "react-router-dom";
+import {NotFound} from "../components/ErrorPages/NotFound";
 
 class TopMenuLayout extends Component {
 
@@ -38,6 +40,7 @@ class TopMenuLayout extends Component {
                                 <PrivateRoute path="/pipelines" component={PipelinesPage}/>
                                 <PrivateRoute path="/activities" component={ActivityList}/>
                                 <PrivateRoute path="/preferences" component={Preferences}/>
+                                <Route component={NotFound} />
                             </Switch>
                         </div>
                         <Footer/>
