@@ -146,82 +146,82 @@ class AgentDetail extends Component {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-md-3">
-                            <div className="row">
-                                <div className="ibox">
-                                    <div className="ibox-content info-card">
-                                        <div className="row">
-                                            <dl className="dl-horizontal">
-                                                <dt>First Name:</dt>
-                                                <dd>{user.firstName}</dd>
-                                                <dt>Last Name:</dt>
-                                                <dd>{user.lastName}</dd>
-                                                <dt>Email:</dt>
-                                                <dd>{user.login}</dd>
-                                            </dl>
-                                        </div>
-                                        <div className="row">
-                                            <button onClick={this.openEditAgentModal}
-                                                    className="btn btn-white btn-xs pull-right">Edit Agent
-                                            </button>
-                                        </div>
 
+                            <div className="ibox">
+                                <div className="ibox-content info-card">
+                                    <div className="row">
+                                        <dl className="dl-horizontal">
+                                            <dt>First Name:</dt>
+                                            <dd>{user.firstName}</dd>
+                                            <dt>Last Name:</dt>
+                                            <dd>{user.lastName}</dd>
+                                            <dt>Email:</dt>
+                                            <dd>{user.login}</dd>
+                                        </dl>
                                     </div>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="ibox">
-                                    <div className="ibox-title">
-                                        <i className="fa fa-plus pull-right" aria-hidden="true"
-                                           onClick={() => this.openActivityModal({
-                                               start: moment(),
-                                               end: moment()
-                                           })}
-                                        />
-                                        <h5>Activities</h5>
-                                    </div>
-                                    <div className="ibox-content">
-                                        <div id="contact-calendar"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-md-9">
-                            <div className="row">
-                                <div className="ibox">
-                                    <div className="ibox-title">
-                                        <h5>Objectives</h5>
-                                        <button className="btn btn-primary btn-xs pull-right" aria-hidden="true"
-                                                onClick={() => this.openObjectiveModal()}>Add objective
+                                    <div className="row">
+                                        <button onClick={this.openEditAgentModal}
+                                                className="btn btn-white btn-xs pull-right">Edit Agent
                                         </button>
                                     </div>
-                                    <div className="ibox-content">
-                                        <table className="table table-hover">
-                                            <thead>
-                                            <tr>
-                                                <th>Action Name</th>
-                                                <th>Daily</th>
-                                                <th>Weekly</th>
-                                                <th>Monthly</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
 
-                                            {this.renderAgentObjectivesAmount(this.props.objectives)}
-
-                                            </tbody>
-                                        </table>
-                                    </div>
                                 </div>
                             </div>
-                            <div className="row">
-                                <div className="ibox">
-                                    <Timeline
-                                        pageSize={5}
-                                        getTimelineItems={this.props.getTimelineByUserId}
-                                        itemId={this.props.viewedUser.id}
+
+
+                            <div className="ibox">
+                                <div className="ibox-title">
+                                    <i className="fa fa-plus pull-right" aria-hidden="true"
+                                       onClick={() => this.openActivityModal({
+                                           start: moment(),
+                                           end: moment()
+                                       })}
                                     />
+                                    <h5>Activities</h5>
+                                </div>
+                                <div className="ibox-content">
+                                    <div id="contact-calendar"/>
                                 </div>
                             </div>
+
+                        </div>
+                        <div className="col-md-9">
+
+                            <div className="ibox">
+                                <div className="ibox-title">
+                                    <h5>Objectives</h5>
+                                    <button className="btn btn-primary btn-xs pull-right" aria-hidden="true"
+                                            onClick={() => this.openObjectiveModal()}>Add objective
+                                    </button>
+                                </div>
+                                <div className="ibox-content">
+                                    <table className="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>Action Name</th>
+                                            <th>Daily</th>
+                                            <th>Weekly</th>
+                                            <th>Monthly</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        {this.renderAgentObjectivesAmount(this.props.objectives)}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+
+                            <div className="ibox">
+                                <Timeline
+                                    pageSize={5}
+                                    getTimelineItems={this.props.getTimelineByUserId}
+                                    itemId={this.props.viewedUser.id}
+                                />
+                            </div>
+                          
                         </div>
                         {
                             this.state.isAgentModalVisible &&
