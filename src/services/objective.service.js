@@ -5,9 +5,11 @@ export const objectiveService = {
     getAllObjectives,
     getByObjectiveId,
     createObjective,
+    createObjectiveForUser,
     updateObjective,
     deleteObjective,
-    getObjectivesByTeamId
+    getObjectivesByTeamId,
+    getObjectivesByUserId
 };
 
 function createObjective(objective, callback) {
@@ -18,6 +20,16 @@ function createObjective(objective, callback) {
     };
 
     return fetch('/api/objectives/team', requestOptions).then(handleResponse);
+}
+
+function createObjectiveForUser(objective, callback) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+        body: JSON.stringify(objective)
+    };
+
+    return fetch('/api/objectives/user', requestOptions).then(handleResponse);
 }
 
 function updateObjective(objective, callback) {
@@ -57,6 +69,14 @@ function getObjectivesByTeamId(id) {
     return fetch(`/api/objectives/team/` + id, requestOptions).then(handleResponse);
 }
 
+function getObjectivesByUserId(id) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    return fetch(`/api/objectives/user/` + id, requestOptions).then(handleResponse);
+}
 function deleteObjective(id) {
     const requestOptions = {
         method: 'DELETE',

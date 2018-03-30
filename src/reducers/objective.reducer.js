@@ -6,7 +6,7 @@ const objectiveSchema = new schema.Entity('objectives');
 // or use shorthand syntax:
 const objectiveListSchema = [objectiveSchema];
 
-export function objectives(state = {teamObjectives: []}, action) {
+export function objectives(state = {teamObjectives: [], userObjectives: []}, action) {
     switch (action.type) {
 
         /* get by id */
@@ -33,7 +33,7 @@ export function objectives(state = {teamObjectives: []}, action) {
                 error: action.error
             };
 
-            /* get objectives by team id*/
+        /* get objectives by team id*/
 
         case objectiveConstants.GET_OBJ_REQUEST:
             return {
@@ -58,6 +58,33 @@ export function objectives(state = {teamObjectives: []}, action) {
                 ...state,
                 error: action.error
             };
+
+        /* get objectives by user id*/
+
+        case objectiveConstants.GET_OBJ_USER_REQUEST:
+            return {
+                ...state,
+                loading: true
+            };
+
+        case objectiveConstants.GET_OBJ_USER_SUCCESS:
+
+            let userObjectives = state.userObjectives;
+
+            userObjectives[action.data.userId] = {items: []};
+            userObjectives[action.data.userId].items = action.data.objectives;
+
+            return {
+                ...state,
+                userObjectives: userObjectives
+            };
+
+        case objectiveConstants.GET_OBJ_USER_FAILURE:
+            return {
+                ...state,
+                error: action.error
+            };
+
         /* ALL objectiveS */
         case objectiveConstants.GETALL_REQUEST:
             return {
@@ -80,7 +107,7 @@ export function objectives(state = {teamObjectives: []}, action) {
                 error: action.error
             };
 
-        /* NEW objective */
+        /* NEW objective for team*/
         case objectiveConstants.CREATE_REQUEST:
             return state;
 
@@ -91,13 +118,13 @@ export function objectives(state = {teamObjectives: []}, action) {
             }
 
             var found = false;
-            for( var i = 0; i < teamObjectives2[action.response.teamId].items.length; i++){
-                if( teamObjectives2[action.response.teamId].items[i].name === action.response.name){
+            for (var i = 0; i < teamObjectives2[action.response.teamId].items.length; i++) {
+                if (teamObjectives2[action.response.teamId].items[i].name === action.response.name) {
                     teamObjectives2[action.response.teamId].items[i] = action.response;
                     found = true;
                 }
             }
-            if( !found ){
+            if (!found) {
                 teamObjectives2[action.response.teamId].items.push(action.response);
             }
 
@@ -110,6 +137,38 @@ export function objectives(state = {teamObjectives: []}, action) {
                 ...state,
                 error: action.error
             };
+
+        /* NEW objective for user*/
+        case objectiveConstants.CREATE_REQUEST_FOR_USER:
+            return state;
+
+        case objectiveConstants.CREATE_SUCCESS_FOR_USER:
+            let userObjectives2 = state.userObjectives;
+            if (userObjectives2[action.response.userId] === undefined) {
+                userObjectives2[action.response.userId] = {items: []};
+            }
+
+            var found = false;
+            for (var i = 0; i < userObjectives2[action.response.userId].items.length; i++) {
+                if (userObjectives2[action.response.userId].items[i].name === action.response.name) {
+                    userObjectives2[action.response.userId].items[i] = action.response;
+                    found = true;
+                }
+            }
+            if (!found) {
+                userObjectives2[action.response.userId].items.push(action.response);
+            }
+
+            return {
+                ...state,
+                userObjectives: userObjectives2
+            };
+        case objectiveConstants.CREATE_FAILURE_FOR_USER:
+            return {
+                ...state,
+                error: action.error
+            };
+
 
         /* UPDATE objective */
         case objectiveConstants.UPDATE_REQUEST:

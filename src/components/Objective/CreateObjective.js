@@ -5,7 +5,7 @@ import Modal from "react-bootstrap/es/Modal";
 import Field from "redux-form/es/Field";
 import renderInputField from "../../formUtils/renderInputField";
 import renderSelectField from "../../formUtils/renderSelectField";
-import {createObjective} from "../../actions/objective.actions";
+import {createObjectiveForTeam, createObjectiveForUser} from "../../actions/objective.actions";
 
 class CreateObjective extends Component {
 
@@ -18,15 +18,20 @@ class CreateObjective extends Component {
 
     onSubmit = (formValues) => {
 
-        let teamObjective = {
+        let objective = {
             teamId: formValues.teamId,
+            userId: formValues.userId,
             name: formValues.name,
             dailyAmount: formValues.dailyAmount,
             weeklyAmount: formValues.weeklyAmount,
             monthlyAmount: formValues.monthlyAmount
         }
 
-        this.props.createObjective(teamObjective);
+        if (objective.teamId !== undefined) {
+            this.props.createObjectiveForTeam(objective);
+        } else {
+            this.props.createObjectiveForUser(objective);
+        }
 
         this.props.close();
     }
@@ -55,7 +60,7 @@ class CreateObjective extends Component {
                                 {label: "MEETING", value: "MEETING"},
                                 {label: "TASK", value: "TASK"},
                                 {label: "DEADLINE", value: "DEADLINE"},
-                                {label: "EMAIL", value: "EMAIL"} ]}
+                                {label: "EMAIL", value: "EMAIL"}]}
                         />
                         <Field
                             name="dailyAmount"
@@ -102,5 +107,5 @@ export default reduxForm({
     form: 'postNewObjectiveForm',
     enableReinitialize: true
 })(
-    connect(mapStateToProps, {createObjective})(CreateObjective)
+    connect(mapStateToProps, {createObjectiveForTeam, createObjectiveForUser})(CreateObjective)
 );
