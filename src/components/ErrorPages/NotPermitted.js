@@ -1,6 +1,4 @@
 import React from 'react';
-import '../../../node_modules/fullcalendar/dist/fullcalendar.css';
-
 
 export const NotPermitted = function () {
     return (

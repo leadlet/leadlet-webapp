@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Tab, Tabs} from "react-bootstrap";
 import Profile from "./Profile";
 import Pipelines from "../Pipelines/Pipelines";
+import {Link} from "react-router-dom";
 
 
 class Preferences extends Component {
@@ -18,7 +19,6 @@ class Preferences extends Component {
                                 <h5>Configure your preferences</h5>
                             </div>
                             <div className="ibox-content">
-
                                 <p className="m-b-lg">
                                     Ut at lorem ut diam molestie laoreet. Donec ut nibh ac risus euismod semper a ut metus. Phasellus faucibus dapibus felis, viverra tincidunt felis pellentesque posuere.
                                 </p>
