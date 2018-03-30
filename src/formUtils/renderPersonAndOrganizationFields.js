@@ -15,7 +15,7 @@ const renderPerson =(props) => (
             closeOnSelect={true}
             disabled={false}
             multi={false}
-            placeholder="Pipeline"
+            placeholder="Person"
             loadOptions={(input, callback)=>loadPerson(input, callback, props.organization.input.value)}
             removeSelected={true}
             resetValue={undefined}

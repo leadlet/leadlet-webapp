@@ -82,12 +82,17 @@ class EditOrCreateActivity extends Component {
         this.cancelDeleteActivity = this.cancelDeleteActivity.bind(this);
         this.onDeleteActivity = this.onDeleteActivity.bind(this);
         this.onClose = this.onClose.bind(this);
+        this.closeActivity = this.closeActivity.bind(this);
 
         this.state = {
             showDeleteDialog: false,
+            activityStatus: true
         };
     }
 
+    closeActivity(){
+        this.setState({activityStatus: false});
+    }
 
     confirmDeleteActivity() {
         this.props._delete(this.props.initialValues.id);
@@ -118,6 +123,11 @@ class EditOrCreateActivity extends Component {
         activity.userId = formValue.user && formValue.user.id;
         activity.dealId = formValue.deal && formValue.deal.id;
         activity.location = formValue.location;
+        activity.isClosed = formValue.isClosed;
+
+        if(this.state.activityStatus === false){
+            activity.isClosed = true;
+        }
 
         if (this.props.initialValues && this.props.initialValues.id) {
             this.props.update(activity);
@@ -194,7 +204,7 @@ class EditOrCreateActivity extends Component {
                             component={renderAsyncSelectField}
                             loadOptions={loadDeal}
                             parse={(value, name) => {
-                                if( value ) {
+                                if (value) {
                                     return {
                                         'id': value.value,
                                         'name': value.label
@@ -202,7 +212,7 @@ class EditOrCreateActivity extends Component {
                                 }
                             }}
                             format={(value, name) => {
-                                if( value ){
+                                if (value) {
                                     return {
                                         'value': value.id,
                                         'label': value.name
@@ -221,7 +231,7 @@ class EditOrCreateActivity extends Component {
                             component={renderAsyncSelectField}
                             loadOptions={loadUser}
                             parse={(value, name) => {
-                                if( value ) {
+                                if (value) {
                                     return {
                                         'id': value.value,
                                         'name': value.label
@@ -229,7 +239,7 @@ class EditOrCreateActivity extends Component {
                                 }
                             }}
                             format={(value, name) => {
-                                if( value ){
+                                if (value) {
                                     return {
                                         'value': value.id,
                                         'label': value.name
@@ -241,12 +251,12 @@ class EditOrCreateActivity extends Component {
                         }
 
                         <Fields
-                            names={[ 'person', 'organization' ]}
+                            names={['person', 'organization']}
                             component={renderPersonAndOrganizationFields}
                             showPersonSelection={this.props.showPersonSelection}
                             showOrganizationSelection={this.props.showOrganizationSelection}
                             parse={(value, name) => {
-                                if( value ) {
+                                if (value) {
                                     return {
                                         'id': value.value,
                                         'name': value.label
@@ -254,7 +264,7 @@ class EditOrCreateActivity extends Component {
                                 }
                             }}
                             format={(value, name) => {
-                                if( value ){
+                                if (value) {
                                     return {
                                         'value': value.id,
                                         'label': value.name
@@ -292,6 +302,10 @@ class EditOrCreateActivity extends Component {
                             <DropdownButton noCaret id="detail-operations" className="btn-primary" title="...">
                                 <MenuItem href="#" onClick={this.onDeleteActivity}>Delete</MenuItem>
                             </DropdownButton>
+                        </div>
+                        <div className="col-md-3" style={{height: '45px'}}>
+                            <div className="i-checks"><label> <input type="checkbox" checked="" onChange={this.closeActivity} value=""/>
+                                <i></i> Close Activity </label></div>
                         </div>
                         <div className="col-md-6 pull-right">
                             <div className="pull-right activity-detail-submit">
