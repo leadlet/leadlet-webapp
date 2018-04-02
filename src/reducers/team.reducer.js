@@ -1,5 +1,6 @@
 import {normalize, schema} from 'normalizr';
 import {teamConstants} from "../constants/team.constants";
+import {objectiveConstants} from "../constants/objective.constants";
 
 const teamSchema = new schema.Entity('teams');
 
@@ -99,6 +100,18 @@ export function teams(state = {items: {}, ids: []}, action) {
                 items: state.items,
                 ids: state.ids.filter(id => !action.ids.includes(id)),
             };
+
+        case objectiveConstants.CREATE_SUCCESS:
+
+
+            var team = state.items[action.response.teamId];
+            team.objectives.push(action.response);
+
+            return {
+                ...state,
+                items: { ...state.items, [team.teamId]: team}
+            };
+
 
         default:
             return state

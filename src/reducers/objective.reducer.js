@@ -111,27 +111,6 @@ export function objectives(state = {teamObjectives: [], userObjectives: []}, act
         case objectiveConstants.CREATE_REQUEST:
             return state;
 
-        case objectiveConstants.CREATE_SUCCESS:
-            let teamObjectives2 = state.teamObjectives;
-            if (teamObjectives2[action.response.teamId] === undefined) {
-                teamObjectives2[action.response.teamId] = {items: []};
-            }
-
-            var found = false;
-            for (var i = 0; i < teamObjectives2[action.response.teamId].items.length; i++) {
-                if (teamObjectives2[action.response.teamId].items[i].name === action.response.name) {
-                    teamObjectives2[action.response.teamId].items[i] = action.response;
-                    found = true;
-                }
-            }
-            if (!found) {
-                teamObjectives2[action.response.teamId].items.push(action.response);
-            }
-
-            return {
-                ...state,
-                teamObjectives: teamObjectives2
-            };
         case objectiveConstants.CREATE_FAILURE:
             return {
                 ...state,

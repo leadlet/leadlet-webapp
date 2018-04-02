@@ -93,21 +93,21 @@ class TeamList extends Component {
                                         <span>Status of current project:</span>
                                         <div className="stat-percent">48%</div>
                                         <div className="progress progress-mini">
-                                            <div style={{"width": "48%"}} className="progress-bar"></div>
+                                            <div style={{"width": "48%"}} className="progress-bar"/>
                                         </div>
                                     </div>
                                     <div className="row  m-t-sm">
                                         <div className="col-sm-4">
-                                            <div className="font-bold">PROJECTS</div>
+                                            <div className="font-bold">DAILY</div>
                                             12
                                         </div>
                                         <div className="col-sm-4">
-                                            <div className="font-bold">RANKING</div>
+                                            <div className="font-bold">WEEKLY</div>
                                             4th
                                         </div>
                                         <div className="col-sm-4 text-right">
-                                            <div className="font-bold">BUDGET</div>
-                                            $200,913 <i className="fa fa-level-up text-navy"></i>
+                                            <div className="font-bold">MONTHLY</div>
+                                            $200,913 <i className="fa fa-level-up text-navy"/>
                                         </div>
                                     </div>
                                 </Link>

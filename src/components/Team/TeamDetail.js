@@ -50,7 +50,6 @@ class TeamDetail extends Component {
 
     componentDidMount() {
         this.props.getByTeamId(this.props.match.params.teamId);
-        this.props.getObjectivesByTeamId(this.props.match.params.teamId);
     }
 
     renderMembersTable(members) {
@@ -59,7 +58,7 @@ class TeamDetail extends Component {
                 <tr key={member.id}>
                     <td>{member.firstName} {member.lastName}</td>
                     <td>{member.login}</td>
-                    <td><a>{member.teamLead && <i className="fa fa-check text-navy"></i>}</a></td>
+                    <td><a>{member.teamLead && <i className="fa fa-check text-navy"/>}</a></td>
                     <td>
                         <Link to={"/user/" + member.id}>edit</Link> | <a>delete</a>
                     </td>
@@ -70,22 +69,20 @@ class TeamDetail extends Component {
 
     renderTeamObjectivesAmount(teamObjectives) {
         return teamObjectives.map(teamObjective => {
-            return teamObjective.items.map(item => {
-                return (
-                    <tr>
-                        <td>{item.name}</td>
-                        <td>
-                            <span className="pie">{item.dailyAmount}</span>
-                        </td>
-                        <td>
-                            <span className="pie">{item.weeklyAmount}</span>
-                        </td>
-                        <td>
-                            <span className="pie">{item.monthlyAmount}</span>
-                        </td>
-                    </tr>
-                )
-            });
+            return (
+                <tr>
+                    <td>{teamObjective.name}</td>
+                    <td>
+                        <span className="pie">{teamObjective.dailyAmount}</span>
+                    </td>
+                    <td>
+                        <span className="pie">{teamObjective.weeklyAmount}</span>
+                    </td>
+                    <td>
+                        <span className="pie">{teamObjective.monthlyAmount}</span>
+                    </td>
+                </tr>
+            )
         });
     }
 
@@ -142,7 +139,7 @@ class TeamDetail extends Component {
                                         </thead>
                                         <tbody>
 
-                                        {this.renderTeamObjectivesAmount(this.props.objectives)}
+                                        {this.renderTeamObjectivesAmount(team.objectives)}
 
                                         </tbody>
                                     </table>
@@ -204,11 +201,10 @@ function
 mapStateToProps(state) {
     return {
         teams: state.teams.items,
-        objectives: state.objectives.teamObjectives
     };
 }
 
-export default connect(mapStateToProps, {getByTeamId, getObjectivesByTeamId})
+export default connect(mapStateToProps, {getByTeamId})
 
 (
     TeamDetail

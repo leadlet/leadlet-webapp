@@ -49,7 +49,6 @@ const validate = values => {
     return errors
 };
 
-
 const renderTypeField = ({
                              input,
                              meta: {touched, error}
@@ -118,12 +117,12 @@ class EditOrCreateActivity extends Component {
         activity.memo = formValue.memo;
         activity.type = formValue.activityType;
         activity.title = formValue.title;
-        activity.personId = formValue.person && formValue.person.id;
-        activity.organizationId = formValue.organization && formValue.organization.id;
-        activity.userId = formValue.user && formValue.user.id;
-        activity.dealId = formValue.deal && formValue.deal.id;
+        activity.person = formValue.person;
+        activity.organization = formValue.organization;
+        activity.agent = formValue.agent;
+        activity.deal = formValue.deal;
         activity.location = formValue.location;
-        activity.isClosed = formValue.isClosed;
+        activity.done = formValue.done;
 
         if(this.state.activityStatus === false){
             activity.isClosed = true;
@@ -159,126 +158,137 @@ class EditOrCreateActivity extends Component {
                     <Modal.Title>{title} Activity</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <form>
-                        <Field
-                            name="activityType"
-                            component={renderTypeField}
-                            label="Activity Type"
-                        />
-                        <Field
-                            name="title"
-                            type="text"
-                            component={renderInputField}
-                            label="Title"
-                        />
-                        <Field
-                            name="memo"
-                            component={renderTextAreaField}
-                            label="Description"
-                            rows="3"
-                        />
-                        <div className="form-horizontal">
-                            <div className="form-group">
-                                <Field
-                                    label="Start Date"
-                                    name="start"
-                                    maximumDate={this.props.end}
-                                    component={renderDateTimePicker}
-                                />
+                    <form >
+                        <fieldset disabled={this.props.initialValues && this.props.initialValues.done}>
+                            {this.props.initialValues && this.props.initialValues.done && <p> Activity is done! </p>}
+                            <Field
+                                name="activityType"
+                                component={renderTypeField}
+                                label="Activity Type"
+                            />
+                            <Field
+                                name="title"
+                                type="text"
+                                component={renderInputField}
+                                label="Title"
+                            />
+
+                            <Field
+                                name="memo"
+                                component={renderTextAreaField}
+                                label="Description"
+                                rows="3"
+                            />
+                            <div className="form-horizontal">
+                                <div className="form-group">
+                                    <Field
+                                        label="Start Date"
+                                        name="start"
+                                        maximumDate={this.props.end}
+                                        component={renderDateTimePicker}
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <Field
+                                        label="End Date"
+                                        name="end"
+                                        minimumDate={this.props.start}
+                                        component={renderDateTimePicker}
+                                    />
+                                </div>
                             </div>
-                            <div className="form-group">
+
+                            {this.props.showDealSelection &&
+                            <Field
+                                name="deal"
+                                label="Deal"
+                                placeholder="Select deal"
+                                component={renderAsyncSelectField}
+                                loadOptions={loadDeal}
+                                parse={(value, name) => {
+                                    if (value) {
+                                        return {
+                                            'id': value.value,
+                                            'title': value.label
+                                        };
+                                    }
+                                }}
+                                format={(value, name) => {
+                                    if (value) {
+                                        return {
+                                            'value': value.id,
+                                            'label': value.title
+                                        }
+                                    }
+
+                                }}
+                            />
+                            }
+
+                            {this.props.showUserSelection &&
+                            <Field
+                                name="agent"
+                                label="Agent"
+                                placeholder="Select deal agent"
+                                component={renderAsyncSelectField}
+                                loadOptions={loadUser}
+                                parse={(value, name) => {
+                                    if (value) {
+                                        return {
+                                            'id': value.value,
+                                            'firstName': value.label,
+                                        };
+                                    }
+                                }}
+                                format={(value, name) => {
+                                    if (value) {
+                                        return {
+                                            'value': value.id,
+                                            'label': value.firstName
+                                        }
+                                    }
+
+                                }}
+                            />
+                            }
+
+                            <Fields
+                                names={['person', 'organization']}
+                                component={renderPersonAndOrganizationFields}
+                                showPersonSelection={this.props.showPersonSelection}
+                                showOrganizationSelection={this.props.showOrganizationSelection}
+                                parse={(value, name) => {
+                                    if (value) {
+                                        return {
+                                            'id': value.value,
+                                            'name': value.label
+                                        };
+                                    }
+                                }}
+                                format={(value, name) => {
+                                    if (value) {
+                                        return {
+                                            'value': value.id,
+                                            'label': value.name
+                                        }
+                                    }
+
+                                }}
+                            />
+                            { this.props.initialValues && this.props.initialValues.id &&
                                 <Field
-                                    label="End Date"
-                                    name="end"
-                                    minimumDate={this.props.start}
-                                    component={renderDateTimePicker}
+                                    name="done"
+                                    component={renderInputField}
+                                    label="Done"
+                                    type="checkbox"
                                 />
-                            </div>
-                        </div>
-
-                        {this.props.showDealSelection &&
-                        <Field
-                            name="deal"
-                            label="Deal"
-                            placeholder="Select deal"
-                            component={renderAsyncSelectField}
-                            loadOptions={loadDeal}
-                            parse={(value, name) => {
-                                if (value) {
-                                    return {
-                                        'id': value.value,
-                                        'name': value.label
-                                    };
-                                }
-                            }}
-                            format={(value, name) => {
-                                if (value) {
-                                    return {
-                                        'value': value.id,
-                                        'label': value.name
-                                    }
-                                }
-
-                            }}
-                        />
-                        }
-
-                        {this.props.showUserSelection &&
-                        <Field
-                            name="user"
-                            label="Owner"
-                            placeholder="Select deal owner"
-                            component={renderAsyncSelectField}
-                            loadOptions={loadUser}
-                            parse={(value, name) => {
-                                if (value) {
-                                    return {
-                                        'id': value.value,
-                                        'name': value.label
-                                    };
-                                }
-                            }}
-                            format={(value, name) => {
-                                if (value) {
-                                    return {
-                                        'value': value.id,
-                                        'label': value.name
-                                    }
-                                }
-
-                            }}
-                        />
-                        }
-
-                        <Fields
-                            names={['person', 'organization']}
-                            component={renderPersonAndOrganizationFields}
-                            showPersonSelection={this.props.showPersonSelection}
-                            showOrganizationSelection={this.props.showOrganizationSelection}
-                            parse={(value, name) => {
-                                if (value) {
-                                    return {
-                                        'id': value.value,
-                                        'name': value.label
-                                    };
-                                }
-                            }}
-                            format={(value, name) => {
-                                if (value) {
-                                    return {
-                                        'value': value.id,
-                                        'label': value.name
-                                    }
-                                }
-
-                            }}
-                        />
-
-                        <Field
-                            name="location"
-                            label="Location"
-                            component={MapWithASearchBox}
-                        />
+                            }
+                            <Field
+                                name="location"
+                                label="Location"
+                                component={MapWithASearchBox}
+                            />
+                        </fieldset>
 
                     </form>
                     <div>
@@ -302,10 +312,6 @@ class EditOrCreateActivity extends Component {
                             <DropdownButton noCaret id="detail-operations" className="btn-primary" title="...">
                                 <MenuItem href="#" onClick={this.onDeleteActivity}>Delete</MenuItem>
                             </DropdownButton>
-                        </div>
-                        <div className="col-md-3" style={{height: '45px'}}>
-                            <div className="i-checks"><label> <input type="checkbox" checked="" onChange={this.closeActivity} value=""/>
-                                <i></i> Close Activity </label></div>
                         </div>
                         <div className="col-md-6 pull-right">
                             <div className="pull-right activity-detail-submit">

@@ -100,11 +100,12 @@ class Activity extends Component {
                             end: event.end,
                             memo: event.memo,
                             activityType: event.type,
-                            userId: event.userId,
-                            personId: event.personId,
-                            dealId: event.dealId,
-                            organizationId: event.organizationId,
-                            location: event.location
+                            agent: event.agent,
+                            person: event.person,
+                            deal: event.deal,
+                            organization: event.organization,
+                            location: event.location,
+                            done: event.done
 
                         }
                     );
@@ -118,8 +119,10 @@ class Activity extends Component {
                     activity.memo = event.memo;
                     activity.type = event.type;
                     activity.title = event.title;
-                    activity.personId = event.personId;
-                    activity.organizationId = event.organizationId;
+                    activity.agent = event.agent;
+                    activity.person = event.person;
+                    activity.deal = event.deal;
+                    activity.organization = event.organization;
                     activity.location = event.location;
 
                     updateActivity(activity);
