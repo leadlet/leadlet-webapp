@@ -20,6 +20,8 @@ import {BootstrapTable, TableHeaderColumn} from "react-bootstrap-table";
 import {deleteDeal, getDealsByPersonId} from "../../actions/deal.actions";
 import Link from "react-router-dom/es/Link";
 import SweetAlert from 'sweetalert-react';
+import Dropzone from 'react-dropzone';
+import {createDocument, uploadDocuments} from "../../actions/document.actions";
 
 class ContactDetail extends Component {
 
@@ -32,7 +34,8 @@ class ContactDetail extends Component {
             isActivityModalVisible: false,
             value: '',
             deletingDeal: null,
-            showDeleteDealDialog: false
+            showDeleteDealDialog: false,
+            files: []
         };
 
         this.openEditModal = this.openEditModal.bind(this);
@@ -48,8 +51,27 @@ class ContactDetail extends Component {
         this.titleFormatter = this.titleFormatter.bind(this);
         this.deleteDealFormatter = this.deleteDealFormatter.bind(this);
         this.deleteDeal = this.deleteDeal.bind(this);
+        this.onDrop = this.onDrop.bind(this);
+        this.documentMapper = this.documentMapper.bind(this);
+        this.onDropAccepted = this.onDropAccepted.bind(this);
 
     }
+
+    onDrop(files) {
+        this.setState({
+            files
+        });
+    }
+
+    onDropAccepted(files) {
+        this.props.uploadDocuments(files, this.props.match.params.personId);
+    }
+
+    /*onDropAccepted(files) {
+        files.forEach(function(file) {
+            this.props.createDocument(file);
+        },this);
+    }*/
 
     cancelDeleteDeal() {
         this.setState({
@@ -66,15 +88,15 @@ class ContactDetail extends Component {
         });
     }
 
-    deleteDeal(deal){
+    deleteDeal(deal) {
         this.setState({
             deletingDeal: deal,
             showDeleteDealDialog: true
         });
     }
 
-    deleteDealFormatter(cell, row){
-        return(
+    deleteDealFormatter(cell, row) {
+        return (
             <i className="btn fa fa-trash" onClick={() => this.deleteDeal(row)}/>
         );
     }
@@ -85,7 +107,7 @@ class ContactDetail extends Component {
 
     dataMapper() {
 
-        if( this.props.deals && this.props.deals[this.props.match.params.personId] ) {
+        if (this.props.deals && this.props.deals[this.props.match.params.personId]) {
             return this.props.deals[this.props.match.params.personId].ids.map(id => {
                 let deal = this.props.deals[this.props.match.params.personId].items[id];
                 return {
@@ -99,7 +121,17 @@ class ContactDetail extends Component {
 
     }
 
-    refreshTimeline(){
+    documentMapper() {
+        return this.state.files.map(f => {
+                return {
+                    id: f.size,
+                    name: f.name
+                }
+            }
+        );
+    }
+
+    refreshTimeline() {
         this.props.getTimelineByPersonIdAndRefresh(null, null, null, this.props.match.params.personId)
     }
 
@@ -305,10 +337,12 @@ class ContactDetail extends Component {
                                         }}
 
                                     >
-                                        <TableHeaderColumn dataField='title' dataFormat={this.titleFormatter}>Title</TableHeaderColumn>
+                                        <TableHeaderColumn dataField='title'
+                                                           dataFormat={this.titleFormatter}>Title</TableHeaderColumn>
                                         <TableHeaderColumn dataField='dealValue'>Deal Value</TableHeaderColumn>
                                         <TableHeaderColumn dataField='stageId'>Stage</TableHeaderColumn>
-                                        <TableHeaderColumn disabled dataFormat={this.deleteDealFormatter}></TableHeaderColumn>
+                                        <TableHeaderColumn disabled
+                                                           dataFormat={this.deleteDealFormatter}></TableHeaderColumn>
                                     </BootstrapTable>
                                 </div>
                             </div>
@@ -325,6 +359,36 @@ class ContactDetail extends Component {
                                     <div id="contact-calendar"/>
                                 </div>
                             </div>
+                            <div className="ibox">
+                                <div className="ibox-title">
+                                    <h5>Documents</h5>
+                                </div>
+                                <div className="ibox-content">
+                                    <section>
+                                        <div className="dropzone">
+                                            <Dropzone
+                                                onDrop={this.onDrop}
+                                                onDropAccepted={this.onDropAccepted}
+                                            >
+                                                <p>Try dropping some files here, or click to select files to upload.</p>
+                                            </Dropzone>
+                                        </div>
+                                        <aside>
+                                            <BootstrapTable
+                                                tableHeaderClass='client-table-header'
+                                                containerClass='client-table-container'
+                                                tableContainerClass='client-table'
+                                                tableBodyClass='table-hover'
+                                                data={this.documentMapper()}
+                                                remote={true}
+                                                keyField='id'
+                                            >
+                                                <TableHeaderColumn dataField='name'></TableHeaderColumn>
+                                            </BootstrapTable>
+                                        </aside>
+                                    </section>
+                                </div>
+                            </div>
                         </div>
 
                         {
@@ -332,7 +396,7 @@ class ContactDetail extends Component {
                             <EditOrCreateActivity showModal={this.state.isActivityModalVisible}
                                                   close={this.closeActivityModal}
                                                   initialValues={{
-                                                      person : {
+                                                      person: {
                                                           id: this.props.match.params.personId
                                                       },
                                                       organization: this.props.viewedPerson && this.props.viewedPerson.organization,
@@ -356,16 +420,16 @@ class ContactDetail extends Component {
                         {
                             this.state.isDealModalVisible &&
                             <CreateEditDeal showModal={this.state.isDealModalVisible}
-                                                                             close={this.closeDealModal}
-                                                                             initialValues={{
-                                                                                 person : {
-                                                                                     id: this.props.match.params.personId
-                                                                                 },
-                                                                                 organization: this.props.viewedPerson && this.props.viewedPerson.organization,
+                                            close={this.closeDealModal}
+                                            initialValues={{
+                                                person: {
+                                                    id: this.props.match.params.personId
+                                                },
+                                                organization: this.props.viewedPerson && this.props.viewedPerson.organization,
 
-                                                                             }}
-                                                                             showPersonSelection={false}
-                                                                             showOrganizationSelection={false}
+                                            }}
+                                            showPersonSelection={false}
+                                            showOrganizationSelection={false}
                             />
                         }
 
@@ -397,5 +461,7 @@ export default connect(mapStateToProps, {
     getTimelineLoadMoreByPersonId,
     getTimelineByPersonIdAndRefresh,
     getDealsByPersonId,
-    deleteDeal
+    deleteDeal,
+    createDocument,
+    uploadDocuments
 })(ContactDetail);
