@@ -21,7 +21,7 @@ import {deleteDeal, getDealsByPersonId} from "../../actions/deal.actions";
 import Link from "react-router-dom/es/Link";
 import SweetAlert from 'sweetalert-react';
 import Dropzone from 'react-dropzone';
-import {createDocument, uploadDocuments} from "../../actions/document.actions";
+import {createDocument, getDocumentByPersonId, uploadDocuments} from "../../actions/document.actions";
 
 class ContactDetail extends Component {
 
@@ -54,6 +54,7 @@ class ContactDetail extends Component {
         this.onDrop = this.onDrop.bind(this);
         this.documentMapper = this.documentMapper.bind(this);
         this.onDropAccepted = this.onDropAccepted.bind(this);
+        this.urlFormatter = this.urlFormatter.bind(this);
 
     }
 
@@ -66,12 +67,6 @@ class ContactDetail extends Component {
     onDropAccepted(files) {
         this.props.uploadDocuments(files, this.props.match.params.personId);
     }
-
-    /*onDropAccepted(files) {
-        files.forEach(function(file) {
-            this.props.createDocument(file);
-        },this);
-    }*/
 
     cancelDeleteDeal() {
         this.setState({
@@ -105,6 +100,10 @@ class ContactDetail extends Component {
         return (<Link to={"/deal/" + row.id}>{cell}</Link>);
     }
 
+    urlFormatter(cell, row) {
+        return (<a href={cell}>{cell}</a>);
+    }
+
     dataMapper() {
 
         if (this.props.deals && this.props.deals[this.props.match.params.personId]) {
@@ -122,13 +121,14 @@ class ContactDetail extends Component {
     }
 
     documentMapper() {
-        return this.state.files.map(f => {
-                return {
-                    id: f.size,
-                    name: f.name
-                }
+
+        return this.props.documentIds.map(function (item) {
+            return {
+                id: this.props.documents[item].id,
+                name: this.props.documents[item].name,
+                url: this.props.documents[item].url
             }
-        );
+        }, this);
     }
 
     refreshTimeline() {
@@ -177,6 +177,7 @@ class ContactDetail extends Component {
         this.props.getById(this.props.match.params.personId);
         this.props.getActivitiesByPersonId(this.props.match.params.personId);
         this.props.getDealsByPersonId(this.props.match.params.personId);
+        this.props.getDocumentByPersonId(this.props.match.params.personId);
 
     }
 
@@ -383,7 +384,9 @@ class ContactDetail extends Component {
                                                 remote={true}
                                                 keyField='id'
                                             >
-                                                <TableHeaderColumn dataField='name'></TableHeaderColumn>
+                                                <TableHeaderColumn dataField='name'>File Name</TableHeaderColumn>
+                                                <TableHeaderColumn dataField='url'
+                                                                   dataFormat={this.urlFormatter}>Url</TableHeaderColumn>
                                             </BootstrapTable>
                                         </aside>
                                     </section>
@@ -448,7 +451,9 @@ function mapStateToProps(state) {
         activities: state.activities.items,
         ids: state.activities.ids,
         viewedOrganization: state.viewedOrganization,
-        deals: state.deals.personDeals
+        deals: state.deals.personDeals,
+        documents: state.documents.items,
+        documentIds: state.documents.ids
     };
 }
 
@@ -463,5 +468,6 @@ export default connect(mapStateToProps, {
     getDealsByPersonId,
     deleteDeal,
     createDocument,
-    uploadDocuments
+    uploadDocuments,
+    getDocumentByPersonId
 })(ContactDetail);

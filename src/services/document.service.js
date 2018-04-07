@@ -10,7 +10,8 @@ export const documentService = {
     getByDealId,
     getByPersonId,
     getByOrganizationId,
-    uploadDocuments
+    uploadDocuments,
+    uploadDocumentsForOrganization
 };
 
 function uploadDocuments(files, personId){
@@ -36,6 +37,25 @@ function uploadDocuments(files, personId){
     return fetch('/api/documents/', requestOptions).then(handleResponse);
 
 }
+
+function uploadDocumentsForOrganization(files, organizationId){
+
+    let data = new FormData();
+
+    data.append("file", files[0], files[0].name);
+    data.append("organizationId", organizationId);
+
+
+    const requestOptions = {
+        method: 'POST',
+        headers: { ...authHeader() },
+        body: data
+    };
+
+    return fetch('/api/documentsOrg/', requestOptions).then(handleResponse);
+
+}
+
 function createDocument(document, callback) {
     const requestOptions = {
         method: 'POST',

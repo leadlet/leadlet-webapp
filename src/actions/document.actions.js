@@ -156,6 +156,38 @@ export function uploadDocuments(files, personId) {
     }
 }
 
+export function uploadDocumentsForOrganization(files, organizationId) {
+    return dispatch => {
+        dispatch(request());
+
+        return documentService.uploadDocumentsForOrganization(files,organizationId)
+            .then(
+                document => {
+                    dispatch(success(document));
+                    dispatch(alertActions.success('Document create successful'));
+                },
+                error => {
+                    // TODO catch validation error here and throw submission error
+                    // throw new SubmissionError({name: 'hedeler' , title: 'hedeler2', _error: 'olmadi'});
+                    dispatch(failure(error));
+                    dispatch(alertActions.error(error));
+                }
+            );
+    };
+
+    function request() {
+        return {type: documentConstants.CREATE_REQUEST}
+    }
+
+    function success(document) {
+        return {type: documentConstants.CREATE_SUCCESS, document}
+    }
+
+    function failure(error) {
+        return {type: documentConstants.CREATE_FAILURE, error}
+    }
+}
+
 export function createDocument(document) {
     return dispatch => {
         dispatch(request());
