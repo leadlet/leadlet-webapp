@@ -62,7 +62,7 @@ class OrganizationDetail extends Component {
     }
 
     onDropAccepted(files) {
-        this.props.uploadDocumentsForOrganization(files, this.props.match.params.organizationId);
+        this.props.uploadDocumentsForOrganization(files, this.props.match.params.organizationId, () => this.props.getTimelineByOrganizationIdAndRefresh(null, null, null, this.props.match.params.organizationId));
     }
 
     dataMapper() {
@@ -281,7 +281,7 @@ class OrganizationDetail extends Component {
                                 <Timeline
                                     pageSize={5}
                                     getTimelineItems={this.props.getTimelineByOrganizationId}
-                                    itemId={this.props.viewedOrganization.id}
+                                    itemId={this.props.match.params.organizationId}
                                 />
                             </div>
                         </div>

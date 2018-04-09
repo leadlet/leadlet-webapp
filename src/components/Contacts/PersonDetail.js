@@ -65,7 +65,7 @@ class ContactDetail extends Component {
     }
 
     onDropAccepted(files) {
-        this.props.uploadDocuments(files, this.props.match.params.personId);
+        this.props.uploadDocuments(files, this.props.match.params.personId, () => this.props.getTimelineByPersonIdAndRefresh(null, null, null, this.props.match.params.personId));
     }
 
     cancelDeleteDeal() {

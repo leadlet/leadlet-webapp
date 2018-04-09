@@ -124,13 +124,14 @@ export function getAllDocuments() {
         return {type: documentConstants.GETALL_FAILURE, error}
     }
 }
-export function uploadDocuments(files, personId) {
+export function uploadDocuments(files, personId, successCallback) {
     return dispatch => {
         dispatch(request());
 
         return documentService.uploadDocuments(files,personId)
             .then(
                 document => {
+                    dispatch(successCallback);
                     dispatch(success(document));
                     dispatch(alertActions.success('Document create successful'));
                 },
@@ -156,13 +157,14 @@ export function uploadDocuments(files, personId) {
     }
 }
 
-export function uploadDocumentsForOrganization(files, organizationId) {
+export function uploadDocumentsForOrganization(files, organizationId, successCallback) {
     return dispatch => {
         dispatch(request());
 
         return documentService.uploadDocumentsForOrganization(files,organizationId)
             .then(
                 document => {
+                    dispatch(successCallback);
                     dispatch(success(document));
                     dispatch(alertActions.success('Document create successful'));
                 },
