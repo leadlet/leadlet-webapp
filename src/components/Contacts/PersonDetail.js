@@ -122,13 +122,15 @@ class ContactDetail extends Component {
 
     documentMapper() {
 
-        return this.props.documentIds.map(function (item) {
-            return {
-                id: this.props.documents[item].id,
-                name: this.props.documents[item].name,
-                url: this.props.documents[item].url
-            }
-        }, this);
+        if (this.props.documentIds) {
+            return this.props.documentIds.map(function (item) {
+                return {
+                    id: this.props.documents[item].id,
+                    name: this.props.documents[item].name,
+                    url: this.props.documents[item].url
+                }
+            }, this);
+        }
     }
 
     refreshTimeline() {
