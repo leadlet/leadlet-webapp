@@ -21,7 +21,7 @@ import {deleteDeal, getDealsByPersonId} from "../../actions/deal.actions";
 import Link from "react-router-dom/es/Link";
 import SweetAlert from 'sweetalert-react';
 import Dropzone from 'react-dropzone';
-import {createDocument, getDocumentByPersonId, uploadDocuments} from "../../actions/document.actions";
+import {createDocument, deleteDocument, getDocumentByPersonId, uploadDocuments} from "../../actions/document.actions";
 
 class ContactDetail extends Component {
 
@@ -35,7 +35,9 @@ class ContactDetail extends Component {
             value: '',
             deletingDeal: null,
             showDeleteDealDialog: false,
-            files: []
+            files: [],
+            showDeleteDocumentDialog: false,
+            deletingDocument: null
         };
 
         this.openEditModal = this.openEditModal.bind(this);
@@ -55,7 +57,10 @@ class ContactDetail extends Component {
         this.documentMapper = this.documentMapper.bind(this);
         this.onDropAccepted = this.onDropAccepted.bind(this);
         this.urlFormatter = this.urlFormatter.bind(this);
-
+        this.deleteDocument = this.deleteDocument.bind(this);
+        this.confirmDeleteDocument = this.confirmDeleteDocument.bind(this);
+        this.cancelDeleteDocument = this.cancelDeleteDocument.bind(this);
+        this.deleteDocumentFormatter = this.deleteDocumentFormatter.bind(this);
     }
 
     onDrop(files) {
@@ -67,6 +72,8 @@ class ContactDetail extends Component {
     onDropAccepted(files) {
         this.props.uploadDocuments(files, this.props.match.params.personId, () => this.props.getTimelineByPersonIdAndRefresh(null, null, null, this.props.match.params.personId));
     }
+
+    //delete document or delete deal
 
     cancelDeleteDeal() {
         this.setState({
@@ -90,9 +97,32 @@ class ContactDetail extends Component {
         });
     }
 
+    deleteDocument(document) {
+        this.setState({
+            deletingDocument: document,
+            showDeleteDocumentDialog: true
+        });
+    }
+
+    confirmDeleteDocument() {
+        this.props.deleteDocument(this.state.deletingDocument.id);
+        this.setState({showDeleteDocumentDialog: false});
+    }
+
+    cancelDeleteDocument() {
+        this.setState({showDeleteDocumentDialog: false});
+    }
+
+    //formatters
     deleteDealFormatter(cell, row) {
         return (
             <i className="btn fa fa-trash" onClick={() => this.deleteDeal(row)}/>
+        );
+    }
+
+    deleteDocumentFormatter(cell, row) {
+        return (
+            <i className="btn fa fa-trash" onClick={() => this.deleteDocument(row)}/>
         );
     }
 
@@ -389,6 +419,8 @@ class ContactDetail extends Component {
                                                 <TableHeaderColumn dataField='name'>File Name</TableHeaderColumn>
                                                 <TableHeaderColumn dataField='url'
                                                                    dataFormat={this.urlFormatter}>Url</TableHeaderColumn>
+                                                <TableHeaderColumn disabled
+                                                                   dataFormat={this.deleteDocumentFormatter}></TableHeaderColumn>
                                             </BootstrapTable>
                                         </aside>
                                     </section>
@@ -437,8 +469,19 @@ class ContactDetail extends Component {
                                             showOrganizationSelection={false}
                             />
                         }
-
-
+                        <div>
+                            <SweetAlert
+                                title="Are you sure?"
+                                text="You will not be able to recover this recording!"
+                                type="warning"
+                                showCancelButton={true}
+                                confirmButtonColor="#DD6B55"
+                                confirmButtonText="Yes, delete it!"
+                                show={this.state.showDeleteDocumentDialog}
+                                onConfirm={this.confirmDeleteDocument}
+                                onCancel={this.cancelDeleteDocument}
+                            />
+                        </div>
                     </div>
                 </div>
             )
@@ -471,5 +514,6 @@ export default connect(mapStateToProps, {
     deleteDeal,
     createDocument,
     uploadDocuments,
-    getDocumentByPersonId
+    getDocumentByPersonId,
+    deleteDocument
 })(ContactDetail);

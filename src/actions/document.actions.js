@@ -254,7 +254,7 @@ export function updateDocument(document) {
     }
 }
 
-function deleteDocument(id) {
+export function deleteDocument(id) {
     return dispatch => {
         dispatch(request(id));
 

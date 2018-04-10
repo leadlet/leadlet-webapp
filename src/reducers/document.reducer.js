@@ -92,15 +92,12 @@ export function documents(state = {items: {}, ids: []}, action) {
         case documentConstants.DELETE_REQUEST:
             return state;
         case documentConstants.DELETE_SUCCESS:
-            action.ids.forEach(id => {
-                delete state.items[id];
-            })
+            delete state.items[action.id];
             return {
                 ...state,
                 items: state.items,
-                ids: state.ids.filter(id => !action.ids.includes(id)),
+                ids: state.ids.filter(item => item !== action.id),
             };
-
         default:
             return state
     }
