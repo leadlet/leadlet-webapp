@@ -16,6 +16,7 @@ import {timeLines} from "./timelines.reducer";
 import {boards} from "./board.reducer";
 import {teams} from "./team.reducer";
 import {objectives} from "./objective.reducer";
+import {account} from "./account.reducer";
 import {documents} from "./document.reducer";
 
 const rootReducer = combineReducers({
@@ -35,6 +36,7 @@ const rootReducer = combineReducers({
     teams,
     boards,
     objectives,
+    account,
     documents
 });
 
