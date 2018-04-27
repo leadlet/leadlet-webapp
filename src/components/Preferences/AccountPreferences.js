@@ -188,7 +188,8 @@ const selector = formValueSelector('appAccountForm');
 
 // Decorate with reduxForm(). It will read the initialValues prop provided by connect()
 AccountPreferences = reduxForm({
-    form: 'appAccountForm'  // a unique identifier for this form
+    form: 'appAccountForm',
+    enableReinitialize: true
 })(AccountPreferences)
 
 // You have to connect() to any reducers that you wish to connect to yourself
