@@ -2,6 +2,7 @@ import { alertActions } from './';
 import {accountConstants} from "../constants/account.constants";
 import {accountService} from "../services/account.service";
 
+import {change} from 'redux-form';
 
 export function getAccount() {
     return dispatch => {
@@ -19,6 +20,11 @@ export function getAccount() {
     function failure(error) { return { type: accountConstants.GET_FAILURE, error } }
 }
 
+export function clearField(formName, fieldName, newValue) {
+    return dispatch => {
+        dispatch(change(formName, fieldName, newValue));
+    };
+}
 
 export function updateAccount(account) {
     return dispatch => {

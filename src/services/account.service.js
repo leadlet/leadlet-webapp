@@ -19,8 +19,11 @@ function update(account) {
 
     let data = new FormData();
 
-    data.append("file", account.storagePreference.gsKeyFile, account.storagePreference.gsKeyFile.name);
-    delete account.storagePreference.gsKeyFile;
+    if( account.storagePreference.gsKeyFile ){
+        data.append("gsKeyFile", account.storagePreference.gsKeyFile, account.storagePreference.gsKeyFile.name);
+        delete account.storagePreference.gsKeyFile;
+
+    }
     data.append("account", new Blob([JSON.stringify(account)],{
         type: "application/json"
     }));
