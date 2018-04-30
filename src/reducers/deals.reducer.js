@@ -6,7 +6,7 @@ const dealSchema = new schema.Entity('deals');
 // or use shorthand syntax:
 const dealListSchema = [dealSchema];
 
-export function deals(state = {personDeals: []}, action) {
+export function deals(state = {personDeals: [], organizationDeals: [], personDeals2: []}, action) {
     switch (action.type) {
         case dealConstants.UPDATE_REQUEST:
             return state;
@@ -58,6 +58,31 @@ export function deals(state = {personDeals: []}, action) {
             return {
                 ...state,
 
+                error: action.error
+            };
+
+        /* get deals by organization id */
+        case dealConstants.GET_REQUEST_FOR_ORGANIZATION:
+            return {
+                ...state,
+                loading: true
+            };
+        case dealConstants.GET_SUCCESS_FOR_ORGANIZATION:
+
+            let organizationDeals = state.organizationDeals;
+            const _itemsOrg = normalize(action.data.items, dealListSchema);
+
+            organizationDeals[action.data.organizationId] = {ids: [], items: {}};
+            organizationDeals[action.data.organizationId].ids = _itemsOrg.result;
+            organizationDeals[action.data.organizationId].items = _itemsOrg.entities.deals;
+
+            return {
+                ...state,
+                organizationDeals: organizationDeals
+            };
+        case dealConstants.GET_FAILURE_FOR_ORGANIZATION:
+            return {
+                ...state,
                 error: action.error
             };
 

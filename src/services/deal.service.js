@@ -8,7 +8,8 @@ export const dealService = {
     update,
     move,
     _delete,
-    getDealsByPersonId
+    getDealsByPersonId,
+    getDealsByOrganizationId
 };
 
 function getDealsByPersonId(personId) {
@@ -18,6 +19,15 @@ function getDealsByPersonId(personId) {
     };
 
     return fetch('/api/deals/person/' + personId, requestOptions).then(handleResponse);
+}
+
+function getDealsByOrganizationId(organizationId) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    return fetch('/api/deals/organization/' + organizationId, requestOptions).then(handleResponse);
 }
 
 function create(stage) {

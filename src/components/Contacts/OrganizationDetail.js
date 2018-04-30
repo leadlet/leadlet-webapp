@@ -12,6 +12,14 @@ import {getTimelineByOrganizationId, getTimelineByOrganizationIdAndRefresh} from
 import {getActivitiesByOrganizationId} from "../../actions/activity.actions";
 import EditOrCreateActivity from "../Activity/EditOrCreateActivity";
 import CreateEditDeal from "../DealDetail/CreateEditDeal";
+import {BootstrapTable, TableHeaderColumn} from "react-bootstrap-table";
+import {deleteDeal, getDealsByOrganizationId} from "../../actions/deal.actions";
+import Link from "react-router-dom/es/Link";
+import Dropzone from 'react-dropzone';
+import {
+    getDocumentByOrganizationId,
+    uploadDocumentsForOrganization
+} from "../../actions/document.actions";
 
 class OrganizationDetail extends Component {
 
@@ -22,7 +30,11 @@ class OrganizationDetail extends Component {
             isOrganizationModalVisible: false,
             isDealModalVisible: false,
             isActivityModalVisible: false,
-            value: ''
+            value: '',
+            deletingDeal: null,
+            showDeleteDealDialog: false,
+            files: []
+
         };
 
         this.openEditModal = this.openEditModal.bind(this);
@@ -34,11 +46,76 @@ class OrganizationDetail extends Component {
         this.refreshTimeline = this.refreshTimeline.bind(this);
         this.openDealModal = this.openDealModal.bind(this);
         this.closeDealModal = this.closeDealModal.bind(this);
+        this.dataMapper = this.dataMapper.bind(this);
+        this.titleFormatter = this.titleFormatter.bind(this);
+        this.deleteDeal = this.deleteDeal.bind(this);
+        this.onDrop = this.onDrop.bind(this);
+        this.onDropAccepted = this.onDropAccepted.bind(this);
+        this.documentMapper = this.documentMapper.bind(this);
+        this.urlFormatter = this.urlFormatter.bind(this);
     }
 
-    refreshTimeline(){
+    onDrop(files) {
+        this.setState({
+            files
+        });
+    }
+
+    onDropAccepted(files) {
+        this.props.uploadDocumentsForOrganization(files, this.props.match.params.organizationId, () => this.props.getTimelineByOrganizationIdAndRefresh(null, null, null, this.props.match.params.organizationId));
+    }
+
+    dataMapper() {
+        if (this.props.deals && this.props.deals[this.props.match.params.organizationId]) {
+            return this.props.deals[this.props.match.params.organizationId].ids.map(id => {
+                let deal = this.props.deals[this.props.match.params.organizationId].items[id];
+                return {
+                    id: id,
+                    title: deal.title,
+                    dealValue: deal.dealValue && deal.dealValue.potentialValue,
+                    stageId: deal.stage.name
+                };
+            });
+        }
+
+    }
+
+    documentMapper() {
+
+        return this.props.documentIds.map(function (item) {
+            return {
+                id: this.props.documents[item].id,
+                name: this.props.documents[item].name,
+                url: this.props.documents[item].url
+            }
+        }, this);
+    }
+
+    titleFormatter(cell, row) {
+        return (<Link to={"/deal/" + row.id}>{cell}</Link>);
+    }
+
+    urlFormatter(cell, row) {
+        return (<a href={cell}>{cell}</a>);
+    }
+
+    deleteDealFormatter(cell, row) {
+        return (
+            <i className="btn fa fa-trash" onClick={() => this.deleteDeal(row)}/>
+        );
+    }
+
+    deleteDeal(deal) {
+        this.setState({
+            deletingDeal: deal,
+            showDeleteDealDialog: true
+        });
+    }
+
+    refreshTimeline() {
         this.props.getTimelineByOrganizationIdAndRefresh(null, null, null, this.props.viewedOrganization.id);
     }
+
     handleChange(event) {
         this.setState({value: event.target.value});
     }
@@ -77,10 +154,11 @@ class OrganizationDetail extends Component {
         this.setState({isDealModalVisible: false});
     }
 
-
     componentDidMount() {
         this.props.getByIdOrganization(this.props.match.params.organizationId);
         this.props.getActivitiesByOrganizationId(this.props.match.params.organizationId);
+        this.props.getDealsByOrganizationId(this.props.match.params.organizationId);
+        this.props.getDocumentByOrganizationId(this.props.match.params.organizationId);
     }
 
     componentDidUpdate() {
@@ -101,16 +179,14 @@ class OrganizationDetail extends Component {
                     left: 'prev,next today',
                     right: 'listDay,listWeek,month'
                 },
-                // customize the button names,
-                // otherwise they'd all just say "list"
                 views: {
                     listDay: {buttonText: 'list day'},
                     listWeek: {buttonText: 'list week'}
                 },
                 defaultView: 'listWeek',
-                navLinks: true, // can click day/week names to navigate views
+                navLinks: true,
                 editable: true,
-                eventLimit: true, // allow "more" link when too many events
+                eventLimit: true,
                 timezone: 'local',
                 events
             });
@@ -127,7 +203,6 @@ class OrganizationDetail extends Component {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-md-2">
-
                             <div className="contact-box center-version">
                                 <a onClick={() => this.openEditModal(this.props.viewedOrganization.type)}>
                                     <i className="fa fa-user-circle-o fa-5x" aria-hidden="true"/>
@@ -194,7 +269,6 @@ class OrganizationDetail extends Component {
                                                             </div>
                                                         </div>
                                                         <div className="tab-pane" id="tab-2">
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -207,18 +281,44 @@ class OrganizationDetail extends Component {
                                 <Timeline
                                     pageSize={5}
                                     getTimelineItems={this.props.getTimelineByOrganizationId}
-                                    itemId={this.props.viewedOrganization.id}
+                                    itemId={this.props.match.params.organizationId}
                                 />
                             </div>
                         </div>
                         <div className="col-lg-4">
                             <div className="ibox">
                                 <div className="ibox-title">
-                                    <i className="btn btn-sm fa fa-plus pull-right" aria-hidden="true" onClick={() => this.openDealModal()}/>
+                                    <i className="btn btn-sm fa fa-plus pull-right" aria-hidden="true"
+                                       onClick={() => this.openDealModal()}/>
                                     <h5>Deals</h5>
                                 </div>
                                 <div className="ibox-content text-center">
-                                    Deals
+                                    <BootstrapTable
+                                        tableHeaderClass='client-table-header'
+                                        containerClass='client-table-container'
+                                        tableContainerClass='client-table'
+                                        tableBodyClass='table-hover'
+                                        data={this.dataMapper()}
+                                        remote={true}
+                                        pagination={true}
+                                        keyField='id'
+                                        fetchInfo={{dataTotalSize: parseInt(this.props.viewedOrganization.dataTotalSize, 10)}}
+                                        options={{
+                                            sizePerPage: 5,
+                                            onPageChange: this.props.viewedOrganization.onPageChange,
+                                            sizePerPageList: [5, 10],
+                                            page: this.props.viewedOrganization.currentPage,
+                                            onSizePerPageList: this.props.viewedOrganization.onSizePerPageList
+                                        }}
+
+                                    >
+                                        <TableHeaderColumn dataField='title'
+                                                           dataFormat={this.titleFormatter}>Title</TableHeaderColumn>
+                                        <TableHeaderColumn dataField='dealValue'>Deal Value</TableHeaderColumn>
+                                        <TableHeaderColumn dataField='stageId'>Stage</TableHeaderColumn>
+                                        <TableHeaderColumn disabled
+                                                           dataFormat={this.deleteDealFormatter}></TableHeaderColumn>
+                                    </BootstrapTable>
                                 </div>
                             </div>
                             <div className="ibox">
@@ -234,12 +334,43 @@ class OrganizationDetail extends Component {
                                     <div id="contact-calendar"/>
                                 </div>
                             </div>
+                            <div className="ibox">
+                                <div className="ibox-title">
+                                    <h5>Documents</h5>
+                                </div>
+                                <div className="ibox-content">
+                                    <section>
+                                        <div className="dropzone">
+                                            <Dropzone
+                                                onDrop={this.onDrop}
+                                                onDropAccepted={this.onDropAccepted}
+                                            >
+                                                <p>Try dropping some files here, or click to select files to upload.</p>
+                                            </Dropzone>
+                                        </div>
+                                        <aside>
+                                            <BootstrapTable
+                                                tableHeaderClass='client-table-header'
+                                                containerClass='client-table-container'
+                                                tableContainerClass='client-table'
+                                                tableBodyClass='table-hover'
+                                                data={this.documentMapper()}
+                                                remote={true}
+                                                keyField='id'
+                                            >
+                                                <TableHeaderColumn dataField='name'>File Name</TableHeaderColumn>
+                                                <TableHeaderColumn dataField='url'
+                                                                   dataFormat={this.urlFormatter}>Url</TableHeaderColumn>
+                                            </BootstrapTable>
+                                        </aside>
+                                    </section>
+                                </div>
+                            </div>
                         </div>
-
                         <EditOrCreateActivity showModal={this.state.isActivityModalVisible}
                                               close={this.closeActivityModal}
                                               initialValues={{
-                                                  organization : {
+                                                  organization: {
                                                       id: this.props.viewedOrganization.id
                                                   }
                                               }}
@@ -253,14 +384,13 @@ class OrganizationDetail extends Component {
                         <CreateEditDeal showModal={this.state.isDealModalVisible}
                                         close={this.closeDealModal}
                                         initialValues={{
-                                            organization : {
+                                            organization: {
                                                 id: this.props.viewedOrganization.id
                                             }
                                         }}
                                         pipelineId={this.props.viewedOrganization.pipelineId}
                                         showOrganizationSelection={false}
                         />
-
                     </div>
                 </div>
             )
@@ -273,7 +403,10 @@ function mapStateToProps(state) {
     return {
         viewedOrganization: state.organizations.viewedOrganization,
         activities: state.activities.items,
-        ids: state.activities.ids
+        ids: state.activities.ids,
+        deals: state.deals.organizationDeals,
+        documents: state.documents.items,
+        documentIds: state.documents.ids
     };
 }
 
@@ -282,5 +415,9 @@ export default connect(mapStateToProps, {
     createNote,
     getTimelineByOrganizationId,
     getTimelineByOrganizationIdAndRefresh,
-    getActivitiesByOrganizationId
+    getActivitiesByOrganizationId,
+    getDealsByOrganizationId,
+    deleteDeal,
+    uploadDocumentsForOrganization,
+    getDocumentByOrganizationId
 })(OrganizationDetail);
