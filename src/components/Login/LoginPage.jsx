@@ -1,14 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { userActions } from '../../actions/index';
+import { login,logout } from '../../actions/user.actions';
+import { getAccount } from '../../actions/account.actions';
 
 class LoginPage extends React.Component {
     constructor(props) {
         super(props);
 
         // reset login status
-        this.props.dispatch(userActions.logout());
+        this.props.logout();
+//        this.props.dispatch(userActions.logout());
 
         this.state = {
             username: '',
@@ -33,7 +35,9 @@ class LoginPage extends React.Component {
         const { dispatch } = this.props;
         if (username && password) {
             // TODO passing props is workaround
-            dispatch(userActions.login(username, password, this.props));
+            this.props.login(username, password, this.props, this.props.getAccount);
+
+//            dispatch(userActions.login(username, password, this.props, ));
         }
     }
 
@@ -108,5 +112,5 @@ function mapStateToProps(state) {
     };
 }
 
-const connectedLoginPage = connect(mapStateToProps)(LoginPage);
+const connectedLoginPage = connect(mapStateToProps,{login,getAccount,logout})(LoginPage);
 export { connectedLoginPage as LoginPage }; 
