@@ -20,6 +20,8 @@ import {BootstrapTable, TableHeaderColumn} from "react-bootstrap-table";
 import {deleteDeal, getDealsByPersonId} from "../../actions/deal.actions";
 import Link from "react-router-dom/es/Link";
 import SweetAlert from 'sweetalert-react';
+import Dropzone from 'react-dropzone';
+import {createDocument, deleteDocument, getDocumentByPersonId, uploadDocuments} from "../../actions/document.actions";
 
 class ContactDetail extends Component {
 
@@ -32,7 +34,10 @@ class ContactDetail extends Component {
             isActivityModalVisible: false,
             value: '',
             deletingDeal: null,
-            showDeleteDealDialog: false
+            showDeleteDealDialog: false,
+            files: [],
+            showDeleteDocumentDialog: false,
+            deletingDocument: null
         };
 
         this.openEditModal = this.openEditModal.bind(this);
@@ -48,8 +53,27 @@ class ContactDetail extends Component {
         this.titleFormatter = this.titleFormatter.bind(this);
         this.deleteDealFormatter = this.deleteDealFormatter.bind(this);
         this.deleteDeal = this.deleteDeal.bind(this);
-
+        this.onDrop = this.onDrop.bind(this);
+        this.documentMapper = this.documentMapper.bind(this);
+        this.onDropAccepted = this.onDropAccepted.bind(this);
+        this.urlFormatter = this.urlFormatter.bind(this);
+        this.deleteDocument = this.deleteDocument.bind(this);
+        this.confirmDeleteDocument = this.confirmDeleteDocument.bind(this);
+        this.cancelDeleteDocument = this.cancelDeleteDocument.bind(this);
+        this.deleteDocumentFormatter = this.deleteDocumentFormatter.bind(this);
     }
+
+    onDrop(files) {
+        this.setState({
+            files
+        });
+    }
+
+    onDropAccepted(files) {
+        this.props.uploadDocuments(files, this.props.match.params.personId, () => this.props.getTimelineByPersonIdAndRefresh(null, null, null, this.props.match.params.personId));
+    }
+
+    //delete document or delete deal
 
     cancelDeleteDeal() {
         this.setState({
@@ -66,16 +90,39 @@ class ContactDetail extends Component {
         });
     }
 
-    deleteDeal(deal){
+    deleteDeal(deal) {
         this.setState({
             deletingDeal: deal,
             showDeleteDealDialog: true
         });
     }
 
-    deleteDealFormatter(cell, row){
-        return(
+    deleteDocument(document) {
+        this.setState({
+            deletingDocument: document,
+            showDeleteDocumentDialog: true
+        });
+    }
+
+    confirmDeleteDocument() {
+        this.props.deleteDocument(this.state.deletingDocument.id);
+        this.setState({showDeleteDocumentDialog: false});
+    }
+
+    cancelDeleteDocument() {
+        this.setState({showDeleteDocumentDialog: false});
+    }
+
+    //formatters
+    deleteDealFormatter(cell, row) {
+        return (
             <i className="btn fa fa-trash" onClick={() => this.deleteDeal(row)}/>
+        );
+    }
+
+    deleteDocumentFormatter(cell, row) {
+        return (
+            <i className="btn fa fa-trash" onClick={() => this.deleteDocument(row)}/>
         );
     }
 
@@ -83,9 +130,13 @@ class ContactDetail extends Component {
         return (<Link to={"/deal/" + row.id}>{cell}</Link>);
     }
 
+    urlFormatter(cell, row) {
+        return (<a href={cell}>{cell}</a>);
+    }
+
     dataMapper() {
 
-        if( this.props.deals && this.props.deals[this.props.match.params.personId] ) {
+        if (this.props.deals && this.props.deals[this.props.match.params.personId]) {
             return this.props.deals[this.props.match.params.personId].ids.map(id => {
                 let deal = this.props.deals[this.props.match.params.personId].items[id];
                 return {
@@ -99,7 +150,20 @@ class ContactDetail extends Component {
 
     }
 
-    refreshTimeline(){
+    documentMapper() {
+
+        if (this.props.documentIds) {
+            return this.props.documentIds.map(function (item) {
+                return {
+                    id: this.props.documents[item].id,
+                    name: this.props.documents[item].name,
+                    url: this.props.documents[item].url
+                }
+            }, this);
+        }
+    }
+
+    refreshTimeline() {
         this.props.getTimelineByPersonIdAndRefresh(null, null, null, this.props.match.params.personId)
     }
 
@@ -145,6 +209,7 @@ class ContactDetail extends Component {
         this.props.getById(this.props.match.params.personId);
         this.props.getActivitiesByPersonId(this.props.match.params.personId);
         this.props.getDealsByPersonId(this.props.match.params.personId);
+        this.props.getDocumentByPersonId(this.props.match.params.personId);
 
     }
 
@@ -305,10 +370,12 @@ class ContactDetail extends Component {
                                         }}
 
                                     >
-                                        <TableHeaderColumn dataField='title' dataFormat={this.titleFormatter}>Title</TableHeaderColumn>
+                                        <TableHeaderColumn dataField='title'
+                                                           dataFormat={this.titleFormatter}>Title</TableHeaderColumn>
                                         <TableHeaderColumn dataField='dealValue'>Deal Value</TableHeaderColumn>
                                         <TableHeaderColumn dataField='stageId'>Stage</TableHeaderColumn>
-                                        <TableHeaderColumn disabled dataFormat={this.deleteDealFormatter}></TableHeaderColumn>
+                                        <TableHeaderColumn disabled
+                                                           dataFormat={this.deleteDealFormatter}></TableHeaderColumn>
                                     </BootstrapTable>
                                 </div>
                             </div>
@@ -325,6 +392,40 @@ class ContactDetail extends Component {
                                     <div id="contact-calendar"/>
                                 </div>
                             </div>
+                            <div className="ibox">
+                                <div className="ibox-title">
+                                    <h5>Documents</h5>
+                                </div>
+                                <div className="ibox-content">
+                                    <section>
+                                        <div className="dropzone">
+                                            <Dropzone
+                                                onDrop={this.onDrop}
+                                                onDropAccepted={this.onDropAccepted}
+                                            >
+                                                <p>Try dropping some files here, or click to select files to upload.</p>
+                                            </Dropzone>
+                                        </div>
+                                        <aside>
+                                            <BootstrapTable
+                                                tableHeaderClass='client-table-header'
+                                                containerClass='client-table-container'
+                                                tableContainerClass='client-table'
+                                                tableBodyClass='table-hover'
+                                                data={this.documentMapper()}
+                                                remote={true}
+                                                keyField='id'
+                                            >
+                                                <TableHeaderColumn dataField='name'>File Name</TableHeaderColumn>
+                                                <TableHeaderColumn dataField='url'
+                                                                   dataFormat={this.urlFormatter}>Url</TableHeaderColumn>
+                                                <TableHeaderColumn disabled
+                                                                   dataFormat={this.deleteDocumentFormatter}></TableHeaderColumn>
+                                            </BootstrapTable>
+                                        </aside>
+                                    </section>
+                                </div>
+                            </div>
                         </div>
 
                         {
@@ -332,7 +433,7 @@ class ContactDetail extends Component {
                             <EditOrCreateActivity showModal={this.state.isActivityModalVisible}
                                                   close={this.closeActivityModal}
                                                   initialValues={{
-                                                      person : {
+                                                      person: {
                                                           id: this.props.match.params.personId
                                                       },
                                                       organization: this.props.viewedPerson && this.props.viewedPerson.organization,
@@ -356,20 +457,31 @@ class ContactDetail extends Component {
                         {
                             this.state.isDealModalVisible &&
                             <CreateEditDeal showModal={this.state.isDealModalVisible}
-                                                                             close={this.closeDealModal}
-                                                                             initialValues={{
-                                                                                 person : {
-                                                                                     id: this.props.match.params.personId
-                                                                                 },
-                                                                                 organization: this.props.viewedPerson && this.props.viewedPerson.organization,
+                                            close={this.closeDealModal}
+                                            initialValues={{
+                                                person: {
+                                                    id: this.props.match.params.personId
+                                                },
+                                                organization: this.props.viewedPerson && this.props.viewedPerson.organization,
 
-                                                                             }}
-                                                                             showPersonSelection={false}
-                                                                             showOrganizationSelection={false}
+                                            }}
+                                            showPersonSelection={false}
+                                            showOrganizationSelection={false}
                             />
                         }
-
-
+                        <div>
+                            <SweetAlert
+                                title="Are you sure?"
+                                text="You will not be able to recover this recording!"
+                                type="warning"
+                                showCancelButton={true}
+                                confirmButtonColor="#DD6B55"
+                                confirmButtonText="Yes, delete it!"
+                                show={this.state.showDeleteDocumentDialog}
+                                onConfirm={this.confirmDeleteDocument}
+                                onCancel={this.cancelDeleteDocument}
+                            />
+                        </div>
                     </div>
                 </div>
             )
@@ -384,7 +496,9 @@ function mapStateToProps(state) {
         activities: state.activities.items,
         ids: state.activities.ids,
         viewedOrganization: state.viewedOrganization,
-        deals: state.deals.personDeals
+        deals: state.deals.personDeals,
+        documents: state.documents.items,
+        documentIds: state.documents.ids
     };
 }
 
@@ -397,5 +511,9 @@ export default connect(mapStateToProps, {
     getTimelineLoadMoreByPersonId,
     getTimelineByPersonIdAndRefresh,
     getDealsByPersonId,
-    deleteDeal
+    deleteDeal,
+    createDocument,
+    uploadDocuments,
+    getDocumentByPersonId,
+    deleteDocument
 })(ContactDetail);

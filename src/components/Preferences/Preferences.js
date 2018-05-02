@@ -3,6 +3,7 @@ import {Tab, Tabs} from "react-bootstrap";
 import Profile from "./Profile";
 import Pipelines from "../Pipelines/Pipelines";
 import {Link} from "react-router-dom";
+import AccountPreferences from "./AccountPreferences";
 
 
 class Preferences extends Component {
@@ -24,10 +25,13 @@ class Preferences extends Component {
                                 </p>
                                 <div className="row">
                                     <Tabs defaultActiveKey={1} animation={false} id="pipeline-tabs" >
-                                        <Tab eventKey={1} title="Profile">
+                                        <Tab eventKey={1} title="Account">
+                                            <AccountPreferences/>
+                                        </Tab>
+                                        <Tab eventKey={2} title="Profile">
                                             <Profile/>
                                         </Tab>
-                                        <Tab eventKey={2} title="Pipelines">
+                                        <Tab eventKey={3} title="Pipelines">
                                             <Pipelines/>
                                         </Tab>
                                     </Tabs>

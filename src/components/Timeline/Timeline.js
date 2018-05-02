@@ -22,7 +22,7 @@ class Timeline extends Component {
         this._handleWaypointEnter = this._handleWaypointEnter.bind(this);
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.props.resetTimelines();
     }
 
@@ -52,6 +52,26 @@ class Timeline extends Component {
                                     <h2>Note</h2>
                                     <p>
                                         {timelineItem.source.content}
+                                    </p>
+                                    <span className="vertical-date">
+                                        {moment(timelineItem.createdDate).format('HH:mm').toString()} <br/>
+                                        <small>{moment(timelineItem.createdDate).format('DD-MMM-YYYY').toString()}</small>
+                    </span>
+                                </div>
+                            </div>
+
+                        )
+                    } else if (timelineItem.type === 'DOCUMENT_CREATED') {
+                        return (
+                            <div key={timelineId} className="vertical-timeline-block">
+                                <div className="vertical-timeline-icon navy-bg">
+                                    <i className="fa fa-file"/>
+                                </div>
+
+                                <div className="vertical-timeline-content">
+                                    <h2>Document</h2>
+                                    <p>
+                                        {timelineItem.source.name}
                                     </p>
                                     <span className="vertical-date">
                                         {moment(timelineItem.createdDate).format('HH:mm').toString()} <br/>
@@ -205,6 +225,6 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps,{
+export default connect(mapStateToProps, {
     resetTimelines
 })(Timeline);

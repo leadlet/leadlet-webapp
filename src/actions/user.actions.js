@@ -11,7 +11,7 @@ export const userActions = {
     delete: _delete
 };
 
-function login(username, password, props) {
+export function login(username, password, props, callback) {
     return dispatch => {
         dispatch(request({ username }));
 
@@ -19,6 +19,7 @@ function login(username, password, props) {
             .then(
                 user => {
                     dispatch(success(user));
+                    callback();
                     props.history.push("/")
                 },
                 error => {
@@ -33,7 +34,7 @@ function login(username, password, props) {
     function failure(error) { return { type: userConstants.LOGIN_FAILURE, error } }
 }
 
-function logout() {
+export function logout() {
     userService.logout();
     return { type: userConstants.LOGOUT };
 }

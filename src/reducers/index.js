@@ -16,6 +16,8 @@ import {timeLines} from "./timelines.reducer";
 import {boards} from "./board.reducer";
 import {teams} from "./team.reducer";
 import {objectives} from "./objective.reducer";
+import {account} from "./account.reducer";
+import {documents} from "./document.reducer";
 
 const rootReducer = combineReducers({
     authentication,
@@ -33,7 +35,9 @@ const rootReducer = combineReducers({
     timeLines,
     teams,
     boards,
-    objectives
+    objectives,
+    account,
+    documents
 });
 
 export default rootReducer;

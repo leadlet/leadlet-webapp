@@ -20,6 +20,24 @@ export function getDealsByPersonId(personId) {
     function failure(error) { return { type: dealConstants.GET_FAILURE_FOR_PERSON, error } }
 }
 
+export function getDealsByOrganizationId(organizationId) {
+    return dispatch => {
+        dispatch(request(organizationId));
+
+        dealService.getDealsByOrganizationId(organizationId)
+            .then(
+                deals => {
+                    dispatch(success({ organizationId, 'items': deals}));
+                },
+                error => dispatch(failure(error))
+            );
+    };
+
+    function request() { return { type: dealConstants.GET_REQUEST_FOR_ORGANIZATION } }
+    function success(data) { return { type: dealConstants.GET_SUCCESS_FOR_ORGANIZATION, data } }
+    function failure(error) { return { type: dealConstants.GET_FAILURE_FOR_ORGANIZATION, error } }
+}
+
 export function getDealById(dealId) {
     return dispatch => {
         dispatch(request(dealId));
