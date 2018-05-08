@@ -6,6 +6,7 @@ import Stages from "./Stages";
 import PipelineNewOrEdit from "./PipelineNewOrEdit";
 import {deletePipeline, getAllPipelines} from "../../actions/pipeline.actions";
 import SweetAlert from 'sweetalert-react';
+import {pipelineSelector} from "../../models/selectors";
 
 class Pipelines extends React.Component {
 
@@ -67,23 +68,22 @@ class Pipelines extends React.Component {
     }
 
     renderPipelines(){
-        if( !this.props.ids ) {
+        if( !this.props.pipelines ) {
             return ( <em>Loading Pipelines.. </em>);
-        }else if(this.props.ids) {
-            return this.props.ids.map( pipelineId => {
-                const pipelineItem = this.props.pipelines[pipelineId];
+        }else {
+            return this.props.pipelines.map( pipeline => {
 
                 return (
-                    <Tab eventKey={pipelineId} key={pipelineId}
+                    <Tab eventKey={pipeline.id} key={pipeline.id}
                          title={
-                             <span>{pipelineItem.name}
+                             <span>{pipeline.name}
                                  <div className="btn-group btn-group-xs" role="group" aria-label="...">
-                                    <i className="btn fa fa-edit"  onClick={() => this.onEditPipeline(pipelineItem)}/>
-                                    <i className="btn fa fa-trash" onClick={() => this.onDeletePipeline(pipelineItem.id)}/>
+                                    <i className="btn fa fa-edit"  onClick={() => this.onEditPipeline(pipeline)}/>
+                                    <i className="btn fa fa-trash" onClick={() => this.onDeletePipeline(pipeline.id)}/>
                                 </div>
                              </span>
                          }>
-                        <Stages pipelineId={pipelineItem.id}/>
+                        <Stages pipelineId={pipeline.id}/>
                     </Tab>
                 )
             })
@@ -103,7 +103,7 @@ class Pipelines extends React.Component {
             <div className="m-t">
                 <Tabs id="pipeline-tabs">
                     {this.renderPipelines()}
-                    <Tab title={this.newPipelineTab()} ></Tab>
+                    <Tab title={this.newPipelineTab()} />
                 </Tabs>
 
                 <div>
@@ -130,11 +130,9 @@ class Pipelines extends React.Component {
     }
 }
 
-
 function mapStateToProps(state){
     return {
-        pipelines: state.pipelines.items,
-        ids: state.pipelines.ids,
+        pipelines: pipelineSelector(state),
     };
 }
 

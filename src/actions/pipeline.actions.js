@@ -22,7 +22,7 @@ export function getAllPipelines() {
     };
 
     function request() { return { type: pipelineConstants.GETALL_REQUEST } }
-    function success(items) { return { type: pipelineConstants.GETALL_SUCCESS, items } }
+    function success(payload) { return { type: pipelineConstants.GETALL_SUCCESS, payload } }
     function failure(error) { return { type: pipelineConstants.GETALL_FAILURE, error } }
 
 }
@@ -46,7 +46,7 @@ export function updatePipeline(pipeline, successCallback) {
     };
 
     function request() { return { type: pipelineConstants.UPDATE_REQUEST } }
-    function success(pipeline) { return { type: pipelineConstants.UPDATE_SUCCESS, pipeline } }
+    function success(payload) { return { type: pipelineConstants.UPDATE_SUCCESS, payload } }
     function failure(error) { return { type: pipelineConstants.UPDATE_FAILURE, error } }
 }
 
@@ -70,7 +70,7 @@ export function createPipeline(pipeline, successCallback) {
     };
 
     function request() { return { type: pipelineConstants.CREATE_REQUEST } }
-    function success(pipeline) { return { type: pipelineConstants.CREATE_SUCCESS, pipeline } }
+    function success(payload) { return { type: pipelineConstants.CREATE_SUCCESS, payload } }
     function failure(error) { return { type: pipelineConstants.CREATE_FAILURE, error } }
 }
 
@@ -89,9 +89,9 @@ export function deletePipeline(id) {
             );
     };
 
-    function request(id) { return { type: pipelineConstants.DELETE_REQUEST, id } }
-    function success(id) { return { type: pipelineConstants.DELETE_SUCCESS, id } }
-    function failure(id, error) { return { type: pipelineConstants.DELETE_FAILURE, id, error } }
+    function request(payload) { return { type: pipelineConstants.DELETE_REQUEST, payload } }
+    function success(payload) { return { type: pipelineConstants.DELETE_SUCCESS, payload } }
+    function failure(payload, error) { return { type: pipelineConstants.DELETE_FAILURE, payload, error } }
 }
 
 export function getAllPipelineAndReturn(successCallback, failCallback) {
