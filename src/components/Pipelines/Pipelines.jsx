@@ -6,7 +6,7 @@ import Stages from "./Stages";
 import PipelineNewOrEdit from "./PipelineNewOrEdit";
 import {deletePipeline, getAllPipelines} from "../../actions/pipeline.actions";
 import SweetAlert from 'sweetalert-react';
-import {pipelineSelector} from "../../models/selectors";
+import {pipelinesSelector} from "../../models/selectors";
 
 class Pipelines extends React.Component {
 
@@ -132,7 +132,7 @@ class Pipelines extends React.Component {
 
 function mapStateToProps(state){
     return {
-        pipelines: pipelineSelector(state),
+        pipelines: pipelinesSelector(state)
     };
 }
 

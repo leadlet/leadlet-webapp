@@ -3,25 +3,26 @@ import {stageConstants} from "../constants/stage.constants";
 import {stageService} from "../services/stage.service"
 import {alertActions} from "./alert.actions";
 
+/*
 export function getAllStagesByPipelineId(id) {
 
     return dispatch => {
-        // TODO ygokirmak detay ver
         dispatch(request());
 
         stageService.getByPipelineId(id)
             .then(
-                items => dispatch(success(items)),
+                payload => dispatch(success(payload)),
                 error => dispatch(failure(error))
             );
 
     };
 
     function request() { return { type: stageConstants.GETALL_REQUEST } }
-    function success(items) { return { type: stageConstants.GETALL_SUCCESS, items } }
+    function success(payload) { return { type: stageConstants.GETALL_SUCCESS, payload } }
     function failure(error) { return { type: stageConstants.GETALL_FAILURE, error } }
 
 }
+*/
 
 export function getAllStages() {
 
@@ -31,14 +32,14 @@ export function getAllStages() {
 
         stageService.getAll()
             .then(
-                items => dispatch(success(items)),
+                payload => dispatch(success(payload)),
                 error => dispatch(failure(error))
             );
 
     };
 
     function request() { return { type: stageConstants.GETALL_REQUEST } }
-    function success(items) { return { type: stageConstants.GETALL_SUCCESS, items } }
+    function success(payload) { return { type: stageConstants.GETALL_SUCCESS, payload } }
     function failure(error) { return { type: stageConstants.GETALL_FAILURE, error } }
 
 }
@@ -49,9 +50,9 @@ export function updateStage(stage, successCallback) {
 
         return stageService.updateStage(stage)
             .then(
-                stage => {
+                payload => {
                     dispatch(successCallback);
-                    dispatch(success(stage));
+                    dispatch(success(payload));
                     dispatch(alertActions.success('Stage successfully updated'));
                 },
                 error => {
@@ -62,7 +63,7 @@ export function updateStage(stage, successCallback) {
     };
 
     function request() { return { type: stageConstants.UPDATE_REQUEST } }
-    function success(stage) { return { type: stageConstants.UPDATE_SUCCESS, stage } }
+    function success(payload) { return { type: stageConstants.UPDATE_SUCCESS, payload } }
     function failure(error) { return { type: stageConstants.UPDATE_FAILURE, error } }
 }
 
@@ -73,9 +74,9 @@ export function createStage(stage, successCallback) {
 
         stageService.createStage(stage)
             .then(
-                stage => {
+                payload => {
                     dispatch(successCallback);
-                    dispatch(success(stage));
+                    dispatch(success(payload));
                     dispatch(alertActions.success('Stage successfully updated'));
                 },
                 error => {
@@ -86,7 +87,7 @@ export function createStage(stage, successCallback) {
     };
 
     function request() { return { type: stageConstants.CREATE_REQUEST } }
-    function success(stage) { return { type: stageConstants.CREATE_SUCCESS, stage } }
+    function success(payload) { return { type: stageConstants.CREATE_SUCCESS, payload } }
     function failure(error) { return { type: stageConstants.CREATE_FAILURE, error } }
 }
 
@@ -106,7 +107,7 @@ export function deleteStage(id) {
     };
 
     function request(id) { return { type: stageConstants.DELETE_REQUEST, id } }
-    function success(id) { return { type: stageConstants.DELETE_SUCCESS, id } }
+    function success(payload) { return { type: stageConstants.DELETE_SUCCESS, payload }}
     function failure(id, error) { return { type: stageConstants.DELETE_FAILURE, id, error } }
 }
 

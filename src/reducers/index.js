@@ -7,7 +7,6 @@ import { alert } from './alert.reducer';
 import { reducer as formReducer } from 'redux-form';
 import {persons} from "./person.reducer";
 import {organizations} from "./organization.reducer";
-import {stages} from "./stages.reducer";
 import {chats} from './chats.reducer';
 import {activities} from './activities.reducer';
 import {deals} from './deals.reducer';
@@ -29,7 +28,6 @@ const rootReducer = combineReducers({
     organizations,
     form: formReducer,
     db,
-    //stages,
     chats,
     activities,
     deals,

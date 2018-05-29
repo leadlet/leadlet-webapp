@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {deleteStage, getAllStages} from "../../actions/stage.actions";
 import StageNewOrEdit from "./StageNewOrEdit";
 import SweetAlert from 'sweetalert-react';
+import {stagesSelector} from "../../models/selectors";
 
 class Stages extends React.Component {
 
@@ -64,17 +65,16 @@ class Stages extends React.Component {
     }
 
     renderStages() {
-        if (this.props.ids) {
-            return this.props.ids.filter(id =>
-                this.props.stages[id].pipelineId === this.props.pipelineId
-            ).map(stageId => {
-                const stageItem = this.props.stages[stageId];
+        if (this.props.stages) {
+            return this.props.stages.filter( stage =>
+                stage.pipelineId === this.props.pipelineId
+            ).map(stage => {
                 return (
-                    <div key={stageId} className="step" style={{"--stage-color": stageItem.color}}>
-                        {stageItem.name}
+                    <div key={stage.id} className="step" style={{"--stage-color": stage.color}}>
+                        {stage.name}
                         <div className="btn-group btn-group-xs" role="group" aria-label="...">
-                            <i className="btn fa fa-edit" onClick={() => this.onEditStage(stageItem)}/>
-                            <i className="btn fa fa-trash" onClick={() => this.onDeleteStage(stageItem.id)}/>
+                            <i className="btn fa fa-edit" onClick={() => this.onEditStage(stage)}/>
+                            <i className="btn fa fa-trash" onClick={() => this.onDeleteStage(stage.id)}/>
                         </div>
                     </div>
                 );
@@ -120,8 +120,7 @@ class Stages extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        stages: state.stages.items,
-        ids: state.stages.ids,
+        stages: stagesSelector(state)
     };
 }
 
