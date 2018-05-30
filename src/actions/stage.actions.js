@@ -27,15 +27,12 @@ export function getAllStagesByPipelineId(id) {
 export function getAllStages() {
 
     return dispatch => {
-        // TODO ygokirmak detay ver
         dispatch(request());
-
-        stageService.getAll()
+        return stageService.getAll()
             .then(
                 payload => dispatch(success(payload)),
                 error => dispatch(failure(error))
             );
-
     };
 
     function request() { return { type: stageConstants.GETALL_REQUEST } }

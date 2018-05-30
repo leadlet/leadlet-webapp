@@ -7,11 +7,8 @@ import { alert } from './alert.reducer';
 import { reducer as formReducer } from 'redux-form';
 import {persons} from "./person.reducer";
 import {organizations} from "./organization.reducer";
-import {chats} from './chats.reducer';
 import {activities} from './activities.reducer';
-import {deals} from './deals.reducer';
 import {timeLines} from "./timelines.reducer";
-import {boards} from "./board.reducer";
 import {teams} from "./team.reducer";
 import {objectives} from "./objective.reducer";
 import {account} from "./account.reducer";
@@ -28,12 +25,9 @@ const rootReducer = combineReducers({
     organizations,
     form: formReducer,
     db,
-    chats,
     activities,
-    deals,
     timeLines,
     teams,
-    boards,
     objectives,
     account,
     documents

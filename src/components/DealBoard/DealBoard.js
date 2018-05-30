@@ -12,6 +12,7 @@ import {deleteDeal, moveDeal} from "../../actions/deal.actions";
 import SweetAlert from 'sweetalert-react';
 import {getBoardByPipelineId, loadMoreDeals} from "../../actions/board.actions";
 import CreateEditDeal from '../DealDetail/CreateEditDeal'
+import {pipelinesSelector, stagesSelector} from "../../models/selectors";
 
 class DealBoard extends Component {
 
@@ -33,6 +34,7 @@ class DealBoard extends Component {
         this.moveCard = this.moveCard.bind(this);
         this.onDeleteDeal = this.onDeleteDeal.bind(this);
         this.moveList = this.moveList.bind(this);
+        this.pipelineChanged = this.pipelineChanged.bind(this);
     }
 
     cancelDeleteDeal() {
@@ -119,7 +121,6 @@ class DealBoard extends Component {
 
     componentDidMount() {
         this.props.getAllPipelines();
-        // get board
     }
 
     componentWillReceiveProps(nextProps) {
@@ -131,6 +132,11 @@ class DealBoard extends Component {
         }
     }
 
+    pipelineChanged(pipeline){
+        this.setState({ selectedPipeline: pipeline },
+            () => this.props.getBoardByPipelineId(this.state.selectedPipeline.value));
+    }
+
     render() {
         return (
             <div className="dealboard">
@@ -138,8 +144,8 @@ class DealBoard extends Component {
                     <div className="row row-flex pull-right">
                         <Button bsStyle="primary" className="m-l-sm" onClick={this.toggleNewDealModal}>New Deal</Button>
                         <PipelineSelector pipelines={this.props.pipelines}
-                                          onChange={this.props.selectPipeline}
-                                          value={this.props.pipelines.selectedPipelineId}/>
+                                          onChange={this.pipelineChanged}
+                                          value={this.state.selectedPipeline}/>
                     </div>
                 </div>
                 <div id="deals-board" className="lists">
@@ -175,50 +181,34 @@ class DealBoard extends Component {
 
     renderCards() {
 
-        if (this.props.pipelines && this.props.pipelines.selectedPipelineId) {
-            if (this.props.boards
-                && this.props.boards[this.props.pipelines.selectedPipelineId]) {
-                const _selectedBoard = this.props.boards[this.props.pipelines.selectedPipelineId];
-                if (_selectedBoard.loading) {
-                    return (
-                        <div className="load-icon-container">
-                            <i className="fa fa-spinner fa-pulse fa-3x fa-fw"/>
-                        </div>
-                    );
-                } else {
-                    return _selectedBoard.ids.stages.map(id =>
-                        <CardsContainer
-                            key={id}
-                            id={id}
-                            stage={_selectedBoard.entities.stages[id]}
-                            moveCard={this.moveCard}
-                            moveList={this.moveList}
-                            startScrolling={this.startScrolling}
-                            stopScrolling={this.stopScrolling}
-                            isScrolling={this.state.isScrolling}
-                            x={id}
-                            deals={_selectedBoard.entities.dealList}
-                            deleteDeal={this.onDeleteDeal}
-                            loadMoreDeals={this.props.loadMoreDeals}
-                        />
-                    );
-                }
-
-            } else {
-
-            }
-
-        } else {
-
+        if (this.props.pipelines && this.state.selectedPipeline && this.props.stages) {
+            return this.props.stages.map(stage =>
+                <CardsContainer
+                    key={stage.id}
+                    id={stage.id}
+                    stageId={stage.id}
+                    stage={stage}
+                    moveCard={this.moveCard}
+                    moveList={this.moveList}
+                    startScrolling={this.startScrolling}
+                    stopScrolling={this.stopScrolling}
+                    isScrolling={this.state.isScrolling}
+                    x={stage.id}
+                    deleteDeal={this.onDeleteDeal}
+                    loadMoreDeals={this.props.loadMoreDeals}
+                />
+            );
         }
+
 
     }
 }
 
 function mapStateToProps(state) {
     return {
-        pipelines: state.pipelines,
-        boards: state.boards
+        pipelines: pipelinesSelector(state),
+        stages: stagesSelector(state)
+
     }
 }
 
@@ -228,7 +218,6 @@ export default connect(mapStateToProps, {
     moveDeal,
     deleteDeal,
     getBoardByPipelineId,
-    selectPipeline,
     loadMoreDeals
 })(DragDropContext(HTML5Backend)(DealBoard));
 

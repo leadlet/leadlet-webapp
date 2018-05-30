@@ -9,8 +9,20 @@ export const dealService = {
     move,
     _delete,
     getDealsByPersonId,
-    getDealsByOrganizationId
+    getDealsByOrganizationId,
+    getDealsByStageId
 };
+
+
+function getDealsByStageId(stageId) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    return fetch('/api/deals/stage/' + stageId, requestOptions).then(handleResponse);
+}
+
 
 function getDealsByPersonId(personId) {
     const requestOptions = {

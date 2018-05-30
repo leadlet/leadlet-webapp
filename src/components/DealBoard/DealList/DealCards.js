@@ -113,7 +113,7 @@ class Cards extends Component {
 
         let isPlaceHold = false;
         let cardList = [];
-        dealIds.forEach( (id,i) => {
+        deals.forEach( (deal,i) => {
             if (isOver && canDrop) {
                 isPlaceHold = false;
                 if (i === 0 && placeholderIndex === -1) {
@@ -122,12 +122,11 @@ class Cards extends Component {
                     isPlaceHold = true;
                 }
             }
-            const item = deals[id];
-            if (item !== undefined) {
+            if (deal !== undefined) {
                 cardList.push(
-                    <Card x={item.stageId} y={item.order}
-                          item={item}
-                          key={item.id}
+                    <Card x={deal.stageId} y={deal.order}
+                          item={deal}
+                          key={deal.id}
                           stopScrolling={this.props.stopScrolling}
                           deleteDeal={this.props.deleteDeal}
                     />
@@ -160,10 +159,13 @@ class Cards extends Component {
     }
 
     loadMoreDeal() {
+        /*
         if(this.state.currentPage + 1  < this.props.stage.dealPageCount){
             this.setState({currentPage: this.state.currentPage + 1},
                 () => this.props.loadMoreDeals(this.props.stage.id,this.state.currentPage));
+
         }
+         */
     }
 }
 

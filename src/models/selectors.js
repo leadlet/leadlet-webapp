@@ -20,3 +20,29 @@ export const stagesSelector = createSelector(
         return session.Stage.all().toRefArray();
     }
 );
+
+
+export const stageDealsSelector = createSelector(
+    orm,
+    [
+        dbStateSelector,
+        (state, props) => props.stageId
+    ],
+    (session, stageId) => {
+        return session.Stage.withId(stageId).dealSet.all().toRefArray();
+    }
+);
+
+
+export const detailedDealSelector = createSelector(
+    orm,
+    [
+        dbStateSelector,
+        (state, dealId) => dealId
+    ],
+    (session, dealId) => {
+        if( session.Deal.hasId(dealId) ){
+            return session.Deal.withId(dealId).ref;
+        }
+    }
+);
