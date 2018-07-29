@@ -36,14 +36,16 @@
     "react-scripts": "1.1.0",
     "react-select": "^1.1.0",
     "react-waypoint": "^8.0.0",
-    "react-x-editable": "^0.0.9-beta",
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.2",
     "redux-form": "^7.1.1",
     "redux-logger": "^3.0.6",
     "redux-orm": "^0.9.4",
     "redux-thunk": "^2.2.0",
-    "sweetalert-react": "^0.4.11"
+    "sweetalert-react": "^0.4.11",
+    "moment": "^2.22.2",
+    "babel-core": "^6.26.3"
+
   },
   "scripts": {
     "start": "react-scripts start",
