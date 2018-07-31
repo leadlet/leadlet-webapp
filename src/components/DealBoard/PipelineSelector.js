@@ -29,10 +29,10 @@ function PipelineSelector(props) {
                 //simpleValue
                 clearable={false}
                 name="selected-state"
-                onChange={props.onChange}
+                onChange={(newValue) => props.onChange({id: newValue.value, name: newValue.label})}
                 openOnClick={false}
                 searchable={false}
-                value={props.value}
+                value={props.value && {value: props.value.id, label: props.value.name}}
                 />);
 
 }

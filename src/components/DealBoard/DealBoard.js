@@ -23,7 +23,8 @@ class DealBoard extends Component {
             isNewDealModalVisible: false,
             isScrolling: false,
             showDeleteDealDialog: false,
-            deletingDeal: null
+            deletingDeal: null,
+            selectedPipeline: null
         };
 
         this.toggleNewDealModal = this.toggleNewDealModal.bind(this);
@@ -124,17 +125,14 @@ class DealBoard extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.pipelines.ids && nextProps.pipelines.selectedPipelineId === undefined) {
-            this.props.selectPipeline(nextProps.pipelines.ids[0]);
-        }
-        if (nextProps.pipelines.selectedPipelineId !== this.props.pipelines.selectedPipelineId) {
-            this.props.getBoardByPipelineId(nextProps.pipelines.selectedPipelineId);
+        if( this.state.selectedPipeline === null && nextProps.pipelines.length > 0){
+            this.pipelineChanged(nextProps.pipelines[0]);
         }
     }
 
     pipelineChanged(pipeline){
         this.setState({ selectedPipeline: pipeline },
-            () => this.props.getBoardByPipelineId(this.state.selectedPipeline.value));
+            () => this.props.getBoardByPipelineId(pipeline.id));
     }
 
     render() {
@@ -181,8 +179,10 @@ class DealBoard extends Component {
 
     renderCards() {
 
-        if (this.props.pipelines && this.state.selectedPipeline && this.props.stages) {
-            return this.props.stages.map(stage =>
+        if (this.props.pipelines.length > 0 && this.props.stages.length > 0 && this.state.selectedPipeline) {
+            return this.props.stages
+                .filter(stage => stage.pipelineId === this.state.selectedPipeline.id)
+                .map(stage =>
                 <CardsContainer
                     key={stage.id}
                     id={stage.id}
