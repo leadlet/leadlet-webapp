@@ -108,12 +108,13 @@ class Cards extends Component {
     }
 
     render() {
-        const {connectDropTarget, isOver, canDrop, dealIds, deals} = this.props;
+        const {connectDropTarget, isOver, canDrop, deals} = this.props;
         const {placeholderIndex} = this.state;
 
         let isPlaceHold = false;
         let cardList = [];
-        deals.forEach( (deal,i) => {
+        deals.sort((first, second) => first.priority - second.priority)
+            .forEach( (deal,i) => {
             if (isOver && canDrop) {
                 isPlaceHold = false;
                 if (i === 0 && placeholderIndex === -1) {
@@ -144,7 +145,7 @@ class Cards extends Component {
         }
 
         // if there is no items in cards currently, display a placeholder anyway
-        if (isOver && canDrop && dealIds.length === 0) {
+        if (isOver && canDrop && deals.length === 0) {
             cardList.push(<li key="placeholder" className="info-element placeholder"/>);
         }
 

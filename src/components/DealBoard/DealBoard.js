@@ -12,7 +12,7 @@ import {deleteDeal, moveDeal} from "../../actions/deal.actions";
 import SweetAlert from 'sweetalert-react';
 import {getBoardByPipelineId, loadMoreDeals} from "../../actions/board.actions";
 import CreateEditDeal from '../DealDetail/CreateEditDeal'
-import {pipelinesSelector, stagesSelector} from "../../models/selectors";
+import {dealsSelector, pipelinesSelector, stagesSelector} from "../../models/selectors";
 
 class DealBoard extends Component {
 
@@ -62,9 +62,17 @@ class DealBoard extends Component {
 
     moveCard(dealId, nextStageId, nextDealOrder) {
 
+        console.log(this.props.deals);
+
+        const targetStageDeals = this.props.deals.filter(deal => deal.stageId === nextStageId )
+
+        const nextDealId = targetStageDeals[nextDealOrder] && targetStageDeals[nextDealOrder].id;
+        const prevDealId = targetStageDeals[nextDealOrder-1] && targetStageDeals[nextDealOrder-1].id;
+
+        /*
         const nextDealId = this.props.boards[this.props.pipelines.selectedPipelineId].entities.stages[nextStageId].dealList[nextDealOrder];
         const prevDealId = this.props.boards[this.props.pipelines.selectedPipelineId].entities.stages[nextStageId].dealList[nextDealOrder - 1];
-
+        */
 
         this.props.moveDeal({
             id: dealId,
@@ -207,8 +215,8 @@ class DealBoard extends Component {
 function mapStateToProps(state) {
     return {
         pipelines: pipelinesSelector(state),
-        stages: stagesSelector(state)
-
+        stages: stagesSelector(state),
+        deals: dealsSelector(state)
     }
 }
 

@@ -21,6 +21,13 @@ export const stagesSelector = createSelector(
     }
 );
 
+export const dealsSelector = createSelector(
+    orm,
+    dbStateSelector,
+    session => {
+        return session.Deal.all().toRefArray();
+    }
+);
 
 export const stageDealsSelector = createSelector(
     orm,

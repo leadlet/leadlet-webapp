@@ -111,8 +111,8 @@ export function moveDeal(moveDealDto) {
 
         return dealService.move(moveDealDto)
             .then(
-                deal => {
-                    dispatch(success(deal));
+                payload => {
+                    dispatch(success(payload));
                     dispatch(alertActions.success('Deal successfully updated'));
                 },
                 error => {
@@ -123,7 +123,7 @@ export function moveDeal(moveDealDto) {
     };
 
     function request() { return { type: dealConstants.UPDATE_REQUEST } }
-    function success(deal) { return { type: dealConstants.UPDATE_SUCCESS, deal } }
+    function success(payload) { return { type: dealConstants.UPDATE_SUCCESS, payload } }
     function failure(error) { return { type: dealConstants.UPDATE_FAILURE, error } }
 }
 
