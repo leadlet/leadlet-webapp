@@ -21,6 +21,35 @@ export const stagesSelector = createSelector(
     }
 );
 
+export const personDealsSelector = createSelector(
+    orm,
+    [
+        dbStateSelector,
+        (state, personId) => personId
+    ],
+    (session, personId) => {
+        return session.Deal.all().filter(deal => {
+            // personId is string in arguments
+            return deal.personId == personId
+        }).toRefArray();
+    }
+);
+
+export const organizationDealsSelector = createSelector(
+    orm,
+    [
+        dbStateSelector,
+        (state, organizationId) => organizationId
+    ],
+    (session, organizationId) => {
+        return session.Deal.all().filter(deal => {
+            // personId is string in arguments
+            return deal.organization.id == organizationId
+        }).toRefArray();
+    }
+);
+
+
 export const dealsSelector = createSelector(
     orm,
     dbStateSelector,

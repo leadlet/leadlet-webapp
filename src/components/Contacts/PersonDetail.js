@@ -22,6 +22,7 @@ import Link from "react-router-dom/es/Link";
 import SweetAlert from 'sweetalert-react';
 import Dropzone from 'react-dropzone';
 import {createDocument, deleteDocument, getDocumentByPersonId, uploadDocuments} from "../../actions/document.actions";
+import {personDealsSelector} from "../../models/selectors";
 
 class ContactDetail extends Component {
 
@@ -136,11 +137,10 @@ class ContactDetail extends Component {
 
     dataMapper() {
 
-        if (this.props.deals && this.props.deals[this.props.match.params.personId]) {
-            return this.props.deals[this.props.match.params.personId].ids.map(id => {
-                let deal = this.props.deals[this.props.match.params.personId].items[id];
+        if (this.props.deals) {
+            return this.props.deals.map(deal => {
                 return {
-                    id: id,
+                    id: deal.id,
                     title: deal.title,
                     dealValue: deal.dealValue && deal.dealValue.potentialValue,
                     stageId: deal.stage.name
@@ -375,7 +375,7 @@ class ContactDetail extends Component {
                                         <TableHeaderColumn dataField='dealValue'>Deal Value</TableHeaderColumn>
                                         <TableHeaderColumn dataField='stageId'>Stage</TableHeaderColumn>
                                         <TableHeaderColumn disabled
-                                                           dataFormat={this.deleteDealFormatter}></TableHeaderColumn>
+                                                           dataFormat={this.deleteDealFormatter}/>
                                     </BootstrapTable>
                                 </div>
                             </div>
@@ -420,7 +420,7 @@ class ContactDetail extends Component {
                                                 <TableHeaderColumn dataField='url'
                                                                    dataFormat={this.urlFormatter}>Url</TableHeaderColumn>
                                                 <TableHeaderColumn disabled
-                                                                   dataFormat={this.deleteDocumentFormatter}></TableHeaderColumn>
+                                                                   dataFormat={this.deleteDocumentFormatter}/>
                                             </BootstrapTable>
                                         </aside>
                                     </section>
@@ -490,13 +490,13 @@ class ContactDetail extends Component {
 }
 
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
     return {
         viewedPerson: state.persons.viewedPerson,
         activities: state.activities.items,
         ids: state.activities.ids,
         viewedOrganization: state.viewedOrganization,
-        deals: state.deals.personDeals,
+        deals: personDealsSelector(state, props.match.params.personId),
         documents: state.documents.items,
         documentIds: state.documents.ids
     };

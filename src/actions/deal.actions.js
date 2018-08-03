@@ -16,9 +16,9 @@ export function getDealsByStageId(stageId) {
             );
     };
 
-    function request() { return { type: dealConstants.GET_REQUEST } }
-    function success(payload) { return { type: dealConstants.GET_SUCCESS, payload } }
-    function failure(error) { return { type: dealConstants.GET_FAILURE, error } }
+    function request() { return { type: dealConstants.GET_ALL_REQUEST } }
+    function success(payload) { return { type: dealConstants.GET_ALL_SUCCESS, payload } }
+    function failure(error) { return { type: dealConstants.GET_ALL_FAILURE, error } }
 }
 
 export function getDealsByPersonId(personId) {
@@ -28,15 +28,15 @@ export function getDealsByPersonId(personId) {
         dealService.getDealsByPersonId(personId)
             .then(
                 deals => {
-                    dispatch(success({ personId, 'items': deals}));
+                    dispatch(success(deals));
                 },
                 error => dispatch(failure(error))
             );
     };
 
-    function request() { return { type: dealConstants.GET_REQUEST_FOR_PERSON } }
-    function success(data) { return { type: dealConstants.GET_SUCCESS_FOR_PERSON, data } }
-    function failure(error) { return { type: dealConstants.GET_FAILURE_FOR_PERSON, error } }
+    function request() { return { type: dealConstants.GET_ALL_REQUEST } }
+    function success(payload) { return { type: dealConstants.GET_ALL_SUCCESS, payload } }
+    function failure(error) { return { type: dealConstants.GET_ALL_FAILURE, error } }
 }
 
 export function getDealsByOrganizationId(organizationId) {
@@ -46,15 +46,15 @@ export function getDealsByOrganizationId(organizationId) {
         dealService.getDealsByOrganizationId(organizationId)
             .then(
                 deals => {
-                    dispatch(success({ organizationId, 'items': deals}));
+                    dispatch(success(deals));
                 },
                 error => dispatch(failure(error))
             );
     };
 
-    function request() { return { type: dealConstants.GET_REQUEST_FOR_ORGANIZATION } }
-    function success(data) { return { type: dealConstants.GET_SUCCESS_FOR_ORGANIZATION, data } }
-    function failure(error) { return { type: dealConstants.GET_FAILURE_FOR_ORGANIZATION, error } }
+    function request() { return { type: dealConstants.GET_ALL_REQUEST } }
+    function success(payload) { return { type: dealConstants.GET_ALL_SUCCESS, payload } }
+    function failure(error) { return { type: dealConstants.GET_ALL_FAILURE, error } }
 }
 
 export function getDealById(dealId) {
