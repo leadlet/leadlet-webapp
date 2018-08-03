@@ -108,12 +108,13 @@ class Cards extends Component {
     }
 
     render() {
-        const {connectDropTarget, isOver, canDrop, dealIds, deals} = this.props;
+        const {connectDropTarget, isOver, canDrop, deals} = this.props;
         const {placeholderIndex} = this.state;
 
         let isPlaceHold = false;
         let cardList = [];
-        dealIds.forEach( (id,i) => {
+        deals.sort((first, second) => first.priority - second.priority)
+            .forEach( (deal,i) => {
             if (isOver && canDrop) {
                 isPlaceHold = false;
                 if (i === 0 && placeholderIndex === -1) {
@@ -122,12 +123,11 @@ class Cards extends Component {
                     isPlaceHold = true;
                 }
             }
-            const item = deals[id];
-            if (item !== undefined) {
+            if (deal !== undefined) {
                 cardList.push(
-                    <Card x={item.stageId} y={item.order}
-                          item={item}
-                          key={item.id}
+                    <Card x={deal.stageId} y={deal.order}
+                          item={deal}
+                          key={deal.id}
                           stopScrolling={this.props.stopScrolling}
                           deleteDeal={this.props.deleteDeal}
                     />
@@ -145,7 +145,7 @@ class Cards extends Component {
         }
 
         // if there is no items in cards currently, display a placeholder anyway
-        if (isOver && canDrop && dealIds.length === 0) {
+        if (isOver && canDrop && deals.length === 0) {
             cardList.push(<li key="placeholder" className="info-element placeholder"/>);
         }
 
@@ -160,10 +160,13 @@ class Cards extends Component {
     }
 
     loadMoreDeal() {
+        /*
         if(this.state.currentPage + 1  < this.props.stage.dealPageCount){
             this.setState({currentPage: this.state.currentPage + 1},
                 () => this.props.loadMoreDeals(this.props.stage.id,this.state.currentPage));
+
         }
+         */
     }
 }
 

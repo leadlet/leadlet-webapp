@@ -6,19 +6,18 @@ import Select from 'react-select';
 function PipelineSelector(props) {
 
     function stateToOptions(pipelines) {
-        // { label: 'Chocolate', value: 'chocolate' }
-        if (pipelines.ids) {
-            return pipelines.ids.map((id) => {
+        if (pipelines) {
+            return pipelines.map( pipeline => {
                 return {
-                    label: pipelines.items[id].name,
-                    value: id
+                    label: pipeline.name,
+                    value: pipeline.id
                 };
             });
         }
     }
 
 
-    if( !props.pipelines.ids)
+    if( !props.pipelines)
         return <em>loading..</em>;
     else
     return (
@@ -27,13 +26,13 @@ function PipelineSelector(props) {
                 id="state-select"
                 autoFocus
                 options={stateToOptions(props.pipelines)}
-                simpleValue
+                //simpleValue
                 clearable={false}
                 name="selected-state"
-                onChange={props.onChange}
+                onChange={(newValue) => props.onChange({id: newValue.value, name: newValue.label})}
                 openOnClick={false}
                 searchable={false}
-                value={props.value}
+                value={props.value && {value: props.value.id, label: props.value.name}}
                 />);
 
 }

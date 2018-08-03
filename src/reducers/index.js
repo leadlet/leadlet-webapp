@@ -7,17 +7,14 @@ import { alert } from './alert.reducer';
 import { reducer as formReducer } from 'redux-form';
 import {persons} from "./person.reducer";
 import {organizations} from "./organization.reducer";
-import {pipelines} from "./pipelines.reducer";
-import {stages} from "./stages.reducer";
-import {chats} from './chats.reducer';
 import {activities} from './activities.reducer';
-import {deals} from './deals.reducer';
 import {timeLines} from "./timelines.reducer";
-import {boards} from "./board.reducer";
 import {teams} from "./team.reducer";
 import {objectives} from "./objective.reducer";
 import {account} from "./account.reducer";
 import {documents} from "./document.reducer";
+import { schema } from './../models/models';
+import {db} from "./orm.reducers";
 
 const rootReducer = combineReducers({
     authentication,
@@ -27,14 +24,10 @@ const rootReducer = combineReducers({
     persons,
     organizations,
     form: formReducer,
-    pipelines,
-    stages,
-    chats,
+    db,
     activities,
-    deals,
     timeLines,
     teams,
-    boards,
     objectives,
     account,
     documents

@@ -3,6 +3,8 @@ import {DropTarget, DragSource} from 'react-dnd';
 import PropTypes from 'prop-types';
 
 import Cards from './DealCards';
+import {stageDealsSelector} from "../../../models/selectors";
+import {connect} from "react-redux";
 
 const listSource = {
     beginDrag(props) {
@@ -68,14 +70,13 @@ class CardsContainer extends Component {
                     <div className="stage-name">{stage.name}</div>
                 </div>
                 <Cards
+                    deals={this.props.deals}
                     moveCard={moveCard}
                     x={x}
                     startScrolling={this.props.startScrolling}
                     stopScrolling={this.props.stopScrolling}
                     isScrolling={this.props.isScrolling}
-                    stage={stage}
-                    deals={this.props.deals}
-                    dealIds={this.props.stage.dealList}
+                    stageId={this.props.stageId}
                     deleteDeal={this.props.deleteDeal}
                     loadMoreDeals={this.props.loadMoreDeals}
                 />
@@ -90,6 +91,11 @@ class CardsContainer extends Component {
     }
 }
 
+function mapStateToProps(state, props) {
+    return {
+        deals: stageDealsSelector(state,props)
+    }
+}
 
 let dropWrapper = DropTarget('list', listTarget, connectDragSource => ({
     connectDropTarget: connectDragSource.dropTarget(),
@@ -100,4 +106,4 @@ let dragWrapper = DragSource('list', listSource, (connectDragSource, monitor) =>
     isDragging: monitor.isDragging()
 }))(dropWrapper);
 
-export default dragWrapper;
+export default connect(mapStateToProps, {})(dragWrapper);

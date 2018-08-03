@@ -74,7 +74,9 @@ class StageNewOrEdit extends React.Component {
     onSubmit = (values) => {
         // print the form values to the console
         const stageDto = {
-            ...values,
+            id: values.id,
+            name: values.name,
+            color: values.color,
             pipelineId: this.props.pipelineId
         }
         if( stageDto.id ){

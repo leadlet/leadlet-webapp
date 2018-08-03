@@ -20,7 +20,7 @@ const Card = (props) => {
             <div className="agile-detail">
                 <a href="/done" className="pull-right btn btn-xs btn-primary">Done</a>
                 <Link to={"/deal/"+item.id}><i className="btn fa fa-edit" /></Link>
-                <i className="btn fa fa-trash" onClick={() => props.deleteDeal(item)}/>
+                <i className="btn fa fa-trash" onClick={() => props.deleteDeal(item.id)}/>
                 <i className="fa fa-clock-o"/> {formattedDate}
             </div>
         </li>

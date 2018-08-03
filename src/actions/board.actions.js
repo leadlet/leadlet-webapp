@@ -1,5 +1,10 @@
 import {boardConstants} from "../constants/board.constants";
+import {stageConstants} from "../constants/stage.constants";
 import {boardService} from "../services/board.service";
+import {stageService} from "../services/stage.service";
+import {dealConstants} from "../constants/deal.constants";
+import {dealService} from "../services/deal.service";
+
 
 export function loadMoreDeals(stageId, page) {
     return dispatch => {
@@ -21,18 +26,36 @@ export function loadMoreDeals(stageId, page) {
 
 export function getBoardByPipelineId(pipelineId) {
     return dispatch => {
-        dispatch(request(pipelineId));
 
-        boardService.getBoardByPipelineId(pipelineId)
+        return stageService.getAll()
             .then(
-                board => {
-                    dispatch(success(board));
-                },
-                error => dispatch(failure(error))
+                stages => {
+                        dispatch(successStages(stages));
+                        stages.forEach(stage =>
+                            dealService.getDealsByStageId(stage.id)
+                                .then(
+                                    deals => {
+                                        dispatch(successDeals(deals));
+                                    },
+                                    error => dispatch(failureDeals(error))
+                                )
+                        )
+                    },
+                error => dispatch(failureStages(error))
             );
+
     };
 
-    function request(pipelineId) { return { type: boardConstants.GET_REQUEST, pipelineId} }
-    function success(board) { return { type: boardConstants.GET_SUCCESS, board } }
-    function failure(error) { return { type: boardConstants.GET_FAILURE, error } }
+    function successStages(payload) {
+        return { type: stageConstants.GETALL_SUCCESS, payload }
+    }
+
+    function failureStages(error) {
+        return { type: stageConstants.GETALL_FAILURE, error }
+    }
+
+    function successDeals(payload) { return { type: dealConstants.GET_ALL_SUCCESS, payload } }
+    function failureDeals(error) { return { type: dealConstants.GET_ALL_FAILURE, error } }
+
+
 }
