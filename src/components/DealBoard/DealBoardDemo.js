@@ -13,8 +13,10 @@ import SweetAlert from 'sweetalert-react';
 import {getBoardByPipelineId, loadMoreDeals} from "../../actions/board.actions";
 import CreateEditDeal from '../DealDetail/CreateEditDeal'
 import {dealsSelector, pipelinesSelector, stagesSelector} from "../../models/selectors";
+import {CategorySearch, ReactiveBase, ResultCard, ResultList, SingleRange} from "@appbaseio/reactivesearch/lib/index";
+import MyResult from "./MyResult";
 
-class DealBoard extends Component {
+class DealBoardDemo extends Component {
 
     constructor(props) {
         super(props);
@@ -38,6 +40,8 @@ class DealBoard extends Component {
         this.onDeleteDeal = this.onDeleteDeal.bind(this);
         this.moveList = this.moveList.bind(this);
         this.pipelineChanged = this.pipelineChanged.bind(this);
+        this.renderBoard = this.renderBoard.bind(this);
+
     }
 
     cancelDeleteDeal() {
@@ -152,6 +156,14 @@ class DealBoard extends Component {
     }
 
     render() {
+        return (<ReactiveBase
+            app="car-store"
+            credentials="cf7QByt5e:d2d60548-82a9-43cc-8b40-93cbbe75c34c">
+            {this.renderBoard()}
+        </ReactiveBase>);
+    }
+
+    renderBoard() {
         return (
             <div className="dealboard">
                 <div className="dealboard-toolbar">
@@ -162,54 +174,65 @@ class DealBoard extends Component {
                                           value={this.state.selectedPipeline}/>
                 </div>
                 <div className="deals">
-                {this.state.isSearchMenuVisible &&
-                <div id="deals-search" className="search">
-                    <div className="filter">
-                        <div className="filter-header">Actors</div>
-                        <div className="sk-item-list-option sk-item-list__item" data-qa="option"
-                             data-key="Naveen Andrews">
-                            <input type="checkbox" data-qa="checkbox" className="sk-item-list-option__checkbox"
-                                   value="on"/>
-                            <div data-qa="label" className="sk-item-list-option__text">Naveen Andrews</div>
-                            <div data-qa="count" className="sk-item-list-option__count">73</div>
+                    {this.state.isSearchMenuVisible &&
+                    <div id="deals-search" className="search">
+                        <CategorySearch
+                            componentId="searchbox"
+                            dataField="name"
+                            categoryField="brand.raw" // use "brand.keyword" for newly cloned datasets
+                            placeholder="Search for cars"
+                        />
+                        <SingleRange
+                            componentId="ratingsfilter"
+                            title="Filter by ratings"
+                            dataField="rating"
+                            data={[
+                                {"start": "4", "end": "5", "label": "4 stars and up"},
+                                {"start": "3", "end": "5", "label": "3 stars and up"},
+                                {"start": "2", "end": "5", "label": "2 stars and up"},
+                                {"start": "1", "end": "5", "label": "see all ratings"},
+                            ]}
+                            defaultSelected="4 stars and up"
+                        />
+                    </div>
+                    }
+                    <div id="deals-board" className="lists">
+                        <div className="list" >
+                            <div className="stage-header">
+                                <div className="stage-name">demo-stage</div>
+                            </div>
+                            <ul>
+                                <MyResult
+                                    componentId="result"
+                                    title="Results"
+                                    dataField="name"
+                                    pagination={false}
+                                    react={{
+                                        and: ["searchbox", "ratingsfilter"]
+                                    }}
+                                    onData={(res) => {
+
+                                        return {
+                                            description: (
+                                                <div>
+                                                    <div className="price">${res.price}</div>
+                                                    <p>{res.vehicleType}</p>
+                                                </div>
+                                            )
+                                        };
+                                    }}
+                                />
+                            </ul>
+
+                            <footer>Total potential: {new Intl.NumberFormat('en-GB', {
+                                style: 'currency',
+                                currency: 'USD'
+                            }).format(100)}</footer>
                         </div>
-                        <div className="sk-item-list-option sk-item-list__item" data-qa="option"
-                             data-key="Naveen Andrews">
-                            <input type="checkbox" data-qa="checkbox" className="sk-item-list-option__checkbox"
-                                   value="on"/>
-                            <div data-qa="label" className="sk-item-list-option__text">Naveen Andrews</div>
-                            <div data-qa="count" className="sk-item-list-option__count">73</div>
-                        </div>
-                        <div className="sk-item-list-option sk-item-list__item" data-qa="option"
-                             data-key="Naveen Andrews">
-                            <input type="checkbox" data-qa="checkbox" className="sk-item-list-option__checkbox"
-                                   value="on"/>
-                            <div data-qa="label" className="sk-item-list-option__text">Naveen Andrews</div>
-                            <div data-qa="count" className="sk-item-list-option__count">73</div>
-                        </div>
-                        <div className="sk-item-list-option sk-item-list__item" data-qa="option"
-                             data-key="Naveen Andrews">
-                            <input type="checkbox" data-qa="checkbox" className="sk-item-list-option__checkbox"
-                                   value="on"/>
-                            <div data-qa="label" className="sk-item-list-option__text">Naveen Andrews</div>
-                            <div data-qa="count" className="sk-item-list-option__count">73</div>
-                        </div>
-                        <div className="sk-item-list-option sk-item-list__item" data-qa="option"
-                             data-key="Naveen Andrews">
-                            <input type="checkbox" data-qa="checkbox" className="sk-item-list-option__checkbox"
-                                   value="on"/>
-                            <div data-qa="label" className="sk-item-list-option__text">Naveen Andrews</div>
-                            <div data-qa="count" className="sk-item-list-option__count">73</div>
-                        </div>
+
+
                     </div>
                 </div>
-        }
-            <div id="deals-board" className="lists">
-                <CustomDragLayer snapToGrid={false}/>
-                {this.renderCards()}
-            </div>
-
-            </div>
                 <SweetAlert
                     title="Are you sure?"
                     text="You will loose information related to deal!"
@@ -279,5 +302,5 @@ export default connect(mapStateToProps, {
     deleteDeal,
     getBoardByPipelineId,
     loadMoreDeals
-})(DragDropContext(HTML5Backend)(DealBoard));
+})(DragDropContext(HTML5Backend)(DealBoardDemo));
 

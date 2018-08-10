@@ -10763,7 +10763,15 @@ body {
     padding: 0 10px;
     display: flex; /* or inline-flex */
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: flex-end;
+
+}
+
+.dealboard .deals {
+    display: flex; /* or inline-flex */
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
 
 }
 
@@ -10773,6 +10781,19 @@ body {
     overflow-x: auto;
     padding: 5px 10px;
 
+}
+
+.dealboard .search {
+    margin: 5px 10px;
+    background-color: #ffffff;
+    min-width: 200px;
+    padding: 20px 10px;
+}
+
+
+
+.dealboard .search .list-group {
+    background-color: #ffffff;
 }
 
 .dealboard .list {
