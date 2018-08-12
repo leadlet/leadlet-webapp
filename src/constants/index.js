@@ -7,3 +7,4 @@ export * from './activity.constants';
 export * from './deal.constants';
 export * from './account.constants';
 export * from './drag.drop.types'
+export * from './product.constants';
