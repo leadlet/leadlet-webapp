@@ -1,13 +1,12 @@
-
 import {getAllUserByFilterAndReturn} from "../actions/user.actions";
 import {getAllProductByFilterAndReturn} from "../actions/product.actions";
+import {getAllSourceByFilterAndReturn} from "../actions/source.actions";
 import {getAllPersonByFilterAndReturn} from "../actions/person.actions";
-import {getAllOrganizationByFilterAndReturn} from "../actions/organization.actions";
 import {getAllDealByFilterAndReturn} from "../actions/deal.actions";
 import {getAllPipelineAndReturn} from "../actions/pipeline.actions";
 import {getAllStageReturn} from "../actions/stage.actions";
 import {organizationService} from "../services/organization.service";
-import {personService} from "../services/person.service";
+import {getAllChannelByFilterAndReturn} from "../actions/channel.actions";
 
 export function loadUser(input, callback) {
 
@@ -38,26 +37,26 @@ export function loadProduct(input, callback) {
 export function loadSource(input, callback) {
 
     let successCallBack = (data) => {
-        callback(null, {options: data.map(user => ({value: user.id, label: `${user.firstName} ${user.lastName}`}))});
+        callback(null, {options: data.map(source => ({value: source.id, label: `${source.name}`}))});
     };
     let failCallBack = (error) => {
         callback(error, null);
     };
 
-    getAllUserByFilterAndReturn(`name:${input}`, successCallBack, failCallBack);
+    getAllSourceByFilterAndReturn(`name:${input}`, successCallBack, failCallBack);
 
 };
 
 export function loadChannel(input, callback) {
 
     let successCallBack = (data) => {
-        callback(null, {options: data.map(user => ({value: user.id, label: `${user.firstName} ${user.lastName}`}))});
+        callback(null, {options: data.map(channel => ({value: channel.id, label: `${channel.name}`}))});
     };
     let failCallBack = (error) => {
         callback(error, null);
     };
 
-    getAllUserByFilterAndReturn(`name:${input}`, successCallBack, failCallBack);
+    getAllChannelByFilterAndReturn(`name:${input}`, successCallBack, failCallBack);
 
 };
 

@@ -84,7 +84,9 @@ class CreateEditDeal extends Component {
             ownerId: formValues.owner && formValues.owner.id,
             dealValue: formValues.dealValue,
             possibleCloseDate: formValues.possibleCloseDate && formValues.possibleCloseDate._d,
-            products: formValues.products
+            products: formValues.products,
+            dealSource: formValues.dealSource,
+            dealChannel: formValues.dealChannel
         }
 
         if( deal.id ){
@@ -220,18 +222,52 @@ class CreateEditDeal extends Component {
                             }}
                         />
                         <Field
-                            name="source"
+                            name="dealSource"
                             label="Source"
                             placeholder="Select deal source"
                             component={renderAsyncSelectField}
                             loadOptions={loadSource}
+                            parse={(value) => {
+                                if( value ) {
+                                    return {
+                                        'id': value.value,
+                                        'name': value.label
+                                    };
+                                }
+                            }}
+                            format={(value) => {
+                                if( value ){
+                                    return {
+                                        'value': value.id,
+                                        'label': value.name
+                                    }
+                                }
+
+                            }}
                         />
                         <Field
-                            name="channel"
+                            name="dealChannel"
                             label="Channel"
                             placeholder="Select deal channel"
                             component={renderAsyncSelectField}
                             loadOptions={loadChannel}
+                            parse={(value) => {
+                                if( value ) {
+                                    return {
+                                        'id': value.value,
+                                        'name': value.label
+                                    };
+                                }
+                            }}
+                            format={(value) => {
+                                if( value ){
+                                    return {
+                                        'value': value.id,
+                                        'label': value.name
+                                    }
+                                }
+
+                            }}
                         />
                     </form>
                     <div>
