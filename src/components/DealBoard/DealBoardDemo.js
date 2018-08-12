@@ -13,7 +13,10 @@ import SweetAlert from 'sweetalert-react';
 import {getBoardByPipelineId, loadMoreDeals} from "../../actions/board.actions";
 import CreateEditDeal from '../DealDetail/CreateEditDeal'
 import {dealsSelector, pipelinesSelector, stagesSelector} from "../../models/selectors";
-import {CategorySearch, ReactiveBase, ResultCard, ResultList, SingleRange} from "@appbaseio/reactivesearch/lib/index";
+import {
+    CategorySearch, DateRange, MultiList, RangeSlider, ReactiveBase, ResultCard, ResultList, SingleList,
+    SingleRange
+} from "@appbaseio/reactivesearch/lib/index";
 import MyResult from "./MyResult";
 
 class DealBoardDemo extends Component {
@@ -41,9 +44,70 @@ class DealBoardDemo extends Component {
         this.moveList = this.moveList.bind(this);
         this.pipelineChanged = this.pipelineChanged.bind(this);
         this.renderBoard = this.renderBoard.bind(this);
+        this.renderStages = this.renderStages.bind(this);
 
     }
 
+
+
+    renderStages(){
+
+        if (this.props.pipelines.length > 0 && this.props.stages.length > 0 && this.state.selectedPipeline) {
+            return this.props.stages
+                .filter(stage => stage.pipelineId === this.state.selectedPipeline.id)
+                .map(stage =>
+                    (
+                        <div className="list">
+                            <div className="stage-header">
+                                <div className="stage-name">{stage.name}</div>
+                            </div>
+                            <ul>
+                                <MyResult
+                                    id={stage.id}
+                                    key={stage.id}
+                                    componentId={"result" + stage.id}
+                                    title="Results"
+                                    dataField="name"
+                                    pagination={false}
+                                    react={{
+                                        and: ["dealChannel", "dealSource", "dealScore"]
+                                    }}
+                                    onData={(res) => {
+
+                                        return {
+                                            description: (
+                                                <div>
+                                                    <div className="price">${res.price}</div>
+                                                    <p>{res.vehicleType}</p>
+                                                </div>
+                                            )
+                                        };
+                                    }}
+                                    defaultQuery = {() => {
+
+                                        return {
+                                            "bool" : {
+                                                "must" : [
+                                                    {"term":{"pipeline_id": this.state.selectedPipeline.id.toString()}},
+                                                    {"term":{"stage_id": stage.id.toString()} }
+                                                ]
+
+                                            }
+                                        };
+                                    }}
+                                />
+                            </ul>
+                            <footer>Total potential: {new Intl.NumberFormat('en-GB', {
+                                style: 'currency',
+                                currency: 'USD'
+                            }).format(100)}</footer>
+                        </div>
+                        )
+
+                );
+        }
+
+    }
     cancelDeleteDeal() {
         this.setState({
             deletingDeal: null,
@@ -157,8 +221,9 @@ class DealBoardDemo extends Component {
 
     render() {
         return (<ReactiveBase
-            app="car-store"
-            credentials="cf7QByt5e:d2d60548-82a9-43cc-8b40-93cbbe75c34c">
+            url="http://localhost:3000"
+            type="deal"
+            app="leadlet" >
             {this.renderBoard()}
         </ReactiveBase>);
     }
@@ -176,61 +241,31 @@ class DealBoardDemo extends Component {
                 <div className="deals">
                     {this.state.isSearchMenuVisible &&
                     <div id="deals-search" className="search">
-                        <CategorySearch
-                            componentId="searchbox"
-                            dataField="name"
-                            categoryField="brand.raw" // use "brand.keyword" for newly cloned datasets
-                            placeholder="Search for cars"
+                        <MultiList
+                            componentId="dealChannel"
+                            dataField="channel.keyword"
+                            title="Channels"
                         />
-                        <SingleRange
-                            componentId="ratingsfilter"
-                            title="Filter by ratings"
-                            dataField="rating"
-                            data={[
-                                {"start": "4", "end": "5", "label": "4 stars and up"},
-                                {"start": "3", "end": "5", "label": "3 stars and up"},
-                                {"start": "2", "end": "5", "label": "2 stars and up"},
-                                {"start": "1", "end": "5", "label": "see all ratings"},
-                            ]}
-                            defaultSelected="4 stars and up"
+                        <MultiList
+                            componentId="dealSource"
+                            dataField="source.keyword"
+                            title="Sources"
                         />
+
+                        <RangeSlider
+                            componentId="dealScore"
+                            dataField="score"
+                            title="Score"
+                            range={{
+                                "start": 0,
+                                "end": 100
+                            }}
+                        />
+
                     </div>
                     }
                     <div id="deals-board" className="lists">
-                        <div className="list" >
-                            <div className="stage-header">
-                                <div className="stage-name">demo-stage</div>
-                            </div>
-                            <ul>
-                                <MyResult
-                                    componentId="result"
-                                    title="Results"
-                                    dataField="name"
-                                    pagination={false}
-                                    react={{
-                                        and: ["searchbox", "ratingsfilter"]
-                                    }}
-                                    onData={(res) => {
-
-                                        return {
-                                            description: (
-                                                <div>
-                                                    <div className="price">${res.price}</div>
-                                                    <p>{res.vehicleType}</p>
-                                                </div>
-                                            )
-                                        };
-                                    }}
-                                />
-                            </ul>
-
-                            <footer>Total potential: {new Intl.NumberFormat('en-GB', {
-                                style: 'currency',
-                                currency: 'USD'
-                            }).format(100)}</footer>
-                        </div>
-
-
+                        {this.renderStages()}
                     </div>
                 </div>
                 <SweetAlert

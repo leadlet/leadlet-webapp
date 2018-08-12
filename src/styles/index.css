@@ -10756,6 +10756,8 @@ body {
 
 .dealboard {
     height: 100%;
+    overflow-y: scroll;
+
 }
 
 .dealboard-toolbar {
@@ -10828,7 +10830,6 @@ body {
     padding: 10px 10px;
     height: calc(100% - 40px);
     max-height: calc(100% - 40px);
-    overflow-y: auto;
 
 }
 

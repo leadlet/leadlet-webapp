@@ -18,13 +18,20 @@ import {Link} from "react-router-dom";
 
 class MyResult extends ResultList {
 
+    constructor(props) {
+        // At this point, props.shapeType === 'Circle', when Circle component
+        // Is used
+
+        super(props);
+    }
+
     renderAsListItem = (item) => {
         const result = this.props.onData(item);
 
         if (result) {
             return (
-                <li className="info-element">
-                    <div className="card-body">test</div>
+                <li className="info-element" key={item.id}>
+                    <div className="card-body">{item.title}</div>
                     <div className="agile-detail">
                         <a href="/done" className="pull-right btn btn-xs btn-primary">Done</a>
                         <Link to={"/deal/3"}><i className="btn fa fa-edit" /></Link>
