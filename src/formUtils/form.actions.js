@@ -1,12 +1,12 @@
-
 import {getAllUserByFilterAndReturn} from "../actions/user.actions";
+import {getAllProductByFilterAndReturn} from "../actions/product.actions";
+import {getAllSourceByFilterAndReturn} from "../actions/source.actions";
 import {getAllPersonByFilterAndReturn} from "../actions/person.actions";
-import {getAllOrganizationByFilterAndReturn} from "../actions/organization.actions";
 import {getAllDealByFilterAndReturn} from "../actions/deal.actions";
 import {getAllPipelineAndReturn} from "../actions/pipeline.actions";
 import {getAllStageReturn} from "../actions/stage.actions";
 import {organizationService} from "../services/organization.service";
-import {personService} from "../services/person.service";
+import {getAllChannelByFilterAndReturn} from "../actions/channel.actions";
 
 export function loadUser(input, callback) {
 
@@ -18,6 +18,45 @@ export function loadUser(input, callback) {
     };
 
     getAllUserByFilterAndReturn(`name:${input}`, successCallBack, failCallBack);
+
+};
+
+export function loadProduct(input, callback) {
+
+    let successCallBack = (data) => {
+        callback(null, {options: data.map(product => ({value: product.id, label: `${product.name}`}))});
+    };
+    let failCallBack = (error) => {
+        callback(error, null);
+    };
+
+    getAllProductByFilterAndReturn(`name:${input}`, successCallBack, failCallBack);
+
+};
+
+export function loadSource(input, callback) {
+
+    let successCallBack = (data) => {
+        callback(null, {options: data.map(source => ({value: source.id, label: `${source.name}`}))});
+    };
+    let failCallBack = (error) => {
+        callback(error, null);
+    };
+
+    getAllSourceByFilterAndReturn(`name:${input}`, successCallBack, failCallBack);
+
+};
+
+export function loadChannel(input, callback) {
+
+    let successCallBack = (data) => {
+        callback(null, {options: data.map(channel => ({value: channel.id, label: `${channel.name}`}))});
+    };
+    let failCallBack = (error) => {
+        callback(error, null);
+    };
+
+    getAllChannelByFilterAndReturn(`name:${input}`, successCallBack, failCallBack);
 
 };
 
