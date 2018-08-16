@@ -13,6 +13,7 @@ import Link from "react-router-dom/es/Link";
 import EditOrCreateActivity from "../Activity/EditOrCreateActivity";
 import {getActivitiesByDealId} from "../../actions/activity.actions";
 import $ from "jquery";
+import {dealSelector, detailedDealSelector} from "../../models/selectors";
 
 
 class DealDetail extends Component {
@@ -120,7 +121,9 @@ class DealDetail extends Component {
 
     render() {
         const deal = this.props.viewedDeal;
-        if (!deal) {
+
+        // TODO fix this part
+        if (!deal || !deal.pipeline) {
             return (
                 <em>Loading details for {this.props.match.params.dealId}</em>
             );
@@ -344,9 +347,9 @@ class DealDetail extends Component {
     }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
     return {
-        viewedDeal: state.deals.viewedDeal,
+        viewedDeal: detailedDealSelector(state, props.match.params.dealId),
         activities: state.activities.items,
         ids: state.activities.ids
     };

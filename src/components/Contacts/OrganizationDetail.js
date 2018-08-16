@@ -20,6 +20,7 @@ import {
     getDocumentByOrganizationId,
     uploadDocumentsForOrganization
 } from "../../actions/document.actions";
+import {organizationDealsSelector} from "../../models/selectors";
 
 class OrganizationDetail extends Component {
 
@@ -66,11 +67,10 @@ class OrganizationDetail extends Component {
     }
 
     dataMapper() {
-        if (this.props.deals && this.props.deals[this.props.match.params.organizationId]) {
-            return this.props.deals[this.props.match.params.organizationId].ids.map(id => {
-                let deal = this.props.deals[this.props.match.params.organizationId].items[id];
+        if (this.props.deals) {
+            return this.props.deals.map(deal => {
                 return {
-                    id: id,
+                    id: deal.id,
                     title: deal.title,
                     dealValue: deal.dealValue && deal.dealValue.potentialValue,
                     stageId: deal.stage.name
@@ -317,7 +317,7 @@ class OrganizationDetail extends Component {
                                         <TableHeaderColumn dataField='dealValue'>Deal Value</TableHeaderColumn>
                                         <TableHeaderColumn dataField='stageId'>Stage</TableHeaderColumn>
                                         <TableHeaderColumn disabled
-                                                           dataFormat={this.deleteDealFormatter}></TableHeaderColumn>
+                                                           dataFormat={this.deleteDealFormatter}/>
                                     </BootstrapTable>
                                 </div>
                             </div>
@@ -399,12 +399,12 @@ class OrganizationDetail extends Component {
 }
 
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
     return {
         viewedOrganization: state.organizations.viewedOrganization,
         activities: state.activities.items,
         ids: state.activities.ids,
-        deals: state.deals.organizationDeals,
+        deals: organizationDealsSelector(state, props.match.params.organizationId),
         documents: state.documents.items,
         documentIds: state.documents.ids
     };

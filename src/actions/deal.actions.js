@@ -2,6 +2,25 @@ import {dealConstants} from "../constants/deal.constants";
 import {dealService} from "../services/deal.service";
 import {alertActions} from "./alert.actions";
 
+
+export function getDealsByStageId(stageId) {
+    return dispatch => {
+        dispatch(request(stageId));
+
+        dealService.getDealsByStageId(stageId)
+            .then(
+                deals => {
+                    dispatch(success(deals));
+                },
+                error => dispatch(failure(error))
+            );
+    };
+
+    function request() { return { type: dealConstants.GET_ALL_REQUEST } }
+    function success(payload) { return { type: dealConstants.GET_ALL_SUCCESS, payload } }
+    function failure(error) { return { type: dealConstants.GET_ALL_FAILURE, error } }
+}
+
 export function getDealsByPersonId(personId) {
     return dispatch => {
         dispatch(request(personId));
@@ -9,15 +28,15 @@ export function getDealsByPersonId(personId) {
         dealService.getDealsByPersonId(personId)
             .then(
                 deals => {
-                    dispatch(success({ personId, 'items': deals}));
+                    dispatch(success(deals));
                 },
                 error => dispatch(failure(error))
             );
     };
 
-    function request() { return { type: dealConstants.GET_REQUEST_FOR_PERSON } }
-    function success(data) { return { type: dealConstants.GET_SUCCESS_FOR_PERSON, data } }
-    function failure(error) { return { type: dealConstants.GET_FAILURE_FOR_PERSON, error } }
+    function request() { return { type: dealConstants.GET_ALL_REQUEST } }
+    function success(payload) { return { type: dealConstants.GET_ALL_SUCCESS, payload } }
+    function failure(error) { return { type: dealConstants.GET_ALL_FAILURE, error } }
 }
 
 export function getDealsByOrganizationId(organizationId) {
@@ -27,15 +46,15 @@ export function getDealsByOrganizationId(organizationId) {
         dealService.getDealsByOrganizationId(organizationId)
             .then(
                 deals => {
-                    dispatch(success({ organizationId, 'items': deals}));
+                    dispatch(success(deals));
                 },
                 error => dispatch(failure(error))
             );
     };
 
-    function request() { return { type: dealConstants.GET_REQUEST_FOR_ORGANIZATION } }
-    function success(data) { return { type: dealConstants.GET_SUCCESS_FOR_ORGANIZATION, data } }
-    function failure(error) { return { type: dealConstants.GET_FAILURE_FOR_ORGANIZATION, error } }
+    function request() { return { type: dealConstants.GET_ALL_REQUEST } }
+    function success(payload) { return { type: dealConstants.GET_ALL_SUCCESS, payload } }
+    function failure(error) { return { type: dealConstants.GET_ALL_FAILURE, error } }
 }
 
 export function getDealById(dealId) {
@@ -44,15 +63,15 @@ export function getDealById(dealId) {
 
         dealService.getDealById(dealId)
             .then(
-                deal => {
-                    dispatch(success(deal));
+                payload => {
+                    dispatch(success(payload));
                 },
                 error => dispatch(failure(error))
             );
     };
 
     function request() { return { type: dealConstants.GET_REQUEST } }
-    function success(deal) { return { type: dealConstants.GET_SUCCESS, deal } }
+    function success(payload) { return { type: dealConstants.GET_SUCCESS, payload } }
     function failure(error) { return { type: dealConstants.GET_FAILURE, error } }
 }
 
@@ -70,8 +89,8 @@ export function updateDeal(deal) {
 
         return dealService.update(deal)
             .then(
-                deal => {
-                    dispatch(success(deal));
+                payload => {
+                    dispatch(success(payload));
                     dispatch(alertActions.success('Deal successfully updated'));
                 },
                 error => {
@@ -82,7 +101,7 @@ export function updateDeal(deal) {
     };
 
     function request() { return { type: dealConstants.UPDATE_REQUEST } }
-    function success(deal) { return { type: dealConstants.UPDATE_SUCCESS, deal } }
+    function success(payload) { return { type: dealConstants.UPDATE_SUCCESS, payload } }
     function failure(error) { return { type: dealConstants.UPDATE_FAILURE, error } }
 }
 
@@ -92,8 +111,8 @@ export function moveDeal(moveDealDto) {
 
         return dealService.move(moveDealDto)
             .then(
-                deal => {
-                    dispatch(success(deal));
+                payload => {
+                    dispatch(success(payload));
                     dispatch(alertActions.success('Deal successfully updated'));
                 },
                 error => {
@@ -104,7 +123,7 @@ export function moveDeal(moveDealDto) {
     };
 
     function request() { return { type: dealConstants.UPDATE_REQUEST } }
-    function success(deal) { return { type: dealConstants.UPDATE_SUCCESS, deal } }
+    function success(payload) { return { type: dealConstants.UPDATE_SUCCESS, payload } }
     function failure(error) { return { type: dealConstants.UPDATE_FAILURE, error } }
 }
 
@@ -116,8 +135,8 @@ export function createDeal(deal) {
 
         return dealService.create(deal)
             .then(
-                deal => {
-                    dispatch(success(deal));
+                payload => {
+                    dispatch(success(payload));
                     dispatch(alertActions.success('Deal successfully created'));
                 },
                 error => {
@@ -128,26 +147,26 @@ export function createDeal(deal) {
     };
 
     function request() { return { type: dealConstants.CREATE_REQUEST } }
-    function success(deal) { return { type: dealConstants.CREATE_SUCCESS, deal } }
+    function success(payload) { return { type: dealConstants.CREATE_SUCCESS, payload } }
     function failure(error) { return { type: dealConstants.CREATE_FAILURE, error } }
 }
 
-export function deleteDeal(deal) {
+export function deleteDeal(id) {
     return dispatch => {
-        dispatch(request(deal));
+        dispatch(request(id));
 
-        dealService._delete(deal.id)
+        dealService._delete(id)
             .then(
                 response => {
-                    dispatch(success(deal));
+                    dispatch(success(id));
                 },
                 error => {
-                    dispatch(failure(deal, error));
+                    dispatch(failure(id, error));
                 }
             );
     };
 
     function request(deal) { return { type: dealConstants.DELETE_REQUEST, deal } }
-    function success(deal) { return { type: dealConstants.DELETE_SUCCESS, deal } }
-    function failure(deal, error) { return { type: dealConstants.DELETE_FAILURE, deal, error } }
+    function success(payload) { return { type: dealConstants.DELETE_SUCCESS, payload } }
+    function failure(id, error) { return { type: dealConstants.DELETE_FAILURE, id, error } }
 }
