@@ -9,17 +9,26 @@ const propTypes = {
 };
 
 const Card = (props) => {
-    const { style, item } = props;
+    const {style, item} = props;
 
     const formattedDate = moment(item.createdDate, "YYYY-MM-DDTHH:mm:ss+-HH:mm").format("DD.MM.YYYY");
 
     return (
 
         <li style={style} className="info-element" id={style ? item.id : null}>
-            <div className="card-body">{item.title}</div>
+            <div className="card-body">
+                <div>
+                    <p className="pull-left">{item.products.map(product => product.name)} | {item.dealChannel && item.dealChannel.name} | {item.dealSource && item.dealSource.name}</p>
+                    <p className="pull-right">{item.dealValue && item.dealValue.potentialValue}</p>
+                </div>
+                <div>{item.person.phones.map(phone => phone.phone)} / {item.person.email}</div>
+                <div>
+                    <p className="pull-left">{item.person.name}</p>
+                    <p className="pull-right">{item.createdDate}</p>
+                    </div>
+            </div>
             <div className="agile-detail">
-                <a href="/done" className="pull-right btn btn-xs btn-primary">Done</a>
-                <Link to={"/deal/"+item.id}><i className="btn fa fa-edit" /></Link>
+                <Link to={"/deal/" + item.id}><i className="btn fa fa-edit"/></Link>
                 <i className="btn fa fa-trash" onClick={() => props.deleteDeal(item.id)}/>
                 <i className="fa fa-clock-o"/> {formattedDate}
             </div>
