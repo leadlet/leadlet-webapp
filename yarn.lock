@@ -10,6 +10,14 @@
     redux "^4.0.0"
     redux-thunk "^2.3.0"
 
+"@appbaseio/reactivecore@^4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@appbaseio/reactivecore/-/reactivecore-4.1.0.tgz#940525c692224751bb4d9d1733adde65c9c0ce10"
+  dependencies:
+    prop-types "^15.6.0"
+    redux "^4.0.0"
+    redux-thunk "^2.3.0"
+
 "@appbaseio/reactivesearch@^2.6.12":
   version "2.6.12"
   resolved "https://registry.yarnpkg.com/@appbaseio/reactivesearch/-/reactivesearch-2.6.12.tgz#b89b24e28fc2999a08cff22b89f12dd261622381"

@@ -13,7 +13,11 @@ import SweetAlert from 'sweetalert-react';
 import {getBoardByPipelineId, loadMoreDeals} from "../../actions/board.actions";
 import CreateEditDeal from '../DealDetail/CreateEditDeal'
 import {dealsSelector, pipelinesSelector, stagesSelector} from "../../models/selectors";
-
+import {
+    CategorySearch, DateRange, MultiList, RangeSlider, ReactiveBase, ResultCard, ResultList, SelectedFilters,
+    SingleList,
+    SingleRange
+} from "@appbaseio/reactivesearch/lib/index";
 class DealBoard extends Component {
 
     constructor(props) {
@@ -38,6 +42,8 @@ class DealBoard extends Component {
         this.onDeleteDeal = this.onDeleteDeal.bind(this);
         this.moveList = this.moveList.bind(this);
         this.pipelineChanged = this.pipelineChanged.bind(this);
+        this.renderBoard = this.renderBoard.bind(this);
+
     }
 
     cancelDeleteDeal() {
@@ -63,7 +69,7 @@ class DealBoard extends Component {
     }
 
     moveCard(dealId, nextStageId, nextDealOrder) {
-
+/*
         console.log(this.props.deals);
 
         const targetStageDeals = this.props.deals.filter(deal => deal.stageId === nextStageId )
@@ -71,18 +77,13 @@ class DealBoard extends Component {
         const nextDealId = targetStageDeals[nextDealOrder] && targetStageDeals[nextDealOrder].id;
         const prevDealId = targetStageDeals[nextDealOrder-1] && targetStageDeals[nextDealOrder-1].id;
 
-        /*
-        const nextDealId = this.props.boards[this.props.pipelines.selectedPipelineId].entities.stages[nextStageId].dealList[nextDealOrder];
-        const prevDealId = this.props.boards[this.props.pipelines.selectedPipelineId].entities.stages[nextStageId].dealList[nextDealOrder - 1];
-        */
-
         this.props.moveDeal({
             id: dealId,
             newStageId: nextStageId,
             nextDealId: nextDealId,
             prevDealId: prevDealId
         });
-
+*/
     }
 
     moveList(listId, nextX) {
@@ -152,9 +153,23 @@ class DealBoard extends Component {
     }
 
     render() {
+        return (<ReactiveBase
+            url="http://localhost:3000"
+            type="deal"
+            app="leadlet" >
+            {this.renderBoard()}
+        </ReactiveBase>);
+    }
+
+    renderBoard() {
         return (
             <div className="dealboard">
                 <div className="dealboard-toolbar">
+                        <SelectedFilters
+                            className="selected-filters"
+                            showClearAll={true}
+                            clearAllLabel="Clear filters"
+                        />
                         <Button bsStyle="primary" className="m-l-sm" onClick={this.toggleSearchMenu}><i className="fa fa-filter"/></Button>
                         <Button bsStyle="primary" className="m-l-sm" onClick={this.toggleNewDealModal}>New Deal</Button>
                         <PipelineSelector pipelines={this.props.pipelines}
@@ -162,48 +177,31 @@ class DealBoard extends Component {
                                           value={this.state.selectedPipeline}/>
                 </div>
                 <div className="deals">
-                {this.state.isSearchMenuVisible &&
-                <div id="deals-search" className="search">
-                    <div className="filter">
-                        <div className="filter-header">Actors</div>
-                        <div className="sk-item-list-option sk-item-list__item" data-qa="option"
-                             data-key="Naveen Andrews">
-                            <input type="checkbox" data-qa="checkbox" className="sk-item-list-option__checkbox"
-                                   value="on"/>
-                            <div data-qa="label" className="sk-item-list-option__text">Naveen Andrews</div>
-                            <div data-qa="count" className="sk-item-list-option__count">73</div>
-                        </div>
-                        <div className="sk-item-list-option sk-item-list__item" data-qa="option"
-                             data-key="Naveen Andrews">
-                            <input type="checkbox" data-qa="checkbox" className="sk-item-list-option__checkbox"
-                                   value="on"/>
-                            <div data-qa="label" className="sk-item-list-option__text">Naveen Andrews</div>
-                            <div data-qa="count" className="sk-item-list-option__count">73</div>
-                        </div>
-                        <div className="sk-item-list-option sk-item-list__item" data-qa="option"
-                             data-key="Naveen Andrews">
-                            <input type="checkbox" data-qa="checkbox" className="sk-item-list-option__checkbox"
-                                   value="on"/>
-                            <div data-qa="label" className="sk-item-list-option__text">Naveen Andrews</div>
-                            <div data-qa="count" className="sk-item-list-option__count">73</div>
-                        </div>
-                        <div className="sk-item-list-option sk-item-list__item" data-qa="option"
-                             data-key="Naveen Andrews">
-                            <input type="checkbox" data-qa="checkbox" className="sk-item-list-option__checkbox"
-                                   value="on"/>
-                            <div data-qa="label" className="sk-item-list-option__text">Naveen Andrews</div>
-                            <div data-qa="count" className="sk-item-list-option__count">73</div>
-                        </div>
-                        <div className="sk-item-list-option sk-item-list__item" data-qa="option"
-                             data-key="Naveen Andrews">
-                            <input type="checkbox" data-qa="checkbox" className="sk-item-list-option__checkbox"
-                                   value="on"/>
-                            <div data-qa="label" className="sk-item-list-option__text">Naveen Andrews</div>
-                            <div data-qa="count" className="sk-item-list-option__count">73</div>
-                        </div>
+                    {this.state.isSearchMenuVisible &&
+                    <div id="deals-search" className="search">
+                        <MultiList
+                            componentId="Channel"
+                            dataField="channel.keyword"
+                            title="Channels"
+                        />
+                        <MultiList
+                            componentId="Source"
+                            dataField="source.keyword"
+                            title="Sources"
+                        />
+
+                        <RangeSlider
+                            componentId="Score"
+                            dataField="score"
+                            title="Score"
+                            range={{
+                                "start": 0,
+                                "end": 100
+                            }}
+                        />
+
                     </div>
-                </div>
-        }
+                    }
             <div id="deals-board" className="lists">
                 <CustomDragLayer snapToGrid={false}/>
                 {this.renderCards()}
@@ -247,6 +245,7 @@ class DealBoard extends Component {
                     key={stage.id}
                     id={stage.id}
                     stageId={stage.id}
+                    pipelineId = {this.state.selectedPipeline.id}
                     stage={stage}
                     moveCard={this.moveCard}
                     moveList={this.moveList}

@@ -10785,18 +10785,6 @@ body {
 
 }
 
-.dealboard .search {
-    margin: 5px 10px;
-    background-color: #ffffff;
-    min-width: 200px;
-    padding: 20px 10px;
-}
-
-
-
-.dealboard .search .list-group {
-    background-color: #ffffff;
-}
 
 .dealboard .list {
     width: 270px;
@@ -10914,4 +10902,25 @@ body {
     top: 50%;
     left: 50%;
     margin: -50px 0px 0px -50px;
+}
+
+.selected-filters {
+    padding: 2px;
+}
+.selected-filters > a {
+    background-color: #FFF;
+    font-size: 0.95rem !important;
+}
+
+
+
+.dealboard .search {
+    margin: 5px 10px;
+    background-color: #ffffff;
+    min-width: 200px;
+    padding: 20px 10px;
+}
+
+.dealboard .search .list-group {
+    background-color: #ffffff;
 }

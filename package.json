@@ -11,6 +11,7 @@
     }
   },
   "dependencies": {
+    "@appbaseio/reactivecore": "^4.1.0",
     "@appbaseio/reactivesearch": "^2.6.12",
     "animate.css": "^3.5.2",
     "babel-core": "^6.26.3",

@@ -79,6 +79,7 @@ class CardsContainer extends Component {
                     stageId={this.props.stageId}
                     deleteDeal={this.props.deleteDeal}
                     loadMoreDeals={this.props.loadMoreDeals}
+                    pipelineId={this.props.pipelineId}
                 />
 
 
