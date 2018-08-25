@@ -3,6 +3,8 @@ import {attr, fk, many, Model} from "redux-orm";
 import {pipelineConstants} from "../constants/pipeline.constants";
 import {stageConstants} from "../constants/stage.constants";
 import {dealConstants} from "../constants/deal.constants";
+import {searchConstants} from "../constants/search.constants";
+import * as _ from "lodash";
 
 /* Pipeline */
 export class Pipeline extends Model {
@@ -75,7 +77,8 @@ export class Deal extends Model {
         switch (action.type) {
             case dealConstants.GET_ALL_SUCCESS:
                 const deals = action.payload;
-                deals.forEach(stage => Deal.upsert(stage));
+                Deal.all().toModelArray().forEach(deal => deal.delete());
+                deals.forEach(stage => Deal.create(stage));
                 break;
 
             case dealConstants.GET_SUCCESS:
@@ -109,3 +112,85 @@ Deal.fields = {
     pipelineId: fk('Pipeline'),
     stageId: fk('Stage')
 };
+
+
+/* SearchFilter */
+export class SearchFilter extends Model {
+
+    static reducer(action, SearchFilter, session) {
+        switch (action.type) {
+            case searchConstants.FACET_GET_SUCCESS:
+                SearchFilter.upsert(Object.assign(action.payload, action.filter));
+                break;
+            case searchConstants.FACET_TERM_SELECTED:
+                var oldSelectedOptions = SearchFilter.withId(action.payload.facetId).selectedOptions || [];
+                var newSelectedOptions = _.concat( oldSelectedOptions, action.payload.term );
+                SearchFilter.withId(action.payload.facetId).set("selectedOptions",newSelectedOptions);
+                break;
+            case searchConstants.FACET_TERM_UNSELECTED:
+                var oldSelectedOptions = SearchFilter.withId(action.payload.facetId).selectedOptions;
+                var index = oldSelectedOptions.indexOf(action.payload.term);
+                var newSelectedOptions = oldSelectedOptions.slice(0,index).concat(oldSelectedOptions.slice(index+1));
+
+                SearchFilter.withId(action.payload.facetId).set("selectedOptions",newSelectedOptions);
+                break;
+            case searchConstants.REGISTER_FILTER:
+                SearchFilter.create(action.payload);
+                break;
+        }
+        // Return value is ignored.
+        return undefined;
+    }
+
+}
+SearchFilter.modelName = 'SearchFilter';
+
+SearchFilter.fields = {
+    id: attr(), // non-relational field for any value; optional but highly recommended
+    type: attr(),
+    options: attr(),
+    operator: attr(),
+    selectedOptions: attr()
+    //, stages: many('Stage')
+};
+
+
+/*
+       case searchConstants.FACET_GETALL_SUCCESS:
+            const items = normalize(action.payload, facetListSchema);
+            return {
+                ...state,
+                items: items.entities.facets,
+                ids: items.result
+            };
+        case searchConstants.FACET_TERM_SELECTED:
+            var facetTerm = action.payload;
+            var modifiedFilters = state.selectedFilters;
+
+            if ( modifiedFilters[facetTerm.facetId] === undefined ){
+                modifiedFilters[facetTerm.facetId] = [facetTerm.term];
+            }else{
+                modifiedFilters[facetTerm.facetId].push(facetTerm.term);
+            }
+
+            return {
+                ...state,
+                selectedFilters: modifiedFilters
+            };
+
+        case searchConstants.FACET_TERM_UNSELECTED:
+            var facetTerm = action.payload;
+            var modifiedFilters = state.selectedFilters;
+
+            if ( modifiedFilters[facetTerm.facetId] === undefined ){
+                // not possible
+            }else{
+                modifiedFilters[facetTerm.facetId] = modifiedFilters[facetTerm.facetId].filter( elem => (elem !== facetTerm.term));
+            }
+
+            return {
+                ...state,
+                selectedFilters: modifiedFilters
+            };
+
+ */

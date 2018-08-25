@@ -3,23 +3,6 @@ import {dealService} from "../services/deal.service";
 import {alertActions} from "./alert.actions";
 
 
-export function getDealsByStageId(stageId) {
-    return dispatch => {
-        dispatch(request(stageId));
-
-        dealService.getDealsByStageId(stageId)
-            .then(
-                deals => {
-                    dispatch(success(deals));
-                },
-                error => dispatch(failure(error))
-            );
-    };
-
-    function request() { return { type: dealConstants.GET_ALL_REQUEST } }
-    function success(payload) { return { type: dealConstants.GET_ALL_SUCCESS, payload } }
-    function failure(error) { return { type: dealConstants.GET_ALL_FAILURE, error } }
-}
 
 export function getDealsByPersonId(personId) {
     return dispatch => {
@@ -81,6 +64,22 @@ export function getAllDealByFilterAndReturn(filter, successCallback, failCallbac
             response => successCallback(response[0]),
             error => failCallback(error)
         );
+}
+
+export function getDealsByFilter(filter) {
+    return dispatch => {
+
+        dealService.getDealsByFilter(filter)
+            .then(
+                payload => {
+                    dispatch(success(payload));
+                },
+                error => dispatch(failure(error))
+            );
+    };
+
+    function success(payload) { return { type: dealConstants.GET_ALL_SUCCESS, payload } }
+    function failure(error) { return { type: dealConstants.GET_ALL_FAILURE, error } }
 }
 
 export function updateDeal(deal) {

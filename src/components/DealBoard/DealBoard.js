@@ -8,16 +8,13 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import {DragDropContext} from 'react-dnd';
 import CardsContainer from "./DealList/DealCardsContainer";
 import CustomDragLayer from "./CustomDragLayer";
-import {deleteDeal, moveDeal} from "../../actions/deal.actions";
+import {deleteDeal, getDealsByFilter, moveDeal} from "../../actions/deal.actions";
 import SweetAlert from 'sweetalert-react';
 import {getBoardByPipelineId, loadMoreDeals} from "../../actions/board.actions";
 import CreateEditDeal from '../DealDetail/CreateEditDeal'
-import {dealsSelector, pipelinesSelector, stagesSelector} from "../../models/selectors";
-import {
-    CategorySearch, DateRange, MultiList, RangeSlider, ReactiveBase, ResultCard, ResultList, SelectedFilters,
-    SingleList,
-    SingleRange
-} from "@appbaseio/reactivesearch/lib/index";
+import {dealsSelector, filtersSelector, pipelinesSelector, stagesSelector} from "../../models/selectors";
+import MultiListFilter from "../Search/MultiListFilter";
+import SearchFilterContainer from "../Search/SearchFilterContainer";
 class DealBoard extends Component {
 
     constructor(props) {
@@ -42,7 +39,7 @@ class DealBoard extends Component {
         this.onDeleteDeal = this.onDeleteDeal.bind(this);
         this.moveList = this.moveList.bind(this);
         this.pipelineChanged = this.pipelineChanged.bind(this);
-        this.renderBoard = this.renderBoard.bind(this);
+        this.buildQuery = this.buildQuery.bind(this);
 
     }
 
@@ -69,7 +66,7 @@ class DealBoard extends Component {
     }
 
     moveCard(dealId, nextStageId, nextDealOrder) {
-/*
+
         console.log(this.props.deals);
 
         const targetStageDeals = this.props.deals.filter(deal => deal.stageId === nextStageId )
@@ -77,13 +74,18 @@ class DealBoard extends Component {
         const nextDealId = targetStageDeals[nextDealOrder] && targetStageDeals[nextDealOrder].id;
         const prevDealId = targetStageDeals[nextDealOrder-1] && targetStageDeals[nextDealOrder-1].id;
 
+        /*
+        const nextDealId = this.props.boards[this.props.pipelines.selectedPipelineId].entities.stages[nextStageId].dealList[nextDealOrder];
+        const prevDealId = this.props.boards[this.props.pipelines.selectedPipelineId].entities.stages[nextStageId].dealList[nextDealOrder - 1];
+        */
+
         this.props.moveDeal({
             id: dealId,
             newStageId: nextStageId,
             nextDealId: nextDealId,
             prevDealId: prevDealId
         });
-*/
+
     }
 
     moveList(listId, nextX) {
@@ -141,10 +143,33 @@ class DealBoard extends Component {
         this.props.getAllPipelines();
     }
 
+    componentDidUpdate(prevProps) {
+        if( this.props.filters !== prevProps.filters){
+            var searchQuery = this.buildQuery(this.props.filters);
+            this.props.getDealsByFilter(searchQuery);
+        }
+    }
+
     componentWillReceiveProps(nextProps) {
         if( this.state.selectedPipeline === null && nextProps.pipelines.length > 0){
             this.pipelineChanged(nextProps.pipelines[0]);
         }
+
+
+    }
+
+    // title:(quick OR brown)
+
+    buildQuery( filters ){
+
+        var searchFilters = [];
+        if( filters ){
+            searchFilters = filters
+                .filter(filter => filter.type === "TERMS" && filter.selectedOptions && filter.selectedOptions.length > 0)
+                .map( filter => filter.dataField + ":(" + filter.selectedOptions.map(option => "\""+option+"\"").join(" OR ")+ ")");
+        }
+
+        return searchFilters.length > 0 ? searchFilters.join(" AND "): "";
     }
 
     pipelineChanged(pipeline){
@@ -153,23 +178,9 @@ class DealBoard extends Component {
     }
 
     render() {
-        return (<ReactiveBase
-            url="http://localhost:3000"
-            type="deal"
-            app="leadlet" >
-            {this.renderBoard()}
-        </ReactiveBase>);
-    }
-
-    renderBoard() {
         return (
             <div className="dealboard">
                 <div className="dealboard-toolbar">
-                        <SelectedFilters
-                            className="selected-filters"
-                            showClearAll={true}
-                            clearAllLabel="Clear filters"
-                        />
                         <Button bsStyle="primary" className="m-l-sm" onClick={this.toggleSearchMenu}><i className="fa fa-filter"/></Button>
                         <Button bsStyle="primary" className="m-l-sm" onClick={this.toggleNewDealModal}>New Deal</Button>
                         <PipelineSelector pipelines={this.props.pipelines}
@@ -179,26 +190,18 @@ class DealBoard extends Component {
                 <div className="deals">
                     {this.state.isSearchMenuVisible &&
                     <div id="deals-search" className="search">
-                        <MultiList
-                            componentId="Channel"
-                            dataField="channel.keyword"
-                            title="Channels"
-                        />
-                        <MultiList
-                            componentId="Source"
-                            dataField="source.keyword"
-                            title="Sources"
-                        />
-
-                        <RangeSlider
-                            componentId="Score"
-                            dataField="score"
-                            title="Score"
-                            range={{
-                                "start": 0,
-                                "end": 100
-                            }}
-                        />
+                        <SearchFilterContainer>
+                            <MultiListFilter
+                                id="channels"
+                                dataField="channel.keyword"
+                                title="Channels"
+                            />
+                            <MultiListFilter
+                                id="sources"
+                                dataField="source.keyword"
+                                title="Sources"
+                            />
+                        </SearchFilterContainer>
 
                     </div>
                     }
@@ -245,7 +248,6 @@ class DealBoard extends Component {
                     key={stage.id}
                     id={stage.id}
                     stageId={stage.id}
-                    pipelineId = {this.state.selectedPipeline.id}
                     stage={stage}
                     moveCard={this.moveCard}
                     moveList={this.moveList}
@@ -267,7 +269,8 @@ function mapStateToProps(state) {
     return {
         pipelines: pipelinesSelector(state),
         stages: stagesSelector(state),
-        deals: dealsSelector(state)
+        deals: dealsSelector(state),
+        filters: filtersSelector(state)
     }
 }
 
@@ -277,6 +280,7 @@ export default connect(mapStateToProps, {
     moveDeal,
     deleteDeal,
     getBoardByPipelineId,
+    getDealsByFilter,
     loadMoreDeals
 })(DragDropContext(HTML5Backend)(DealBoard));
 

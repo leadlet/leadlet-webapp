@@ -5,7 +5,6 @@ import {findDOMNode} from 'react-dom'
 import {dealConstants} from "../../../constants/deal.constants";
 import PropTypes from 'prop-types';
 import Waypoint from 'react-waypoint';
-import {ResultList} from "@appbaseio/reactivesearch/lib/index";
 
 
 function getPlaceholderIndex(y, scrollY) {
@@ -105,43 +104,39 @@ class Cards extends Component {
             currentPage: 0
         };
 
-        this.onAllData = this.onAllData.bind(this);
         this.loadMoreDeal = this.loadMoreDeal.bind(this);
-
     }
-    onAllData(results, streamResults, loadMore, placeholderIndex){
-        const {isOver, canDrop, deals} = this.props;
 
-        console.log("index: "+ placeholderIndex);
+    render() {
+        const {connectDropTarget, isOver, canDrop, deals} = this.props;
+        const {placeholderIndex} = this.state;
+
         let isPlaceHold = false;
         let cardList = [];
-        console.log("cardList -1 : " + cardList.length);
-        console.log("results" + results.length);
-        results.sort((first, second) => first.priority - second.priority)
+        deals.sort((first, second) => first.priority - second.priority)
             .forEach( (deal,i) => {
-                console.log("i:" + i);
-                if (isOver && canDrop) {
-                    isPlaceHold = false;
-                    if (i === 0 && placeholderIndex === -1) {
-                        cardList.push(<li key="placeholder" className="placeholder"/>);
-                    } else if (placeholderIndex > i) {
-                        isPlaceHold = true;
-                    }
+            if (isOver && canDrop) {
+                isPlaceHold = false;
+                if (i === 0 && placeholderIndex === -1) {
+                    cardList.push(<li key="placeholder" className="placeholder"/>);
+                } else if (placeholderIndex > i) {
+                    isPlaceHold = true;
                 }
-                if (deal !== undefined) {
-                    cardList.push(
-                        <Card x={deal.stageId} y={deal.order}
-                              item={deal}
-                              key={deal.id}
-                              stopScrolling={this.props.stopScrolling}
-                              deleteDeal={this.props.deleteDeal}
-                        />
-                    );
-                }
-                if (isOver && canDrop && placeholderIndex === i) {
-                    cardList.push(<li key="placeholder" className="info-element placeholder"/>);
-                }
-            });
+            }
+            if (deal !== undefined) {
+                cardList.push(
+                    <Card x={deal.stageId} y={deal.order}
+                          item={deal}
+                          key={deal.id}
+                          stopScrolling={this.props.stopScrolling}
+                          deleteDeal={this.props.deleteDeal}
+                    />
+                );
+            }
+            if (isOver && canDrop && placeholderIndex === i) {
+                cardList.push(<li key="placeholder" className="info-element placeholder"/>);
+            }
+        });
 
 
         // if placeholder index is greater than array.length, display placeholder as last
@@ -150,45 +145,13 @@ class Cards extends Component {
         }
 
         // if there is no items in cards currently, display a placeholder anyway
-        if (isOver && canDrop && results.length === 0) {
+        if (isOver && canDrop && deals.length === 0) {
             cardList.push(<li key="placeholder" className="info-element placeholder"/>);
         }
 
-        console.log("cardList -2 : " + cardList.length);
-
-        return cardList;
-    }
-
-
-    render() {
-        const {connectDropTarget} = this.props;
-
         return connectDropTarget(
             <ul>
-                <ResultList
-                    id={this.props.stageId}
-                    key={this.props.stageId}
-                    componentId={"result" + this.props.stageId}
-                    title="Results"
-                    dataField="name"
-                    pagination={false}
-                    react={{
-                        and: ["Channel", "Source", "Score"]
-                    }}
-                    onAllData={(a,b,c) => this.onAllData(a,b,c,this.state.placeholderIndex)}
-                    defaultQuery = {() => {
-
-                        return {
-                            "bool" : {
-                                "must" : [
-                                    {"term":{"pipeline_id": this.props.pipelineId.toString()}},
-                                    {"term":{"stage_id": this.props.stageId.toString()} }
-                                ]
-
-                            }
-                        };
-                    }}
-                />
+                {cardList}
                 <Waypoint
                     onEnter={this.loadMoreDeal}
                 />

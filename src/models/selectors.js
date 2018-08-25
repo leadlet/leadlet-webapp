@@ -82,3 +82,24 @@ export const detailedDealSelector = createSelector(
         }
     }
 );
+
+export const filterByIdSelector = createSelector(
+    orm,
+    [
+        dbStateSelector,
+        (state, filterId) => filterId
+    ],
+    (session, filterId) => {
+        if( session.SearchFilter.hasId(filterId) ){
+            return session.SearchFilter.withId(filterId).ref;
+        }
+    }
+);
+
+export const filtersSelector = createSelector(
+    orm,
+    dbStateSelector,
+    session => {
+        return session.SearchFilter.all().toRefArray();
+    }
+);

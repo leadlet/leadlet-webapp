@@ -3,6 +3,7 @@ import {userActions} from "../actions/user.actions";
 
 export const dealService = {
     getAllDeals,
+    getDealsByFilter,
     getDealById,
     create,
     update,
@@ -88,6 +89,15 @@ function getAllDeals(filter, page, size) {
     };
 
     return fetch(`/api/deals?filter=${filter}&page=${page}&size=${size}`, requestOptions).then(handlePaginationResponse);
+}
+
+function getDealsByFilter(query) {
+    const requestOptions = {
+        method: 'GET',
+        headers: { ...authHeader(), 'Content-Type': 'application/json' }
+    };
+
+    return fetch(`/api/deals/search?q=${query}`, requestOptions).then(handleResponse);
 }
 
 function _delete(id) {
