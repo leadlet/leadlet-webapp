@@ -4902,6 +4902,18 @@ table.table-mail tr td {
     background-color: #262626;
 }
 
+.orange-bg {
+    background-color: #ff9933;
+}
+
+.slate-gray-bg {
+    background-color: #708090;
+}
+
+.yellow-green-bg {
+    background-color: #9ACD32;
+}
+
 .panel-primary {
     border-color: #1ab394;
 }

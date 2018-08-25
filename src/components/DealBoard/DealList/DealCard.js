@@ -42,6 +42,21 @@ function createPhoneMail(item) {
     return phones_mail.join(" / ");
 }
 
+function getActivityStatusColor(item) {
+    if (item.activityStatus === "EXPIRED") {
+        return "red-bg";
+    }
+    if (item.activityStatus === "TODAY") {
+        return "yellow-green-bg";
+    }
+    if (item.activityStatus === "IN_FUTURE") {
+        return "orange-bg";
+    }
+    if (item.activityStatus === "NO_ACTIVITY") {
+        return "slate-gray-bg";
+    }
+}
+
 const Card = (props) => {
     const {style, item} = props;
 
@@ -58,7 +73,7 @@ const Card = (props) => {
                 </div>
                 <div className="small-line">
                     <div className="phone-mail">{createPhoneMail(item)}</div>
-                    <div className="dot red-bg"/>
+                    <div className={"dot " + getActivityStatusColor(item)}/>
                 </div>
                 <div className="small-line">
                     <div className="short-text-10">{item.person.name}</div>

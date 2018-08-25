@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="14e7e032-649c-41ca-b94b-d30f148453df" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/DealBoard/DealList/DealCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DealBoard/DealList/DealCard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Team/TeamDetail.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Team/TeamDetail.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/styles/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/index.css" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -39,20 +37,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DealCard.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="DealCard.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/DealBoard/DealList/DealCard.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="202">
-              <caret line="60" column="46" selection-start-line="60" selection-start-column="46" selection-end-line="60" selection-end-column="46" />
+            <state relative-caret-position="285">
+              <caret line="55" column="34" selection-start-line="55" selection-start-column="34" selection-end-line="55" selection-end-column="34" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.css" pinned="false" current-in-tab="false">
+      <file leaf-file-name="index.css" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/styles/index.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="259">
-              <caret line="10944" column="16" selection-start-line="10944" selection-start-column="16" selection-end-line="10944" selection-end-column="16" />
+            <state relative-caret-position="251">
+              <caret line="4913" column="29" selection-start-line="4913" selection-start-column="29" selection-end-line="4913" selection-end-column="29" />
             </state>
           </provider>
         </entry>
@@ -77,13 +75,16 @@
       <find>detailedDealSelector</find>
       <find>getstate</find>
       <find>deals</find>
-      <find />
+      <find>react app</find>
       <find>agile-detail</find>
       <find>card-body</find>
       <find>pull-right</find>
       <find>info-element</find>
       <find>edit-trash-icon</find>
       <find>90</find>
+      <find>orange-bg</find>
+      <find>dark-</find>
+      <find>red-bg</find>
     </findStrings>
     <replaceStrings>
       <replace>/fonts/</replace>
@@ -140,8 +141,8 @@
         <option value="$PROJECT_DIR$/public/manifest.json" />
         <option value="$PROJECT_DIR$/public/index.html" />
         <option value="$PROJECT_DIR$/src/components/Team/TeamDetail.js" />
-        <option value="$PROJECT_DIR$/src/styles/index.css" />
         <option value="$PROJECT_DIR$/src/components/DealBoard/DealList/DealCard.js" />
+        <option value="$PROJECT_DIR$/src/styles/index.css" />
       </list>
     </option>
   </component>
@@ -346,7 +347,7 @@
       <workItem from="1534619857685" duration="3021000" />
       <workItem from="1534708551443" duration="2030000" />
       <workItem from="1534962565338" duration="6536000" />
-      <workItem from="1535201821120" duration="1085000" />
+      <workItem from="1535201821120" duration="3111000" />
     </task>
     <task id="LOCAL-00001" summary="related #8&#10;- enabled/disable checkbox added to storage-preference page&#10;- storage-preference does not update itself after submission">
       <created>1524831912713</created>
@@ -376,11 +377,18 @@
       <option name="project" value="LOCAL" />
       <updated>1534452145543</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="card layout changed. Card source channel product information edit. related #18">
+      <created>1535203746236</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1535203746236</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="67761000" />
+    <option name="totallyTimeSpent" value="69787000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="811" extended-state="0" />
@@ -396,10 +404,10 @@
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.4951724" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.5639615" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.58941346" visible="true" weight="0.40336135" />
+      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.58941346" visible="true" weight="0.40336135" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="3" />
-      <window_info content_ui="combo" id="Project" order="0" weight="0.25822604" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25822604" />
       <window_info anchor="right" id="Database" order="5" weight="0.32904148" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.36965516" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.24964234" />
@@ -472,7 +480,8 @@
     <MESSAGE value="related #8&#10;- storage-preference updates itself after submission" />
     <MESSAGE value="related #8&#10;- document upload and delete working&#10;- document component should be splitted into another component" />
     <MESSAGE value="related backend issue 18 - change deal view" />
-    <option name="LAST_COMMIT_MESSAGE" value="related backend issue 18 - change deal view" />
+    <MESSAGE value="card layout changed. Card source channel product information edit. related #18" />
+    <option name="LAST_COMMIT_MESSAGE" value="card layout changed. Card source channel product information edit. related #18" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -824,17 +833,17 @@
         <state relative-caret-position="-1419" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/styles/index.css">
+    <entry file="file://$PROJECT_DIR$/src/components/DealBoard/DealList/DealCard.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="259">
-          <caret line="10944" column="16" selection-start-line="10944" selection-start-column="16" selection-end-line="10944" selection-end-column="16" />
+        <state relative-caret-position="285">
+          <caret line="55" column="34" selection-start-line="55" selection-start-column="34" selection-end-line="55" selection-end-column="34" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/DealBoard/DealList/DealCard.js">
+    <entry file="file://$PROJECT_DIR$/src/styles/index.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="60" column="46" selection-start-line="60" selection-start-column="46" selection-end-line="60" selection-end-column="46" />
+        <state relative-caret-position="251">
+          <caret line="4913" column="29" selection-start-line="4913" selection-start-column="29" selection-end-line="4913" selection-end-column="29" />
         </state>
       </provider>
     </entry>
