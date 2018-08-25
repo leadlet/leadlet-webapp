@@ -10893,3 +10893,55 @@ body {
     left: 50%;
     margin: -50px 0px 0px -50px;
 }
+
+.card-body{
+    display: flex;
+    flex-direction: column;
+}
+
+.small-line{
+    justify-content: space-between;
+    flex-direction: row;
+    display: flex;
+    min-height: 15px;
+    margin-bottom: 1px;
+}
+
+.short-text-10{
+    font-size: smaller;
+    width: 25ch;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.phone-mail{
+    font-size: small;
+}
+
+.edit-trash-icon {
+    display: flex;
+    flex-direction: row-reverse;
+    min-height: 10px;
+
+}
+
+.edit-trash-icon .edit-icon{
+    padding: 2px;
+}
+
+.edit-trash-icon .trash-icon{
+    padding: 1px;
+    margin-left: 5px;
+}
+
+.potential-value{
+    font-size: smaller;
+}
+
+.dot {
+    font-size: small;
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+}

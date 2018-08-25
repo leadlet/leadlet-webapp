@@ -8,6 +8,40 @@ const propTypes = {
     style: PropTypes.object
 };
 
+function createCardSource(item) {
+    var names = [];
+
+    if (item.products && item.products.length > 0) {
+        names.push(item.products[0].name);
+    } else {
+        names.push("-")
+    }
+    if (item.dealChannel) {
+        names.push(item.dealChannel.name);
+    } else {
+        names.push("-")
+    }
+    if (item.dealSource) {
+        names.push(item.dealSource.name);
+    } else {
+        names.push("-")
+    }
+    return names.join(" | ");
+}
+
+function createPhoneMail(item) {
+    var phones_mail = [];
+
+    if (item.person.phones && item.person.phones.length > 0) {
+        phones_mail.push(item.person.phones[0].phone);
+    }
+    if (item.person.email) {
+        phones_mail.push(item.person.email);
+    }
+
+    return phones_mail.join(" / ");
+}
+
 const Card = (props) => {
     const {style, item} = props;
 
@@ -17,20 +51,23 @@ const Card = (props) => {
 
         <li style={style} className="info-element" id={style ? item.id : null}>
             <div className="card-body">
-                <div>
-                    <p className="pull-left">{item.products.map(product => product.name)} | {item.dealChannel && item.dealChannel.name} | {item.dealSource && item.dealSource.name}</p>
-                    <p className="pull-right">{item.dealValue && item.dealValue.potentialValue}</p>
+                <div className="small-line">
+                    <div
+                        className="short-text-10">{createCardSource(item)}</div>
+                    <div className="potential-value">{item.dealValue && item.dealValue.potentialValue}</div>
                 </div>
-                <div>{item.person.phones.map(phone => phone.phone)} / {item.person.email}</div>
-                <div>
-                    <p className="pull-left">{item.person.name}</p>
-                    <p className="pull-right">{item.createdDate}</p>
-                    </div>
-            </div>
-            <div className="agile-detail">
-                <Link to={"/deal/" + item.id}><i className="btn fa fa-edit"/></Link>
-                <i className="btn fa fa-trash" onClick={() => props.deleteDeal(item.id)}/>
-                <i className="fa fa-clock-o"/> {formattedDate}
+                <div className="small-line">
+                    <div className="phone-mail">{createPhoneMail(item)}</div>
+                    <div className="dot red-bg"/>
+                </div>
+                <div className="small-line">
+                    <div className="short-text-10">{item.person.name}</div>
+                    <div className="short-text-10 text-right">{formattedDate}</div>
+                </div>
+                <div className="edit-trash-icon">
+                    <i className="fa fa-trash trash-icon" onClick={() => props.deleteDeal(item.id)}/>
+                    <Link to={"/deal/" + item.id}><i className="fa fa-edit edit-icon"/></Link>
+                </div>
             </div>
         </li>
     );
