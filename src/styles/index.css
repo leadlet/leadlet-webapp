@@ -4902,6 +4902,18 @@ table.table-mail tr td {
     background-color: #262626;
 }
 
+.orange-bg {
+    background-color: #ff9933;
+}
+
+.slate-gray-bg {
+    background-color: #708090;
+}
+
+.yellow-green-bg {
+    background-color: #9ACD32;
+}
+
 .panel-primary {
     border-color: #1ab394;
 }
@@ -10817,8 +10829,8 @@ body {
     margin: 0 0 10px 0;
     padding: 10px;
     border-radius: 2px;
-    height: 80px;
-    max-height: 80px;
+    height: 65px;
+    max-height: 65px;
 
 }
 
@@ -10892,4 +10904,75 @@ body {
     top: 50%;
     left: 50%;
     margin: -50px 0px 0px -50px;
+}
+
+.card-body{
+    display: flex;
+    flex-direction: column;
+}
+
+.small-line{
+    justify-content: space-between;
+    flex-direction: row;
+    display: flex;
+    min-height: 15px;
+    margin-bottom: 1px;
+}
+
+.short-text{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.width-chars-10 {
+    max-width: 10ch;
+}
+
+.width-chars-15 {
+    max-width: 15ch;
+}
+
+.font-size-small{
+    font-size: small;
+}
+
+.font-size-smaller{
+    font-size: smaller;
+}
+
+.edit-trash-icon {
+    display: flex;
+    flex-direction: row-reverse;
+    min-height: 10px;
+
+}
+
+.edit-trash-icon .edit-icon{
+    padding: 2px;
+}
+
+.edit-trash-icon .trash-icon{
+    padding: 1px;
+    margin-left: 5px;
+}
+
+.potential-value{
+    font-size: smaller;
+    white-space: nowrap;
+}
+
+.dot {
+    font-size: small;
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+}
+
+.source-channel-product{
+    justify-content: flex-start;
+    flex-direction: row;
+    display: flex;
+    min-height: 15px;
+    margin-bottom: 1px;
 }

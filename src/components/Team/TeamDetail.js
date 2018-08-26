@@ -4,7 +4,6 @@ import {getByTeamId} from "../../actions/team.actions";
 import CreateEditTeam from "./CreateEditTeam";
 import Link from "react-router-dom/es/Link";
 import CreateObjective from "../Objective/CreateObjective";
-import {getObjectivesByTeamId} from "../../actions/objective.actions";
 
 class TeamDetail extends Component {
 
