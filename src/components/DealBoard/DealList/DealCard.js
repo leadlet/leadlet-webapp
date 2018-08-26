@@ -8,27 +8,6 @@ const propTypes = {
     style: PropTypes.object
 };
 
-function createCardSource(item) {
-    var names = [];
-
-    if (item.products && item.products.length > 0) {
-        names.push(item.products[0].name);
-    } else {
-        names.push("-")
-    }
-    if (item.dealChannel) {
-        names.push(item.dealChannel.name);
-    } else {
-        names.push("-")
-    }
-    if (item.dealSource) {
-        names.push(item.dealSource.name);
-    } else {
-        names.push("-")
-    }
-    return names.join(" | ");
-}
-
 function createPhoneMail(item) {
     var phones_mail = [];
 
@@ -67,8 +46,12 @@ const Card = (props) => {
         <li style={style} className="info-element" id={style ? item.id : null}>
             <div className="card-body">
                 <div className="small-line">
-                    <div
-                        className="short-text-10">{createCardSource(item)}</div>
+                    <div className="source-channel-product">
+                        <div
+                            className='short-text-10'>{item.products && item.products.length > 0 ? item.products[0].name : "-"}</div> &nbsp; | &nbsp;
+                        <div className='short-text-10'>{item.dealChannel ? item.dealChannel.name : "-"}</div>&nbsp; | &nbsp;
+                        <div className='short-text-10'>{item.dealSource ? item.dealSource.name : "-"}</div>
+                    </div>
                     <div className="potential-value">{item.dealValue && item.dealValue.potentialValue}</div>
                 </div>
                 <div className="small-line">
@@ -76,8 +59,8 @@ const Card = (props) => {
                     <div className={"dot " + getActivityStatusColor(item)}/>
                 </div>
                 <div className="small-line">
-                    <div className="short-text-10">{item.person.name}</div>
-                    <div className="short-text-10 text-right">{formattedDate}</div>
+                    <div className="short-text-25">{item.person.name}</div>
+                    <div className="short-text-25 text-right">{formattedDate}</div>
                 </div>
                 <div className="edit-trash-icon">
                     <i className="fa fa-trash trash-icon" onClick={() => props.deleteDeal(item.id)}/>

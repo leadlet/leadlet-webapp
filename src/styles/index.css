@@ -10919,9 +10919,17 @@ body {
     margin-bottom: 1px;
 }
 
-.short-text-10{
+.short-text-25{
     font-size: smaller;
     width: 25ch;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.short-text-10{
+    font-size: smaller;
+    max-width: 10ch;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -10956,4 +10964,12 @@ body {
     height: 10px;
     width: 10px;
     border-radius: 50%;
+}
+
+.source-channel-product{
+    justify-content: flex-start;
+    flex-direction: row;
+    display: flex;
+    min-height: 15px;
+    margin-bottom: 1px;
 }
