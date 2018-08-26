@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="14e7e032-649c-41ca-b94b-d30f148453df" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/DealBoard/DealList/DealCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DealBoard/DealList/DealCard.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/styles/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/index.css" afterDir="false" />
     </list>
@@ -25,11 +26,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="DealCard.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="DealCard.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/DealBoard/DealList/DealCard.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="437">
-              <caret line="64" column="79" selection-start-line="64" selection-start-column="79" selection-end-line="64" selection-end-column="79" />
+            <state relative-caret-position="142">
+              <caret line="46" column="49" selection-start-line="46" selection-start-column="37" selection-end-line="46" selection-end-column="49" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
@@ -37,11 +38,20 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="247">
+              <caret line="28" column="14" selection-start-line="28" selection-start-column="9" selection-end-line="28" selection-end-column="14" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="DealBoard.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/DealBoard/DealBoard.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="292">
-              <caret line="212" selection-start-line="212" selection-end-line="212" />
+            <state relative-caret-position="449">
+              <caret line="193" column="24" selection-start-line="193" selection-start-column="24" selection-end-line="193" selection-end-column="24" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -49,11 +59,38 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.css" pinned="false" current-in-tab="false">
+      <file leaf-file-name="DealCardsContainer.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/DealBoard/DealList/DealCardsContainer.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="90">
+              <caret line="71" column="20" selection-start-line="71" selection-start-column="20" selection-end-line="71" selection-end-column="20" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DealCards.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/DealBoard/DealList/DealCards.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="157">
+              <caret line="127" column="23" lean-forward="true" selection-start-line="127" selection-start-column="23" selection-end-line="127" selection-end-column="23" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DraggableDealCard.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/DealBoard/DealList/DraggableDealCard.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="446">
+              <caret line="81" column="11" selection-start-line="81" selection-start-column="11" selection-end-line="81" selection-end-column="11" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.css" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/styles/index.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="196">
-              <caret line="10926" lean-forward="true" selection-start-line="10926" selection-end-line="10926" />
+            <state relative-caret-position="331">
+              <caret line="10826" column="20" selection-start-line="10826" selection-start-column="20" selection-end-line="10826" selection-end-column="20" />
             </state>
           </provider>
         </entry>
@@ -82,12 +119,14 @@
       <find>agile-detail</find>
       <find>card-body</find>
       <find>pull-right</find>
-      <find>info-element</find>
       <find>edit-trash-icon</find>
       <find>90</find>
       <find>orange-bg</find>
       <find>dark-</find>
+      <find>works</find>
       <find>red-bg</find>
+      <find>info-element</find>
+      <find>info-elemen</find>
     </findStrings>
     <replaceStrings>
       <replace>/fonts/</replace>
@@ -144,8 +183,8 @@
         <option value="$PROJECT_DIR$/public/manifest.json" />
         <option value="$PROJECT_DIR$/public/index.html" />
         <option value="$PROJECT_DIR$/src/components/Team/TeamDetail.js" />
-        <option value="$PROJECT_DIR$/src/styles/index.css" />
         <option value="$PROJECT_DIR$/src/components/DealBoard/DealList/DealCard.js" />
+        <option value="$PROJECT_DIR$/src/styles/index.css" />
       </list>
     </option>
   </component>
@@ -182,45 +221,6 @@
             <path>
               <item name="leadlet-webapp" type="b2602c69:ProjectViewProjectNode" />
               <item name="leadlet-webapp" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="leadlet-webapp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="leadlet-webapp" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="leadlet-webapp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="leadlet-webapp" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="leadlet-webapp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="leadlet-webapp" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="DealBoard" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="leadlet-webapp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="leadlet-webapp" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="DealBoard" type="462c0819:PsiDirectoryNode" />
-              <item name="DealList" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="leadlet-webapp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="leadlet-webapp" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="Team" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="leadlet-webapp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="leadlet-webapp" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="styles" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -350,7 +350,7 @@
       <workItem from="1534619857685" duration="3021000" />
       <workItem from="1534708551443" duration="2030000" />
       <workItem from="1534962565338" duration="6536000" />
-      <workItem from="1535201821120" duration="6040000" />
+      <workItem from="1535201821120" duration="7162000" />
     </task>
     <task id="LOCAL-00001" summary="related #8&#10;- enabled/disable checkbox added to storage-preference page&#10;- storage-preference does not update itself after submission">
       <created>1524831912713</created>
@@ -401,11 +401,18 @@
       <option name="project" value="LOCAL" />
       <updated>1535282316731</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="- money icon added to price&#10;- set char limits to second line of deal card &#10;related #20">
+      <created>1535283587317</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1535283587317</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="72716000" />
+    <option name="totallyTimeSpent" value="73838000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="811" extended-state="0" />
@@ -500,7 +507,8 @@
     <MESSAGE value="card layout changed. Card source channel product information edit. related #18" />
     <MESSAGE value="related #19" />
     <MESSAGE value="related #20" />
-    <option name="LAST_COMMIT_MESSAGE" value="related #20" />
+    <MESSAGE value="- money icon added to price&#10;- set char limits to second line of deal card &#10;related #20" />
+    <option name="LAST_COMMIT_MESSAGE" value="- money icon added to price&#10;- set char limits to second line of deal card &#10;related #20" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -579,13 +587,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.env.development" />
     <entry file="file://$PROJECT_DIR$/.env.development.local" />
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="369">
-          <caret line="85" selection-start-line="85" selection-end-line="85" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="570">
@@ -666,20 +667,6 @@
           <folding>
             <element signature="e#0#26#0" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/DealBoard/DealList/DraggableDealCard.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="81" column="12" selection-start-line="81" selection-start-column="12" selection-end-line="81" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/DealBoard/DealList/DealCardsContainer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="95" column="25" selection-start-line="95" selection-start-column="25" selection-end-line="95" selection-end-column="25" />
         </state>
       </provider>
     </entry>
@@ -802,13 +789,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/DealBoard/DealList/DealCards.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1635">
-          <caret line="115" column="61" selection-start-line="115" selection-start-column="61" selection-end-line="115" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/DealBoard/PipelineSelector.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="480">
@@ -820,16 +800,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2267">
           <caret line="577" column="60" selection-start-line="577" selection-start-column="48" selection-end-line="577" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/DealBoard/DealBoard.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="292">
-          <caret line="212" selection-start-line="212" selection-end-line="212" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -852,20 +822,58 @@
         <state relative-caret-position="-1419" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/styles/index.css">
+    <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="10926" lean-forward="true" selection-start-line="10926" selection-end-line="10926" />
+        <state relative-caret-position="247">
+          <caret line="28" column="14" selection-start-line="28" selection-start-column="9" selection-end-line="28" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/DealBoard/DealBoard.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="449">
+          <caret line="193" column="24" selection-start-line="193" selection-start-column="24" selection-end-line="193" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/DealBoard/DealList/DealCardsContainer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="71" column="20" selection-start-line="71" selection-start-column="20" selection-end-line="71" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/DealBoard/DealList/DealCards.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="157">
+          <caret line="127" column="23" lean-forward="true" selection-start-line="127" selection-start-column="23" selection-end-line="127" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/DealBoard/DealList/DraggableDealCard.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="446">
+          <caret line="81" column="11" selection-start-line="81" selection-start-column="11" selection-end-line="81" selection-end-column="11" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/DealBoard/DealList/DealCard.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="64" column="79" selection-start-line="64" selection-start-column="79" selection-end-line="64" selection-end-column="79" />
+        <state relative-caret-position="142">
+          <caret line="46" column="49" selection-start-line="46" selection-start-column="37" selection-end-line="46" selection-end-column="49" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/styles/index.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="331">
+          <caret line="10826" column="20" selection-start-line="10826" selection-start-column="20" selection-end-line="10826" selection-end-column="20" />
         </state>
       </provider>
     </entry>

@@ -43,33 +43,32 @@ const Card = (props) => {
 
     return (
 
+
         <li style={style} className="info-element" id={style ? item.id : null}>
-            <div className="card-body">
-                <div className="small-line">
-                    <div className="source-channel-product">
-                        <div
-                            className='short-text width-chars-10 font-size-smaller'>{item.products && item.products.length > 0 ? item.products[0].name : "-"}</div>|
-                        <div className='short-text width-chars-10 font-size-smaller'>{item.dealChannel ? item.dealChannel.name : "-"}</div>|
-                        <div className='short-text width-chars-10 font-size-smaller'>{item.dealSource ? item.dealSource.name : "-"}</div>
+            <Link style={{ textDecoration: 'inherit', color:'inherit' }} to={"/deal/" + item.id}>
+                <div className="card-body">
+                    <div className="small-line">
+                        <div className="source-channel-product">
+                            <div
+                                className='short-text width-chars-10 font-size-smaller'>{item.products && item.products.length > 0 ? item.products[0].name : "-"}</div>|
+                            <div className='short-text width-chars-10 font-size-smaller'>{item.dealChannel ? item.dealChannel.name : "-"}</div>|
+                            <div className='short-text width-chars-10 font-size-smaller'>{item.dealSource ? item.dealSource.name : "-"}</div>
+                        </div>
+                        <div className="potential-value">{item.dealValue && item.dealValue.potentialValue} <i className="fa fa-money"/> </div>
                     </div>
-                    <div className="potential-value">{item.dealValue && item.dealValue.potentialValue} <i className="fa fa-money"/> </div>
-                </div>
-                <div className="small-line">
-                    <div className="source-channel-product">
-                        <div className="short-text width-chars-10 font-size-small">{item.person.phones && item.person.phones.length > 0 ? item.person.phones[0].phone : "-"}</div> /
-                        <div className="short-text width-chars-10 font-size-small">{item.person.email ? item.person.email : "-"}</div>
+                    <div className="small-line">
+                        <div className="source-channel-product">
+                            <div className="short-text width-chars-10 font-size-small">{item.person.phones && item.person.phones.length > 0 ? item.person.phones[0].phone : "-"}</div> /
+                            <div className="short-text width-chars-10 font-size-small">{item.person.email ? item.person.email : "-"}</div>
+                        </div>
+                        <div className={"dot " + getActivityStatusColor(item)}/>
                     </div>
-                    <div className={"dot " + getActivityStatusColor(item)}/>
+                    <div className="small-line">
+                        <div className="short-text width-chars-15 font-size-smaller">{item.person.name}</div>
+                        <div className="short-text width-chars-15 font-size-smaller text-right">{formattedDate}</div>
+                    </div>
                 </div>
-                <div className="small-line">
-                    <div className="short-text width-chars-15 font-size-smaller">{item.person.name}</div>
-                    <div className="short-text width-chars-15 font-size-smaller text-right">{formattedDate}</div>
-                </div>
-                <div className="edit-trash-icon">
-                    <i className="fa fa-trash trash-icon" onClick={() => props.deleteDeal(item.id)}/>
-                    <Link to={"/deal/" + item.id}><i className="fa fa-edit edit-icon"/></Link>
-                </div>
-            </div>
+            </Link>
         </li>
     );
 };
