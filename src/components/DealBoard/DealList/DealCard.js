@@ -39,7 +39,7 @@ function getActivityStatusColor(item) {
 const Card = (props) => {
     const {style, item} = props;
 
-    const formattedDate = moment(item.createdDate, "YYYY-MM-DDTHH:mm:ss+-HH:mm").format("DD.MM.YYYY");
+    const formattedDate = moment(item.createdDate).fromNow();
 
     return (
 
