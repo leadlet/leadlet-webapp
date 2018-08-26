@@ -48,19 +48,22 @@ const Card = (props) => {
                 <div className="small-line">
                     <div className="source-channel-product">
                         <div
-                            className='short-text-10'>{item.products && item.products.length > 0 ? item.products[0].name : "-"}</div> &nbsp; | &nbsp;
-                        <div className='short-text-10'>{item.dealChannel ? item.dealChannel.name : "-"}</div>&nbsp; | &nbsp;
-                        <div className='short-text-10'>{item.dealSource ? item.dealSource.name : "-"}</div>
+                            className='short-text width-chars-10 font-size-smaller'>{item.products && item.products.length > 0 ? item.products[0].name : "-"}</div>|
+                        <div className='short-text width-chars-10 font-size-smaller'>{item.dealChannel ? item.dealChannel.name : "-"}</div>|
+                        <div className='short-text width-chars-10 font-size-smaller'>{item.dealSource ? item.dealSource.name : "-"}</div>
                     </div>
-                    <div className="potential-value">{item.dealValue && item.dealValue.potentialValue}</div>
+                    <div className="potential-value">{item.dealValue && item.dealValue.potentialValue} <i className="fa fa-money"/> </div>
                 </div>
                 <div className="small-line">
-                    <div className="phone-mail">{createPhoneMail(item)}</div>
+                    <div className="source-channel-product">
+                        <div className="short-text width-chars-10 font-size-small">{item.person.phones && item.person.phones.length > 0 ? item.person.phones[0].phone : "-"}</div> /
+                        <div className="short-text width-chars-10 font-size-small">{item.person.email ? item.person.email : "-"}</div>
+                    </div>
                     <div className={"dot " + getActivityStatusColor(item)}/>
                 </div>
                 <div className="small-line">
-                    <div className="short-text-25">{item.person.name}</div>
-                    <div className="short-text-25 text-right">{formattedDate}</div>
+                    <div className="short-text width-chars-15 font-size-smaller">{item.person.name}</div>
+                    <div className="short-text width-chars-15 font-size-smaller text-right">{formattedDate}</div>
                 </div>
                 <div className="edit-trash-icon">
                     <i className="fa fa-trash trash-icon" onClick={() => props.deleteDeal(item.id)}/>

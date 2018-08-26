@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="14e7e032-649c-41ca-b94b-d30f148453df" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/DealBoard/DealList/DealCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DealBoard/DealList/DealCard.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/styles/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/index.css" afterDir="false" />
     </list>
@@ -26,10 +25,22 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="DealCard.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/components/DealBoard/DealList/DealCard.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="437">
+              <caret line="64" column="79" selection-start-line="64" selection-start-column="79" selection-end-line="64" selection-end-column="79" />
+              <folding>
+                <element signature="e#0#26#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="DealBoard.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/DealBoard/DealBoard.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2970">
+            <state relative-caret-position="292">
               <caret line="212" selection-start-line="212" selection-end-line="212" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
@@ -38,23 +49,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DealCard.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/components/DealBoard/DealList/DealCard.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="217">
-              <caret line="52" column="101" selection-start-line="52" selection-start-column="101" selection-end-line="52" selection-end-column="101" />
-              <folding>
-                <element signature="e#0#26#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="index.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/styles/index.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="26">
-              <caret line="10921" column="14" selection-start-line="10921" selection-start-column="14" selection-end-line="10921" selection-end-column="14" />
+            <state relative-caret-position="196">
+              <caret line="10926" lean-forward="true" selection-start-line="10926" selection-end-line="10926" />
             </state>
           </provider>
         </entry>
@@ -351,7 +350,7 @@
       <workItem from="1534619857685" duration="3021000" />
       <workItem from="1534708551443" duration="2030000" />
       <workItem from="1534962565338" duration="6536000" />
-      <workItem from="1535201821120" duration="4779000" />
+      <workItem from="1535201821120" duration="6040000" />
     </task>
     <task id="LOCAL-00001" summary="related #8&#10;- enabled/disable checkbox added to storage-preference page&#10;- storage-preference does not update itself after submission">
       <created>1524831912713</created>
@@ -395,11 +394,18 @@
       <option name="project" value="LOCAL" />
       <updated>1535228377903</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="related #20">
+      <created>1535282316731</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1535282316731</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="71455000" />
+    <option name="totallyTimeSpent" value="72716000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="811" extended-state="0" />
@@ -418,7 +424,7 @@
       <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.58941346" weight="0.40336135" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="3" />
-      <window_info content_ui="combo" id="Project" order="0" weight="0.25822604" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25822604" />
       <window_info anchor="right" id="Database" order="5" weight="0.32904148" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.36965516" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.24964234" />
@@ -493,7 +499,8 @@
     <MESSAGE value="related backend issue 18 - change deal view" />
     <MESSAGE value="card layout changed. Card source channel product information edit. related #18" />
     <MESSAGE value="related #19" />
-    <option name="LAST_COMMIT_MESSAGE" value="related #19" />
+    <MESSAGE value="related #20" />
+    <option name="LAST_COMMIT_MESSAGE" value="related #20" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -818,7 +825,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/DealBoard/DealBoard.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2970">
+        <state relative-caret-position="292">
           <caret line="212" selection-start-line="212" selection-end-line="212" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
@@ -847,15 +854,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/styles/index.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="26">
-          <caret line="10921" column="14" selection-start-line="10921" selection-start-column="14" selection-end-line="10921" selection-end-column="14" />
+        <state relative-caret-position="196">
+          <caret line="10926" lean-forward="true" selection-start-line="10926" selection-end-line="10926" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/DealBoard/DealList/DealCard.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="217">
-          <caret line="52" column="101" selection-start-line="52" selection-start-column="101" selection-end-line="52" selection-end-column="101" />
+        <state relative-caret-position="437">
+          <caret line="64" column="79" selection-start-line="64" selection-start-column="79" selection-end-line="64" selection-end-column="79" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>

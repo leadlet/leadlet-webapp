@@ -10919,24 +10919,26 @@ body {
     margin-bottom: 1px;
 }
 
-.short-text-25{
-    font-size: smaller;
-    width: 25ch;
+.short-text{
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
 }
 
-.short-text-10{
-    font-size: smaller;
+.width-chars-10 {
     max-width: 10ch;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
 }
 
-.phone-mail{
+.width-chars-15 {
+    max-width: 15ch;
+}
+
+.font-size-small{
     font-size: small;
+}
+
+.font-size-smaller{
+    font-size: smaller;
 }
 
 .edit-trash-icon {
@@ -10957,6 +10959,7 @@ body {
 
 .potential-value{
     font-size: smaller;
+    white-space: nowrap;
 }
 
 .dot {
