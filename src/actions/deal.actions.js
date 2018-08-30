@@ -66,20 +66,21 @@ export function getAllDealByFilterAndReturn(filter, successCallback, failCallbac
         );
 }
 
-export function getDealsByFilter(filter) {
+export function getStageDeals(filter,stageId) {
+
     return dispatch => {
 
         dealService.getDealsByFilter(filter)
             .then(
-                payload => {
-                    dispatch(success(payload));
+                response => {
+                    dispatch(success(response));
                 },
                 error => dispatch(failure(error))
             );
     };
 
-    function success(payload) { return { type: dealConstants.GET_ALL_SUCCESS, payload } }
-    function failure(error) { return { type: dealConstants.GET_ALL_FAILURE, error } }
+    function success(response) { return { type: dealConstants.LOAD_STAGE_DEALS_SUCCESS, payload: {'stageId': stageId, 'deals': response} } }
+    function failure(error) { return { type: dealConstants.LOAD_STAGE_DEALS_SUCCESS, error } }
 }
 
 export function updateDeal(deal) {

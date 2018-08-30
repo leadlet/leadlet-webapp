@@ -75,9 +75,10 @@ Stage.fields = {
 export class Deal extends Model {
     static reducer(action, Deal, session) {
         switch (action.type) {
-            case dealConstants.GET_ALL_SUCCESS:
-                const deals = action.payload;
-                Deal.all().toModelArray().forEach(deal => deal.delete());
+            case dealConstants.LOAD_STAGE_DEALS_SUCCESS:
+                const deals = action.payload.deals;
+                const stageId = action.payload.stageId
+                session.Stage.withId(stageId).dealSet.delete();
                 deals.forEach(stage => Deal.create(stage));
                 break;
 

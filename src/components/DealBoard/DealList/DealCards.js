@@ -5,6 +5,10 @@ import {findDOMNode} from 'react-dom'
 import {dealConstants} from "../../../constants/deal.constants";
 import PropTypes from 'prop-types';
 import Waypoint from 'react-waypoint';
+import {searchQuerySelector, stageDealsSelector} from "../../../models/selectors";
+import {connect} from "react-redux";
+import {getStageDeals} from "../../../actions/deal.actions";
+import {QueryUtils} from "../../Search/QueryUtils";
 
 
 function getPlaceholderIndex(y, scrollY) {
@@ -87,7 +91,6 @@ class Cards extends Component {
         connectDropTarget: PropTypes.func.isRequired,
         moveCard: PropTypes.func.isRequired,
         deleteDeal: PropTypes.func.isRequired,
-        x: PropTypes.number.isRequired,
         isOver: PropTypes.bool,
         item: PropTypes.object,
         canDrop: PropTypes.bool,
@@ -105,6 +108,20 @@ class Cards extends Component {
         };
 
         this.loadMoreDeal = this.loadMoreDeal.bind(this);
+    }
+
+    componentDidUpdate(prevProps) {
+        if( this.props.searchQuery !== prevProps.searchQuery){
+            this.props.getStageDeals( QueryUtils.addStageFilter(this.props.searchQuery, this.props.stage.id),this.props.stage.id);
+        }
+
+
+    }
+
+    componentDidMount() {
+        if( this.props.stage ){
+            this.props.getStageDeals( QueryUtils.addStageFilter(this.props.searchQuery, this.props.stage.id),this.props.stage.id);
+        }
     }
 
     render() {
@@ -170,10 +187,20 @@ class Cards extends Component {
     }
 }
 
-export default DropTarget('card', specs, (connectDragSource, monitor) => ({
+function mapStateToProps(state, props) {
+    return {
+        deals: stageDealsSelector(state,props),
+        searchQuery: searchQuerySelector(state)
+    }
+}
+
+let dropWrapper = DropTarget('card', specs, (connectDragSource, monitor) => ({
     connectDropTarget: connectDragSource.dropTarget(),
     isOver: monitor.isOver(),
     canDrop: monitor.canDrop(),
     item: monitor.getItem()
 }))(Cards);
+
+export default connect(mapStateToProps, {getStageDeals})(dropWrapper);
+
 

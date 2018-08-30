@@ -1,20 +1,19 @@
 import React, {Component} from 'react';
 import PipelineSelector from './PipelineSelector'
-import {getAllPipelines, selectPipeline} from "../../actions/pipeline.actions";
-import {getAllStages} from "../../actions/stage.actions";
+import {getAllPipelines} from "../../actions/pipeline.actions";
 import {connect} from "react-redux";
 import Button from "react-bootstrap/es/Button";
 import HTML5Backend from 'react-dnd-html5-backend';
 import {DragDropContext} from 'react-dnd';
 import CardsContainer from "./DealList/DealCardsContainer";
 import CustomDragLayer from "./CustomDragLayer";
-import {deleteDeal, getDealsByFilter, moveDeal} from "../../actions/deal.actions";
+import {deleteDeal, moveDeal} from "../../actions/deal.actions";
 import SweetAlert from 'sweetalert-react';
-import {getBoardByPipelineId, loadMoreDeals} from "../../actions/board.actions";
 import CreateEditDeal from '../DealDetail/CreateEditDeal'
-import {dealsSelector, filtersSelector, pipelinesSelector, stagesSelector} from "../../models/selectors";
+import { pipelinesSelector, stagesSelector} from "../../models/selectors";
 import MultiListFilter from "../Search/MultiListFilter";
 import SearchFilterContainer from "../Search/SearchFilterContainer";
+import {getAllStages} from "../../actions/stage.actions";
 class DealBoard extends Component {
 
     constructor(props) {
@@ -39,7 +38,6 @@ class DealBoard extends Component {
         this.onDeleteDeal = this.onDeleteDeal.bind(this);
         this.moveList = this.moveList.bind(this);
         this.pipelineChanged = this.pipelineChanged.bind(this);
-        this.buildQuery = this.buildQuery.bind(this);
 
     }
 
@@ -141,13 +139,8 @@ class DealBoard extends Component {
 
     componentDidMount() {
         this.props.getAllPipelines();
-    }
+        this.props.getAllStages();
 
-    componentDidUpdate(prevProps) {
-        if( this.props.filters !== prevProps.filters){
-            var searchQuery = this.buildQuery(this.props.filters);
-            this.props.getDealsByFilter(searchQuery);
-        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -158,23 +151,8 @@ class DealBoard extends Component {
 
     }
 
-    // title:(quick OR brown)
-
-    buildQuery( filters ){
-
-        var searchFilters = [];
-        if( filters ){
-            searchFilters = filters
-                .filter(filter => filter.type === "TERMS" && filter.selectedOptions && filter.selectedOptions.length > 0)
-                .map( filter => filter.dataField + ":(" + filter.selectedOptions.map(option => "\""+option+"\"").join(" OR ")+ ")");
-        }
-
-        return searchFilters.length > 0 ? searchFilters.join(" AND "): "";
-    }
-
     pipelineChanged(pipeline){
-        this.setState({ selectedPipeline: pipeline },
-            () => this.props.getBoardByPipelineId(pipeline.id));
+        this.setState({ selectedPipeline: pipeline });
     }
 
     render() {
@@ -247,16 +225,13 @@ class DealBoard extends Component {
                 <CardsContainer
                     key={stage.id}
                     id={stage.id}
-                    stageId={stage.id}
                     stage={stage}
                     moveCard={this.moveCard}
                     moveList={this.moveList}
                     startScrolling={this.startScrolling}
                     stopScrolling={this.stopScrolling}
                     isScrolling={this.state.isScrolling}
-                    x={stage.id}
                     deleteDeal={this.onDeleteDeal}
-                    loadMoreDeals={this.props.loadMoreDeals}
                 />
             );
         }
@@ -268,9 +243,7 @@ class DealBoard extends Component {
 function mapStateToProps(state) {
     return {
         pipelines: pipelinesSelector(state),
-        stages: stagesSelector(state),
-        deals: dealsSelector(state),
-        filters: filtersSelector(state)
+        stages: stagesSelector(state)
     }
 }
 
@@ -278,9 +251,6 @@ export default connect(mapStateToProps, {
     getAllPipelines,
     getAllStages,
     moveDeal,
-    deleteDeal,
-    getBoardByPipelineId,
-    getDealsByFilter,
-    loadMoreDeals
+    deleteDeal
 })(DragDropContext(HTML5Backend)(DealBoard));
 

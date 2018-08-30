@@ -49,7 +49,6 @@ class CardsContainer extends Component {
         connectDropTarget: PropTypes.func.isRequired,
         connectDragSource: PropTypes.func.isRequired,
         stage: PropTypes.object,
-        x: PropTypes.number,
         moveCard: PropTypes.func.isRequired,
         moveList: PropTypes.func.isRequired,
         isDragging: PropTypes.bool,
@@ -70,15 +69,12 @@ class CardsContainer extends Component {
                     <div className="stage-name">{stage.name}</div>
                 </div>
                 <Cards
-                    deals={this.props.deals}
                     moveCard={moveCard}
-                    x={x}
+                    stage={stage}
                     startScrolling={this.props.startScrolling}
                     stopScrolling={this.props.stopScrolling}
                     isScrolling={this.props.isScrolling}
-                    stageId={this.props.stageId}
                     deleteDeal={this.props.deleteDeal}
-                    loadMoreDeals={this.props.loadMoreDeals}
                 />
 
 
@@ -93,7 +89,6 @@ class CardsContainer extends Component {
 
 function mapStateToProps(state, props) {
     return {
-        deals: stageDealsSelector(state,props)
     }
 }
 

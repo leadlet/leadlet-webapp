@@ -62,7 +62,7 @@ export const stageDealsSelector = createSelector(
     orm,
     [
         dbStateSelector,
-        (state, props) => props.stageId
+        (state, props) => props.stage.id
     ],
     (session, stageId) => {
         return session.Stage.withId(stageId).dealSet.all().toRefArray();
@@ -101,5 +101,23 @@ export const filtersSelector = createSelector(
     dbStateSelector,
     session => {
         return session.SearchFilter.all().toRefArray();
+    }
+);
+
+export const searchQuerySelector = createSelector(
+    orm,
+    dbStateSelector,
+    session => {
+        let filters = session.SearchFilter.all().toRefArray();
+        let searchFilters = [];
+
+        if( filters ){
+            searchFilters = filters
+                .filter(filter => filter.type === "TERMS" && filter.selectedOptions && filter.selectedOptions.length > 0)
+                .map( filter => filter.dataField + ":(" + filter.selectedOptions.map(option => "\""+option+"\"").join(" OR ")+ ")");
+        }
+
+        return searchFilters.length > 0 ? searchFilters.join(" AND "): "";
+
     }
 );
