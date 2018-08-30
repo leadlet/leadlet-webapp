@@ -2,16 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="14e7e032-649c-41ca-b94b-d30f148453df" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/actions/search.actions.js" afterPath="$PROJECT_DIR$/src/actions/search.actions.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/DealBoard/DealBoard.js" afterPath="$PROJECT_DIR$/src/components/DealBoard/DealBoard.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/DealBoard/DealList/DealCards.js" afterPath="$PROJECT_DIR$/src/components/DealBoard/DealList/DealCards.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Search/ListFilter.js" afterPath="$PROJECT_DIR$/src/components/Search/ListFilter.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Search/RangeFilter.js" afterPath="$PROJECT_DIR$/src/components/Search/RangeFilter.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Search/SelectedFilters.js" afterPath="$PROJECT_DIR$/src/components/Search/SelectedFilters.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/constants/search.constants.js" afterPath="$PROJECT_DIR$/src/constants/search.constants.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/models.js" afterPath="$PROJECT_DIR$/src/models/models.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/selectors.js" afterPath="$PROJECT_DIR$/src/models/selectors.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/styles/index.css" afterPath="$PROJECT_DIR$/src/styles/index.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/services/deal.service.js" afterPath="$PROJECT_DIR$/src/services/deal.service.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/services/search.service.js" afterPath="$PROJECT_DIR$/src/services/search.service.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -37,7 +32,7 @@
         <entry file="file://$PROJECT_DIR$/src/components/DealBoard/DealBoard.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="206">
-              <caret line="182" column="50" lean-forward="true" selection-start-line="182" selection-start-column="50" selection-end-line="182" selection-end-column="50" />
+              <caret line="182" column="50" lean-forward="false" selection-start-line="182" selection-start-column="50" selection-end-line="182" selection-end-column="50" />
               <folding />
             </state>
           </provider>
@@ -47,7 +42,7 @@
         <entry file="file://$PROJECT_DIR$/src/styles/index.css">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="122">
-              <caret line="10770" column="21" lean-forward="true" selection-start-line="10770" selection-start-column="21" selection-end-line="10770" selection-end-column="21" />
+              <caret line="10770" column="21" lean-forward="false" selection-start-line="10770" selection-start-column="21" selection-end-line="10770" selection-end-column="21" />
               <folding />
             </state>
           </provider>
@@ -56,7 +51,7 @@
       <file leaf-file-name="SelectedFilters.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/Search/SelectedFilters.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="281">
+            <state relative-caret-position="59">
               <caret line="30" column="44" lean-forward="false" selection-start-line="30" selection-start-column="44" selection-end-line="30" selection-end-column="44" />
               <folding />
             </state>
@@ -66,14 +61,14 @@
       <file leaf-file-name="ListFilter.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/Search/ListFilter.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="319">
-              <caret line="41" column="67" lean-forward="false" selection-start-line="41" selection-start-column="67" selection-end-line="41" selection-end-column="67" />
+            <state relative-caret-position="111">
+              <caret line="17" column="13" lean-forward="true" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RangeFilter.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="RangeFilter.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/Search/RangeFilter.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="377">
@@ -85,31 +80,41 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="deal.service.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/services/deal.service.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="217">
+              <caret line="37" column="51" lean-forward="false" selection-start-line="37" selection-start-column="51" selection-end-line="37" selection-end-column="51" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DealCards.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/DealBoard/DealList/DealCards.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="868">
+              <caret line="179" column="31" lean-forward="false" selection-start-line="179" selection-start-column="31" selection-end-line="179" selection-end-column="31" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="search.actions.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/actions/search.actions.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="6" column="52" lean-forward="false" selection-start-line="6" selection-start-column="25" selection-end-line="6" selection-end-column="52" />
+            <state relative-caret-position="219">
+              <caret line="44" column="28" lean-forward="true" selection-start-line="44" selection-start-column="28" selection-end-line="44" selection-end-column="28" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="selectors.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/models/selectors.js">
+      <file leaf-file-name="search.service.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/services/search.service.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="179">
-              <caret line="115" column="104" lean-forward="false" selection-start-line="115" selection-start-column="104" selection-end-line="115" selection-end-column="104" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="models.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/models/models.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="28">
-              <caret line="132" column="30" lean-forward="true" selection-start-line="132" selection-start-column="30" selection-end-line="132" selection-end-column="30" />
+            <state relative-caret-position="224">
+              <caret line="16" column="39" lean-forward="true" selection-start-line="16" selection-start-column="29" selection-end-line="16" selection-end-column="39" />
               <folding />
             </state>
           </provider>
@@ -211,22 +216,22 @@
         <option value="$PROJECT_DIR$/src/components/DealBoard/DealList/DealCard.js" />
         <option value="$PROJECT_DIR$/src/constants/deal.constants.js" />
         <option value="$PROJECT_DIR$/src/actions/deal.actions.js" />
-        <option value="$PROJECT_DIR$/src/components/DealBoard/DealList/DealCards.js" />
-        <option value="$PROJECT_DIR$/src/services/deal.service.js" />
         <option value="$PROJECT_DIR$/src/components/Search/MultiListFilter.js" />
         <option value="$PROJECT_DIR$/src/components/Search/SearchFilterContainer.js" />
         <option value="$PROJECT_DIR$/src/index.js" />
         <option value="$PROJECT_DIR$/package.json" />
-        <option value="$PROJECT_DIR$/src/services/search.service.js" />
         <option value="$PROJECT_DIR$/src/styles/index.css" />
-        <option value="$PROJECT_DIR$/src/actions/search.actions.js" />
         <option value="$PROJECT_DIR$/src/constants/search.constants.js" />
         <option value="$PROJECT_DIR$/src/components/Search/SelectedFilters.js" />
         <option value="$PROJECT_DIR$/src/models/selectors.js" />
         <option value="$PROJECT_DIR$/src/models/models.js" />
         <option value="$PROJECT_DIR$/src/components/DealBoard/DealBoard.js" />
-        <option value="$PROJECT_DIR$/src/components/Search/ListFilter.js" />
         <option value="$PROJECT_DIR$/src/components/Search/RangeFilter.js" />
+        <option value="$PROJECT_DIR$/src/actions/search.actions.js" />
+        <option value="$PROJECT_DIR$/src/components/Search/ListFilter.js" />
+        <option value="$PROJECT_DIR$/src/components/DealBoard/DealList/DealCards.js" />
+        <option value="$PROJECT_DIR$/src/services/deal.service.js" />
+        <option value="$PROJECT_DIR$/src/services/search.service.js" />
       </list>
     </option>
   </component>
@@ -486,7 +491,7 @@
       <workItem from="1533038605900" duration="11802000" />
       <workItem from="1535280973525" duration="326000" />
       <workItem from="1535554818006" duration="6390000" />
-      <workItem from="1535604466092" duration="20057000" />
+      <workItem from="1535604466092" duration="22836000" />
     </task>
     <task id="LOCAL-00001" summary="related #8&#10;- enabled/disable checkbox added to storage-preference page&#10;- storage-preference does not update itself after submission">
       <created>1524831912713</created>
@@ -513,7 +518,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="126132000" />
+    <option name="totallyTimeSpent" value="128911000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -811,22 +816,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/DealBoard/DealList/DealCard.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="61" column="69" lean-forward="false" selection-start-line="61" selection-start-column="69" selection-end-line="61" selection-end-column="69" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/services/deal.service.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="88" column="67" lean-forward="false" selection-start-line="88" selection-start-column="67" selection-end-line="88" selection-end-column="67" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/constants/deal.constants.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-117">
@@ -864,16 +853,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/DealBoard/DealList/DealCards.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="7" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#39#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -941,22 +920,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/services/search.service.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="19" column="28" lean-forward="true" selection-start-line="19" selection-start-column="28" selection-end-line="19" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/styles/index.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="122">
-          <caret line="10770" column="21" lean-forward="true" selection-start-line="10770" selection-start-column="21" selection-end-line="10770" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/constants/search.constants.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
@@ -965,10 +928,28 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/actions/search.actions.js">
+    <entry file="file://$PROJECT_DIR$/src/components/Search/RangeFilter.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="6" column="52" lean-forward="false" selection-start-line="6" selection-start-column="25" selection-end-line="6" selection-end-column="52" />
+        <state relative-caret-position="377">
+          <caret line="70" column="110" lean-forward="false" selection-start-line="70" selection-start-column="110" selection-end-line="70" selection-end-column="110" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/models/models.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="249">
+          <caret line="146" column="22" lean-forward="true" selection-start-line="146" selection-start-column="22" selection-end-line="146" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/DealBoard/DealList/DealCard.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="350">
+          <caret line="61" column="69" lean-forward="false" selection-start-line="61" selection-start-column="69" selection-end-line="61" selection-end-column="69" />
           <folding />
         </state>
       </provider>
@@ -981,45 +962,67 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Search/SelectedFilters.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="281">
-          <caret line="30" column="44" lean-forward="false" selection-start-line="30" selection-start-column="44" selection-end-line="30" selection-end-column="44" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/models/models.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="28">
-          <caret line="132" column="30" lean-forward="true" selection-start-line="132" selection-start-column="30" selection-end-line="132" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/DealBoard/DealBoard.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="206">
-          <caret line="182" column="50" lean-forward="true" selection-start-line="182" selection-start-column="50" selection-end-line="182" selection-end-column="50" />
+          <caret line="182" column="50" lean-forward="false" selection-start-line="182" selection-start-column="50" selection-end-line="182" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/styles/index.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="122">
+          <caret line="10770" column="21" lean-forward="false" selection-start-line="10770" selection-start-column="21" selection-end-line="10770" selection-end-column="21" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/Search/ListFilter.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="319">
-          <caret line="41" column="67" lean-forward="false" selection-start-line="41" selection-start-column="67" selection-end-line="41" selection-end-column="67" />
+        <state relative-caret-position="111">
+          <caret line="17" column="13" lean-forward="true" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Search/RangeFilter.js">
+    <entry file="file://$PROJECT_DIR$/src/components/DealBoard/DealList/DealCards.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="377">
-          <caret line="70" column="110" lean-forward="false" selection-start-line="70" selection-start-column="110" selection-end-line="70" selection-end-column="110" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="868">
+          <caret line="179" column="31" lean-forward="false" selection-start-line="179" selection-start-column="31" selection-end-line="179" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Search/SelectedFilters.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="59">
+          <caret line="30" column="44" lean-forward="false" selection-start-line="30" selection-start-column="44" selection-end-line="30" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/actions/search.actions.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="219">
+          <caret line="44" column="28" lean-forward="true" selection-start-line="44" selection-start-column="28" selection-end-line="44" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/services/deal.service.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="217">
+          <caret line="37" column="51" lean-forward="false" selection-start-line="37" selection-start-column="51" selection-end-line="37" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/services/search.service.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="16" column="39" lean-forward="true" selection-start-line="16" selection-start-column="29" selection-end-line="16" selection-end-column="39" />
+          <folding />
         </state>
       </provider>
     </entry>

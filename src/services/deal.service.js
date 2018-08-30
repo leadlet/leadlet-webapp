@@ -86,7 +86,7 @@ function getDealsByFilter(query, page) {
         headers: { ...authHeader(), 'Content-Type': 'application/json' }
     };
 
-    return fetch(`/api/deals/search?q=${query}&page=${page}&size=10`, requestOptions).then(handlePaginationResponse);
+    return fetch(`/api/deals/search?q=${query}&page=${page}&size=12`, requestOptions).then(handlePaginationResponse);
 }
 
 function _delete(id) {

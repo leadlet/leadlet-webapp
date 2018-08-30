@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {getDistinctTerms, registerFilter, termSelected, termUnSelected} from "../../actions/search.actions";
-import {filterByIdSelector} from "../../models/selectors";
+import {filterByIdSelector, searchQuerySelector} from "../../models/selectors";
 
 class ListFilter extends Component {
 
@@ -17,6 +17,11 @@ class ListFilter extends Component {
                 dataField: this.props.dataField
             }
         };
+    }
+    componentDidUpdate(prevProps) {
+        if( this.props.searchQuery !== prevProps.searchQuery){
+            this.props.getDistinctTerms( this.state.definition, this.props.searchQuery );
+        }
     }
 
     componentDidMount(){
@@ -61,7 +66,8 @@ class ListFilter extends Component {
 
 function mapStateToProps(state, props) {
     return {
-        filter: filterByIdSelector(state, props.id)
+        filter: filterByIdSelector(state, props.id),
+        searchQuery: searchQuerySelector(state)
     };
 }
 

@@ -6,14 +6,15 @@ export const searchService = {
     getFieldRange
 };
 
-function getDistinctTerms(reqBody) {
+function getDistinctTerms(reqBody, query) {
     const requestOptions = {
         method: 'POST',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
         body: JSON.stringify(reqBody)
     };
+//    return fetch(`/api/facets?q=${query}`, requestOptions).then(handleResponse);
 
-    return fetch('/api/facets/', requestOptions).then(handleResponse);
+    return fetch(`/api/facets?q=${query}`, requestOptions).then(handleResponse);
 }
 
 function getFieldRange(filterDefinition) {
