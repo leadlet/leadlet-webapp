@@ -2,10 +2,11 @@ import {authHeader} from '../helpers';
 import {userActions} from "../actions/user.actions";
 
 export const searchService = {
-    getDistincTerms
+    getDistinctTerms,
+    getFieldRange
 };
 
-function getDistincTerms(reqBody) {
+function getDistinctTerms(reqBody) {
     const requestOptions = {
         method: 'POST',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
@@ -13,6 +14,15 @@ function getDistincTerms(reqBody) {
     };
 
     return fetch('/api/facets/', requestOptions).then(handleResponse);
+}
+
+function getFieldRange(filterDefinition) {
+    const requestOptions = {
+        method: 'GET',
+        headers: { ...authHeader(), 'Content-Type': 'application/json' }
+    };
+
+    return fetch(`/api/facets/range/${filterDefinition.id}/${filterDefinition.dataField}`, requestOptions).then(handleResponse);
 }
 
 function handleResponse(response) {

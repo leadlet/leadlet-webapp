@@ -11,9 +11,9 @@ import {deleteDeal, moveDeal} from "../../actions/deal.actions";
 import SweetAlert from 'sweetalert-react';
 import CreateEditDeal from '../DealDetail/CreateEditDeal'
 import { pipelinesSelector, stagesSelector} from "../../models/selectors";
-import MultiListFilter from "../Search/MultiListFilter";
-import SearchFilterContainer from "../Search/SearchFilterContainer";
+import ListFilter from "../Search/ListFilter";
 import {getAllStages} from "../../actions/stage.actions";
+import RangeFilter from "../Search/RangeFilter";
 class DealBoard extends Component {
 
     constructor(props) {
@@ -168,19 +168,24 @@ class DealBoard extends Component {
                 <div className="deals">
                     {this.state.isSearchMenuVisible &&
                     <div id="deals-search" className="search">
-                        <SearchFilterContainer>
-                            <MultiListFilter
-                                id="channels"
-                                dataField="channel.keyword"
-                                title="Channels"
-                            />
-                            <MultiListFilter
-                                id="sources"
-                                dataField="source.keyword"
-                                title="Sources"
-                            />
-                        </SearchFilterContainer>
+                        <ListFilter
+                            id="channels"
+                            dataField="channel.keyword"
+                            title="Channels"
+                            emptyText ="No Channel"
+                        />
+                        <ListFilter
+                            id="sources"
+                            dataField="source.keyword"
+                            title="Sources"
+                            emptyText ="No Source"
 
+                        />
+                        <RangeFilter
+                            id="priorities"
+                            dataField="priority"
+                            title="Priority"
+                        />
                     </div>
                     }
             <div id="deals-board" className="lists">

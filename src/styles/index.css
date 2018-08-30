@@ -11007,3 +11007,20 @@ body {
 .dealboard .search .list-group {
     background-color: #ffffff;
 }
+
+.dealboard .search .list-filter{
+    margin-bottom: 5px;
+}
+
+.dealboard .search .list-filter .items{
+    margin-left: 5px;
+}
+
+
+.dealboard .search .range-filter{
+    margin-bottom: 5px;
+}
+
+.dealboard .search .range-filter .selector{
+    padding: 0px 10px;
+}

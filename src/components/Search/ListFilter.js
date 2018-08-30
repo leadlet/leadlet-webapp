@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import {getDistincTerms, registerFilter, termSelected, termUnSelected} from "../../actions/search.actions";
+import {getDistinctTerms, registerFilter, termSelected, termUnSelected} from "../../actions/search.actions";
 import {filterByIdSelector} from "../../models/selectors";
 
 class ListFilter extends Component {
@@ -20,7 +20,7 @@ class ListFilter extends Component {
     }
 
     componentDidMount(){
-        this.props.getDistincTerms( this.state.definition);
+        this.props.getDistinctTerms( this.state.definition);
     }
 
     inputChanged(checkboxElem){
@@ -39,7 +39,7 @@ class ListFilter extends Component {
                 <div key={key} className="form-check">
                     <input className="form-check-input" type="checkbox" value={key} id={key} onChange={this.inputChanged}/>
                     <label className="form-check-label">
-                        {key} ({terms[key]})
+                        {key ? key : this.props.emptyText }  <span className="badge">{terms[key]}</span>
                     </label>
                 </div>
             ));
@@ -47,9 +47,11 @@ class ListFilter extends Component {
     }
 
     render(){
-        return (<div>
+        return (<div className="list-filter">
                     <label>{this.props.title}</label>
-                    {this.renderTerms()}
+                    <div className="items">
+                        {this.renderTerms()}
+                    </div>
                 </div>
             );
     }
@@ -62,5 +64,5 @@ function mapStateToProps(state, props) {
 }
 
 
-export default connect(mapStateToProps, {termSelected,termUnSelected, getDistincTerms})(ListFilter);
+export default connect(mapStateToProps, {termSelected,termUnSelected, getDistinctTerms})(ListFilter);
 

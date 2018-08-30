@@ -112,10 +112,17 @@ export const searchQuerySelector = createSelector(
         let searchFilters = [];
 
         if( filters ){
-            searchFilters = filters
+            var termFilters = filters
                 .filter(filter => filter.type === "TERMS" && filter.selectedOptions && filter.selectedOptions.length > 0)
                 .map( filter => filter.dataField + ":(" + filter.selectedOptions.map(option => "\""+option+"\"").join(" OR ")+ ")");
+
+            var rangeFilters = filters
+                .filter(filter => filter.type === "RANGE" && filter.selected)
+                .map( filter => filter.dataField + ":[" + filter.selected.min + " TO " + filter.selected.max +"]");
+
         }
+
+        searchFilters = [ ...termFilters, ...rangeFilters];
 
         return searchFilters.length > 0 ? searchFilters.join(" AND "): "";
 
