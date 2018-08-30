@@ -50,16 +50,16 @@ const Card = (props) => {
                     <div className="small-line">
                         <div className="source-channel-product">
                             <div
-                                className='short-text width-chars-10 font-size-smaller'>{item.products && item.products.length > 0 ? item.products[0].name : "-"}</div>|
-                            <div className='short-text width-chars-10 font-size-smaller'>{item.dealChannel ? item.dealChannel.name : "-"}</div>|
-                            <div className='short-text width-chars-10 font-size-smaller'>{item.dealSource ? item.dealSource.name : "-"}</div>
+                                className='short-text width-chars-9 font-size-smaller'>{item.products && item.products.length > 0 ? item.products[0].name : "-"}</div>|
+                            <div className='short-text width-chars-9 font-size-smaller'>{item.dealChannel ? item.dealChannel.name : "-"}</div>|
+                            <div className='short-text width-chars-9 font-size-smaller'>{item.dealSource ? item.dealSource.name : "-"}</div>
                         </div>
                         <div className="potential-value">{item.dealValue && item.dealValue.potentialValue} <i className="fa fa-money"/> </div>
                     </div>
                     <div className="small-line">
                         <div className="source-channel-product">
-                            <div className="short-text width-chars-10 font-size-small">{item.person.phones && item.person.phones.length > 0 ? item.person.phones[0].phone : "-"}</div> /
-                            <div className="short-text width-chars-10 font-size-small">{item.person.email ? item.person.email : "-"}</div>
+                            <div className="short-text width-chars-9 font-size-small">{item.person.phones && item.person.phones.length > 0 ? item.person.phones[0].phone : "-"}</div> /
+                            <div className="short-text width-chars-9 font-size-small">{item.person.email ? item.person.email : "-"}</div>
                         </div>
                         <div className={"dot " + getActivityStatusColor(item)}/>
                     </div>

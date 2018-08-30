@@ -4,11 +4,11 @@ import {DropTarget} from 'react-dnd';
 import {findDOMNode} from 'react-dom'
 import {dealConstants} from "../../../constants/deal.constants";
 import PropTypes from 'prop-types';
-import Waypoint from 'react-waypoint';
 import {searchQuerySelector, stageDealsSelector} from "../../../models/selectors";
 import {connect} from "react-redux";
 import {getStageDeals} from "../../../actions/deal.actions";
 import {QueryUtils} from "../../Search/QueryUtils";
+var VisibilitySensor = require('react-visibility-sensor');
 
 
 function getPlaceholderIndex(y, scrollY) {
@@ -104,10 +104,13 @@ class Cards extends Component {
         this.state = {
             placeholderIndex: undefined,
             isScrolling: false,
-            currentPage: 0
+            currentPage: 0,
+            maxPage: 0
         };
 
         this.loadMoreDeal = this.loadMoreDeal.bind(this);
+        this.hasMoreItem = this.hasMoreItem.bind(this);
+
     }
 
     componentDidUpdate(prevProps) {
@@ -169,21 +172,24 @@ class Cards extends Component {
         return connectDropTarget(
             <ul>
                 {cardList}
-                <Waypoint
-                    onEnter={this.loadMoreDeal}
-                />
+                <VisibilitySensor onChange={this.loadMoreDeal} />
+
             </ul>
         );
     }
 
-    loadMoreDeal() {
-        /*
-        if(this.state.currentPage + 1  < this.props.stage.dealPageCount){
-            this.setState({currentPage: this.state.currentPage + 1},
-                () => this.props.loadMoreDeals(this.props.stage.id,this.state.currentPage));
-
+    loadMoreDeal(isVisible) {
+        if( isVisible && this.hasMoreItem()){
+            this.setState({ currentPage: this.state.currentPage+1},
+                () => this.props.getStageDeals( QueryUtils.addStageFilter(this.props.searchQuery, this.props.stage.id),
+                                            this.props.stage.id,
+                                            this.state.currentPage,
+                                            true));
         }
-         */
+    }
+    hasMoreItem(){
+        console.log( "stage: " + this.props.stage.id + " current deals: "+ this.props.deals.length + " max: "+ this.props.stage.maxDealCount);
+        return this.props.stage.maxDealCount > this.props.deals.length ;
     }
 }
 

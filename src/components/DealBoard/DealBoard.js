@@ -159,8 +159,8 @@ class DealBoard extends Component {
         return (
             <div className="dealboard">
                 <div className="dealboard-toolbar">
-                        <Button bsStyle="primary" className="m-l-sm" onClick={this.toggleSearchMenu}><i className="fa fa-filter"/></Button>
-                        <Button bsStyle="primary" className="m-l-sm" onClick={this.toggleNewDealModal}>New Deal</Button>
+                        <Button bsStyle="primary" bsSize="small" className="m-l-sm" onClick={this.toggleSearchMenu}><i className="fa fa-filter"/></Button>
+                        <Button bsStyle="primary" bsSize="small" className="m-l-sm" onClick={this.toggleNewDealModal}>New Deal</Button>
                         <PipelineSelector pipelines={this.props.pipelines}
                                           onChange={this.pipelineChanged}
                                           value={this.state.selectedPipeline}/>

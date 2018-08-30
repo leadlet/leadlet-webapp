@@ -66,11 +66,11 @@ export function getAllDealByFilterAndReturn(filter, successCallback, failCallbac
         );
 }
 
-export function getStageDeals(filter,stageId) {
+export function getStageDeals(filter,stageId, page=0, append=false) {
 
     return dispatch => {
 
-        dealService.getDealsByFilter(filter)
+        dealService.getDealsByFilter(filter, page)
             .then(
                 response => {
                     dispatch(success(response));
@@ -78,9 +78,16 @@ export function getStageDeals(filter,stageId) {
                 error => dispatch(failure(error))
             );
     };
+    function success(response) {
+        const type = append ? dealConstants.APPEND_STAGE_DEALS_SUCCESS : dealConstants.LOAD_STAGE_DEALS_SUCCESS;
 
-    function success(response) { return { type: dealConstants.LOAD_STAGE_DEALS_SUCCESS, payload: {'stageId': stageId, 'deals': response} } }
-    function failure(error) { return { type: dealConstants.LOAD_STAGE_DEALS_SUCCESS, error } }
+        return { type: type, payload: {'stageId': stageId, 'deals': response[0], 'maxDealCount': response[1]} }
+    }
+    function failure(error) {
+        const type = append ? dealConstants.APPEND_STAGE_DEALS_FAILURE : dealConstants.LOAD_STAGE_DEALS_FAILURE;
+
+        return { type: type, error }
+    }
 }
 
 export function updateDeal(deal) {

@@ -10768,6 +10768,7 @@ body {
 
 .dealboard {
     height: 100%;
+    overflow: scroll;
 }
 
 .dealboard-toolbar {
@@ -10775,6 +10776,14 @@ body {
     padding: 0 10px;
     display: flex; /* or inline-flex */
     flex-direction: row;
+    justify-content: flex-end;
+
+}
+
+.dealboard .deals {
+    display: flex; /* or inline-flex */
+    flex-direction: row;
+    flex-wrap: nowrap;
     justify-content: space-around;
 
 }
@@ -10925,8 +10934,8 @@ body {
     text-overflow: ellipsis;
 }
 
-.width-chars-10 {
-    max-width: 10ch;
+.width-chars-9 {
+    max-width: 9ch;
 }
 
 .width-chars-15 {

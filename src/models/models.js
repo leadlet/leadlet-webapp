@@ -65,6 +65,7 @@ Stage.modelName = 'Stage';
 
 Stage.fields = {
     id: attr(),
+    maxDealCount: attr(),
     name: attr(),
     color: attr(),
     pipelineId: fk('Pipeline')
@@ -75,10 +76,20 @@ Stage.fields = {
 export class Deal extends Model {
     static reducer(action, Deal, session) {
         switch (action.type) {
+            case dealConstants.APPEND_STAGE_DEALS_SUCCESS:
+                var deals = action.payload.deals;
+                var stageId = action.payload.stageId;
+                var maxDealCount = action.payload.maxDealCount;
+                session.Stage.withId(stageId).update({ maxDealCount: maxDealCount });
+                deals.forEach(stage => Deal.upsert(stage));
+                break;
+
             case dealConstants.LOAD_STAGE_DEALS_SUCCESS:
-                const deals = action.payload.deals;
-                const stageId = action.payload.stageId
+                var deals = action.payload.deals;
+                var stageId = action.payload.stageId;
+                var maxDealCount = action.payload.maxDealCount;
                 session.Stage.withId(stageId).dealSet.delete();
+                session.Stage.withId(stageId).update({ maxDealCount: maxDealCount });
                 deals.forEach(stage => Deal.create(stage));
                 break;
 

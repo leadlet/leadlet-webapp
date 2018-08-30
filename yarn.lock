@@ -5787,6 +5787,13 @@ react-select@^1.1.0:
     prop-types "^15.5.8"
     react-input-autosize "^2.1.0"
 
+react-visibility-sensor@^3.11.1:
+  version "3.11.1"
+  resolved "https://registry.yarnpkg.com/react-visibility-sensor/-/react-visibility-sensor-3.11.1.tgz#cdcee0e43a8c603e0feb9773fcd2b7105a1cd9c2"
+  dependencies:
+    create-react-class "^15.5.1"
+    prop-types "^15.5.4"
+
 react-waypoint@^8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/react-waypoint/-/react-waypoint-8.0.0.tgz#948748a3160e2ca27ae38b0a9acf8df8284e28e7"

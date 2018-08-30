@@ -10,19 +10,8 @@ export const dealService = {
     move,
     _delete,
     getDealsByPersonId,
-    getDealsByOrganizationId,
-    getDealsByStageId
+    getDealsByOrganizationId
 };
-
-
-function getDealsByStageId(stageId) {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
-
-    return fetch('/api/deals/stage/' + stageId, requestOptions).then(handleResponse);
-}
 
 
 function getDealsByPersonId(personId) {
@@ -91,13 +80,13 @@ function getAllDeals(filter, page, size) {
     return fetch(`/api/deals?filter=${filter}&page=${page}&size=${size}`, requestOptions).then(handlePaginationResponse);
 }
 
-function getDealsByFilter(query) {
+function getDealsByFilter(query, page) {
     const requestOptions = {
         method: 'GET',
         headers: { ...authHeader(), 'Content-Type': 'application/json' }
     };
 
-    return fetch(`/api/deals/search?q=${query}`, requestOptions).then(handleResponse);
+    return fetch(`/api/deals/search?q=${query}&page=${page}&size=10`, requestOptions).then(handlePaginationResponse);
 }
 
 function _delete(id) {

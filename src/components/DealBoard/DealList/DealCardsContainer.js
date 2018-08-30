@@ -77,11 +77,6 @@ class CardsContainer extends Component {
                     deleteDeal={this.props.deleteDeal}
                 />
 
-
-                <footer>Total potential: {new Intl.NumberFormat('en-GB', {
-                    style: 'currency',
-                    currency: 'USD'
-                }).format(this.props.stage.dealTotalPotential)}</footer>
             </div>
         ));
     }

@@ -36,7 +36,7 @@ class ListFilter extends Component {
             const terms = this.props.filter.options;
 
             return Object.keys(terms).map((key,index) => (
-                <div className="form-check">
+                <div key={key} className="form-check">
                     <input className="form-check-input" type="checkbox" value={key} id={key} onChange={this.inputChanged}/>
                     <label className="form-check-label">
                         {key} ({terms[key]})
