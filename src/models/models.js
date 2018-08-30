@@ -131,20 +131,27 @@ export class SearchFilter extends Model {
 
     static reducer(action, SearchFilter, session) {
         switch (action.type) {
+
+            case searchConstants.FACET_CLEAR:
+                SearchFilter.withId(action.payload.facetId).set("selected",null);
+                break;
+
             case searchConstants.FACET_GET_SUCCESS:
                 SearchFilter.upsert(Object.assign(action.payload, action.filter));
                 break;
             case searchConstants.FACET_TERM_SELECTED:
-                var oldSelectedOptions = SearchFilter.withId(action.payload.facetId).selectedOptions || [];
+                var oldSelected = SearchFilter.withId(action.payload.facetId).selected;
+                var oldSelectedOptions = (oldSelected && oldSelected.options) || [];
                 var newSelectedOptions = _.concat( oldSelectedOptions, action.payload.term );
-                SearchFilter.withId(action.payload.facetId).set("selectedOptions",newSelectedOptions);
+                SearchFilter.withId(action.payload.facetId).set("selected", {options: newSelectedOptions});
                 break;
             case searchConstants.FACET_TERM_UNSELECTED:
-                var oldSelectedOptions = SearchFilter.withId(action.payload.facetId).selectedOptions;
+                var oldSelected = SearchFilter.withId(action.payload.facetId).selected;
+                var oldSelectedOptions = (oldSelected && oldSelected.options) || [];
                 var index = oldSelectedOptions.indexOf(action.payload.term);
                 var newSelectedOptions = oldSelectedOptions.slice(0,index).concat(oldSelectedOptions.slice(index+1));
 
-                SearchFilter.withId(action.payload.facetId).set("selectedOptions",newSelectedOptions);
+                SearchFilter.withId(action.payload.facetId).set("selected", {options: newSelectedOptions});
                 break;
             case searchConstants.FACET_RANGE_CHANGED:
                 SearchFilter.withId(action.payload.facetId).set("selected", { min: action.payload.min, max: action.payload.max });

@@ -14,6 +14,7 @@ import { pipelinesSelector, stagesSelector} from "../../models/selectors";
 import ListFilter from "../Search/ListFilter";
 import {getAllStages} from "../../actions/stage.actions";
 import RangeFilter from "../Search/RangeFilter";
+import SelectedFilters from "../Search/SelectedFilters";
 class DealBoard extends Component {
 
     constructor(props) {
@@ -159,7 +160,8 @@ class DealBoard extends Component {
         return (
             <div className="dealboard">
                 <div className="dealboard-toolbar">
-                        <Button bsStyle="primary" bsSize="small" className="m-l-sm" onClick={this.toggleSearchMenu}><i className="fa fa-filter"/></Button>
+                        <SelectedFilters/>
+                        <Button bsStyle="primary" bsSize="small" className="m-l-sm" onClick={this.toggleSearchMenu}><i className="fa fa-filter fa-xs"/></Button>
                         <Button bsStyle="primary" bsSize="small" className="m-l-sm" onClick={this.toggleNewDealModal}>New Deal</Button>
                         <PipelineSelector pipelines={this.props.pipelines}
                                           onChange={this.pipelineChanged}
@@ -169,20 +171,20 @@ class DealBoard extends Component {
                     {this.state.isSearchMenuVisible &&
                     <div id="deals-search" className="search">
                         <ListFilter
-                            id="channels"
+                            id="Channels"
                             dataField="channel.keyword"
                             title="Channels"
                             emptyText ="No Channel"
                         />
                         <ListFilter
-                            id="sources"
+                            id="Sources"
                             dataField="source.keyword"
                             title="Sources"
                             emptyText ="No Source"
 
                         />
                         <RangeFilter
-                            id="priorities"
+                            id="Priority"
                             dataField="priority"
                             title="Priority"
                         />

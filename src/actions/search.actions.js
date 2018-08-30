@@ -2,6 +2,12 @@ import {searchConstants} from "../constants/search.constants";
 import {timelineService} from "../services/timeline.service";
 import {searchService} from "../services/search.service";
 
+export function clearFilter(facetId) {
+    return dispatch => {
+        dispatch( {type: searchConstants.FACET_CLEAR, payload: {"facetId": facetId}});
+    };
+}
+
 export function rangeChanged(facetId, min, max) {
     return dispatch => {
         dispatch( {type: searchConstants.FACET_RANGE_CHANGED, payload: {"facetId": facetId, "min": min, "max": max}});

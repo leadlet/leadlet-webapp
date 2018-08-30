@@ -49,6 +49,7 @@ class RangeFilter extends Component {
         this.setState({ min: newRange[0], max: newRange[1]});
     }
     onAfterChange( newRange ){
+        this.setState({ min: null, max: null});
         this.props.rangeChanged(this.props.id, newRange[0], newRange[1]);
     }
     render(){
@@ -59,15 +60,15 @@ class RangeFilter extends Component {
                         <Range
                             min={this.props.filter.min}
                             max={this.props.filter.max}
-                            value={[ this.state.min || this.props.filter.min
-                                , this.state.max ||this.props.filter.max]}
+                            value={[ this.state.min || ( this.props.filter.selected && this.props.filter.selected.min) || this.props.filter.min
+                                , this.state.max || ( this.props.filter.selected && this.props.filter.selected.max) || this.props.filter.max]}
                             handle={handle}
                             onAfterChange={this.onAfterChange}
                             onChange={this.onChange}
                             allowCross={false}/>
                     </div>
                     <div className="text-center">
-                        {this.state.min || this.props.filter.min} - {this.state.max || this.props.filter.max}
+                        {this.state.min || ( this.props.filter.selected && this.props.filter.selected.min) || this.props.filter.min} - {this.state.max || ( this.props.filter.selected && this.props.filter.selected.max) || this.props.filter.max}
                     </div>
                 </div>
             );

@@ -10772,7 +10772,7 @@ body {
 }
 
 .dealboard-toolbar {
-    height: 40px;
+    height: 30px;
     padding: 0 10px;
     display: flex; /* or inline-flex */
     flex-direction: row;

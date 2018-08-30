@@ -37,7 +37,9 @@ class ListFilter extends Component {
 
             return Object.keys(terms).map((key,index) => (
                 <div key={key} className="form-check">
-                    <input className="form-check-input" type="checkbox" value={key} id={key} onChange={this.inputChanged}/>
+                    <input className="form-check-input" type="checkbox"
+                           value={key} id={key} onChange={this.inputChanged}
+                            checked={this.props.filter.selected && this.props.filter.selected.options.includes(key)}/>
                     <label className="form-check-label">
                         {key ? key : this.props.emptyText }  <span className="badge">{terms[key]}</span>
                     </label>
