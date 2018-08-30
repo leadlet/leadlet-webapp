@@ -8,21 +8,67 @@ const propTypes = {
     style: PropTypes.object
 };
 
-const Card = (props) => {
-    const { style, item } = props;
+function createPhoneMail(item) {
+    var phones_mail = [];
 
-    const formattedDate = moment(item.createdDate, "YYYY-MM-DDTHH:mm:ss+-HH:mm").format("DD.MM.YYYY");
+    if (item.person.phones && item.person.phones.length > 0) {
+        phones_mail.push(item.person.phones[0].phone);
+    }
+    if (item.person.email) {
+        phones_mail.push(item.person.email);
+    }
+
+    return phones_mail.join(" / ");
+}
+
+function getActivityStatusColor(item) {
+    if (item.activityStatus === "EXPIRED") {
+        return "red-bg";
+    }
+    if (item.activityStatus === "TODAY") {
+        return "yellow-green-bg";
+    }
+    if (item.activityStatus === "IN_FUTURE") {
+        return "orange-bg";
+    }
+    if (item.activityStatus === "NO_ACTIVITY") {
+        return "slate-gray-bg";
+    }
+}
+
+const Card = (props) => {
+    const {style, item} = props;
+
+    const formattedDate = moment(item.createdDate).fromNow();
 
     return (
 
+
         <li style={style} className="info-element" id={style ? item.id : null}>
-            <div className="card-body">{item.title}</div>
-            <div className="agile-detail">
-                <a href="/done" className="pull-right btn btn-xs btn-primary">Done</a>
-                <Link to={"/deal/"+item.id}><i className="btn fa fa-edit" /></Link>
-                <i className="btn fa fa-trash" onClick={() => props.deleteDeal(item.id)}/>
-                <i className="fa fa-clock-o"/> {formattedDate}
-            </div>
+            <Link style={{ textDecoration: 'inherit', color:'inherit' }} to={"/deal/" + item.id}>
+                <div className="card-body">
+                    <div className="small-line">
+                        <div className="source-channel-product">
+                            <div
+                                className='short-text width-chars-10 font-size-smaller'>{item.products && item.products.length > 0 ? item.products[0].name : "-"}</div>|
+                            <div className='short-text width-chars-10 font-size-smaller'>{item.dealChannel ? item.dealChannel.name : "-"}</div>|
+                            <div className='short-text width-chars-10 font-size-smaller'>{item.dealSource ? item.dealSource.name : "-"}</div>
+                        </div>
+                        <div className="potential-value">{item.dealValue && item.dealValue.potentialValue} <i className="fa fa-money"/> </div>
+                    </div>
+                    <div className="small-line">
+                        <div className="source-channel-product">
+                            <div className="short-text width-chars-10 font-size-small">{item.person.phones && item.person.phones.length > 0 ? item.person.phones[0].phone : "-"}</div> /
+                            <div className="short-text width-chars-10 font-size-small">{item.person.email ? item.person.email : "-"}</div>
+                        </div>
+                        <div className={"dot " + getActivityStatusColor(item)}/>
+                    </div>
+                    <div className="small-line">
+                        <div className="short-text width-chars-15 font-size-smaller">{item.person.name}</div>
+                        <div className="short-text width-chars-15 font-size-smaller text-right">{formattedDate}</div>
+                    </div>
+                </div>
+            </Link>
         </li>
     );
 };

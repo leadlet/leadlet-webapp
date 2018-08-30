@@ -13,7 +13,7 @@ import formValueSelector from "redux-form/es/formValueSelector";
 import renderAsyncSelectField  from "../../formUtils/renderAsyncSelectField";
 
 import renderDatePicker from "../../formUtils/renderDatePicker";
-import {loadOrganization, loadPerson, loadPipeline, loadStage, loadUser} from "../../formUtils/form.actions";
+import {loadOrganization, loadPerson, loadPipeline, loadStage, loadUser, loadProduct, loadSource, loadChannel} from "../../formUtils/form.actions";
 import renderPipelineAndStageFields from "../../formUtils/renderPipelineAndStageFields";
 import renderPersonAndOrganizationFields from "../../formUtils/renderPersonAndOrganizationFields";
 
@@ -83,7 +83,10 @@ class CreateEditDeal extends Component {
             pipelineId: formValues.pipeline && formValues.pipeline.id,
             ownerId: formValues.owner && formValues.owner.id,
             dealValue: formValues.dealValue,
-            possibleCloseDate: formValues.possibleCloseDate && formValues.possibleCloseDate._d
+            possibleCloseDate: formValues.possibleCloseDate && formValues.possibleCloseDate._d,
+            products: formValues.products,
+            dealSource: formValues.dealSource,
+            dealChannel: formValues.dealChannel
         }
 
         if( deal.id ){
@@ -186,6 +189,85 @@ class CreateEditDeal extends Component {
                             name="possibleCloseDate"
                             placeholder="Select Possible Close Date"
                             component={renderDatePicker}
+                        />
+
+                        <Field
+                            name="products"
+                            label="Product"
+                            placeholder="Select Product"
+                            component={renderAsyncSelectField}
+                            multi={true}
+                            loadOptions={loadProduct}
+                            parse={(values) => {
+                                if( values ) {
+                                    return values.map( value =>
+                                        ({
+                                            id: value.value,
+                                            name: value.label
+                                        })
+                                    );
+
+                                }
+                            }}
+                            format={(values) => {
+                                if( values ) {
+                                    return values.map( value =>
+                                        ({
+                                            value: value.id,
+                                            label: value.name
+                                        })
+                                    );
+
+                                }
+                            }}
+                        />
+                        <Field
+                            name="dealSource"
+                            label="Source"
+                            placeholder="Select deal source"
+                            component={renderAsyncSelectField}
+                            loadOptions={loadSource}
+                            parse={(value) => {
+                                if( value ) {
+                                    return {
+                                        'id': value.value,
+                                        'name': value.label
+                                    };
+                                }
+                            }}
+                            format={(value) => {
+                                if( value ){
+                                    return {
+                                        'value': value.id,
+                                        'label': value.name
+                                    }
+                                }
+
+                            }}
+                        />
+                        <Field
+                            name="dealChannel"
+                            label="Channel"
+                            placeholder="Select deal channel"
+                            component={renderAsyncSelectField}
+                            loadOptions={loadChannel}
+                            parse={(value) => {
+                                if( value ) {
+                                    return {
+                                        'id': value.value,
+                                        'name': value.label
+                                    };
+                                }
+                            }}
+                            format={(value) => {
+                                if( value ){
+                                    return {
+                                        'value': value.id,
+                                        'label': value.name
+                                    }
+                                }
+
+                            }}
                         />
                     </form>
                     <div>

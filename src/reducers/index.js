@@ -16,6 +16,7 @@ import {documents} from "./document.reducer";
 
 import { schema } from './../models/models';
 import {db} from "./orm.reducers";
+import {products} from "./product.reducer";
 
 const rootReducer = combineReducers({
     authentication,
@@ -31,7 +32,8 @@ const rootReducer = combineReducers({
     teams,
     objectives,
     account,
-    documents
+    documents,
+    products
 });
 
 export default rootReducer;
