@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {clearFilter, getDistincTerms, registerFilter, termSelected, termUnSelected} from "../../actions/search.actions";
 import {filterByIdSelector, filtersSelector} from "../../models/selectors";
+import moment from "moment";
 
 class SelectedFilters extends Component {
 
@@ -33,9 +34,17 @@ class SelectedFilters extends Component {
                                     id={filter.id} onClick={()=>this.onClearFilter(filter.id)}>{text} <i className="fa fa-close fa-xs"/></button>);
                 });
 
+            var dateRangeFilters = this.props.filters
+                .filter(filter => filter.type === "DATERANGE" && filter.selected)
+                .map( filter => {
+                    var text = filter.id + ": " + moment(filter.selected.min).format("DD/MM/YYYY") + " - " + moment(filter.selected.max).format("DD/MM/YYYY");
+                    return (<button type="button" className="btn btn-default btn-small"
+                                    id={filter.id} onClick={()=>this.onClearFilter(filter.id)}>{text} <i className="fa fa-close fa-xs"/></button>);
+                });
+
         }
 
-        searchFilters = [ ...termFilters, ...rangeFilters];
+        searchFilters = [ ...termFilters, ...rangeFilters, ...dateRangeFilters];
 
         return searchFilters;
     }

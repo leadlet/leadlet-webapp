@@ -114,6 +114,7 @@ export const searchQuerySelector = createSelector(
         let filters = session.SearchFilter.all().toRefArray();
         let termFilters = [];
         let rangeFilters = [];
+        let dateRangeFilters = [];
 
         if( filters ){
             if( excludeId ){
@@ -128,9 +129,13 @@ export const searchQuerySelector = createSelector(
                 .filter(filter => filter.type === "RANGE" && filter.selected)
                 .map( filter => filter.dataField + ":[" + filter.selected.min + " TO " + filter.selected.max +"]");
 
+            dateRangeFilters = filters
+                .filter(filter => filter.type === "DATERANGE" && filter.selected)
+                .map( filter => filter.dataField + ":[" + filter.selected.min + " TO " + filter.selected.max +"]");
+
         }
 
-        let searchFilters = [ ...termFilters, ...rangeFilters];
+        let searchFilters = [ ...termFilters, ...rangeFilters, ...dateRangeFilters];
 
         return searchFilters.length > 0 ? searchFilters.join(" AND "): "";
 

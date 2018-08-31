@@ -30,7 +30,6 @@
     "react-bootstrap-table": "^4.3.1",
     "react-bootstrap-toggle": "^2.2.6",
     "react-color": "^2.13.8",
-    "react-datepicker": "^1.4.0",
     "react-dates": "^16.2.0",
     "react-dnd": "^2.5.4",
     "react-dnd-html5-backend": "^2.5.4",

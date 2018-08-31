@@ -10870,10 +10870,6 @@ body {
     width: 100%;
 }
 
-.DateInput__small {
-    width: 100% !important;
-}
-
 .pac-container {
     background-color: #FFF;
     z-index: 10000;
@@ -11000,7 +10996,7 @@ body {
 .dealboard .search {
     margin: 5px 10px;
     background-color: #ffffff;
-    min-width: 200px;
+    min-width: 230px;
     padding: 20px 10px;
 }
 
@@ -11012,8 +11008,29 @@ body {
     margin-bottom: 5px;
 }
 
-.dealboard .search .list-filter .items{
+.dealboard .search .list-filter .filter-items{
     margin-left: 5px;
+}
+
+.dealboard .search .filter-name{
+    font-size: 14;
+    font-weight: 700;
+}
+
+.dealboard .search .list-filter .filter-label{
+    font-weight: 300;
+    margin-left: 4px;
+}
+
+.dealboard .search .list-filter .item-count{
+    font-size: 11px;
+}
+
+.dealboard .search .list-filter .item-name{
+    margin-left: 4px;
+    font-weight: 300;
+    font-size: 14px;
+
 }
 
 
@@ -11021,6 +11038,6 @@ body {
     margin-bottom: 5px;
 }
 
-.dealboard .search .range-filter .selector{
+.dealboard .search .range-filter .selector {
     padding: 0px 10px;
 }

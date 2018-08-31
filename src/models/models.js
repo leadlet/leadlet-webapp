@@ -154,7 +154,17 @@ export class SearchFilter extends Model {
                 SearchFilter.withId(action.payload.facetId).set("selected", {options: newSelectedOptions});
                 break;
             case searchConstants.FACET_RANGE_CHANGED:
-                SearchFilter.withId(action.payload.facetId).set("selected", { min: action.payload.min, max: action.payload.max });
+                var oldSelected = SearchFilter.withId(action.payload.facetId).selected || {};
+
+                if(action.payload.min){
+                    oldSelected.min = action.payload.min;
+                }
+                if(action.payload.max){
+                    oldSelected.max = action.payload.max;
+                }
+
+                var newSelected = Object.assign({}, oldSelected);
+                SearchFilter.withId(action.payload.facetId).set("selected", newSelected);
                 break;
             case searchConstants.REGISTER_FILTER:
                 SearchFilter.create(action.payload);

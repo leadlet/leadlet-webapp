@@ -15,6 +15,7 @@ import ListFilter from "../Search/ListFilter";
 import {getAllStages} from "../../actions/stage.actions";
 import RangeFilter from "../Search/RangeFilter";
 import SelectedFilters from "../Search/SelectedFilters";
+import DateRangeFilter from "../Search/DateRangeFilter";
 class DealBoard extends Component {
 
     constructor(props) {
@@ -171,6 +172,13 @@ class DealBoard extends Component {
                     {this.state.isSearchMenuVisible &&
                     <div id="deals-search" className="search">
                         <ListFilter
+                            id="Products"
+                            dataField="products.keyword"
+                            title="Products"
+                            emptyText ="No Product"
+                            multi={true}
+                        />
+                        <ListFilter
                             id="Channels"
                             dataField="channel.keyword"
                             title="Channels"
@@ -189,6 +197,11 @@ class DealBoard extends Component {
                             id="Priority"
                             dataField="priority"
                             title="Priority"
+                        />
+                        <DateRangeFilter
+                            id="CreateDate"
+                            dataField="created_date"
+                            title="Create Date"
                         />
                     </div>
                     }

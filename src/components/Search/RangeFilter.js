@@ -55,7 +55,7 @@ class RangeFilter extends Component {
     render(){
         if(this.props.filter){
             return (<div className="range-filter">
-                    <label>{this.props.title}</label>
+                    <h6 className="filter-name">{this.props.title}</h6>
                     <div className="selector">
                         <Range
                             min={this.props.filter.min}

@@ -35,28 +35,37 @@ class ListFilter extends Component {
             this.props.termUnSelected(this.props.id, checkboxElem.target.value);
         }
     }
+
     renderTerms(){
         if( this.props.filter ){
 
             const terms = this.props.filter.options;
 
-            return Object.keys(terms).map((key,index) => (
-                <div key={key} className="form-check">
-                    <input className="form-check-input" type="checkbox"
-                           value={key} id={key} onChange={this.inputChanged}
-                            checked={this.props.filter.selected && this.props.filter.selected.options.includes(key)}/>
-                    <label className="form-check-label">
-                        {key ? key : this.props.emptyText }  <span className="badge">{terms[key]}</span>
-                    </label>
-                </div>
-            ));
+            return Object.keys(terms).map((key,index) => {
+                let keyText = key;
+                console.log("before:" + keyText);
+                if( keyText.length > 20) {
+                    keyText = keyText.substring(0,20) + "...";
+                }
+                console.log("after:" + keyText);
+                return (
+                    <div key={key} className="form-check">
+                        <input className="form-check-input" type="checkbox"
+                               value={key} id={key} onChange={this.inputChanged}
+                               checked={this.props.filter.selected && this.props.filter.selected.options.includes(key)}/>
+                        <label className="form-check-label item-name">
+                            {key ? keyText : this.props.emptyText }  <span className="item-count">({terms[key]})</span>
+                        </label>
+                    </div>
+                );}
+            );
         }
     }
 
     render(){
         return (<div className="list-filter">
-                    <label>{this.props.title}</label>
-                    <div className="items">
+                    <h6 className="filter-name">{this.props.title}</h6>
+                    <div className="filter-items">
                         {this.renderTerms()}
                     </div>
                 </div>
