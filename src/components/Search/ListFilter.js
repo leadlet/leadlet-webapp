@@ -25,7 +25,7 @@ class ListFilter extends Component {
     }
 
     componentDidMount(){
-        this.props.getDistinctTerms( this.state.definition);
+        this.props.getDistinctTerms( this.state.definition,  this.props.searchQuery );
     }
 
     inputChanged(checkboxElem){

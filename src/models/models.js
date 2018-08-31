@@ -132,6 +132,10 @@ export class SearchFilter extends Model {
     static reducer(action, SearchFilter, session) {
         switch (action.type) {
 
+            case searchConstants.FACET_PIPELINE_SELECTED:
+                SearchFilter.upsert({ id: action.payload.facetId, selected : {pipeline: action.payload.pipeline}});
+                break;
+
             case searchConstants.FACET_CLEAR:
                 SearchFilter.withId(action.payload.facetId).set("selected",null);
                 break;

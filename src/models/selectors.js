@@ -115,6 +115,7 @@ export const searchQuerySelector = createSelector(
         let termFilters = [];
         let rangeFilters = [];
         let dateRangeFilters = [];
+        let pipelineFilterText ="";
 
         if( filters ){
             if( excludeId ){
@@ -133,9 +134,15 @@ export const searchQuerySelector = createSelector(
                 .filter(filter => filter.type === "DATERANGE" && filter.selected)
                 .map( filter => filter.dataField + ":[" + filter.selected.min + " TO " + filter.selected.max +"]");
 
+            let pipelineFilter = filters.find(filter => filter.id === "pipeline" && filter.selected);
+
+            if( pipelineFilter ){
+                pipelineFilterText = `pipeline_id:${pipelineFilter.selected.pipeline.id}`;
+            }
+
         }
 
-        let searchFilters = [ ...termFilters, ...rangeFilters, ...dateRangeFilters];
+        let searchFilters = [ ...termFilters, ...rangeFilters, ...dateRangeFilters, pipelineFilterText];
 
         return searchFilters.length > 0 ? searchFilters.join(" AND "): "";
 

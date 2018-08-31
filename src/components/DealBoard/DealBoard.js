@@ -16,6 +16,7 @@ import {getAllStages} from "../../actions/stage.actions";
 import RangeFilter from "../Search/RangeFilter";
 import SelectedFilters from "../Search/SelectedFilters";
 import DateRangeFilter from "../Search/DateRangeFilter";
+import {pipelineSelected} from "../../actions/search.actions";
 class DealBoard extends Component {
 
     constructor(props) {
@@ -155,6 +156,7 @@ class DealBoard extends Component {
 
     pipelineChanged(pipeline){
         this.setState({ selectedPipeline: pipeline });
+        this.props.pipelineSelected("pipeline", pipeline);
     }
 
     render() {
@@ -273,6 +275,7 @@ export default connect(mapStateToProps, {
     getAllPipelines,
     getAllStages,
     moveDeal,
-    deleteDeal
+    deleteDeal,
+    pipelineSelected
 })(DragDropContext(HTML5Backend)(DealBoard));
 
