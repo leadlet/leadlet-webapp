@@ -106,23 +106,31 @@ export const filtersSelector = createSelector(
 
 export const searchQuerySelector = createSelector(
     orm,
-    dbStateSelector,
-    session => {
+    [
+        dbStateSelector,
+        (state, excludeId) => excludeId
+    ],
+    (session, excludeId) => {
         let filters = session.SearchFilter.all().toRefArray();
-        let searchFilters = [];
+        let termFilters = [];
+        let rangeFilters = [];
 
         if( filters ){
-            var termFilters = filters
+            if( excludeId ){
+                filters = filters.filter(filter => filter.id !== excludeId);
+            }
+
+            termFilters = filters
                 .filter(filter => filter.type === "TERMS" && filter.selected && filter.selected.options && filter.selected.options.length > 0)
                 .map( filter => filter.dataField + ":(" + filter.selected.options.map(option => "\""+option+"\"").join(" OR ")+ ")");
 
-            var rangeFilters = filters
+            rangeFilters = filters
                 .filter(filter => filter.type === "RANGE" && filter.selected)
                 .map( filter => filter.dataField + ":[" + filter.selected.min + " TO " + filter.selected.max +"]");
 
         }
 
-        searchFilters = [ ...termFilters, ...rangeFilters];
+        let searchFilters = [ ...termFilters, ...rangeFilters];
 
         return searchFilters.length > 0 ? searchFilters.join(" AND "): "";
 

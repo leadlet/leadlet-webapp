@@ -117,8 +117,6 @@ class Cards extends Component {
         if( this.props.searchQuery !== prevProps.searchQuery){
             this.props.getStageDeals( QueryUtils.addStageFilter(this.props.searchQuery, this.props.stage.id),this.props.stage.id);
         }
-
-
     }
 
     componentDidMount() {
@@ -179,6 +177,7 @@ class Cards extends Component {
     }
 
     loadMoreDeal(isVisible) {
+        console.log(isVisible);
         if( isVisible && this.hasMoreItem()){
             this.setState({ currentPage: this.state.currentPage+1},
                 () => this.props.getStageDeals( QueryUtils.addStageFilter(this.props.searchQuery, this.props.stage.id),

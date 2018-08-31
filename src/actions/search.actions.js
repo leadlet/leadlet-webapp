@@ -38,11 +38,11 @@ export function getFieldRange( filter ) {
     }
 }
 
-export function getDistinctTerms( filter ) {
+export function getDistinctTerms( filter, query="" ) {
     return dispatch => {
         dispatch(request());
 
-        searchService.getDistinctTerms(filter)
+        searchService.getDistinctTerms(filter, query)
             .then(
                 payload => dispatch(success(payload, filter)),
                 error => dispatch(failure(error))

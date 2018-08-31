@@ -175,12 +175,14 @@ class DealBoard extends Component {
                             dataField="channel.keyword"
                             title="Channels"
                             emptyText ="No Channel"
+                            multi={true}
                         />
                         <ListFilter
                             id="Sources"
                             dataField="source.keyword"
                             title="Sources"
                             emptyText ="No Source"
+                            multi={true}
 
                         />
                         <RangeFilter
