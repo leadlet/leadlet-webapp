@@ -67,7 +67,7 @@ class ListFilter extends Component {
 function mapStateToProps(state, props) {
     return {
         filter: filterByIdSelector(state, props.id),
-        searchQuery: searchQuerySelector(state)
+        searchQuery: searchQuerySelector(state, props.multi ? props.id: null)
     };
 }
 
