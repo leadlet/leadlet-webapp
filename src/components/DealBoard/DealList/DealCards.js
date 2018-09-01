@@ -6,10 +6,12 @@ import {dealConstants} from "../../../constants/deal.constants";
 import PropTypes from 'prop-types';
 import {searchQuerySelector, stageDealsSelector} from "../../../models/selectors";
 import {connect} from "react-redux";
-import {getStageDeals} from "../../../actions/deal.actions";
+import {getStageDeals, patchDeal} from "../../../actions/deal.actions";
 import {QueryUtils} from "../../Search/QueryUtils";
 var VisibilitySensor = require('react-visibility-sensor');
 
+const MAX_INDEX = 100000;
+const MIN_INDEX = 0;
 
 function getPlaceholderIndex(y, scrollY) {
     // shift placeholder if y position more than card height / 2
@@ -24,6 +26,7 @@ function getPlaceholderIndex(y, scrollY) {
 }
 
 const specs = {
+
     drop(props, monitor, component) {
         document.getElementById(monitor.getItem().id).style.display = 'block';
         const {placeholderIndex} = component.state;
@@ -33,22 +36,31 @@ const specs = {
         let nextY = placeholderIndex;
         nextY += 1;
 
-        /*
-
-if (lastY > nextY) { // move top
-    nextY += 1;
-}
-else if (lastX !== nextX) { // insert into another list
-    nextY += 1;
-}
-*/
-
         if (lastX === nextX && lastY === nextY) { // if position equel
             return;
         }
 
-        props.moveCard(monitor.getItem().item.id, nextX, nextY);
+
+        let calculateNewPriority = (deals, newIndex) => {
+            let prevDeal = deals[newIndex-1];
+            let nextDeal = deals[newIndex];
+
+            let prevPriority = prevDeal? prevDeal.priority : MIN_INDEX;
+            let nextPriority = nextDeal? nextDeal.priority : MAX_INDEX;
+
+            let newPriority = prevPriority + (( nextPriority - prevPriority ) / 2 );
+            return Math.round(newPriority);
+        };
+
+
+        let newPriority = calculateNewPriority(props.deals, nextY);
+
+        props.patchDeal( { id: monitor.getItem().id, priority: newPriority, stageId: props.stage.id});
+
+
     },
+
+
     hover(props, monitor, component) {
         // defines where placeholder is rendered
         const placeholderIndex = getPlaceholderIndex(
@@ -89,7 +101,6 @@ else if (lastX !== nextX) { // insert into another list
 class Cards extends Component {
     static propTypes = {
         connectDropTarget: PropTypes.func.isRequired,
-        moveCard: PropTypes.func.isRequired,
         deleteDeal: PropTypes.func.isRequired,
         isOver: PropTypes.bool,
         item: PropTypes.object,
@@ -105,14 +116,14 @@ class Cards extends Component {
             placeholderIndex: undefined,
             isScrolling: false,
             currentPage: 0,
-            maxPage: 0
+            maxPage: 0,
+            idList: []
         };
 
         this.loadMoreDeal = this.loadMoreDeal.bind(this);
         this.hasMoreItem = this.hasMoreItem.bind(this);
 
     }
-
     componentDidUpdate(prevProps) {
         if( this.props.searchQuery !== prevProps.searchQuery){
             this.props.getStageDeals( QueryUtils.addStageFilter(this.props.searchQuery, this.props.stage.id),this.props.stage.id);
@@ -128,11 +139,9 @@ class Cards extends Component {
     render() {
         const {connectDropTarget, isOver, canDrop, deals} = this.props;
         const {placeholderIndex} = this.state;
-
         let isPlaceHold = false;
         let cardList = [];
-        deals.sort((first, second) => first.priority - second.priority)
-            .forEach( (deal,i) => {
+        deals.forEach( (deal,i) => {
             if (isOver && canDrop) {
                 isPlaceHold = false;
                 if (i === 0 && placeholderIndex === -1) {
@@ -177,7 +186,6 @@ class Cards extends Component {
     }
 
     loadMoreDeal(isVisible) {
-        console.log(isVisible);
         if( isVisible && this.hasMoreItem()){
             this.setState({ currentPage: this.state.currentPage+1},
                 () => this.props.getStageDeals( QueryUtils.addStageFilter(this.props.searchQuery, this.props.stage.id),
@@ -187,7 +195,6 @@ class Cards extends Component {
         }
     }
     hasMoreItem(){
-        console.log( "stage: " + this.props.stage.id + " current deals: "+ this.props.deals.length + " max: "+ this.props.stage.maxDealCount);
         return this.props.stage.maxDealCount > this.props.deals.length ;
     }
 }
@@ -206,6 +213,6 @@ let dropWrapper = DropTarget('card', specs, (connectDragSource, monitor) => ({
     item: monitor.getItem()
 }))(Cards);
 
-export default connect(mapStateToProps, {getStageDeals})(dropWrapper);
+export default connect(mapStateToProps, {getStageDeals, patchDeal})(dropWrapper);
 
 

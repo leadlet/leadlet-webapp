@@ -90,6 +90,30 @@ export function getStageDeals(filter,stageId, page=0, append=false) {
     }
 }
 
+
+
+export function patchDeal(deal) {
+    return dispatch => {
+        dispatch(request());
+
+        return dealService.patchDeal(deal)
+            .then(
+                payload => {
+                    dispatch(success(payload));
+                    dispatch(alertActions.success('Deal successfully updated'));
+                },
+                error => {
+                    dispatch(failure(error));
+                    dispatch(alertActions.error(error));
+                }
+            );
+    };
+
+    function request() { return { type: dealConstants.UPDATE_REQUEST } }
+    function success(payload) { return { type: dealConstants.UPDATE_SUCCESS, payload } }
+    function failure(error) { return { type: dealConstants.UPDATE_FAILURE, error } }
+}
+
 export function updateDeal(deal) {
     return dispatch => {
         dispatch(request());
@@ -111,29 +135,6 @@ export function updateDeal(deal) {
     function success(payload) { return { type: dealConstants.UPDATE_SUCCESS, payload } }
     function failure(error) { return { type: dealConstants.UPDATE_FAILURE, error } }
 }
-
-export function moveDeal(moveDealDto) {
-    return dispatch => {
-        dispatch(request());
-
-        return dealService.move(moveDealDto)
-            .then(
-                payload => {
-                    dispatch(success(payload));
-                    dispatch(alertActions.success('Deal successfully updated'));
-                },
-                error => {
-                    dispatch(failure(error));
-                    dispatch(alertActions.error(error));
-                }
-            );
-    };
-
-    function request() { return { type: dealConstants.UPDATE_REQUEST } }
-    function success(payload) { return { type: dealConstants.UPDATE_SUCCESS, payload } }
-    function failure(error) { return { type: dealConstants.UPDATE_FAILURE, error } }
-}
-
 
 
 export function createDeal(deal) {

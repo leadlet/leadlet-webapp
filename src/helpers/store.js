@@ -10,6 +10,6 @@ export const store = createStore(
     rootReducer, composeWithDevTools(
     applyMiddleware(
         thunkMiddleware,
-        loggerMiddleware
+//        loggerMiddleware
     ))
 );

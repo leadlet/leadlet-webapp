@@ -7,10 +7,10 @@ export const dealService = {
     getDealById,
     create,
     update,
-    move,
     _delete,
     getDealsByPersonId,
-    getDealsByOrganizationId
+    getDealsByOrganizationId,
+    patchDeal
 };
 
 
@@ -52,14 +52,14 @@ function update(stage) {
     return fetch('/api/deals/', requestOptions).then(handleResponse);
 }
 
-function move(moveDealDto) {
+function patchDeal(deal) {
     const requestOptions = {
         method: 'PUT',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
-        body: JSON.stringify(moveDealDto)
+        body: JSON.stringify(deal)
     };
 
-    return fetch('/api/deals/move', requestOptions).then(handleResponse);
+    return fetch(`/api/deals/${deal.id}/partial?priority=${deal.priority}&stageId=${deal.stageId}`, requestOptions).then(handleResponse);
 }
 
 function getDealById(id) {
