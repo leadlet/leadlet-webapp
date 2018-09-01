@@ -10731,6 +10731,18 @@ body {
     display: inline-block;
     margin-left: 10px;
 }
+.pipeline-selector .Select-input{
+    height: 28px;
+}
+
+.pipeline-selector .Select-control{
+    height: 31px;
+}
+
+.pipeline-selector .Select-value{
+    line-height: 29px;
+}
+
 
 .row-flex {
     display: flex;
