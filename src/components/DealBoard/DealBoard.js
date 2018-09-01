@@ -7,7 +7,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import {DragDropContext} from 'react-dnd';
 import CardsContainer from "./DealList/DealCardsContainer";
 import CustomDragLayer from "./CustomDragLayer";
-import {deleteDeal, moveDeal} from "../../actions/deal.actions";
+import {deleteDeal} from "../../actions/deal.actions";
 import SweetAlert from 'sweetalert-react';
 import CreateEditDeal from '../DealDetail/CreateEditDeal'
 import {dealsSelector, pipelinesSelector, stagesSelector} from "../../models/selectors";
@@ -17,6 +17,7 @@ import RangeFilter from "../Search/RangeFilter";
 import SelectedFilters from "../Search/SelectedFilters";
 import DateRangeFilter from "../Search/DateRangeFilter";
 import {pipelineSelected} from "../../actions/search.actions";
+
 class DealBoard extends Component {
 
     constructor(props) {
@@ -28,7 +29,9 @@ class DealBoard extends Component {
             isScrolling: false,
             showDeleteDealDialog: false,
             deletingDeal: null,
-            selectedPipeline: null
+            selectedPipeline: null,
+            sidebarOpen: true
+
         };
 
         this.toggleNewDealModal = this.toggleNewDealModal.bind(this);
@@ -146,6 +149,7 @@ class DealBoard extends Component {
                                           onChange={this.pipelineChanged}
                                           value={this.state.selectedPipeline}/>
                 </div>
+
                 <div className="deals">
                     {this.state.isSearchMenuVisible &&
                     <div id="deals-search" className="search">

@@ -101,7 +101,6 @@ const specs = {
 class Cards extends Component {
     static propTypes = {
         connectDropTarget: PropTypes.func.isRequired,
-        moveCard: PropTypes.func.isRequired,
         deleteDeal: PropTypes.func.isRequired,
         isOver: PropTypes.bool,
         item: PropTypes.object,
@@ -187,7 +186,6 @@ class Cards extends Component {
     }
 
     loadMoreDeal(isVisible) {
-        console.log(isVisible);
         if( isVisible && this.hasMoreItem()){
             this.setState({ currentPage: this.state.currentPage+1},
                 () => this.props.getStageDeals( QueryUtils.addStageFilter(this.props.searchQuery, this.props.stage.id),
@@ -197,7 +195,6 @@ class Cards extends Component {
         }
     }
     hasMoreItem(){
-        console.log( "stage: " + this.props.stage.id + " current deals: "+ this.props.deals.length + " max: "+ this.props.stage.maxDealCount);
         return this.props.stage.maxDealCount > this.props.deals.length ;
     }
 }

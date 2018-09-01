@@ -10819,7 +10819,7 @@ body {
     margin-left: 10px;
     vertical-align: top;
     background-color: #ffffff;
-    padding: 15px 10px 20px 10px;
+    padding: 5px;
     border-color: #e7eaec;
     border-image: none;
     border-style: solid solid none;
@@ -10869,7 +10869,7 @@ body {
 .dealboard .stage-header {
     line-height: 20px;
     position: relative;
-    padding: 5px 8px;
+    padding: 3px 9px;
     zoom: 1;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
@@ -11008,7 +11008,7 @@ body {
 .dealboard .search {
     margin: 5px 10px;
     background-color: #ffffff;
-    min-width: 230px;
+    max-width: 230px;
     padding: 20px 10px;
 }
 
@@ -11052,4 +11052,9 @@ body {
 
 .dealboard .search .range-filter .selector {
     padding: 0px 10px;
+}
+
+
+.side-menu {
+    background-color: #fff;
 }
