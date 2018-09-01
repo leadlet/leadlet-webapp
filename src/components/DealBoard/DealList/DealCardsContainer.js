@@ -49,7 +49,6 @@ class CardsContainer extends Component {
         connectDropTarget: PropTypes.func.isRequired,
         connectDragSource: PropTypes.func.isRequired,
         stage: PropTypes.object,
-        moveCard: PropTypes.func.isRequired,
         moveList: PropTypes.func.isRequired,
         isDragging: PropTypes.bool,
         startScrolling: PropTypes.func,
@@ -69,7 +68,6 @@ class CardsContainer extends Component {
                     <div className="stage-name">{stage.name}</div>
                 </div>
                 <Cards
-                    moveCard={moveCard}
                     stage={stage}
                     startScrolling={this.props.startScrolling}
                     stopScrolling={this.props.stopScrolling}

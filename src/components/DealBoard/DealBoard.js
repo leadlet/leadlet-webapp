@@ -10,7 +10,7 @@ import CustomDragLayer from "./CustomDragLayer";
 import {deleteDeal, moveDeal} from "../../actions/deal.actions";
 import SweetAlert from 'sweetalert-react';
 import CreateEditDeal from '../DealDetail/CreateEditDeal'
-import { pipelinesSelector, stagesSelector} from "../../models/selectors";
+import {dealsSelector, pipelinesSelector, stagesSelector} from "../../models/selectors";
 import ListFilter from "../Search/ListFilter";
 import {getAllStages} from "../../actions/stage.actions";
 import RangeFilter from "../Search/RangeFilter";
@@ -37,7 +37,6 @@ class DealBoard extends Component {
         this.scrollLeft = this.scrollLeft.bind(this);
         this.stopScrolling = this.stopScrolling.bind(this);
         this.startScrolling = this.startScrolling.bind(this);
-        this.moveCard = this.moveCard.bind(this);
         this.onDeleteDeal = this.onDeleteDeal.bind(this);
         this.moveList = this.moveList.bind(this);
         this.pipelineChanged = this.pipelineChanged.bind(this);
@@ -64,29 +63,6 @@ class DealBoard extends Component {
             deletingDeal: deal,
             showDeleteDealDialog: true
         });
-    }
-
-    moveCard(dealId, nextStageId, nextDealOrder) {
-
-        console.log(this.props.deals);
-
-        const targetStageDeals = this.props.deals.filter(deal => deal.stageId === nextStageId )
-
-        const nextDealId = targetStageDeals[nextDealOrder] && targetStageDeals[nextDealOrder].id;
-        const prevDealId = targetStageDeals[nextDealOrder-1] && targetStageDeals[nextDealOrder-1].id;
-
-        /*
-        const nextDealId = this.props.boards[this.props.pipelines.selectedPipelineId].entities.stages[nextStageId].dealList[nextDealOrder];
-        const prevDealId = this.props.boards[this.props.pipelines.selectedPipelineId].entities.stages[nextStageId].dealList[nextDealOrder - 1];
-        */
-
-        this.props.moveDeal({
-            id: dealId,
-            newStageId: nextStageId,
-            nextDealId: nextDealId,
-            prevDealId: prevDealId
-        });
-
     }
 
     moveList(listId, nextX) {
@@ -250,7 +226,6 @@ class DealBoard extends Component {
                     key={stage.id}
                     id={stage.id}
                     stage={stage}
-                    moveCard={this.moveCard}
                     moveList={this.moveList}
                     startScrolling={this.startScrolling}
                     stopScrolling={this.stopScrolling}
@@ -267,14 +242,14 @@ class DealBoard extends Component {
 function mapStateToProps(state) {
     return {
         pipelines: pipelinesSelector(state),
-        stages: stagesSelector(state)
+        stages: stagesSelector(state),
+        deals: dealsSelector(state)
     }
 }
 
 export default connect(mapStateToProps, {
     getAllPipelines,
     getAllStages,
-    moveDeal,
     deleteDeal,
     pipelineSelected
 })(DragDropContext(HTML5Backend)(DealBoard));
