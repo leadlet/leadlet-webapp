@@ -27,9 +27,7 @@ class OrganizationDetail extends Component {
             isActivityModalVisible: false,
             value: '',
             deletingDeal: null,
-            showDeleteDealDialog: false,
-            files: []
-
+            showDeleteDealDialog: false
         };
 
         this.openEditModal = this.openEditModal.bind(this);
@@ -92,7 +90,6 @@ class OrganizationDetail extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        console.log("Note Event: ", event.target);
         this.props.createNote({
             content: this.state.value,
             organizationId: this.props.viewedOrganization.id

@@ -11008,7 +11008,8 @@ body {
 .dealboard .search {
     margin: 5px 10px;
     background-color: #ffffff;
-    max-width: 230px;
+    min-width: 230px;
+    width: 230px;
     padding: 20px 10px;
 }
 

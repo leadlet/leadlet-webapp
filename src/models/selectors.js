@@ -1,6 +1,7 @@
 // selectors.js
 import { createSelector } from 'redux-orm';
 import orm from './orm';
+import * as _ from "lodash";
 
 const dbStateSelector = state => state.db;
 
@@ -44,7 +45,7 @@ export const organizationDealsSelector = createSelector(
     (session, organizationId) => {
         return session.Deal.all().filter(deal => {
             // personId is string in arguments
-            return deal.organization.id === organizationId
+            return _.get(deal, ["organization", "id"]) === organizationId
         }).toRefArray();
     }
 );

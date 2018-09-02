@@ -211,7 +211,7 @@ class DealBoard extends Component {
                                     showPipelineSelection={false}
                                     initialValues={{
                                         pipeline : {
-                                            id: this.props.pipelines.selectedPipelineId
+                                            id: this.state.selectedPipeline.id
                                         }
                                     }}
                     />

@@ -73,7 +73,7 @@ class RangeFilter extends Component {
                 </div>
             );
         }else{
-            return (<h1>Loading</h1>);
+            return (<h3>Loading</h3>);
         }
     }
 }
