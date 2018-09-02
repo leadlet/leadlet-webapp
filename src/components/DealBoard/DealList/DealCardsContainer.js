@@ -3,7 +3,6 @@ import {DropTarget, DragSource} from 'react-dnd';
 import PropTypes from 'prop-types';
 
 import Cards from './DealCards';
-import {stageDealsSelector} from "../../../models/selectors";
 import {connect} from "react-redux";
 
 const listSource = {
@@ -59,7 +58,7 @@ class CardsContainer extends Component {
     }
 
     render() {
-        const {connectDropTarget, connectDragSource, stage, x, moveCard, isDragging} = this.props;
+        const {connectDropTarget, connectDragSource, stage, isDragging} = this.props;
         const opacity = isDragging ? 0.5 : 1;
 
         return connectDragSource(connectDropTarget(

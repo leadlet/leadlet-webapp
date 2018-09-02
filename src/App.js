@@ -8,7 +8,6 @@ import { LoginPage } from './components/Login';
 import { RegisterPage } from './components/Register';
 import { Switch, Route } from 'react-router-dom';
 import {NotPermitted} from "./components/ErrorPages/NotPermitted";
-import {NotFound} from "./components/ErrorPages/NotFound";
 
 var NotificationSystem = require('react-notification-system');
 

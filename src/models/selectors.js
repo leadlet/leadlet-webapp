@@ -30,7 +30,7 @@ export const personDealsSelector = createSelector(
     (session, personId) => {
         return session.Deal.all().filter(deal => {
             // personId is string in arguments
-            return deal.personId == personId
+            return deal.personId === personId
         }).toRefArray();
     }
 );
@@ -44,7 +44,7 @@ export const organizationDealsSelector = createSelector(
     (session, organizationId) => {
         return session.Deal.all().filter(deal => {
             // personId is string in arguments
-            return deal.organization.id == organizationId
+            return deal.organization.id === organizationId
         }).toRefArray();
     }
 );

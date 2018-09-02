@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import {getDistinctTerms, registerFilter, termSelected, termUnSelected} from "../../actions/search.actions";
+import {getDistinctTerms, termSelected, termUnSelected} from "../../actions/search.actions";
 import {filterByIdSelector, searchQuerySelector} from "../../models/selectors";
 
 class ListFilter extends Component {

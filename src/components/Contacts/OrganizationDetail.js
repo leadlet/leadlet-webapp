@@ -3,7 +3,6 @@ import connect from "react-redux/es/connect/connect";
 import {createNote} from "../../actions/note.actions";
 import {getByIdOrganization} from "../../actions/organization.actions"
 import moment from 'moment';
-import fullCalendar from 'fullcalendar';
 import '../../../node_modules/fullcalendar/dist/fullcalendar.css';
 import $ from 'jquery';
 import Timeline from "../Timeline/Timeline";
@@ -15,11 +14,6 @@ import CreateEditDeal from "../DealDetail/CreateEditDeal";
 import {BootstrapTable, TableHeaderColumn} from "react-bootstrap-table";
 import {deleteDeal, getDealsByOrganizationId} from "../../actions/deal.actions";
 import Link from "react-router-dom/es/Link";
-import Dropzone from 'react-dropzone';
-import {
-    getDocumentByOrganizationId,
-    uploadDocumentsForOrganization
-} from "../../actions/document.actions";
 import {organizationDealsSelector} from "../../models/selectors";
 
 class OrganizationDetail extends Component {
@@ -50,20 +44,7 @@ class OrganizationDetail extends Component {
         this.dataMapper = this.dataMapper.bind(this);
         this.titleFormatter = this.titleFormatter.bind(this);
         this.deleteDeal = this.deleteDeal.bind(this);
-        this.onDrop = this.onDrop.bind(this);
-        this.onDropAccepted = this.onDropAccepted.bind(this);
-        this.documentMapper = this.documentMapper.bind(this);
         this.urlFormatter = this.urlFormatter.bind(this);
-    }
-
-    onDrop(files) {
-        this.setState({
-            files
-        });
-    }
-
-    onDropAccepted(files) {
-        this.props.uploadDocumentsForOrganization(files, this.props.match.params.organizationId, () => this.props.getTimelineByOrganizationIdAndRefresh(null, null, null, this.props.match.params.organizationId));
     }
 
     dataMapper() {
@@ -78,17 +59,6 @@ class OrganizationDetail extends Component {
             });
         }
 
-    }
-
-    documentMapper() {
-
-        return this.props.documentIds.map(function (item) {
-            return {
-                id: this.props.documents[item].id,
-                name: this.props.documents[item].name,
-                url: this.props.documents[item].url
-            }
-        }, this);
     }
 
     titleFormatter(cell, row) {
@@ -158,7 +128,6 @@ class OrganizationDetail extends Component {
         this.props.getByIdOrganization(this.props.match.params.organizationId);
         this.props.getActivitiesByOrganizationId(this.props.match.params.organizationId);
         this.props.getDealsByOrganizationId(this.props.match.params.organizationId);
-        this.props.getDocumentByOrganizationId(this.props.match.params.organizationId);
     }
 
     componentDidUpdate() {
@@ -243,8 +212,6 @@ class OrganizationDetail extends Component {
                                                             <li className="active"><a href="#tab-1"
                                                                                       data-toggle="tab">Add
                                                                 a Note</a></li>
-                                                            <li className="disabled"><a href="#tab-2">Send an
-                                                                Email</a></li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -334,38 +301,6 @@ class OrganizationDetail extends Component {
                                     <div id="contact-calendar"/>
                                 </div>
                             </div>
-                            <div className="ibox">
-                                <div className="ibox-title">
-                                    <h5>Documents</h5>
-                                </div>
-                                <div className="ibox-content">
-                                    <section>
-                                        <div className="dropzone">
-                                            <Dropzone
-                                                onDrop={this.onDrop}
-                                                onDropAccepted={this.onDropAccepted}
-                                            >
-                                                <p>Try dropping some files here, or click to select files to upload.</p>
-                                            </Dropzone>
-                                        </div>
-                                        <aside>
-                                            <BootstrapTable
-                                                tableHeaderClass='client-table-header'
-                                                containerClass='client-table-container'
-                                                tableContainerClass='client-table'
-                                                tableBodyClass='table-hover'
-                                                data={this.documentMapper()}
-                                                remote={true}
-                                                keyField='id'
-                                            >
-                                                <TableHeaderColumn dataField='name'>File Name</TableHeaderColumn>
-                                                <TableHeaderColumn dataField='url'
-                                                                   dataFormat={this.urlFormatter}>Url</TableHeaderColumn>
-                                            </BootstrapTable>
-                                        </aside>
-                                    </section>
-                                </div>
-                            </div>
                         </div>
                         <EditOrCreateActivity showModal={this.state.isActivityModalVisible}
                                               close={this.closeActivityModal}
@@ -404,9 +339,7 @@ function mapStateToProps(state, props) {
         viewedOrganization: state.organizations.viewedOrganization,
         activities: state.activities.items,
         ids: state.activities.ids,
-        deals: organizationDealsSelector(state, props.match.params.organizationId),
-        documents: state.documents.items,
-        documentIds: state.documents.ids
+        deals: organizationDealsSelector(state, props.match.params.organizationId)
     };
 }
 
@@ -417,7 +350,5 @@ export default connect(mapStateToProps, {
     getTimelineByOrganizationIdAndRefresh,
     getActivitiesByOrganizationId,
     getDealsByOrganizationId,
-    deleteDeal,
-    uploadDocumentsForOrganization,
-    getDocumentByOrganizationId
+    deleteDeal
 })(OrganizationDetail);

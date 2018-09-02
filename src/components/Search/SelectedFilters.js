@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import {clearFilter, getDistincTerms, registerFilter, termSelected, termUnSelected} from "../../actions/search.actions";
-import {filterByIdSelector, filtersSelector} from "../../models/selectors";
+import {clearFilter} from "../../actions/search.actions";
+import {filtersSelector} from "../../models/selectors";
 import moment from "moment";
 
 class SelectedFilters extends Component {

@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {Tab, Tabs} from "react-bootstrap";
 import Profile from "./Profile";
 import Pipelines from "../Pipelines/Pipelines";
-import {Link} from "react-router-dom";
 import AccountPreferences from "./AccountPreferences";
 
 
