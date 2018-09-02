@@ -15,7 +15,7 @@ import TeamAgentManagement from "../components/Team/TeamAgentManagement";
 import {PrivateRoute} from "../components/PrivateRoute";
 import AgentDetail from "../components/Agent/AgentDetail";
 import TeamDetail from "../components/Team/TeamDetail";
-import {Redirect, Route} from "react-router-dom";
+import {Route} from "react-router-dom";
 import {NotFound} from "../components/ErrorPages/NotFound";
 
 class TopMenuLayout extends Component {

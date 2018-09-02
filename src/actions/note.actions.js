@@ -82,24 +82,3 @@ export function updateNote(note, successCallback) {
     function success(note) { return { type: noteConstants.UPDATE_SUCCESS, note } }
     function failure(error) { return { type: noteConstants.UPDATE_FAILURE, error } }
 }
-
-// prefixed function name with underscore because delete is a reserved word in javascript
-function _delete(id) {
-    return dispatch => {
-        dispatch(request(id));
-
-        noteService.delete(id)
-            .then(
-                note => {
-                    dispatch(success(id));
-                },
-                error => {
-                    dispatch(failure(id, error));
-                }
-            );
-    };
-
-    function request(id) { return { type: noteConstants.DELETE_REQUEST, id } }
-    function success(id) { return { type: noteConstants.DELETE_SUCCESS, id } }
-    function failure(id, error) { return { type: noteConstants.DELETE_FAILURE, id, error } }
-}

@@ -56,17 +56,6 @@ function _deleteProduct(id) {
     return fetch('/api/products/' + id, requestOptions).then(handleResponse);
 }
 
-
-
-function handlePaginationResponse(response) {
-    if (response.ok !== true) {
-        return Promise.reject(response.statusText);
-    }
-
-    return Promise.all([ response.json(), response.headers.get("x-total-count")]);
-
-}
-
 function handleResponse(response) {
     if (response.ok !== true) {
         if( response.status === 401 ) {

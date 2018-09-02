@@ -3,25 +3,15 @@ import {userActions} from "../actions/user.actions";
 
 export const dealService = {
     getAllDeals,
+    getDealsByFilter,
     getDealById,
     create,
     update,
-    move,
     _delete,
     getDealsByPersonId,
     getDealsByOrganizationId,
-    getDealsByStageId
+    patchDeal
 };
-
-
-function getDealsByStageId(stageId) {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
-
-    return fetch('/api/deals/stage/' + stageId, requestOptions).then(handleResponse);
-}
 
 
 function getDealsByPersonId(personId) {
@@ -62,14 +52,14 @@ function update(stage) {
     return fetch('/api/deals/', requestOptions).then(handleResponse);
 }
 
-function move(moveDealDto) {
+function patchDeal(deal) {
     const requestOptions = {
         method: 'PUT',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
-        body: JSON.stringify(moveDealDto)
+        body: JSON.stringify(deal)
     };
 
-    return fetch('/api/deals/move', requestOptions).then(handleResponse);
+    return fetch(`/api/deals/${deal.id}/partial?priority=${deal.priority}&stageId=${deal.stageId}`, requestOptions).then(handleResponse);
 }
 
 function getDealById(id) {
@@ -88,6 +78,15 @@ function getAllDeals(filter, page, size) {
     };
 
     return fetch(`/api/deals?filter=${filter}&page=${page}&size=${size}`, requestOptions).then(handlePaginationResponse);
+}
+
+function getDealsByFilter(query, page) {
+    const requestOptions = {
+        method: 'GET',
+        headers: { ...authHeader(), 'Content-Type': 'application/json' }
+    };
+
+    return fetch(`/api/deals/search?q=${query}&page=${page}&size=12`, requestOptions).then(handlePaginationResponse);
 }
 
 function _delete(id) {

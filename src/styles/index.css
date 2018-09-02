@@ -10731,6 +10731,18 @@ body {
     display: inline-block;
     margin-left: 10px;
 }
+.pipeline-selector .Select-input{
+    height: 28px;
+}
+
+.pipeline-selector .Select-control{
+    height: 31px;
+}
+
+.pipeline-selector .Select-value{
+    line-height: 29px;
+}
+
 
 .row-flex {
     display: flex;
@@ -10768,13 +10780,22 @@ body {
 
 .dealboard {
     height: 100%;
+    overflow: scroll;
 }
 
 .dealboard-toolbar {
-    height: 40px;
+    height: 30px;
     padding: 0 10px;
     display: flex; /* or inline-flex */
     flex-direction: row;
+    justify-content: flex-end;
+
+}
+
+.dealboard .deals {
+    display: flex; /* or inline-flex */
+    flex-direction: row;
+    flex-wrap: nowrap;
     justify-content: space-around;
 
 }
@@ -10787,6 +10808,7 @@ body {
 
 }
 
+
 .dealboard .list {
     width: 270px;
     max-height: 100%;
@@ -10797,7 +10819,7 @@ body {
     margin-left: 10px;
     vertical-align: top;
     background-color: #ffffff;
-    padding: 15px 10px 20px 10px;
+    padding: 5px;
     border-color: #e7eaec;
     border-image: none;
     border-style: solid solid none;
@@ -10819,7 +10841,6 @@ body {
     padding: 10px 10px;
     height: calc(100% - 40px);
     max-height: calc(100% - 40px);
-    overflow-y: auto;
 
 }
 
@@ -10848,7 +10869,7 @@ body {
 .dealboard .stage-header {
     line-height: 20px;
     position: relative;
-    padding: 5px 8px;
+    padding: 3px 9px;
     zoom: 1;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
@@ -10859,10 +10880,6 @@ body {
     font-weight: bold;
     white-space: normal;
     width: 100%;
-}
-
-.DateInput__small {
-    width: 100% !important;
 }
 
 .pac-container {
@@ -10925,8 +10942,8 @@ body {
     text-overflow: ellipsis;
 }
 
-.width-chars-10 {
-    max-width: 10ch;
+.width-chars-9 {
+    max-width: 9ch;
 }
 
 .width-chars-15 {
@@ -10975,4 +10992,70 @@ body {
     display: flex;
     min-height: 15px;
     margin-bottom: 1px;
+}
+
+
+.selected-filters {
+    padding: 2px;
+}
+.selected-filters > a {
+    background-color: #FFF;
+    font-size: 0.95rem !important;
+}
+
+
+
+.dealboard .search {
+    margin: 5px 10px;
+    background-color: #ffffff;
+    min-width: 230px;
+    width: 230px;
+    padding: 20px 10px;
+}
+
+.dealboard .search .list-group {
+    background-color: #ffffff;
+}
+
+.dealboard .search .list-filter{
+    margin-bottom: 5px;
+}
+
+.dealboard .search .list-filter .filter-items{
+    margin-left: 5px;
+}
+
+.dealboard .search .filter-name{
+    font-size: 14;
+    font-weight: 700;
+}
+
+.dealboard .search .list-filter .filter-label{
+    font-weight: 300;
+    margin-left: 4px;
+}
+
+.dealboard .search .list-filter .item-count{
+    font-size: 11px;
+}
+
+.dealboard .search .list-filter .item-name{
+    margin-left: 4px;
+    font-weight: 300;
+    font-size: 14px;
+
+}
+
+
+.dealboard .search .range-filter{
+    margin-bottom: 5px;
+}
+
+.dealboard .search .range-filter .selector {
+    padding: 0px 10px;
+}
+
+
+.side-menu {
+    background-color: #fff;
 }

@@ -1,4 +1,10 @@
 export const dealConstants = {
+    APPEND_STAGE_DEALS_SUCCESS: 'DEAL_APPEND_STAGE_DEALS_SUCCESS',
+    APPEND_STAGE_DEALS_FAILURE: 'DEAL_APPEND_STAGE_DEALS_FAILURE',
+
+    LOAD_STAGE_DEALS_SUCCESS: 'DEAL_LOAD_STAGE_DEALS_SUCCESS',
+    LOAD_STAGE_DEALS_FAILURE: 'DEAL_LOAD_STAGE_DEALS_FAILURE',
+
 
     GET_ALL_REQUEST: 'DEAL_GET_ALL_REQUEST',
     GET_ALL_SUCCESS: 'DEAL_GET_ALL_SUCCESS',
@@ -26,7 +32,7 @@ export const dealConstants = {
     DELETE_SUCCESS: 'DEAL_DELETE_SUCCESS',
     DELETE_FAILURE: 'DEAL_DELETE_FAILURE',
 
-    CARD_HEIGHT : 80,  // height of a single card(excluding marginBottom/paddingBottom)
+    CARD_HEIGHT : 65,  // height of a single card(excluding marginBottom/paddingBottom)
     CARD_MARGIN : 10,  // height of a marginBottom+paddingBottom
     OFFSET_HEIGHT : 160 // height offset from the top of the page
 

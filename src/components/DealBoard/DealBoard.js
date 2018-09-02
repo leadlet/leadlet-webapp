@@ -1,18 +1,22 @@
 import React, {Component} from 'react';
 import PipelineSelector from './PipelineSelector'
-import {getAllPipelines, selectPipeline} from "../../actions/pipeline.actions";
-import {getAllStages} from "../../actions/stage.actions";
+import {getAllPipelines} from "../../actions/pipeline.actions";
 import {connect} from "react-redux";
 import Button from "react-bootstrap/es/Button";
 import HTML5Backend from 'react-dnd-html5-backend';
 import {DragDropContext} from 'react-dnd';
 import CardsContainer from "./DealList/DealCardsContainer";
 import CustomDragLayer from "./CustomDragLayer";
-import {deleteDeal, moveDeal} from "../../actions/deal.actions";
+import {deleteDeal} from "../../actions/deal.actions";
 import SweetAlert from 'sweetalert-react';
-import {getBoardByPipelineId, loadMoreDeals} from "../../actions/board.actions";
 import CreateEditDeal from '../DealDetail/CreateEditDeal'
 import {dealsSelector, pipelinesSelector, stagesSelector} from "../../models/selectors";
+import ListFilter from "../Search/ListFilter";
+import {getAllStages} from "../../actions/stage.actions";
+import RangeFilter from "../Search/RangeFilter";
+import SelectedFilters from "../Search/SelectedFilters";
+import DateRangeFilter from "../Search/DateRangeFilter";
+import {pipelineSelected} from "../../actions/search.actions";
 
 class DealBoard extends Component {
 
@@ -21,21 +25,25 @@ class DealBoard extends Component {
 
         this.state = {
             isNewDealModalVisible: false,
+            isSearchMenuVisible: false,
             isScrolling: false,
             showDeleteDealDialog: false,
             deletingDeal: null,
-            selectedPipeline: null
+            selectedPipeline: null,
+            sidebarOpen: true
+
         };
 
         this.toggleNewDealModal = this.toggleNewDealModal.bind(this);
+        this.toggleSearchMenu = this.toggleSearchMenu.bind(this);
         this.scrollRight = this.scrollRight.bind(this);
         this.scrollLeft = this.scrollLeft.bind(this);
         this.stopScrolling = this.stopScrolling.bind(this);
         this.startScrolling = this.startScrolling.bind(this);
-        this.moveCard = this.moveCard.bind(this);
         this.onDeleteDeal = this.onDeleteDeal.bind(this);
         this.moveList = this.moveList.bind(this);
         this.pipelineChanged = this.pipelineChanged.bind(this);
+
     }
 
     cancelDeleteDeal() {
@@ -58,29 +66,6 @@ class DealBoard extends Component {
             deletingDeal: deal,
             showDeleteDealDialog: true
         });
-    }
-
-    moveCard(dealId, nextStageId, nextDealOrder) {
-
-        console.log(this.props.deals);
-
-        const targetStageDeals = this.props.deals.filter(deal => deal.stageId === nextStageId )
-
-        const nextDealId = targetStageDeals[nextDealOrder] && targetStageDeals[nextDealOrder].id;
-        const prevDealId = targetStageDeals[nextDealOrder-1] && targetStageDeals[nextDealOrder-1].id;
-
-        /*
-        const nextDealId = this.props.boards[this.props.pipelines.selectedPipelineId].entities.stages[nextStageId].dealList[nextDealOrder];
-        const prevDealId = this.props.boards[this.props.pipelines.selectedPipelineId].entities.stages[nextStageId].dealList[nextDealOrder - 1];
-        */
-
-        this.props.moveDeal({
-            id: dealId,
-            newStageId: nextStageId,
-            nextDealId: nextDealId,
-            prevDealId: prevDealId
-        });
-
     }
 
     moveList(listId, nextX) {
@@ -128,36 +113,86 @@ class DealBoard extends Component {
         });
     }
 
+    toggleSearchMenu() {
+        this.setState({
+            isSearchMenuVisible: !this.state.isSearchMenuVisible
+        });
+    }
+
     componentDidMount() {
         this.props.getAllPipelines();
+        this.props.getAllStages();
+
     }
 
     componentWillReceiveProps(nextProps) {
         if( this.state.selectedPipeline === null && nextProps.pipelines.length > 0){
             this.pipelineChanged(nextProps.pipelines[0]);
         }
+
+
     }
 
     pipelineChanged(pipeline){
-        this.setState({ selectedPipeline: pipeline },
-            () => this.props.getBoardByPipelineId(pipeline.id));
+        this.setState({ selectedPipeline: pipeline });
+        this.props.pipelineSelected("pipeline", pipeline);
     }
 
     render() {
         return (
             <div className="dealboard">
                 <div className="dealboard-toolbar">
-                    <div className="row row-flex pull-right">
-                        <Button bsStyle="primary" className="m-l-sm" onClick={this.toggleNewDealModal}>New Deal</Button>
+                        <SelectedFilters/>
+                        <Button bsStyle="primary" bsSize="small" className="m-l-sm" onClick={this.toggleSearchMenu}><i className="fa fa-filter fa-xs"/></Button>
+                        <Button bsStyle="primary" bsSize="small" className="m-l-sm" onClick={this.toggleNewDealModal}>New Deal</Button>
                         <PipelineSelector pipelines={this.props.pipelines}
                                           onChange={this.pipelineChanged}
                                           value={this.state.selectedPipeline}/>
+                </div>
+
+                <div className="deals">
+                    {this.state.isSearchMenuVisible &&
+                    <div id="deals-search" className="search">
+                        <ListFilter
+                            id="Products"
+                            dataField="products.keyword"
+                            title="Products"
+                            emptyText ="No Product"
+                            multi={true}
+                        />
+                        <ListFilter
+                            id="Channels"
+                            dataField="channel.keyword"
+                            title="Channels"
+                            emptyText ="No Channel"
+                            multi={true}
+                        />
+                        <ListFilter
+                            id="Sources"
+                            dataField="source.keyword"
+                            title="Sources"
+                            emptyText ="No Source"
+                            multi={true}
+
+                        />
+                        <RangeFilter
+                            id="Priority"
+                            dataField="priority"
+                            title="Priority"
+                        />
+                        <DateRangeFilter
+                            id="CreateDate"
+                            dataField="created_date"
+                            title="Create Date"
+                        />
                     </div>
-                </div>
-                <div id="deals-board" className="lists">
-                    <CustomDragLayer snapToGrid={false}/>
-                    {this.renderCards()}
-                </div>
+                    }
+            <div id="deals-board" className="lists">
+                <CustomDragLayer snapToGrid={false}/>
+                {this.renderCards()}
+            </div>
+
+            </div>
                 <SweetAlert
                     title="Are you sure?"
                     text="You will loose information related to deal!"
@@ -176,7 +211,7 @@ class DealBoard extends Component {
                                     showPipelineSelection={false}
                                     initialValues={{
                                         pipeline : {
-                                            id: this.props.pipelines.selectedPipelineId
+                                            id: this.state.selectedPipeline.id
                                         }
                                     }}
                     />
@@ -194,16 +229,12 @@ class DealBoard extends Component {
                 <CardsContainer
                     key={stage.id}
                     id={stage.id}
-                    stageId={stage.id}
                     stage={stage}
-                    moveCard={this.moveCard}
                     moveList={this.moveList}
                     startScrolling={this.startScrolling}
                     stopScrolling={this.stopScrolling}
                     isScrolling={this.state.isScrolling}
-                    x={stage.id}
                     deleteDeal={this.onDeleteDeal}
-                    loadMoreDeals={this.props.loadMoreDeals}
                 />
             );
         }
@@ -223,9 +254,7 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, {
     getAllPipelines,
     getAllStages,
-    moveDeal,
     deleteDeal,
-    getBoardByPipelineId,
-    loadMoreDeals
+    pipelineSelected
 })(DragDropContext(HTML5Backend)(DealBoard));
 

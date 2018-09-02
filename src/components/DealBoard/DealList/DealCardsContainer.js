@@ -3,7 +3,6 @@ import {DropTarget, DragSource} from 'react-dnd';
 import PropTypes from 'prop-types';
 
 import Cards from './DealCards';
-import {stageDealsSelector} from "../../../models/selectors";
 import {connect} from "react-redux";
 
 const listSource = {
@@ -49,8 +48,6 @@ class CardsContainer extends Component {
         connectDropTarget: PropTypes.func.isRequired,
         connectDragSource: PropTypes.func.isRequired,
         stage: PropTypes.object,
-        x: PropTypes.number,
-        moveCard: PropTypes.func.isRequired,
         moveList: PropTypes.func.isRequired,
         isDragging: PropTypes.bool,
         startScrolling: PropTypes.func,
@@ -61,7 +58,7 @@ class CardsContainer extends Component {
     }
 
     render() {
-        const {connectDropTarget, connectDragSource, stage, x, moveCard, isDragging} = this.props;
+        const {connectDropTarget, connectDragSource, stage, isDragging} = this.props;
         const opacity = isDragging ? 0.5 : 1;
 
         return connectDragSource(connectDropTarget(
@@ -70,22 +67,13 @@ class CardsContainer extends Component {
                     <div className="stage-name">{stage.name}</div>
                 </div>
                 <Cards
-                    deals={this.props.deals}
-                    moveCard={moveCard}
-                    x={x}
+                    stage={stage}
                     startScrolling={this.props.startScrolling}
                     stopScrolling={this.props.stopScrolling}
                     isScrolling={this.props.isScrolling}
-                    stageId={this.props.stageId}
                     deleteDeal={this.props.deleteDeal}
-                    loadMoreDeals={this.props.loadMoreDeals}
                 />
 
-
-                <footer>Total potential: {new Intl.NumberFormat('en-GB', {
-                    style: 'currency',
-                    currency: 'USD'
-                }).format(this.props.stage.dealTotalPotential)}</footer>
             </div>
         ));
     }
@@ -93,7 +81,6 @@ class CardsContainer extends Component {
 
 function mapStateToProps(state, props) {
     return {
-        deals: stageDealsSelector(state,props)
     }
 }
 
