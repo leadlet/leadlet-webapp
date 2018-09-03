@@ -3,7 +3,7 @@ import { authHeader } from '../helpers';
 import {userActions} from "../actions/user.actions";
 
 export const activityService = {
-    getAll,
+    getActivitiesByFilter,
     create,
     update,
     _delete,
@@ -33,14 +33,13 @@ function update(activity) {
     return fetch('/api/activities/', requestOptions).then(handleResponse);
 }
 
-function getAll() {
-    // TODO ygokirmak - add pipelineId filter
+function getActivitiesByFilter(query, page) {
     const requestOptions = {
         method: 'GET',
-        headers: authHeader()
+        headers: { ...authHeader(), 'Content-Type': 'application/json' }
     };
 
-    return fetch('/api/activities', requestOptions).then(handleResponse);
+    return fetch(`/api/activities/search?q=${query}&page=${page}&size=20`, requestOptions).then(handlePaginationResponse);
 }
 
 function getActivitiesByPersonId(id) {
@@ -101,4 +100,16 @@ function handleResponse(response) {
     // a Promise is returned since the reading of the stream will happen asynchronously.
 
     return response.json();
+}
+
+function handlePaginationResponse(response) {
+    if (response.ok !== true) {
+        if( response.status === 401 ) {
+            userActions.logout();
+        }
+        return Promise.reject(response.statusText);
+    }
+
+    return Promise.all([response.json(), response.headers.get("x-total-count")]);
+
 }

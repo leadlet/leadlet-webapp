@@ -11004,58 +11004,49 @@ body {
 }
 
 
-
-.dealboard .search {
-    margin: 5px 10px;
+/* filters */
+.facet-filters {
     background-color: #ffffff;
-    min-width: 230px;
-    width: 230px;
     padding: 20px 10px;
 }
 
-.dealboard .search .list-group {
+.facet-filters .list-group {
     background-color: #ffffff;
 }
 
-.dealboard .search .list-filter{
+.facet-filters .list-filter{
     margin-bottom: 5px;
 }
 
-.dealboard .search .list-filter .filter-items{
+.facet-filters .list-filter .filter-items{
     margin-left: 5px;
 }
 
-.dealboard .search .filter-name{
+.facet-filters .filter-name{
     font-size: 14;
     font-weight: 700;
 }
 
-.dealboard .search .list-filter .filter-label{
+.facet-filters .list-filter .filter-label{
     font-weight: 300;
     margin-left: 4px;
 }
 
-.dealboard .search .list-filter .item-count{
+.facet-filters .list-filter .item-count{
     font-size: 11px;
 }
 
-.dealboard .search .list-filter .item-name{
+.facet-filters  .list-filter .item-name{
     margin-left: 4px;
     font-weight: 300;
     font-size: 14px;
 
 }
 
-
-.dealboard .search .range-filter{
+.facet-filters .range-filter{
     margin-bottom: 5px;
 }
 
-.dealboard .search .range-filter .selector {
+.facet-filters .range-filter .selector {
     padding: 0px 10px;
-}
-
-
-.side-menu {
-    background-color: #fff;
 }

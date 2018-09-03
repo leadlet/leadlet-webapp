@@ -202,7 +202,7 @@ class Cards extends Component {
 function mapStateToProps(state, props) {
     return {
         deals: stageDealsSelector(state,props),
-        searchQuery: searchQuerySelector(state)
+        searchQuery: searchQuerySelector(state,{group: "deals-page"})
     }
 }
 

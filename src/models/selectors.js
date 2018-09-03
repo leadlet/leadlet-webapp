@@ -99,9 +99,12 @@ export const filterByIdSelector = createSelector(
 
 export const filtersSelector = createSelector(
     orm,
-    dbStateSelector,
-    session => {
-        return session.SearchFilter.all().toRefArray();
+    [
+        dbStateSelector,
+        (state, props) => props.group
+    ],
+    (session, group) => {
+        return session.SearchFilter.all().filter( eachFilter => eachFilter.group === group).toRefArray();
     }
 );
 
@@ -109,16 +112,20 @@ export const searchQuerySelector = createSelector(
     orm,
     [
         dbStateSelector,
-        (state, excludeId) => excludeId
+        (state, props) => props.excludeId,
+        (state, props) => props.group,
     ],
-    (session, excludeId) => {
+    (session, excludeId, group) => {
         let filters = session.SearchFilter.all().toRefArray();
         let termFilters = [];
         let rangeFilters = [];
         let dateRangeFilters = [];
         let pipelineFilterText ="";
 
+        filters = filters.filter(filter => filter.group === group);
+
         if( filters ){
+
             if( excludeId ){
                 filters = filters.filter(filter => filter.id !== excludeId);
             }
@@ -135,17 +142,29 @@ export const searchQuerySelector = createSelector(
                 .filter(filter => filter.type === "DATERANGE" && filter.selected)
                 .map( filter => filter.dataField + ":[" + filter.selected.min + " TO " + filter.selected.max +"]");
 
+            let searchFilters = [ ...termFilters, ...rangeFilters, ...dateRangeFilters ];
+
             let pipelineFilter = filters.find(filter => filter.id === "pipeline" && filter.selected);
 
             if( pipelineFilter ){
                 pipelineFilterText = `pipeline_id:${pipelineFilter.selected.pipeline.id}`;
+                searchFilters.push(pipelineFilterText);
             }
 
+            return searchFilters.length > 0 ? searchFilters.join(" AND "): "";
+
+        }else{
+            return "";
         }
 
-        let searchFilters = [ ...termFilters, ...rangeFilters, ...dateRangeFilters, pipelineFilterText];
 
-        return searchFilters.length > 0 ? searchFilters.join(" AND "): "";
+    }
+);
 
+export const activitiesSelector = createSelector(
+    orm,
+    dbStateSelector,
+    session => {
+        return session.Activity.all().toRefArray();
     }
 );

@@ -14,7 +14,9 @@ class ListFilter extends Component {
                 type: "TERMS",
                 operator: "AND",
                 selectedOptions: [],
-                dataField: this.props.dataField
+                dataField: this.props.dataField,
+                group: this.props.group,
+                index: this.props.index
             }
         };
     }
@@ -43,11 +45,9 @@ class ListFilter extends Component {
 
             return Object.keys(terms).map((key,index) => {
                 let keyText = key;
-                console.log("before:" + keyText);
                 if( keyText.length > 20) {
                     keyText = keyText.substring(0,20) + "...";
                 }
-                console.log("after:" + keyText);
                 return (
                     <div key={key} className="form-check">
                         <input className="form-check-input" type="checkbox"
@@ -76,7 +76,7 @@ class ListFilter extends Component {
 function mapStateToProps(state, props) {
     return {
         filter: filterByIdSelector(state, props.id),
-        searchQuery: searchQuerySelector(state, props.multi ? props.id: null)
+        searchQuery: searchQuerySelector(state, props)
     };
 }
 

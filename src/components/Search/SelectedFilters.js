@@ -52,7 +52,7 @@ class SelectedFilters extends Component {
 
 function mapStateToProps(state, props) {
     return {
-        filters: filtersSelector(state)
+        filters: filtersSelector(state, props)
     };
 }
 

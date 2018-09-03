@@ -142,23 +142,28 @@ class DealBoard extends Component {
         return (
             <div className="dealboard">
                 <div className="dealboard-toolbar">
-                        <SelectedFilters/>
+                        <SelectedFilters
+                            group="deals-page"
+                            index="leadlet-deal"/>
                         <Button bsStyle="primary" bsSize="small" className="m-l-sm" onClick={this.toggleSearchMenu}><i className="fa fa-filter fa-xs"/></Button>
                         <Button bsStyle="primary" bsSize="small" className="m-l-sm" onClick={this.toggleNewDealModal}>New Deal</Button>
                         <PipelineSelector pipelines={this.props.pipelines}
                                           onChange={this.pipelineChanged}
-                                          value={this.state.selectedPipeline}/>
+                                          value={this.state.selectedPipeline}
+                        />
                 </div>
 
                 <div className="deals">
                     {this.state.isSearchMenuVisible &&
-                    <div id="deals-search" className="search">
+                    <div id="deals-search" className="facet-filters">
                         <ListFilter
                             id="Products"
                             dataField="products.keyword"
                             title="Products"
                             emptyText ="No Product"
                             multi={true}
+                            group="deals-page"
+                            index="leadlet-deal"
                         />
                         <ListFilter
                             id="Channels"
@@ -166,6 +171,8 @@ class DealBoard extends Component {
                             title="Channels"
                             emptyText ="No Channel"
                             multi={true}
+                            group="deals-page"
+                            index="leadlet-deal"
                         />
                         <ListFilter
                             id="Sources"
@@ -173,17 +180,22 @@ class DealBoard extends Component {
                             title="Sources"
                             emptyText ="No Source"
                             multi={true}
-
+                            group="deals-page"
+                            index="leadlet-deal"
                         />
                         <RangeFilter
                             id="Priority"
                             dataField="priority"
                             title="Priority"
+                            group="deals-page"
+                            index="leadlet-deal"
                         />
                         <DateRangeFilter
                             id="CreateDate"
                             dataField="created_date"
                             title="Create Date"
+                            group="deals-page"
+                            index="leadlet-deal"
                         />
                     </div>
                     }

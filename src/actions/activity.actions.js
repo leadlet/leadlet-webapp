@@ -8,11 +8,11 @@ export function create(activity, successCallback) {
 
         return activityService.create(activity)
             .then(
-                activity => {
+                payload => {
                     if(successCallback){
                         dispatch(successCallback);
                     }
-                    dispatch(success(activity));
+                    dispatch(success(payload));
                     dispatch(alertActions.success('Activity successfully created'));
                 },
                 error => {
@@ -26,8 +26,8 @@ export function create(activity, successCallback) {
         return {type: activityConstants.CREATE_REQUEST}
     }
 
-    function success(activity) {
-        return {type: activityConstants.CREATE_SUCCESS, activity}
+    function success(payload) {
+        return {type: activityConstants.CREATE_SUCCESS, payload}
     }
 
     function failure(error) {
@@ -35,13 +35,38 @@ export function create(activity, successCallback) {
     }
 }
 
+export function getActivities(filter="", page=0, append=false) {
+
+    return dispatch => {
+
+        activityService.getActivitiesByFilter(filter, page)
+            .then(
+                response => {
+                    dispatch(success(response));
+                },
+                error => dispatch(failure(error))
+            );
+    };
+    function success(response) {
+        const type = append ? activityConstants.APPEND_ACTIVITIES_SUCCESS : activityConstants.LOAD_ACTIVITIES_SUCCESS;
+
+        return { type: type, payload: { 'activities': response[0], 'maxActivityCount': response[1]} }
+    }
+    function failure(error) {
+        const type = append ? activityConstants.APPEND_ACTIVITIES_FAILURE : activityConstants.LOAD_ACTIVITIES_FAILURE;
+
+        return { type: type, error }
+    }
+}
+
+
 export function getAll() {
     return dispatch => {
         dispatch(request());
 
         activityService.getAll()
             .then(
-                items => dispatch(success(items)),
+                payload => dispatch(success(payload)),
                 error => dispatch(failure(error))
             );
 
@@ -51,8 +76,8 @@ export function getAll() {
         return {type: activityConstants.GETALL_REQUEST}
     }
 
-    function success(items) {
-        return {type: activityConstants.GETALL_SUCCESS, items}
+    function success(payload) {
+        return {type: activityConstants.GETALL_SUCCESS, payload}
     }
 
     function failure(error) {
@@ -166,8 +191,8 @@ export function update(activity) {
 
         return activityService.update(activity)
             .then(
-                activity => {
-                    dispatch(success(activity));
+                payload => {
+                    dispatch(success(payload));
                     dispatch(alertActions.success('Activity successfully updated'));
                 },
                 error => {
@@ -181,8 +206,8 @@ export function update(activity) {
         return {type: activityConstants.UPDATE_REQUEST}
     }
 
-    function success(activity) {
-        return {type: activityConstants.UPDATE_SUCCESS, activity}
+    function success(payload) {
+        return {type: activityConstants.UPDATE_SUCCESS, payload}
     }
 
     function failure(error) {
@@ -209,8 +234,8 @@ export function _delete(id) {
         return {type: activityConstants.DELETE_REQUEST, id}
     }
 
-    function success(id) {
-        return {type: activityConstants.DELETE_SUCCESS, id}
+    function success(payload) {
+        return {type: activityConstants.DELETE_SUCCESS, payload}
     }
 
     function failure(id, error) {

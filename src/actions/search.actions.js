@@ -14,11 +14,11 @@ export function rangeChanged(facetId, min, max) {
     };
 }
 
-export function getFieldRange( filter ) {
+export function getFieldRange( filter, query="") {
     return dispatch => {
         dispatch(request());
 
-        searchService.getFieldRange(filter)
+        searchService.getFieldRange(filter, query)
             .then(
                 payload => dispatch(success(payload, filter)),
                 error => dispatch(failure(error))
