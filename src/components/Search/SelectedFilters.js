@@ -23,6 +23,7 @@ class SelectedFilters extends Component {
                 .map( filter => {
                     var text = filter.id + ": " + filter.selected.options.join(",");
                     return (<button type="button" className="btn btn-default btn-small"
+                                    key={filter.id}
                                     id={filter.id} onClick={()=>this.onClearFilter(filter.id)}>{text} <i className="fa fa-close fa-xs"/></button>);
                 });
 
@@ -31,6 +32,7 @@ class SelectedFilters extends Component {
                 .map( filter => {
                     var text = filter.id + ": " + filter.selected.min + "-" + filter.selected.max;
                     return (<button type="button" className="btn btn-default btn-small"
+                                    key={filter.id}
                                     id={filter.id} onClick={()=>this.onClearFilter(filter.id)}>{text} <i className="fa fa-close fa-xs"/></button>);
                 });
 
@@ -39,6 +41,7 @@ class SelectedFilters extends Component {
                 .map( filter => {
                     var text = filter.id + ": " + moment(filter.selected.min).format("DD/MM/YYYY") + " - " + moment(filter.selected.max).format("DD/MM/YYYY");
                     return (<button type="button" className="btn btn-default btn-small"
+                                    key={filter.id}
                                     id={filter.id} onClick={()=>this.onClearFilter(filter.id)}>{text} <i className="fa fa-close fa-xs"/></button>);
                 });
 

@@ -8,6 +8,7 @@ class ListFilter extends Component {
     constructor(props) {
         super(props);
         this.inputChanged = this.inputChanged.bind(this);
+        this.getKeyText = this.getKeyText.bind(this);
         this.state = {
             definition: {
                 id: this.props.id,
@@ -38,13 +39,24 @@ class ListFilter extends Component {
         }
     }
 
+    getKeyText(key){
+        if(key){
+            if(this.props.keyMapper){
+                return this.props.keyMapper(key);
+            }else{
+                return key;
+            }
+        }else{
+            return this.props.emptyText;
+        }
+    }
     renderTerms(){
         if( this.props.filter ){
 
             const terms = this.props.filter.options;
 
             return Object.keys(terms).map((key,index) => {
-                let keyText = key;
+                let keyText = this.getKeyText(key);
                 if( keyText.length > 20) {
                     keyText = keyText.substring(0,20) + "...";
                 }
@@ -54,7 +66,7 @@ class ListFilter extends Component {
                                value={key} id={key} onChange={this.inputChanged}
                                checked={this.props.filter.selected && this.props.filter.selected.options.includes(key)}/>
                         <label className="form-check-label item-name">
-                            {key ? keyText : this.props.emptyText }  <span className="item-count">({terms[key]})</span>
+                            {keyText }  <span className="item-count">({terms[key]})</span>
                         </label>
                     </div>
                 );}
@@ -76,7 +88,7 @@ class ListFilter extends Component {
 function mapStateToProps(state, props) {
     return {
         filter: filterByIdSelector(state, props.id),
-        searchQuery: searchQuerySelector(state, props)
+        searchQuery: searchQuerySelector(state, {excludeMe: props.id, group: props.group})
     };
 }
 

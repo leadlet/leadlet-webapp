@@ -112,10 +112,10 @@ export const searchQuerySelector = createSelector(
     orm,
     [
         dbStateSelector,
-        (state, props) => props.excludeId,
-        (state, props) => props.group,
+        (state, args) => args.excludeMe,
+        (state, args) => args.group,
     ],
-    (session, excludeId, group) => {
+    (session, excludeMe, group) => {
         let filters = session.SearchFilter.all().toRefArray();
         let termFilters = [];
         let rangeFilters = [];
@@ -126,8 +126,8 @@ export const searchQuerySelector = createSelector(
 
         if( filters ){
 
-            if( excludeId ){
-                filters = filters.filter(filter => filter.id !== excludeId);
+            if( excludeMe ){
+                filters = filters.filter(filter => filter.id !== excludeMe);
             }
 
             termFilters = filters

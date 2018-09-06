@@ -5,6 +5,10 @@ import '../../../node_modules/fullcalendar/dist/fullcalendar.css';
 import {activitiesSelector, searchQuerySelector} from "../../models/selectors";
 import * as _ from "lodash";
 import ListFilter from "../Search/ListFilter";
+import SelectedFilters from "../Search/SelectedFilters";
+import moment from "moment";
+import Button from "react-bootstrap/es/Button";
+import {Link} from "react-router-dom";
 
 var VisibilitySensor = require('react-visibility-sensor');
 
@@ -47,23 +51,34 @@ class Activities extends Component {
     }
 
     renderActivityRows() {
-
         if (this.props.activities && this.props.activities.length > 0) {
-            return this.props.activities.map(activity => (
-                <tr key={activity.id}>
-                    <td>{activity.id}</td>
-                    <td><span className="pie">0.52,1.041</span></td>
-                    <td>{activity.title}</td>
-                    <td className="text-navy"><i className="fa fa-level-up"/> 40%</td>
-                </tr>
 
-            ));
+            return this.props.activities.map(activity => {
+                    const startDate = moment(activity.start);
+                    return (
+                        <tr key={activity.id}>
+                            <td><Link to={"activity/" + activity.id}>{activity.title}</Link></td>
+                            <td>{_.get(activity, ["person","name"])}</td>
+                            <td>{activity.type}</td>
+                            <td>{ activity.done ? "Done" : "Not Done"}</td>
+                            <td>{startDate.format('DD/MM/YYYY')}</td>
+                        </tr>
+                    );
+                }
+            );
         }
     }
 
     render() {
         return (
-            <div className="wrapper wrapper-content  animated fadeInRight">
+            <div className="wrapper animated fadeInRight activities">
+                <div className="row activities-toolbar">
+                        <SelectedFilters
+                            group="activities-page"
+                            index="leadlet-activity"/>
+                        <Button bsStyle="primary" bsSize="small" className="m-l-sm" onClick={this.openActivityModal}>New Deal</Button>
+
+                </div>
                 <div className="row">
                     <div className="col-lg-2">
                         <div className="ibox float-e-margins">
@@ -86,6 +101,7 @@ class Activities extends Component {
                                     multi={false}
                                     group="activities-page"
                                     index="leadlet-activity"
+                                    keyMapper={ (key) => ( key === "true"? "Done":"Not Done" )}
                                 />
                             </div>
                         </div>
@@ -97,10 +113,11 @@ class Activities extends Component {
                                 <table className="table table-hover">
                                     <thead>
                                     <tr>
-                                        <th>id</th>
-                                        <th>Data</th>
-                                        <th>User</th>
-                                        <th>Value</th>
+                                        <th>Title</th>
+                                        <th>Person</th>
+                                        <th>Type</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
                                     </tr>
                                     </thead>
                                     <tbody>

@@ -11050,3 +11050,15 @@ body {
 .facet-filters .range-filter .selector {
     padding: 0px 10px;
 }
+
+.activities-toolbar {
+    padding: 5px 14px;
+    display: flex; /* or inline-flex */
+    flex-direction: row;
+    justify-content: flex-end;
+
+}
+
+.activities .selected-filters{
+    padding: 5px 14px;
+}
