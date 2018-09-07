@@ -93,7 +93,7 @@ class Activities extends Component {
 
     render() {
         return (
-            <div className="wrapper animated fadeInRight activities">
+            <div className="wrapper activities">
                 <div className="row activities-toolbar">
                         <SelectedFilters
                             group="activities-page"

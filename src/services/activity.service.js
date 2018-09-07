@@ -39,7 +39,24 @@ function getActivitiesByFilter(query, sort, page) {
         headers: { ...authHeader(), 'Content-Type': 'application/json' }
     };
 
-    return fetch(`/api/activities/search?q=${query}&page=${page}&size=20&${sort}`, requestOptions).then(handlePaginationResponse);
+    let params = [];
+
+    if( query !== undefined && query !== ""){
+        params.push(`q=${query}`);
+    }
+    if( page !== undefined && page !== ""){
+        params.push(`page=${page}`);
+    }
+    params.push(`size=20`);
+
+    if( sort !== undefined && sort !== ""){
+        params.push(sort);
+    }
+
+    let paramString = params.join("&");
+
+
+    return fetch(`/api/activities/search?${paramString}`, requestOptions).then(handlePaginationResponse);
 }
 
 function getActivitiesByPersonId(id) {
