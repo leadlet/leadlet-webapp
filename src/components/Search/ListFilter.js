@@ -8,13 +8,16 @@ class ListFilter extends Component {
     constructor(props) {
         super(props);
         this.inputChanged = this.inputChanged.bind(this);
+        this.getKeyText = this.getKeyText.bind(this);
         this.state = {
             definition: {
                 id: this.props.id,
                 type: "TERMS",
                 operator: "AND",
                 selectedOptions: [],
-                dataField: this.props.dataField
+                dataField: this.props.dataField,
+                group: this.props.group,
+                index: this.props.index
             }
         };
     }
@@ -36,25 +39,34 @@ class ListFilter extends Component {
         }
     }
 
+    getKeyText(key){
+        if(key){
+            if(this.props.keyMapper){
+                return this.props.keyMapper(key);
+            }else{
+                return key;
+            }
+        }else{
+            return this.props.emptyText;
+        }
+    }
     renderTerms(){
         if( this.props.filter ){
 
             const terms = this.props.filter.options;
 
             return Object.keys(terms).map((key,index) => {
-                let keyText = key;
-                console.log("before:" + keyText);
+                let keyText = this.getKeyText(key);
                 if( keyText.length > 20) {
                     keyText = keyText.substring(0,20) + "...";
                 }
-                console.log("after:" + keyText);
                 return (
                     <div key={key} className="form-check">
                         <input className="form-check-input" type="checkbox"
                                value={key} id={key} onChange={this.inputChanged}
                                checked={this.props.filter.selected && this.props.filter.selected.options.includes(key)}/>
                         <label className="form-check-label item-name">
-                            {key ? keyText : this.props.emptyText }  <span className="item-count">({terms[key]})</span>
+                            {keyText }  <span className="item-count">({terms[key]})</span>
                         </label>
                     </div>
                 );}
@@ -76,7 +88,7 @@ class ListFilter extends Component {
 function mapStateToProps(state, props) {
     return {
         filter: filterByIdSelector(state, props.id),
-        searchQuery: searchQuerySelector(state, props.multi ? props.id: null)
+        searchQuery: searchQuerySelector(state, {excludeMe: props.id, group: props.group})
     };
 }
 

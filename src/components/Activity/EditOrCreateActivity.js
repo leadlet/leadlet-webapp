@@ -184,7 +184,7 @@ class EditOrCreateActivity extends Component {
                                     <Field
                                         label="Start Date"
                                         name="start"
-                                        maximumDate={this.props.end}
+                                        maximumDate={moment(this.props.end)}
                                         component={renderDateTimePicker}
                                     />
                                 </div>
@@ -192,7 +192,7 @@ class EditOrCreateActivity extends Component {
                                     <Field
                                         label="End Date"
                                         name="end"
-                                        minimumDate={this.props.start}
+                                        minimumDate={moment(this.props.start)}
                                         component={renderDateTimePicker}
                                     />
                                 </div>

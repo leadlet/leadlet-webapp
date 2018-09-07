@@ -78,33 +78,6 @@ class DealDetail extends Component {
         if (!this.props.ids) {
             return;
         }
-
-        let events = this.props.ids.map(function (item) {
-            return this.props.activities[item];
-        }, this);
-
-        if (events) {
-            $('#contact-calendar').fullCalendar('destroy');
-
-            $('#contact-calendar').fullCalendar({
-                header: {
-                    left: 'prev,next today',
-                    right: 'listDay,listWeek,month'
-                },
-                // customize the button names,
-                // otherwise they'd all just say "list"
-                views: {
-                    listDay: {buttonText: 'list day'},
-                    listWeek: {buttonText: 'list week'}
-                },
-                defaultView: 'listWeek',
-                navLinks: true, // can click day/week names to navigate views
-                editable: true,
-                eventLimit: true, // allow "more" link when too many events
-                timezone: 'local',
-                events
-            });
-        }
     }
 
     openActivityModal() {
@@ -221,22 +194,7 @@ class DealDetail extends Component {
                                 />
                             </div>
                         </div>
-                        <div className="col-md-4">
-                            <div className="ibox">
-                                <div className="ibox-title">
-                                    <i className="fa fa-plus pull-right" aria-hidden="true"
-                                       onClick={() => this.openActivityModal({
-                                           start: moment(),
-                                           end: moment()
-                                       })}
-                                    />
-                                    <h5>Activities</h5>
-                                </div>
-                                <div className="ibox-content">
-                                    <div id="contact-calendar"/>
-                                </div>
-                            </div>
-                        </div>
+
 
                         {
                             this.state.isEditDealModalVisible &&
@@ -246,17 +204,6 @@ class DealDetail extends Component {
                                             showPipelineSelection={false}
                             />
                         }
-                        {
-                            this.state.isActivityModalVisible &&
-                            <EditOrCreateActivity showModal={this.state.isActivityModalVisible}
-                                                  close={this.closeActivityModal}
-                                                  initialValues={{dealId: this.props.viewedDeal.id}}
-                                                  createCallback={this.refreshTimeline}
-                                                  showDealSelection={false}
-                            />
-                        }
-
-
 
 
                     </div>

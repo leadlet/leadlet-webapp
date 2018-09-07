@@ -4,7 +4,7 @@ import {DropTarget} from 'react-dnd';
 import {findDOMNode} from 'react-dom'
 import {dealConstants} from "../../../constants/deal.constants";
 import PropTypes from 'prop-types';
-import {searchQuerySelector, stageDealsSelector} from "../../../models/selectors";
+import {searchQuerySelector, sortSelector, stageDealsSelector} from "../../../models/selectors";
 import {connect} from "react-redux";
 import {getStageDeals, patchDeal} from "../../../actions/deal.actions";
 import {QueryUtils} from "../../Search/QueryUtils";
@@ -125,14 +125,15 @@ class Cards extends Component {
 
     }
     componentDidUpdate(prevProps) {
-        if( this.props.searchQuery !== prevProps.searchQuery){
-            this.props.getStageDeals( QueryUtils.addStageFilter(this.props.searchQuery, this.props.stage.id),this.props.stage.id);
+        if( this.props.query !== prevProps.query
+            || this.props.sort !== prevProps.sort ){
+            this.props.getStageDeals( QueryUtils.addStageFilter(this.props.query, this.props.stage.id), this.props.sort, this.props.stage.id);
         }
     }
 
     componentDidMount() {
         if( this.props.stage ){
-            this.props.getStageDeals( QueryUtils.addStageFilter(this.props.searchQuery, this.props.stage.id),this.props.stage.id);
+            this.props.getStageDeals( QueryUtils.addStageFilter(this.props.query, this.props.stage.id), this.props.sort, this.props.stage.id);
         }
     }
 
@@ -188,7 +189,8 @@ class Cards extends Component {
     loadMoreDeal(isVisible) {
         if( isVisible && this.hasMoreItem()){
             this.setState({ currentPage: this.state.currentPage+1},
-                () => this.props.getStageDeals( QueryUtils.addStageFilter(this.props.searchQuery, this.props.stage.id),
+                () => this.props.getStageDeals( QueryUtils.addStageFilter(this.props.query, this.props.stage.id),
+                                            this.props.sort,
                                             this.props.stage.id,
                                             this.state.currentPage,
                                             true));
@@ -202,7 +204,8 @@ class Cards extends Component {
 function mapStateToProps(state, props) {
     return {
         deals: stageDealsSelector(state,props),
-        searchQuery: searchQuerySelector(state)
+        query: searchQuerySelector(state, {group: "deals-page"}),
+        sort: sortSelector(state, {group: "deals-page"}),
     }
 }
 

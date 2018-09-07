@@ -6,24 +6,22 @@ export const searchService = {
     getFieldRange
 };
 
-function getDistinctTerms(reqBody, query) {
-    const requestOptions = {
-        method: 'POST',
-        headers: { ...authHeader(), 'Content-Type': 'application/json' },
-        body: JSON.stringify(reqBody)
-    };
-//    return fetch(`/api/facets?q=${query}`, requestOptions).then(handleResponse);
-
-    return fetch(`/api/facets?q=${query}`, requestOptions).then(handleResponse);
-}
-
-function getFieldRange(filterDefinition) {
+function getDistinctTerms(filter, query) {
     const requestOptions = {
         method: 'GET',
         headers: { ...authHeader(), 'Content-Type': 'application/json' }
     };
 
-    return fetch(`/api/facets/range/${filterDefinition.id}/${filterDefinition.dataField}`, requestOptions).then(handleResponse);
+    return fetch(`/api/facets/terms/${filter.id}/${filter.index}?q=${query}&field=${filter.dataField}`, requestOptions).then(handleResponse);
+}
+
+function getFieldRange(filter, query) {
+    const requestOptions = {
+        method: 'GET',
+        headers: { ...authHeader(), 'Content-Type': 'application/json' }
+    };
+
+    return fetch(`/api/facets/range/${filter.id}/${filter.index}?q=${query}&field=${filter.dataField}`, requestOptions).then(handleResponse);
 }
 
 function handleResponse(response) {

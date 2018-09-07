@@ -66,11 +66,11 @@ export function getAllDealByFilterAndReturn(filter, successCallback, failCallbac
         );
 }
 
-export function getStageDeals(filter,stageId, page=0, append=false) {
+export function getStageDeals(query, sort, stageId, page=0, append=false) {
 
     return dispatch => {
 
-        dealService.getDealsByFilter(filter, page)
+        dealService.getDealsByFilter(query, sort, page)
             .then(
                 response => {
                     dispatch(success(response));

@@ -99,9 +99,12 @@ export const filterByIdSelector = createSelector(
 
 export const filtersSelector = createSelector(
     orm,
-    dbStateSelector,
-    session => {
-        return session.SearchFilter.all().toRefArray();
+    [
+        dbStateSelector,
+        (state, props) => props.group
+    ],
+    (session, group) => {
+        return session.SearchFilter.all().filter( eachFilter => eachFilter.group === group).toRefArray();
     }
 );
 
@@ -109,18 +112,24 @@ export const searchQuerySelector = createSelector(
     orm,
     [
         dbStateSelector,
-        (state, excludeId) => excludeId
+        (state, args) => args.excludeMe,
+        (state, args) => args.group,
     ],
-    (session, excludeId) => {
-        let filters = session.SearchFilter.all().toRefArray();
+    (session, excludeMe, group) => {
         let termFilters = [];
         let rangeFilters = [];
         let dateRangeFilters = [];
         let pipelineFilterText ="";
 
+        let filters = session.SearchFilter.all().toRefArray();
+        filters = filters.filter(filter => filter.group === group);
+
+        let query = "";
+
         if( filters ){
-            if( excludeId ){
-                filters = filters.filter(filter => filter.id !== excludeId);
+
+            if( excludeMe ){
+                filters = filters.filter(filter => filter.id !== excludeMe);
             }
 
             termFilters = filters
@@ -135,17 +144,60 @@ export const searchQuerySelector = createSelector(
                 .filter(filter => filter.type === "DATERANGE" && filter.selected)
                 .map( filter => filter.dataField + ":[" + filter.selected.min + " TO " + filter.selected.max +"]");
 
+            let searchFilters = [ ...termFilters, ...rangeFilters, ...dateRangeFilters ];
+
             let pipelineFilter = filters.find(filter => filter.id === "pipeline" && filter.selected);
 
             if( pipelineFilter ){
                 pipelineFilterText = `pipeline_id:${pipelineFilter.selected.pipeline.id}`;
+                searchFilters.push(pipelineFilterText);
             }
+
+            query = searchFilters.length > 0 ? searchFilters.join(" AND "): "";
 
         }
 
-        let searchFilters = [ ...termFilters, ...rangeFilters, ...dateRangeFilters, pipelineFilterText];
+        return query;
+    }
+);
 
-        return searchFilters.length > 0 ? searchFilters.join(" AND "): "";
 
+export const sortSelector = createSelector(
+    orm,
+    [
+        dbStateSelector,
+        (state, args) => args.excludeMe,
+        (state, args) => args.group,
+    ],
+    (session, excludeMe, group) => {
+
+        // build sort string as explained https://stackoverflow.com/a/33034533
+        // your/uri?sort=name,asc&sort=numberOfHands,desc
+        let sortItems = session.Sort.all().toRefArray().filter(sort => sort.group === group);
+
+        let sort = sortItems.filter(sort => ( sort.order !== undefined && sort.order !== ""))
+            .map( sort => ( `sort=${sort.dataField},${sort.order}`)).join("&");
+        return sort;
+    }
+);
+
+export const sortByGroupAndId = createSelector(
+    orm,
+    [
+        dbStateSelector,
+        (state, args) => args.group,
+        (state, args) => args.id,
+    ],
+    (session, group, id) => {
+        return session.Sort.all().toRefArray().find(sort => ( sort.group=== group && sort.id === id));
+    }
+);
+
+
+export const activitiesSelector = createSelector(
+    orm,
+    dbStateSelector,
+    session => {
+        return session.Activity.all().toRefArray();
     }
 );

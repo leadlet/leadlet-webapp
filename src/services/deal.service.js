@@ -80,13 +80,30 @@ function getAllDeals(filter, page, size) {
     return fetch(`/api/deals?filter=${filter}&page=${page}&size=${size}`, requestOptions).then(handlePaginationResponse);
 }
 
-function getDealsByFilter(query, page) {
+function getDealsByFilter(query, sort, page) {
     const requestOptions = {
         method: 'GET',
         headers: { ...authHeader(), 'Content-Type': 'application/json' }
     };
 
-    return fetch(`/api/deals/search?q=${query}&page=${page}&size=12`, requestOptions).then(handlePaginationResponse);
+    let params = [];
+
+    if( query !== undefined && query !== ""){
+        params.push(`q=${query}`);
+    }
+    if( page !== undefined && page !== ""){
+        params.push(`page=${page}`);
+    }
+    params.push(`size=12`);
+
+    if( sort !== undefined && sort !== ""){
+        params.push(sort);
+    }
+
+    let paramString = params.join("&");
+
+
+    return fetch(`/api/deals/search?${paramString}`, requestOptions).then(handlePaginationResponse);
 }
 
 function _delete(id) {

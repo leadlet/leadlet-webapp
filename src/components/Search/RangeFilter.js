@@ -32,7 +32,9 @@ class RangeFilter extends Component {
             definition: {
                 id: this.props.id,
                 type: "RANGE",
-                dataField: this.props.dataField
+                dataField: this.props.dataField,
+                group: this.props.group,
+                index: this.props.index
             }
         };
 

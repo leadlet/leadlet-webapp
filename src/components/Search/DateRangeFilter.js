@@ -14,7 +14,9 @@ class DateRangeFilter extends Component {
             definition: {
                 id: this.props.id,
                 type: "DATERANGE",
-                dataField: this.props.dataField
+                dataField: this.props.dataField,
+                group: this.props.group,
+                index: this.props.index
             },
             focusedInput: null
         };
