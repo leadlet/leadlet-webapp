@@ -1,11 +1,11 @@
 export class QueryUtils {
 
     static addStageFilter( searchQuery, stageId ) {
-        searchQuery.query = searchQuery.query
+        let newQuery = searchQuery.query
             + (searchQuery.query ? " AND " : "")
             + "stage_id:" +stageId;
 
-        return searchQuery;
+        return { ...searchQuery, newQuery};
     }
 
 

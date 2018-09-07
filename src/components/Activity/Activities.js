@@ -10,6 +10,7 @@ import moment from "moment";
 import Button from "react-bootstrap/es/Button";
 import {Link} from "react-router-dom";
 import ColumnSorter from "../Search/ColumnSorter";
+import EditOrCreateActivity from "./EditOrCreateActivity";
 
 var VisibilitySensor = require('react-visibility-sensor');
 
@@ -78,7 +79,7 @@ class Activities extends Component {
                     const startDate = moment(activity.start);
                     return (
                         <tr key={activity.id}>
-                            <td><Link to={"activity/" + activity.id}>{activity.title}</Link></td>
+                            <td><a onClick={(e) => { e.preventDefault(); this.openActivityModal(activity)}} >{activity.title}</a></td>
                             <td>{_.get(activity, ["person","name"])}</td>
                             <td>{activity.type}</td>
                             <td>{ activity.done ? "Done" : "Not Done"}</td>
@@ -151,6 +152,12 @@ class Activities extends Component {
                         </div>
                     </div>
 
+                </div>
+                <div>
+                    <EditOrCreateActivity showModal={this.state.showModal}
+                                          close={this.closeModal}
+                                          initialValues={this.state.activitySelectedForEdit}
+                    />
                 </div>
             </div>
         );
