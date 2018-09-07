@@ -35,11 +35,11 @@ export function create(activity, successCallback) {
     }
 }
 
-export function getActivities(filter="", page=0, append=false) {
+export function getActivities(query="", sort="", page=0, append=false) {
 
     return dispatch => {
 
-        activityService.getActivitiesByFilter(filter, page)
+        activityService.getActivitiesByFilter(query, sort, page)
             .then(
                 response => {
                     dispatch(success(response));

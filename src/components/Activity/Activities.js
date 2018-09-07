@@ -2,16 +2,36 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {getActivities, update} from "../../actions/activity.actions";
 import '../../../node_modules/fullcalendar/dist/fullcalendar.css';
-import {activitiesSelector, searchQuerySelector} from "../../models/selectors";
+import {activitiesSelector, searchQuerySelector, sortSelector} from "../../models/selectors";
 import * as _ from "lodash";
 import ListFilter from "../Search/ListFilter";
 import SelectedFilters from "../Search/SelectedFilters";
 import moment from "moment";
 import Button from "react-bootstrap/es/Button";
 import {Link} from "react-router-dom";
+import ColumnSorter from "../Search/ColumnSorter";
 
 var VisibilitySensor = require('react-visibility-sensor');
 
+const sortOptions = [
+    {
+        "fields": ["start_date"],
+        "label": "Start Date",
+        "default": true
+    },
+    {
+        "fields": ["created_date"],
+        "label": "Created Date"
+    },
+    {
+        "fields": ["activity_type"],
+        "label": "Activity Type"
+    },
+    {
+        "fields": ["start_date","activity_type"],
+        "label": "Start Date + Activity Type"
+    }
+];
 class Activities extends Component {
 
     constructor(props) {
@@ -45,8 +65,9 @@ class Activities extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if( this.props.searchQuery !== prevProps.searchQuery){
-            this.props.getActivities( this.props.searchQuery );
+        if( (this.props.query !== prevProps.query)
+            || (this.props.sort !== prevProps.sort)){
+            this.props.getActivities( this.props.query, this.props.sort );
         }
     }
 
@@ -113,11 +134,11 @@ class Activities extends Component {
                                 <table className="table table-hover">
                                     <thead>
                                     <tr>
-                                        <th>Title</th>
-                                        <th>Person</th>
-                                        <th>Type</th>
-                                        <th>Status</th>
-                                        <th>Date</th>
+                                        <th>Title <ColumnSorter dataField="title.keyword" group="activities-page"/></th>
+                                        <th>Person </th>
+                                        <th>Type <ColumnSorter dataField="activity_type.keyword" group="activities-page"/></th>
+                                        <th>Status <ColumnSorter dataField="is_done" group="activities-page"/></th>
+                                        <th>Date <ColumnSorter dataField="start_date" group="activities-page"/></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -138,7 +159,7 @@ class Activities extends Component {
     loadMoreDeal(isVisible) {
         if (isVisible && this.hasMoreItem()) {
             this.setState({currentPage: this.state.currentPage + 1},
-                () => this.props.getActivities(this.props.searchQuery,
+                () => this.props.getActivities(this.props.query, this.props.sort,
                     this.state.currentPage,
                     true));
         }
@@ -154,7 +175,8 @@ class Activities extends Component {
 function mapStateToProps(state) {
     return {
         activities: activitiesSelector(state),
-        searchQuery: searchQuerySelector(state, {group: "activities-page"}),
+        query: searchQuerySelector(state, {group: "activities-page"}),
+        sort: sortSelector(state, {group: "activities-page"}),
         maxActivityCount: state.activities.maxActivityCount
     }
 }

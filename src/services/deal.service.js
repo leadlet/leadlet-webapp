@@ -80,13 +80,13 @@ function getAllDeals(filter, page, size) {
     return fetch(`/api/deals?filter=${filter}&page=${page}&size=${size}`, requestOptions).then(handlePaginationResponse);
 }
 
-function getDealsByFilter(query, page) {
+function getDealsByFilter(searchQuery, page) {
     const requestOptions = {
         method: 'GET',
         headers: { ...authHeader(), 'Content-Type': 'application/json' }
     };
 
-    return fetch(`/api/deals/search?q=${query}&page=${page}&size=12`, requestOptions).then(handlePaginationResponse);
+    return fetch(`/api/deals/search?q=${searchQuery.query}&page=${page}&size=12&${searchQuery.sort}`, requestOptions).then(handlePaginationResponse);
 }
 
 function _delete(id) {

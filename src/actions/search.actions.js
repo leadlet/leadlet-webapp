@@ -84,3 +84,11 @@ export function registerFilter(filterDefinition) {
         dispatch( {type: searchConstants.REGISTER_FILTER, payload: filterDefinition});
     };
 }
+
+export function changeSort(sort) {
+    return dispatch => {
+        dispatch( {type: searchConstants.SORT_CHANGED, payload: sort});
+    };
+}
+
+

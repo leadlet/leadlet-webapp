@@ -33,13 +33,13 @@ function update(activity) {
     return fetch('/api/activities/', requestOptions).then(handleResponse);
 }
 
-function getActivitiesByFilter(query, page) {
+function getActivitiesByFilter(query, sort, page) {
     const requestOptions = {
         method: 'GET',
         headers: { ...authHeader(), 'Content-Type': 'application/json' }
     };
 
-    return fetch(`/api/activities/search?q=${query}&page=${page}&size=20`, requestOptions).then(handlePaginationResponse);
+    return fetch(`/api/activities/search?q=${query}&page=${page}&size=20&${sort}`, requestOptions).then(handlePaginationResponse);
 }
 
 function getActivitiesByPersonId(id) {
