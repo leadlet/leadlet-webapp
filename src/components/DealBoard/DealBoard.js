@@ -17,6 +17,7 @@ import RangeFilter from "../Search/RangeFilter";
 import SelectedFilters from "../Search/SelectedFilters";
 import DateRangeFilter from "../Search/DateRangeFilter";
 import {pipelineSelected} from "../../actions/search.actions";
+import SortSelector from "../Search/SortSelector";
 
 class DealBoard extends Component {
 
@@ -145,6 +146,40 @@ class DealBoard extends Component {
                         <SelectedFilters
                             group="deals-page"
                             index="leadlet-deal"/>
+                        <SortSelector
+                            group="deals-page"
+                            id="deal-sort-selector"
+                            options = {[
+                                {
+                                    value: {
+                                        dataField : 'created_date',
+                                        order: 'desc'
+                                    },
+                                    label: 'Newest'
+                                },
+                                {
+                                    value: {
+                                        dataField : 'created_date',
+                                        order: 'asc'
+                                    },
+                                    label: 'Oldest'
+                                },
+                                {
+                                    value: {
+                                        dataField : 'priority',
+                                        order: 'desc'
+                                    },
+                                    label: 'Most Prior'
+                                },
+                                {
+                                    value: {
+                                        dataField : 'priority',
+                                        order: 'asc'
+                                    },
+                                    label: 'Least Prior'
+                                }
+                            ]}
+                        />
                         <Button bsStyle="primary" bsSize="small" className="m-l-sm" onClick={this.toggleSearchMenu}><i className="fa fa-filter fa-xs"/></Button>
                         <Button bsStyle="primary" bsSize="small" className="m-l-sm" onClick={this.toggleNewDealModal}>New Deal</Button>
                         <PipelineSelector pipelines={this.props.pipelines}

@@ -11,6 +11,7 @@ export const searchConstants = {
 
     REGISTER_FILTER: 'REGISTER_FILTER',
 
-    SORT_CHANGED: 'SORT_CHANGED'
+    SORT_CHANGED: 'SORT_CHANGED',
+    SORT_CLEARED: 'SORT_CLEARED'
 
 };

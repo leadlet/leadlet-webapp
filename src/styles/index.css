@@ -11062,3 +11062,7 @@ body {
 .activities .selected-filters{
     padding: 5px 14px;
 }
+
+.sort-selector {
+    width : 150px;
+}

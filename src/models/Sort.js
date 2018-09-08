@@ -11,7 +11,10 @@ export class Sort extends Model {
                 var sort = action.payload;
                 Sort.upsert(sort);
                 break;
-
+            case searchConstants.SORT_CLEARED:
+                var sort = action.payload;
+                Sort.withId(sort.id).delete();
+                break;
         }
         // Return value is ignored.
         return undefined;

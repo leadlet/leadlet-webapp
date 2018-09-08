@@ -92,3 +92,9 @@ export function changeSort(sort) {
 }
 
 
+export function clearSort(sort) {
+    return dispatch => {
+        dispatch( {type: searchConstants.SORT_CLEARED, payload: sort});
+    };
+}
+
