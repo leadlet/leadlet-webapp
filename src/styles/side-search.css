@@ -1,0 +1,65 @@
+/* filters */
+.side-search-menu {
+    padding: 5px 10px;
+    min-width: 200px;
+    width: 200px;
+    background-color: #ffffff;
+    border-radius: 3px;
+    border-color: #e7eaec;
+    -webkit-border-image: none;
+    -o-border-image: none;
+    border-image: none;
+    border-style: solid solid none;
+    border-width: 1px 0;
+}
+
+.side-search-menu .list-group {
+    background-color: #ffffff;
+}
+
+.side-search-menu .list-filter{
+    margin-bottom: 5px;
+}
+
+.side-search-menu .list-filter .filter-items{
+    margin-left: 5px;
+}
+
+.side-search-menu .filter-name{
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.side-search-menu .list-filter .filter-label{
+    font-weight: 300;
+    margin-left: 4px;
+}
+
+.side-search-menu .list-filter .item-count{
+    font-size: 11px;
+}
+
+.side-search-menu  .list-filter .item-name{
+    margin-left: 4px;
+    font-weight: 300;
+    font-size: 14px;
+
+}
+
+.side-search-menu .range-filter{
+    margin-bottom: 5px;
+}
+
+.side-search-menu .range-filter .selector {
+    padding: 0px 10px;
+}
+
+.selected-filters > a {
+    background-color: #FFF;
+    font-size: 0.95rem !important;
+}
+
+
+.selected-filters .btn {
+    padding: 4px 6px;
+}

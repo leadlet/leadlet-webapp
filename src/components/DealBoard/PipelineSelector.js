@@ -22,7 +22,7 @@ function PipelineSelector(props) {
     else
     return (
             <Select
-                className="pipeline-selector"
+                className={props.className}
                 id="state-select"
                 autoFocus
                 options={stateToOptions(props.pipelines)}

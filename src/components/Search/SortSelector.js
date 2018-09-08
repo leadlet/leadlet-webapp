@@ -28,7 +28,7 @@ class SortSelector extends React.Component {
 
         return (
             <Select
-                className="sort-selector"
+                className={this.props.className}
                 value={ sort && {
                     label: sort.label,
                     value: {
