@@ -5,7 +5,6 @@ import {getAllPersonByFilterAndReturn} from "../actions/person.actions";
 import {getAllDealByFilterAndReturn} from "../actions/deal.actions";
 import {getAllPipelineAndReturn} from "../actions/pipeline.actions";
 import {getAllStageReturn} from "../actions/stage.actions";
-import {organizationService} from "../services/organization.service";
 import {getAllChannelByFilterAndReturn} from "../actions/channel.actions";
 
 export function loadUser(input, callback) {
@@ -69,7 +68,7 @@ export function loadPerson(input, callback, organization) {
         callback(error, null);
     };
 
-    let organizationId = ""
+    let organizationId = "";
 
     // TODO ygokirmak
     if( organization !== undefined){
@@ -78,25 +77,7 @@ export function loadPerson(input, callback, organization) {
 
     getAllPersonByFilterAndReturn(`name:${input},organization:${organizationId}`, successCallBack, failCallBack);
 
-};
-
-export function loadOrganization(input, callback, personId) {
-
-    let successCallBack = (data) => {
-        callback(null, {options: data.map(org => ({value: org.id, label: org.name}))});
-    };
-    let failCallBack = (error) => {
-        callback(error, null);
-    };
-
-    organizationService.getAllOrganization(`name:${input}`, 0, 20)
-        .then(
-            response => successCallBack(response[0]),
-            error => failCallBack(error)
-        );
-
-
-};
+}
 
 export function loadDeal(input, callback) {
 
@@ -109,7 +90,7 @@ export function loadDeal(input, callback) {
 
     getAllDealByFilterAndReturn(`title:${input}`, successCallBack, failCallBack);
 
-};
+}
 
 export function loadPipeline(input, callback) {
 

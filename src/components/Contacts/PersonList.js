@@ -19,9 +19,7 @@ export const PersonList = function (props) {
                 id: id,
                 name: data.items[id].name,
                 email: data.items[id].email,
-                phones: data.items[id].phones,
-                organizationId: data.items[id].organizationId,
-                organizationName: data.items[id].organizationName,
+                phones: data.items[id].phones
             };
         });
     }
@@ -38,10 +36,6 @@ export const PersonList = function (props) {
                 return cur.phone;
             }
         }, "");
-    }
-
-    function organizationFormatter(cell, row) {
-        return (<Link to={"organization/" + row.organizationId}>{row.organizationName}</Link>);
     }
 
     return (
@@ -69,10 +63,7 @@ export const PersonList = function (props) {
             <TableHeaderColumn dataField='name' dataFormat={nameFormatter}>Name</TableHeaderColumn>
             <TableHeaderColumn dataField='email'>Email</TableHeaderColumn>
             <TableHeaderColumn dataField='phones' dataFormat={phonesFormatter}>Phones</TableHeaderColumn>
-            <TableHeaderColumn dataField='organizationId'
-                               dataFormat={organizationFormatter}>Organization</TableHeaderColumn>
+
         </BootstrapTable>
     );
 }
-
-//<Link to={`/contacts/${contact.id}`} > ... </Link>

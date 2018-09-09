@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Field, formValueSelector, reduxForm} from 'redux-form';
+import {Field, reduxForm} from 'redux-form';
 import {connect} from "react-redux";
 import {clearField, getAccount, updateAccount} from "../../actions/account.actions";
 

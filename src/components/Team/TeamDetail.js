@@ -3,7 +3,6 @@ import connect from "react-redux/es/connect/connect";
 import {getByTeamId} from "../../actions/team.actions";
 import CreateEditTeam from "./CreateEditTeam";
 import Link from "react-router-dom/es/Link";
-import CreateObjective from "../Objective/CreateObjective";
 
 class TeamDetail extends Component {
 
@@ -12,27 +11,11 @@ class TeamDetail extends Component {
 
         this.state = {
             isEditTeamModalVisible: false,
-            isEditObjectiveModalVisible: false
         };
 
         this.openEditTeamModal = this.openEditTeamModal.bind(this);
         this.closeEditTeamModal = this.closeEditTeamModal.bind(this);
         this.renderMembersTable = this.renderMembersTable.bind(this);
-        this.openObjectiveModal = this.openObjectiveModal.bind(this);
-        this.closeObjectiveModal = this.closeObjectiveModal.bind(this);
-        this.renderTeamObjectivesAmount = this.renderTeamObjectivesAmount.bind(this);
-    }
-
-    openObjectiveModal() {
-        this.setState({
-            isEditObjectiveModalVisible: true
-        });
-    }
-
-    closeObjectiveModal() {
-        this.setState({
-            isEditObjectiveModalVisible: false
-        });
     }
 
     openEditTeamModal() {
@@ -66,25 +49,6 @@ class TeamDetail extends Component {
         });
     }
 
-    renderTeamObjectivesAmount(teamObjectives) {
-        return teamObjectives.map(teamObjective => {
-            return (
-                <tr>
-                    <td>{teamObjective.name}</td>
-                    <td>
-                        <span className="pie">{teamObjective.dailyAmount}</span>
-                    </td>
-                    <td>
-                        <span className="pie">{teamObjective.weeklyAmount}</span>
-                    </td>
-                    <td>
-                        <span className="pie">{teamObjective.monthlyAmount}</span>
-                    </td>
-                </tr>
-            )
-        });
-    }
-
     render() {
 
         const team = this.props.teams && this.props.teams[this.props.match.params.teamId];
@@ -96,7 +60,7 @@ class TeamDetail extends Component {
         } else {
 
             return (
-                <div className="container-fluid">
+                <div className="container-fluid m-t-lg">
                     <div className="row">
                         <div className="col-md-3">
                             <div className="ibox">
@@ -118,38 +82,6 @@ class TeamDetail extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-md-9">
-                            <div className="ibox float-e-margins">
-                                <div className="ibox-title">
-                                    <h5>Objectives</h5>
-                                    <button className="btn btn-primary btn-xs pull-right" aria-hidden="true"
-                                            onClick={() => this.openObjectiveModal()}>Add objective
-                                    </button>
-                                </div>
-                                <div className="ibox-content">
-                                    <table className="table table-hover">
-                                        <thead>
-                                        <tr>
-                                            <th>Action Name</th>
-                                            <th>Daily</th>
-                                            <th>Weekly</th>
-                                            <th>Monthly</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        {this.renderTeamObjectivesAmount(team.objectives)}
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-md-3">
-                        </div>
-
                         <div className="col-md-9">
                             <div className="ibox float-e-margins">
                                 <div className="ibox-title">
@@ -177,15 +109,6 @@ class TeamDetail extends Component {
                             <CreateEditTeam showModal={this.state.isEditTeamModalVisible}
                                             close={this.closeEditTeamModal}
                                             initialValues={this.props.teams[this.props.match.params.teamId]}
-                            />
-                        }
-                        {
-                            this.state.isEditObjectiveModalVisible &&
-                            <CreateObjective showModal={this.state.isEditObjectiveModalVisible}
-                                             close={this.closeObjectiveModal}
-                                             initialValues={{
-                                                 teamId: this.props.match.params.teamId
-                                             }}
                             />
                         }
                     </div>

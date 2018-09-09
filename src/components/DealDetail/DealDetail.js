@@ -5,15 +5,12 @@ import {getDealById} from "../../actions/deal.actions";
 import {createNote} from "../../actions/note.actions";
 import {getTimelineByDealId, getTimelineByDealIdAndRefresh} from "../../actions/timeline.actions";
 import Timeline from "../Timeline/Timeline";
-import {getByIdOrganization} from "../../actions/organization.actions";
 import {getById} from "../../actions/person.actions";
 import CreateEditDeal from '../DealDetail/CreateEditDeal'
 import moment from 'moment';
 import Link from "react-router-dom/es/Link";
-import EditOrCreateActivity from "../Activity/EditOrCreateActivity";
 import {getActivitiesByDealId} from "../../actions/activity.actions";
-import $ from "jquery";
-import {dealSelector, detailedDealSelector} from "../../models/selectors";
+import {detailedDealSelector} from "../../models/selectors";
 
 
 class DealDetail extends Component {
@@ -34,7 +31,6 @@ class DealDetail extends Component {
         this.openEditDealModal = this.openEditDealModal.bind(this);
         this.closeEditDealModal = this.closeEditDealModal.bind(this);
         this.renderAssignee = this.renderAssignee.bind(this);
-        this.renderOrganization = this.renderOrganization.bind(this);
         this.renderLastUpdateDate = this.renderLastUpdateDate.bind(this);
         this.renderPossibleCloseDate = this.renderPossibleCloseDate.bind(this);
         this.refreshTimeline = this.refreshTimeline.bind(this);
@@ -122,8 +118,6 @@ class DealDetail extends Component {
                                             <dd>{this.renderAssignee()}</dd>
                                             <dt>Contact:</dt>
                                             <dd>{this.renderPersons()}</dd>
-                                            <dt>Organization:</dt>
-                                            <dd>{this.renderOrganization()}</dd>
                                             <dt>Last Updated:</dt>
                                             <dd>{this.renderLastUpdateDate()}</dd>
                                             <dt>Created:</dt>
@@ -223,16 +217,6 @@ class DealDetail extends Component {
         }
     }
 
-    renderOrganization() {
-        const deal = this.props.viewedDeal;
-
-        if(deal.organization){
-            return (<Link className="text-navy" to={"/organization/" + deal.organization.id}>{deal.organization.name}</Link>);
-        }else{
-            return (<em>Not set</em>);
-        }
-    }
-
     renderPersons() {
         const deal = this.props.viewedDeal;
 
@@ -307,7 +291,6 @@ export default connect(mapStateToProps, {
     createNote,
     getTimelineByDealId,
     getTimelineByDealIdAndRefresh,
-    getByIdOrganization,
     getById,
     getActivitiesByDealId
 })(DealDetail);

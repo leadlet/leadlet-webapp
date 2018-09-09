@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import ContactPerson from "./ContactPerson";
-import ContactOrganization from "./ContactOrganization";
 import ToggleButton from "react-bootstrap/es/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/es/ToggleButtonGroup";
 import FormGroup from "react-bootstrap/es/FormGroup";
@@ -12,12 +11,9 @@ import _ from "lodash"
 import Dropdown from "react-bootstrap/es/Dropdown";
 import MenuItem from "react-bootstrap/es/MenuItem";
 import {getAllPerson, _deletePersons} from "../../actions/person.actions";
-import {getAllOrganization, _deleteOrganizations} from "../../actions/organization.actions";
 import {PersonList} from "./PersonList";
-import {OrganizationList} from "./OrganizationList";
 
 const CONTACT_PERSON = 'person';
-const CONTACT_ORGANIZATION = 'organization';
 
 
 class Contacts extends Component {
@@ -29,12 +25,10 @@ class Contacts extends Component {
             currentPage: 1,
             pageSize: 10,
             selectedPersonIds: [],
-            selectedOrganizationIds: [],
             term: "",
             checked: false,
             showDeleteDialog: false,
             showPersonModal: false,
-            showOrganizationModal: false,
             contactSelectedForEdit: null,
             selectedType: CONTACT_PERSON
         };
@@ -42,15 +36,11 @@ class Contacts extends Component {
         this.onSearchSubmit = this.onSearchSubmit.bind(this);
         this.onInputChange = this.onInputChange.bind(this);
         this.openPersonModal = this.openPersonModal.bind(this);
-        this.openOrganizationModal = this.openOrganizationModal.bind(this);
         this.closeEditModal = this.closeEditModal.bind(this);
         this.onTypeChange = this.onTypeChange.bind(this);
         this.onCheckChange = this.onCheckChange.bind(this);
         this.onPersonRowSelected = this.onPersonRowSelected.bind(this);
         this.onPersonRowSelectAll = this.onPersonRowSelectAll.bind(this);
-        this.onOrganizationRowSelected = this.onOrganizationRowSelected.bind(this);
-        this.onOrganizationRowSelectAll = this.onOrganizationRowSelectAll.bind(this);
-
         this.confirmDeleteActivity = this.confirmDeleteActivity.bind(this);
         this.cancelDeleteActivity = this.cancelDeleteActivity.bind(this);
 
@@ -123,11 +113,6 @@ class Contacts extends Component {
             this.setState({
                 selectedPersonIds: []
             });
-        }else{
-            this.props._deleteOrganizations(this.state.selectedOrganizationIds);
-            this.setState({
-                selectedOrganizationIds: []
-            });
         }
     }
 
@@ -139,7 +124,6 @@ class Contacts extends Component {
 
     filterContacts() {
         this.props.getAllPerson(this.getFilterQuery(), this.state.currentPage - 1, this.state.pageSize);
-        this.props.getAllOrganization(this.getFilterQuery(), this.state.currentPage - 1, this.state.pageSize);
     }
 
     componentDidMount() {
@@ -157,11 +141,6 @@ class Contacts extends Component {
 
     openPersonModal(contact) {
         this.setState({showPersonModal: true});
-        this.setState({contactSelectedForEdit: contact});
-    }
-
-    openOrganizationModal(contact) {
-        this.setState({showOrganizationModal: true});
         this.setState({contactSelectedForEdit: contact});
     }
 
@@ -209,31 +188,6 @@ class Contacts extends Component {
         }
     }
 
-    onOrganizationRowSelected({id}, isSelected) {
-        if (isSelected) {
-            this.setState({
-                selectedOrganizationIds: [...this.state.selectedOrganizationIds, id].sort()
-            });
-        } else {
-            this.setState({selectedOrganizationIds: this.state.selectedOrganizationIds.filter(it => it !== id)});
-        }
-        return true;
-    }
-
-    onOrganizationRowSelectAll(isSelected, currentDisplayAndSelectedData) {
-        const ids = currentDisplayAndSelectedData.map(item => {
-            return item.id
-        });
-
-        if (isSelected) {
-            this.setState({
-                selectedOrganizationIds: [...this.state.selectedOrganizationIds, ...ids].sort()
-            });
-        } else {
-            this.setState({selectedOrganizationIds: this.state.selectedOrganizationIds.filter(it => !ids.includes(it))});
-        }
-    }
-
     renderList() {
 
         let data = null;
@@ -253,42 +207,24 @@ class Contacts extends Component {
                     onPageChange={this.onPageChange}
                 />
             )
-        } else {
-            data = this.props.organizations;
-            return (
-                data.ids &&
-                <OrganizationList
-                    data={data}
-                    selectedRows={this.state.selectedOrganizationIds}
-                    sizePerPage={this.state.sizePerPage}
-                    currentPage={this.state.currentPage}
-                    onRowSelect={this.onOrganizationRowSelected}
-                    onSelectAll={this.onOrganizationRowSelectAll}
-                    sizePerPageListChange={this.sizePerPageListChange}
-                    onPageChange={this.onPageChange}
-                />
-            )
         }
     }
 
     getSelectedCount() {
         if (this.state.selectedType === CONTACT_PERSON) {
             return this.state.selectedPersonIds && this.state.selectedPersonIds.length;
-        } else {
-            return this.state.selectedOrganizationIds && this.state.selectedOrganizationIds.length;
         }
     }
 
     clearSelections(){
         this.setState({
-            selectedOrganizationIds : [],
             selectedPersonIds: []
                         });
     }
     render() {
         return (
             <div className="container-fluid">
-                <div className="ibox">
+                <div className="ibox m-t-md">
                     <div className="ibox-content">
                         <div className="row m-b-sm">
                             <div className="col-md-4">
@@ -304,10 +240,6 @@ class Contacts extends Component {
                                                   value={CONTACT_PERSON}>Person <i
                                         className="fa fa-users"/>&nbsp;
                                         <Badge>{this.props.persons.dataTotalSize}</Badge></ToggleButton>
-                                    <ToggleButton className="btn-sm"
-                                                  value={CONTACT_ORGANIZATION}>Organization <i
-                                        className="fa fa-industry"/>&nbsp;
-                                        <Badge>{this.props.organizations.dataTotalSize}</Badge></ToggleButton>
                                 </ToggleButtonGroup>
                                 <form className="form-inline m-l-sm">
                                     <FormGroup
@@ -328,7 +260,6 @@ class Contacts extends Component {
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu>
                                         <MenuItem href="#" onClick={this.openPersonModal}>Person</MenuItem>
-                                        <MenuItem href="#" onClick={this.openOrganizationModal}>Organization</MenuItem>
                                     </Dropdown.Menu>
                                 </Dropdown>
                                 {
@@ -360,12 +291,7 @@ class Contacts extends Component {
                                                contact={this.state.contactSelectedForEdit}
                                 />
                             </div>
-                            <div>
-                                <ContactOrganization showEditModal={this.state.showOrganizationModal}
-                                                     close={this.closeEditModal}
-                                                     contact={this.state.contactSelectedForEdit}
-                                />
-                            </div>
+
                             <div>
                                 <SweetAlert
                                     title="Are you sure?"
@@ -389,9 +315,8 @@ class Contacts extends Component {
 
 function mapStateToProps(state) {
     return {
-        persons: state.persons,
-        organizations: state.organizations
+        persons: state.persons
     };
 }
 
-export default connect(mapStateToProps, {getAllPerson, getAllOrganization, _deletePersons, _deleteOrganizations})(Contacts);
+export default connect(mapStateToProps, {getAllPerson, _deletePersons})(Contacts);

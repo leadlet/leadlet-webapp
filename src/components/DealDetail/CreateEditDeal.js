@@ -13,9 +13,8 @@ import formValueSelector from "redux-form/es/formValueSelector";
 import renderAsyncSelectField  from "../../formUtils/renderAsyncSelectField";
 
 import renderDatePicker from "../../formUtils/renderDatePicker";
-import {loadOrganization, loadPerson, loadPipeline, loadStage, loadUser, loadProduct, loadSource, loadChannel} from "../../formUtils/form.actions";
+import {loadUser, loadProduct, loadSource, loadChannel} from "../../formUtils/form.actions";
 import renderPipelineAndStageFields from "../../formUtils/renderPipelineAndStageFields";
-import renderPersonAndOrganizationFields from "../../formUtils/renderPersonAndOrganizationFields";
 
 /*let currencies = [
     {value: 'USD', label: 'USD'},
@@ -78,7 +77,6 @@ class CreateEditDeal extends Component {
             id: formValues.id,
             title: formValues.title,
             personId: formValues.person && formValues.person.id,
-            organizationId: formValues.organization && formValues.organization.id,
             stageId: formValues.stage && formValues.stage.id,
             pipelineId: formValues.pipeline && formValues.pipeline.id,
             ownerId: formValues.owner && formValues.owner.id,
@@ -157,32 +155,6 @@ class CreateEditDeal extends Component {
                                 loadOptions={loadUser}
                             />
                         }
-
-
-                        <Fields
-                            names={[ 'person', 'organization' ]}
-                            component={renderPersonAndOrganizationFields}
-                            showPersonSelection={this.props.showPersonSelection}
-                            showOrganizationSelection={this.props.showOrganizationSelection}
-                            parse={(value, name) => {
-                                if( value ) {
-                                    return {
-                                        'id': value.value,
-                                        'name': value.label
-                                    };
-                                }
-                            }}
-                            format={(value, name) => {
-                                if( value ){
-                                    return {
-                                        'value': value.id,
-                                        'label': value.name
-                                    }
-                                }
-
-                            }}
-                        />
-
 
                         <Field
                             label="Possible Close Date"
@@ -306,7 +278,6 @@ CreateEditDeal.defaultProps = {
     showPipelineSelection: true,
     showStageSelection: true,
     showPersonSelection: true,
-    showOrganizationSelection: true,
     showUserSelection: true
 }
 

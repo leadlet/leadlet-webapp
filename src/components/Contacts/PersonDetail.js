@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import connect from "react-redux/es/connect/connect";
 import {createNote} from "../../actions/note.actions";
 import {getById} from "../../actions/person.actions";
-import {getByIdOrganization} from "../../actions/organization.actions";
 import ContactPerson from "./ContactPerson";
 import '../../../node_modules/fullcalendar/dist/fullcalendar.css';
 import $ from 'jquery';
@@ -149,32 +148,6 @@ class ContactDetail extends Component {
             return;
         }
 
-        let events = this.props.ids.map(function (item) {
-            return this.props.activities[item];
-        }, this);
-
-        if (events) {
-            $('#contact-calendar').fullCalendar('destroy');
-
-            $('#contact-calendar').fullCalendar({
-                header: {
-                    left: 'prev,next today',
-                    right: 'listDay,listWeek,month'
-                },
-                // customize the button names,
-                // otherwise they'd all just say "list"
-                views: {
-                    listDay: {buttonText: 'list day'},
-                    listWeek: {buttonText: 'list week'}
-                },
-                defaultView: 'listWeek',
-                navLinks: true, // can click day/week names to navigate views
-                editable: true,
-                eventLimit: true, // allow "more" link when too many events
-
-                events
-            });
-        }
     }
 
     render() {
@@ -196,7 +169,6 @@ class ContactDetail extends Component {
                                     <div
                                         className="font-bold">{this.props.viewedPerson && this.props.viewedPerson.title}</div>
                                     <address className="m-t-md">
-                                        <strong>{this.props.viewedPerson && this.props.viewedPerson.organizationName}</strong><br/>
                                         {this.props.viewedPerson && this.props.viewedPerson.address}<br/>
                                         {this.props.viewedPerson && this.props.viewedPerson.phones.map(phoneItem => {
                                             return (
@@ -329,13 +301,11 @@ class ContactDetail extends Component {
                                                   initialValues={{
                                                       person: {
                                                           id: this.props.match.params.personId
-                                                      },
-                                                      organization: this.props.viewedPerson && this.props.viewedPerson.organization,
+                                                      }
 
                                                   }}
                                                   createCallback={this.refreshTimeline}
                                                   showPersonSelection={false}
-                                                  showOrganizationSelection={false}
                             />
 
                         }
@@ -355,12 +325,9 @@ class ContactDetail extends Component {
                                             initialValues={{
                                                 person: {
                                                     id: this.props.match.params.personId
-                                                },
-                                                organization: this.props.viewedPerson && this.props.viewedPerson.organization,
-
+                                                }
                                             }}
                                             showPersonSelection={false}
-                                            showOrganizationSelection={false}
                             />
                         }
                     </div>
@@ -376,7 +343,6 @@ function mapStateToProps(state, props) {
         viewedPerson: state.persons.viewedPerson,
         activities: state.activities.items,
         ids: state.activities.ids,
-        viewedOrganization: state.viewedOrganization,
         deals: personDealsSelector(state, props.match.params.personId)
     };
 }
@@ -384,7 +350,6 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {
     getById,
     createNote,
-    getByIdOrganization,
     getActivitiesByPersonId,
     getTimelineByPersonId,
     getTimelineLoadMoreByPersonId,
