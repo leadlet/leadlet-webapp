@@ -7,7 +7,6 @@ import Deals from "../components/DealBoard/DealBoard";
 import Switch from "react-router-dom/es/Switch";
 import PipelinesPage from "../components/Pipelines/Pipelines";
 import PersonDetail from "../components/Contacts/PersonDetail";
-import OrganizationDetail from "../components/Contacts/OrganizationDetail";
 import DealDetail from "../components/DealDetail/DealDetail";
 import Activities from "../components/Activity/Activities";
 import Preferences from "../components/Preferences/Preferences";
@@ -30,7 +29,6 @@ class TopMenuLayout extends Component {
                             <Switch>
                                 <PrivateRoute exact path="/" component={Dashboard}/>
                                 <PrivateRoute path="/person/:personId" component={PersonDetail}/>
-                                <PrivateRoute path="/organization/:organizationId" component={OrganizationDetail}/>
                                 <PrivateRoute path="/contacts" component={Contacts}/>
                                 <PrivateRoute path="/deal/:dealId" component={DealDetail}/>
                                 <PrivateRoute path="/user/:userId" component={AgentDetail}/>

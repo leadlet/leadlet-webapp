@@ -9,10 +9,6 @@ import {getTimelineByUserId, getTimelineByUserIdAndRefresh} from "../../actions/
 import {createNote} from "../../actions/note.actions";
 import CreateEditAgent from "./CreateEditAgent";
 import {getActivitiesByAgentId} from "../../actions/activity.actions";
-import $ from "jquery";
-import CreateObjective from "../Objective/CreateObjective";
-import {getObjectivesByUserId} from "../../actions/objective.actions";
-
 
 class AgentDetail extends Component {
 
@@ -23,7 +19,6 @@ class AgentDetail extends Component {
             value: '',
             isAgentModalVisible: false,
             isActivityModalVisible: false,
-            isEditObjectiveModalVisible: false
         };
 
         this.openActivityModal = this.openActivityModal.bind(this);
@@ -31,41 +26,6 @@ class AgentDetail extends Component {
         this.openEditAgentModal = this.openEditAgentModal.bind(this);
         this.closeAgentModal = this.closeAgentModal.bind(this);
         this.refreshTimeline = this.refreshTimeline.bind(this);
-        this.openObjectiveModal = this.openObjectiveModal.bind(this);
-        this.closeObjectiveModal = this.closeObjectiveModal.bind(this);
-    }
-
-    openObjectiveModal() {
-        this.setState({
-            isEditObjectiveModalVisible: true
-        });
-    }
-
-    closeObjectiveModal() {
-        this.setState({
-            isEditObjectiveModalVisible: false
-        });
-    }
-
-    renderAgentObjectivesAmount(userObjectives) {
-        return userObjectives.map(userObjective => {
-            return userObjective.items.map(item => {
-                return (
-                    <tr>
-                        <td>{item.name}</td>
-                        <td>
-                            <span className="pie">{item.dailyAmount}</span>
-                        </td>
-                        <td>
-                            <span className="pie">{item.weeklyAmount}</span>
-                        </td>
-                        <td>
-                            <span className="pie">{item.monthlyAmount}</span>
-                        </td>
-                    </tr>
-                )
-            });
-        });
     }
 
     refreshTimeline() {
@@ -87,41 +47,12 @@ class AgentDetail extends Component {
     componentDidMount() {
         this.props.getUserById(this.props.match.params.userId);
         this.props.getActivitiesByAgentId(this.props.match.params.userId);
-        this.props.getObjectivesByUserId(this.props.match.params.userId);
     }
 
     componentDidUpdate() {
 
         if (!this.props.ids) {
             return;
-        }
-
-        let events = this.props.ids.map(function (item) {
-            return this.props.activities[item];
-        }, this);
-
-        console.log("EVENTS: ", events);
-        if (events) {
-            $('#contact-calendar').fullCalendar('destroy');
-
-            $('#contact-calendar').fullCalendar({
-                header: {
-                    left: 'prev,next',
-                    right: 'listDay,listWeek'
-                },
-                // customize the button names,
-                // otherwise they'd all just say "list"
-                views: {
-                    listDay: {buttonText: 'list day'},
-                    listWeek: {buttonText: 'list week'}
-                },
-                defaultView: 'listWeek',
-                navLinks: true, // can click day/week names to navigate views
-                editable: true,
-                eventLimit: true, // allow "more" link when too many events
-                timezone: 'local',
-                events
-            });
         }
     }
 
@@ -187,32 +118,6 @@ class AgentDetail extends Component {
                         </div>
                         <div className="col-md-9">
 
-                            <div className="ibox">
-                                <div className="ibox-title">
-                                    <h5>Objectives</h5>
-                                    <button className="btn btn-primary btn-xs pull-right" aria-hidden="true"
-                                            onClick={() => this.openObjectiveModal()}>Add objective
-                                    </button>
-                                </div>
-                                <div className="ibox-content">
-                                    <table className="table table-hover">
-                                        <thead>
-                                        <tr>
-                                            <th>Action Name</th>
-                                            <th>Daily</th>
-                                            <th>Weekly</th>
-                                            <th>Monthly</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        {this.renderAgentObjectivesAmount(this.props.objectives)}
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
 
                             <div className="ibox">
                                 <Timeline
@@ -239,16 +144,6 @@ class AgentDetail extends Component {
                                                   createCallback={this.refreshTimeline}
                             />
                         }
-                        {
-                            this.state.isEditObjectiveModalVisible &&
-                            <CreateObjective showModal={this.state.isEditObjectiveModalVisible}
-                                             close={this.closeObjectiveModal}
-                                             initialValues={{
-                                                 userId: this.props.match.params.userId
-                                             }}
-                            />
-                        }
-
 
                     </div>
                 </div>
@@ -261,8 +156,7 @@ function mapStateToProps(state) {
     return {
         viewedUser: state.users.viewedUser,
         activities: state.activities.items,
-        ids: state.activities.ids,
-        objectives: state.objectives.userObjectives
+        ids: state.activities.ids
     };
 }
 
@@ -271,6 +165,5 @@ export default connect(mapStateToProps, {
     createNote,
     getTimelineByUserId,
     getTimelineByUserIdAndRefresh,
-    getActivitiesByAgentId,
-    getObjectivesByUserId
+    getActivitiesByAgentId
 })(AgentDetail);

@@ -133,7 +133,7 @@ export class SearchFilter extends Model {
         switch (action.type) {
 
             case searchConstants.FACET_PIPELINE_SELECTED:
-                SearchFilter.upsert({ id: action.payload.facetId, selected : {pipeline: action.payload.pipeline}});
+                SearchFilter.upsert({ id: action.payload.id, group: action.payload.group, selected : {pipeline: action.payload.pipeline}});
                 break;
 
             case searchConstants.FACET_CLEAR:

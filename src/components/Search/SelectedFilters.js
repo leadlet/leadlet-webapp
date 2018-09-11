@@ -49,7 +49,7 @@ class SelectedFilters extends Component {
 
         searchFilters = [ ...termFilters, ...rangeFilters, ...dateRangeFilters];
 
-        return searchFilters;
+        return ( <div className={this.props.className ? this.props.className : "" + " selected-filters"}>{searchFilters}</div>);
     }
 }
 

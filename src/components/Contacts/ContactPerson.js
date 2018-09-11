@@ -7,11 +7,10 @@ import FormGroup from "react-bootstrap/es/FormGroup";
 import InputGroup from "react-bootstrap/es/InputGroup";
 import FormControl from "react-bootstrap/es/FormControl";
 import {createPerson, updatePerson, getById} from "../../actions/person.actions";
-import {getAllOrganization} from "../../actions/organization.actions";
 import InputMask from 'react-input-mask';
 
 const validate = values => {
-    const errors = {}
+    const errors = {};
     let per_email_valid = true;
 
     const re_per = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -39,15 +38,15 @@ const validate = values => {
         errors.email = ""
     }
     return errors
-}
+};
 
 const warn = values => {
-    const warnings = {}
+    const warnings = {};
     if (values.title && values.title.length < 2) {
         warnings.title = 'too short!'
     }
     return warnings
-}
+};
 
 const renderField = ({
                          input,
@@ -66,7 +65,7 @@ const renderField = ({
 
         </div>
     </div>
-)
+);
 
 const renderPhoneField = ({
                               input,
@@ -79,7 +78,7 @@ const renderPhoneField = ({
         <div>
             <FormGroup>
                 <InputGroup>
-                    <InputGroup.Addon><i class="fa fa-phone" aria-hidden="true"/></InputGroup.Addon>
+                    <InputGroup.Addon><i className="fa fa-phone" aria-hidden="true"/></InputGroup.Addon>
                     <InputMask {...input} type={type} className="form-control" mask="+99 999 999 99 99" />
                 </InputGroup>
             </FormGroup>
@@ -166,7 +165,6 @@ class ContactNew extends React.Component {
     constructor(props) {
         super(props);
         this.onSubmit = this.onSubmit.bind(this);
-        this.mapOrganization2Options = this.mapOrganization2Options.bind(this);
         this.onClose = this.onClose.bind(this);
     }
 
@@ -180,21 +178,6 @@ class ContactNew extends React.Component {
             });
         } else {
             return this.props.createPerson(values, () => this.onClose());
-        }
-    }
-
-    mapOrganization2Options() {
-
-        if (!this.props.organizations.ids) {
-            return [];
-        } else {
-            return this.props.organizations.ids
-                .map(id => {
-                    return {
-                        label: this.props.organizations.items[id].name,
-                        value: this.props.organizations.items[id].id
-                    }
-                });
         }
     }
 
@@ -242,14 +225,7 @@ class ContactNew extends React.Component {
                             component={renderPhoneField}
                             label="Work Phone"
                         />
-                        <Field
-                            name="organizationId"
-                            type="text"
-                            component={renderSelectField}
-                            label="Organization Name"
-                            multi={false}
-                            options={this.mapOrganization2Options()}
-                        />
+
                         <Field
                             name="email"
                             type="text"
@@ -277,7 +253,6 @@ class ContactNew extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        organizations: state.organizations
     };
 }
 
@@ -286,5 +261,5 @@ export default reduxForm({
     validate, // <--- validation function given to redux-form
     warn // <--- warning function given to redux-form
 })(
-    connect(mapStateToProps, {updatePerson, getAllOrganization, createPerson, getById})(ContactNew)
+    connect(mapStateToProps, {updatePerson, createPerson, getById})(ContactNew)
 );

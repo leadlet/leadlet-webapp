@@ -8,9 +8,9 @@ import ListFilter from "../Search/ListFilter";
 import SelectedFilters from "../Search/SelectedFilters";
 import moment from "moment";
 import Button from "react-bootstrap/es/Button";
-import {Link} from "react-router-dom";
 import ColumnSorter from "../Search/ColumnSorter";
 import EditOrCreateActivity from "./EditOrCreateActivity";
+import './../../styles/side-search.css';
 
 var VisibilitySensor = require('react-visibility-sensor');
 
@@ -104,7 +104,7 @@ class Activities extends Component {
                 <div className="row">
                     <div className="col-lg-2">
                         <div className="ibox float-e-margins">
-                            <div className="ibox-content facet-filters">
+                            <div className="ibox-content side-search-menu">
 
                                 <ListFilter
                                     id="types"

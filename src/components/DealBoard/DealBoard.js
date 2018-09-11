@@ -17,6 +17,43 @@ import RangeFilter from "../Search/RangeFilter";
 import SelectedFilters from "../Search/SelectedFilters";
 import DateRangeFilter from "../Search/DateRangeFilter";
 import {pipelineSelected} from "../../actions/search.actions";
+import SortSelector from "../Search/SortSelector";
+
+
+import './../../styles/deals.css';
+import './../../styles/side-search.css';
+
+
+let sortOptions = [
+                    {
+                        value: {
+                            dataField : 'created_date',
+                            order: 'desc'
+                        },
+                        label: 'Newest'
+                    },
+                    {
+                        value: {
+                            dataField : 'created_date',
+                                order: 'asc'
+                        },
+                        label: 'Oldest'
+                    },
+                    {
+                        value: {
+                            dataField : 'priority',
+                                order: 'desc'
+                        },
+                        label: 'Most Prior'
+                    },
+                    {
+                        value: {
+                            dataField : 'priority',
+                                order: 'asc'
+                        },
+                        label: 'Least Prior'
+                    }
+                    ];
 
 class DealBoard extends Component {
 
@@ -135,27 +172,37 @@ class DealBoard extends Component {
 
     pipelineChanged(pipeline){
         this.setState({ selectedPipeline: pipeline });
-        this.props.pipelineSelected("pipeline", pipeline);
+
+        this.props.pipelineSelected({
+            pipeline: pipeline,
+            group: "deals-page",
+            id: "pipeline-selector"});
     }
 
     render() {
         return (
-            <div className="dealboard">
-                <div className="dealboard-toolbar">
-                        <SelectedFilters
-                            group="deals-page"
-                            index="leadlet-deal"/>
-                        <Button bsStyle="primary" bsSize="small" className="m-l-sm" onClick={this.toggleSearchMenu}><i className="fa fa-filter fa-xs"/></Button>
-                        <Button bsStyle="primary" bsSize="small" className="m-l-sm" onClick={this.toggleNewDealModal}>New Deal</Button>
-                        <PipelineSelector pipelines={this.props.pipelines}
-                                          onChange={this.pipelineChanged}
-                                          value={this.state.selectedPipeline}
-                        />
+            <div className="wrapper deal-board">
+                <div className="row toolbar">
+                    <SelectedFilters group="deals-page" index="leadlet-deal"/>
+                    <SortSelector
+                        className="m-l-xs sort-selector"
+                        group="deals-page"
+                        id="deal-sort-selector"
+                        options = {sortOptions}
+                    />
+                    <PipelineSelector className="m-l-xs pipeline-selector"
+                                      pipelines={this.props.pipelines}
+                                      onChange={this.pipelineChanged}
+                                      value={this.state.selectedPipeline}
+                    />
+
+                    <Button bsStyle="primary" bsSize="small" className="m-l-xs" onClick={this.toggleNewDealModal}>New Deal</Button>
+                        <Button bsStyle="primary" bsSize="small" className="m-l-xs" onClick={this.toggleSearchMenu}><i className="fa fa-filter fa-xs"/></Button>
                 </div>
 
-                <div className="deals">
+                <div className="row stages">
                     {this.state.isSearchMenuVisible &&
-                    <div id="deals-search" className="facet-filters">
+                    <div id="deals-search" className="side-search-menu deal-search">
                         <ListFilter
                             id="Products"
                             dataField="products.keyword"
@@ -199,10 +246,10 @@ class DealBoard extends Component {
                         />
                     </div>
                     }
-            <div id="deals-board" className="lists">
-                <CustomDragLayer snapToGrid={false}/>
-                {this.renderCards()}
-            </div>
+                    <div id="deals-board" className="lists">
+                        <CustomDragLayer snapToGrid={false}/>
+                        {this.renderCards()}
+                    </div>
 
             </div>
                 <SweetAlert

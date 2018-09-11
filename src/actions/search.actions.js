@@ -62,9 +62,9 @@ export function getDistinctTerms( filter, query="" ) {
     }
 }
 
-export function pipelineSelected(facetId, pipeline) {
+export function pipelineSelected( pipelineFilter ) {
     return dispatch => {
-        dispatch( {type: searchConstants.FACET_PIPELINE_SELECTED, payload: {"facetId": facetId, "pipeline": pipeline}});
+        dispatch( {type: searchConstants.FACET_PIPELINE_SELECTED, payload: pipelineFilter});
     };
 }
 
@@ -91,4 +91,10 @@ export function changeSort(sort) {
     };
 }
 
+
+export function clearSort(sort) {
+    return dispatch => {
+        dispatch( {type: searchConstants.SORT_CLEARED, payload: sort});
+    };
+}
 

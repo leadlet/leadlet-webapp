@@ -146,7 +146,7 @@ export const searchQuerySelector = createSelector(
 
             let searchFilters = [ ...termFilters, ...rangeFilters, ...dateRangeFilters ];
 
-            let pipelineFilter = filters.find(filter => filter.id === "pipeline" && filter.selected);
+            let pipelineFilter = filters.find(filter => filter.id === "pipeline-selector" && filter.selected);
 
             if( pipelineFilter ){
                 pipelineFilterText = `pipeline_id:${pipelineFilter.selected.pipeline.id}`;

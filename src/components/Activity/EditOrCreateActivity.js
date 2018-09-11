@@ -14,12 +14,11 @@ import renderDateTimePicker from "../../formUtils/renderDateTimePicker";
 import MapWithASearchBox from "../Map/MapWithASearchBox";
 import renderInputField from "../../formUtils/renderInputField";
 import renderAsyncSelectField from "../../formUtils/renderAsyncSelectField";
-import {loadDeal, loadOrganization, loadPerson, loadUser} from "../../formUtils/form.actions";
+import {loadDeal, loadUser} from "../../formUtils/form.actions";
 import renderTextAreaField from "../../formUtils/renderTextAreaField";
 import {getTimelineByUserIdAndRefresh} from "../../actions/timeline.actions";
 import moment from 'moment';
-import Fields from "redux-form/es/Fields";
-import renderPersonAndOrganizationFields from "../../formUtils/renderPersonAndOrganizationFields";
+
 
 const validate = values => {
     const errors = {}
@@ -118,7 +117,6 @@ class EditOrCreateActivity extends Component {
         activity.type = formValue.activityType;
         activity.title = formValue.title;
         activity.person = formValue.person;
-        activity.organization = formValue.organization;
         activity.agent = formValue.agent;
         activity.deal = formValue.deal;
         activity.location = formValue.location;
@@ -252,29 +250,6 @@ class EditOrCreateActivity extends Component {
                             />
                             }
 
-                            <Fields
-                                names={['person', 'organization']}
-                                component={renderPersonAndOrganizationFields}
-                                showPersonSelection={this.props.showPersonSelection}
-                                showOrganizationSelection={this.props.showOrganizationSelection}
-                                parse={(value, name) => {
-                                    if (value) {
-                                        return {
-                                            'id': value.value,
-                                            'name': value.label
-                                        };
-                                    }
-                                }}
-                                format={(value, name) => {
-                                    if (value) {
-                                        return {
-                                            'value': value.id,
-                                            'label': value.name
-                                        }
-                                    }
-
-                                }}
-                            />
                             { this.props.initialValues && this.props.initialValues.id &&
                                 <Field
                                     name="done"
@@ -332,7 +307,6 @@ class EditOrCreateActivity extends Component {
 
 EditOrCreateActivity.defaultProps = {
     showPersonSelection: true,
-    showOrganizationSelection: true,
     showDealSelection: true,
     showUserSelection: true
 }
@@ -343,11 +317,9 @@ const selector = formValueSelector('createEditActivityForm');
 function mapStateToProps(state) {
     return {
         persons: state.persons,
-        organizations: state.organizations,
         start: selector(state, 'start'),
         end: selector(state, 'end'),
         person: selector(state, 'person'),
-        organization: selector(state, 'organization'),
         location: selector(state, 'location')
     };
 }
