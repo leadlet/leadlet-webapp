@@ -1,4 +1,4 @@
-import { authHeader } from '../helpers';
+import {authHeader} from '../helpers';
 import {userActions} from "../actions/user.actions";
 
 export const dealService = {
@@ -10,7 +10,8 @@ export const dealService = {
     _delete,
     getDealsByPersonId,
     getDealsByOrganizationId,
-    patchDeal
+    patchDeal,
+    getAllLostReason
 };
 
 
@@ -35,7 +36,7 @@ function getDealsByOrganizationId(organizationId) {
 function create(stage) {
     const requestOptions = {
         method: 'POST',
-        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+        headers: {...authHeader(), 'Content-Type': 'application/json'},
         body: JSON.stringify(stage)
     };
 
@@ -45,7 +46,7 @@ function create(stage) {
 function update(stage) {
     const requestOptions = {
         method: 'PUT',
-        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+        headers: {...authHeader(), 'Content-Type': 'application/json'},
         body: JSON.stringify(stage)
     };
 
@@ -55,7 +56,7 @@ function update(stage) {
 function patchDeal(deal) {
     const requestOptions = {
         method: 'PUT',
-        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+        headers: {...authHeader(), 'Content-Type': 'application/json'},
         body: JSON.stringify(deal)
     };
 
@@ -83,20 +84,20 @@ function getAllDeals(filter, page, size) {
 function getDealsByFilter(query, sort, page) {
     const requestOptions = {
         method: 'GET',
-        headers: { ...authHeader(), 'Content-Type': 'application/json' }
+        headers: {...authHeader(), 'Content-Type': 'application/json'}
     };
 
     let params = [];
 
-    if( query !== undefined && query !== ""){
+    if (query !== undefined && query !== "") {
         params.push(`q=${query}`);
     }
-    if( page !== undefined && page !== ""){
+    if (page !== undefined && page !== "") {
         params.push(`page=${page}`);
     }
     params.push(`size=12`);
 
-    if( sort !== undefined && sort !== ""){
+    if (sort !== undefined && sort !== "") {
         params.push(sort);
     }
 
@@ -117,7 +118,7 @@ function _delete(id) {
 
 function handleResponse(response) {
     if (response.ok !== true) {
-        if( response.status === 401 ) {
+        if (response.status === 401) {
             userActions.logout();
         }
         return Promise.reject(response.statusText);
@@ -131,7 +132,7 @@ function handleResponse(response) {
 
 function handlePaginationResponse(response) {
     if (response.ok !== true) {
-        if( response.status === 401 ) {
+        if (response.status === 401) {
             userActions.logout();
         }
         return Promise.reject(response.statusText);
@@ -139,4 +140,13 @@ function handlePaginationResponse(response) {
 
     return Promise.all([response.json(), response.headers.get("x-total-count")]);
 
+}
+
+function getAllLostReason(filter, page, size) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    return fetch(`/api/lost-reasons?filter=${filter}&page=${page}&size=${size}`, requestOptions).then(handleResponse);
 }

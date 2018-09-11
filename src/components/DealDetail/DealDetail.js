@@ -7,6 +7,7 @@ import {getTimelineByDealId, getTimelineByDealIdAndRefresh} from "../../actions/
 import Timeline from "../Timeline/Timeline";
 import {getById} from "../../actions/person.actions";
 import CreateEditDeal from '../DealDetail/CreateEditDeal'
+import LostReason from '../DealDetail/LostReason'
 import moment from 'moment';
 import Link from "react-router-dom/es/Link";
 import {getActivitiesByDealId} from "../../actions/activity.actions";
@@ -30,24 +31,36 @@ class DealDetail extends Component {
         this.closeActivityModal = this.closeActivityModal.bind(this);
         this.openEditDealModal = this.openEditDealModal.bind(this);
         this.closeEditDealModal = this.closeEditDealModal.bind(this);
+        this.closeLostReasonModal = this.closeLostReasonModal.bind(this);
         this.renderAssignee = this.renderAssignee.bind(this);
         this.renderLastUpdateDate = this.renderLastUpdateDate.bind(this);
         this.renderPossibleCloseDate = this.renderPossibleCloseDate.bind(this);
         this.refreshTimeline = this.refreshTimeline.bind(this);
         this.renderCreatedDate = this.renderCreatedDate.bind(this);
         this.renderDealValue = this.renderDealValue.bind(this);
+        this.openLostReasonModal = this.openLostReasonModal.bind(this);
     }
 
-    closeEditDealModal(){
+    closeEditDealModal() {
         this.setState({
             isEditDealModalVisible: false
         });
     }
 
-    openEditDealModal(){
+    closeLostReasonModal() {
+        this.setState({
+            isLostReasonModalVisible: false
+        });
+    }
+
+    openEditDealModal() {
         this.setState({
             isEditDealModalVisible: true
         });
+    }
+
+    openLostReasonModal() {
+        this.setState({isLostReasonModalVisible: true});
     }
 
     handleChange(event) {
@@ -124,10 +137,14 @@ class DealDetail extends Component {
                                             <dd>{this.renderCreatedDate()}</dd>
                                             <dt>Possible Close:</dt>
                                             <dd>{this.renderLastUpdateDate()}</dd>
+                                            <dt>Deal Status:</dt>
+                                            <dd>{this.renderDealStatus()}</dd>
                                         </dl>
                                     </div>
                                     <div className="row">
-                                        <button onClick={this.openEditDealModal} className="btn btn-white btn-xs pull-right">Edit Deal</button>
+                                        <button onClick={this.openEditDealModal}
+                                                className="btn btn-white btn-xs pull-right">Edit Deal
+                                        </button>
                                     </div>
 
                                 </div>
@@ -199,6 +216,14 @@ class DealDetail extends Component {
                             />
                         }
 
+                        {
+                            this.state.isLostReasonModalVisible &&
+                            <LostReason showModal={this.state.isLostReasonModalVisible}
+                                        close={this.closeLostReasonModal}
+                                        initialValues={this.props.viewedDeal}
+                            />
+                        }
+
 
                     </div>
                 </div>
@@ -206,13 +231,27 @@ class DealDetail extends Component {
         }
     }
 
+    renderDealStatus() {
+
+        return (
+            <p>
+                <button onClick={() => this.openEditDealModal()} type="button" className="btn btn-primary btn-xs">WON
+                </button>
+                <button onClick={() => this.openLostReasonModal()} type="button"
+                        className="deal-danger-btn btn btn-danger btn-xs">LOST
+                </button>
+            </p>
+        );
+
+    }
 
     renderAssignee() {
         const deal = this.props.viewedDeal;
 
-        if(deal.owner){
-            return (<Link className="text-navy" to={"/user/" + deal.owner.id}>{deal.owner.firstName} {deal.owner.lastName}</Link>);
-        }else{
+        if (deal.owner) {
+            return (<Link className="text-navy"
+                          to={"/user/" + deal.owner.id}>{deal.owner.firstName} {deal.owner.lastName}</Link>);
+        } else {
             return (<em>Not set</em>);
         }
     }

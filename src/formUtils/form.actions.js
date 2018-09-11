@@ -2,7 +2,7 @@ import {getAllUserByFilterAndReturn} from "../actions/user.actions";
 import {getAllProductByFilterAndReturn} from "../actions/product.actions";
 import {getAllSourceByFilterAndReturn} from "../actions/source.actions";
 import {getAllPersonByFilterAndReturn} from "../actions/person.actions";
-import {getAllDealByFilterAndReturn} from "../actions/deal.actions";
+import {getAllDealByFilterAndReturn, getAllLostReasonByFilterAndReturn} from "../actions/deal.actions";
 import {getAllPipelineAndReturn} from "../actions/pipeline.actions";
 import {getAllStageReturn} from "../actions/stage.actions";
 import {getAllChannelByFilterAndReturn} from "../actions/channel.actions";
@@ -17,6 +17,19 @@ export function loadUser(input, callback) {
     };
 
     getAllUserByFilterAndReturn(`name:${input}`, successCallBack, failCallBack);
+
+};
+
+export function loadLostReason(input, callback) {
+
+    let successCallBack = (data) => {
+        callback(null, {options: data.map(reason => ({value: reason.id, label: `${reason.name}`}))});
+    };
+    let failCallBack = (error) => {
+        callback(error, null);
+    };
+
+    getAllLostReasonByFilterAndReturn(`name:${input}`, successCallBack, failCallBack);
 
 };
 
