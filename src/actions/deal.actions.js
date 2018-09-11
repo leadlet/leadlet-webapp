@@ -1,6 +1,7 @@
 import {dealConstants} from "../constants/deal.constants";
 import {dealService} from "../services/deal.service";
 import {alertActions} from "./alert.actions";
+import {productService} from "../services/product.service";
 
 
 
@@ -177,4 +178,12 @@ export function deleteDeal(id) {
     function request(deal) { return { type: dealConstants.DELETE_REQUEST, deal } }
     function success(payload) { return { type: dealConstants.DELETE_SUCCESS, payload } }
     function failure(id, error) { return { type: dealConstants.DELETE_FAILURE, id, error } }
+}
+
+export function getAllLostReasonByFilterAndReturn(filter, successCallback, failCallback) {
+    dealService.getAllLostReason(filter, 0, 20)
+        .then(
+            response => successCallback(response),
+            error => failCallback(error)
+        );
 }
