@@ -10783,3 +10783,18 @@ body {
     left: 50%;
     margin: -50px 0px 0px -50px;
 }
+
+
+
+.activities {
+    margin: 4px 20px;
+
+}
+
+.activities-toolbar {
+    padding: 5px 14px;
+    display: flex; /* or inline-flex */
+    flex-direction: row;
+    justify-content: flex-end;
+
+}

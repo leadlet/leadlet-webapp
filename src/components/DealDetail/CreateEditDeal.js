@@ -13,7 +13,7 @@ import formValueSelector from "redux-form/es/formValueSelector";
 import renderAsyncSelectField  from "../../formUtils/renderAsyncSelectField";
 
 import renderDatePicker from "../../formUtils/renderDatePicker";
-import {loadUser, loadProduct, loadSource, loadChannel} from "../../formUtils/form.actions";
+import {loadUser, loadProduct, loadSource, loadChannel, loadPerson} from "../../formUtils/form.actions";
 import renderPipelineAndStageFields from "../../formUtils/renderPipelineAndStageFields";
 
 /*let currencies = [
@@ -84,7 +84,8 @@ class CreateEditDeal extends Component {
             possibleCloseDate: formValues.possibleCloseDate && formValues.possibleCloseDate._d,
             products: formValues.products,
             dealSource: formValues.dealSource,
-            dealChannel: formValues.dealChannel
+            dealChannel: formValues.dealChannel,
+            createdDate: formValues.createdDate
         }
 
         if( deal.id ){
@@ -145,6 +146,32 @@ class CreateEditDeal extends Component {
 
                             }}
                         />
+                        { this.props.showPersonSelection &&
+                        <Field
+                            name="person"
+                            label="Person"
+                            placeholder="Select deal contact"
+                            component={renderAsyncSelectField}
+                            loadOptions={loadPerson}
+                            parse={(value) => {
+                                if( value ) {
+                                    return {
+                                        'id': value.value,
+                                        'name': value.label
+                                    };
+                                }
+                            }}
+                            format={(value) => {
+                                if( value ){
+                                    return {
+                                        'value': value.id,
+                                        'label': value.name
+                                    }
+                                }
+
+                            }}
+                        />
+                        }
 
                         { this.props.showUserSelection &&
                             <Field
@@ -153,6 +180,23 @@ class CreateEditDeal extends Component {
                                 placeholder="Select deal owner"
                                 component={renderAsyncSelectField}
                                 loadOptions={loadUser}
+                                parse={(value) => {
+                                    if( value ) {
+                                        return {
+                                            'id': value.value,
+                                            'name': value.label
+                                        };
+                                    }
+                                }}
+                                format={(value) => {
+                                    if( value ){
+                                        return {
+                                            'value': value.id,
+                                            'label': value.name
+                                        }
+                                    }
+
+                                }}
                             />
                         }
 

@@ -3,21 +3,13 @@ import connect from "react-redux/es/connect/connect";
 import {createNote} from "../../actions/note.actions";
 import {getById} from "../../actions/person.actions";
 import ContactPerson from "./ContactPerson";
-import '../../../node_modules/fullcalendar/dist/fullcalendar.css';
-import $ from 'jquery';
-import moment from 'moment';
 import Timeline from "../Timeline/Timeline";
-import {getActivitiesByPersonId} from "../../actions/activity.actions";
-import EditOrCreateActivity from "../Activity/EditOrCreateActivity";
-import CreateEditDeal from "../DealDetail/CreateEditDeal";
 import {
     getTimelineByPersonId, getTimelineByPersonIdAndRefresh,
     getTimelineLoadMoreByPersonId
 } from "../../actions/timeline.actions";
-import {BootstrapTable, TableHeaderColumn} from "react-bootstrap-table";
-import {deleteDeal, getDealsByPersonId} from "../../actions/deal.actions";
-import Link from "react-router-dom/es/Link";
-import {personDealsSelector} from "../../models/selectors";
+import EditOrCreateActivity from "../Activity/EditOrCreateActivity";
+import CreateEditDeal from "../DealDetail/CreateEditDeal";
 
 class ContactDetail extends Component {
 
@@ -29,8 +21,6 @@ class ContactDetail extends Component {
             isDealModalVisible: false,
             isActivityModalVisible: false,
             value: '',
-            deletingDeal: null,
-            showDeleteDealDialog: false
         };
 
         this.openEditModal = this.openEditModal.bind(this);
@@ -42,57 +32,8 @@ class ContactDetail extends Component {
         this.refreshTimeline = this.refreshTimeline.bind(this);
         this.openDealModal = this.openDealModal.bind(this);
         this.closeDealModal = this.closeDealModal.bind(this);
-        this.dataMapper = this.dataMapper.bind(this);
-        this.titleFormatter = this.titleFormatter.bind(this);
-        this.deleteDealFormatter = this.deleteDealFormatter.bind(this);
-        this.deleteDeal = this.deleteDeal.bind(this);
-        this.urlFormatter = this.urlFormatter.bind(this);
     }
 
-    confirmDeleteDeal() {
-        this.props.deleteDeal(this.state.deletingDeal);
-        this.setState({
-            deletingDeal: null,
-            showDeleteDealDialog: false
-        });
-    }
-
-    deleteDeal(deal) {
-        this.setState({
-            deletingDeal: deal,
-            showDeleteDealDialog: true
-        });
-    }
-
-    //formatters
-    deleteDealFormatter(cell, row) {
-        return (
-            <i className="btn fa fa-trash" onClick={() => this.deleteDeal(row)}/>
-        );
-    }
-
-    titleFormatter(cell, row) {
-        return (<Link to={"/deal/" + row.id}>{cell}</Link>);
-    }
-
-    urlFormatter(cell, row) {
-        return (<a href={cell}>{cell}</a>);
-    }
-
-    dataMapper() {
-
-        if (this.props.deals) {
-            return this.props.deals.map(deal => {
-                return {
-                    id: deal.id,
-                    title: deal.title,
-                    dealValue: deal.dealValue && deal.dealValue.potentialValue,
-                    stageId: deal.stage.name
-                };
-            });
-        }
-
-    }
 
     refreshTimeline() {
         this.props.getTimelineByPersonIdAndRefresh(null, null, null, this.props.match.params.personId)
@@ -138,16 +79,6 @@ class ContactDetail extends Component {
 
     componentDidMount() {
         this.props.getById(this.props.match.params.personId);
-        this.props.getActivitiesByPersonId(this.props.match.params.personId);
-        this.props.getDealsByPersonId(this.props.match.params.personId);
-    }
-
-    componentDidUpdate() {
-
-        if (!this.props.ids) {
-            return;
-        }
-
     }
 
     render() {
@@ -157,9 +88,9 @@ class ContactDetail extends Component {
             );
         } else {
             return (
-                <div className="container-fluid">
+                <div className="container-fluid m-lg">
                     <div className="row">
-                        <div className="col-md-2">
+                        <div className="col-md-4">
 
                             <div className="contact-box center-version">
                                 <a onClick={() => this.openEditModal(this.props.viewedPerson.type)}>
@@ -181,14 +112,18 @@ class ContactDetail extends Component {
                                     </address>
                                 </a>
                                 <div className="contact-box-footer">
-                                    <div className="m-t-xs btn-group">
                                         <a onClick={() => this.openEditModal()}
                                            className="btn btn-primary btn-sm">Edit</a>
-                                    </div>
+
+                                        <a onClick={() => this.openActivityModal()}
+                                           className="btn btn-primary btn-sm m-l-sm">New Activity</a>
+
+                                        <a onClick={() => this.openDealModal()}
+                                           className="btn btn-primary btn-sm m-l-sm">New Deal</a>
                                 </div>
                             </div>
                         </div>
-                        <div className="col-md-6">
+                        <div className="col-md-8">
                             <div className="ibox">
                                 <div className="ibox-content">
                                     <div className="row m-t-sm">
@@ -242,57 +177,7 @@ class ContactDetail extends Component {
                                 />
                             </div>
                         </div>
-                        <div className="col-lg-4">
-                            <div className="ibox">
-                                <div className="ibox-title">
-                                    <i className="btn btn-sm fa fa-plus pull-right" aria-hidden="true"
-                                       onClick={() => this.openDealModal()}/>
-                                    <h5>Deals</h5>
-                                </div>
-                                <div className="ibox-content text-center">
-                                    <BootstrapTable
-                                        tableHeaderClass='client-table-header'
-                                        containerClass='client-table-container'
-                                        tableContainerClass='client-table'
-                                        tableBodyClass='table-hover'
 
-                                        data={this.dataMapper()}
-                                        remote={true}
-                                        pagination={true}
-                                        keyField='id'
-                                        fetchInfo={{dataTotalSize: parseInt(this.props.viewedPerson.dataTotalSize, 10)}}
-                                        options={{
-                                            sizePerPage: 5,
-                                            onPageChange: this.props.viewedPerson.onPageChange,
-                                            sizePerPageList: [5, 10],
-                                            page: this.props.viewedPerson.currentPage,
-                                            onSizePerPageList: this.props.viewedPerson.onSizePerPageList
-                                        }}
-
-                                    >
-                                        <TableHeaderColumn dataField='title'
-                                                           dataFormat={this.titleFormatter}>Title</TableHeaderColumn>
-                                        <TableHeaderColumn dataField='dealValue'>Deal Value</TableHeaderColumn>
-                                        <TableHeaderColumn dataField='stageId'>Stage</TableHeaderColumn>
-                                        <TableHeaderColumn disabled
-                                                           dataFormat={this.deleteDealFormatter}/>
-                                    </BootstrapTable>
-                                </div>
-                            </div>
-                            <div className="ibox">
-                                <div className="ibox-title">
-                                    <i className="btn btn-sm fa fa-plus pull-right" aria-hidden="true"
-                                       onClick={() => this.openActivityModal({
-                                           start: moment(),
-                                           end: moment()
-                                       })}/>
-                                    <h5>Activities</h5>
-                                </div>
-                                <div className="ibox-content">
-                                    <div id="contact-calendar"/>
-                                </div>
-                            </div>
-                        </div>
 
                         {
                             this.state.isActivityModalVisible &&
@@ -340,20 +225,14 @@ class ContactDetail extends Component {
 
 function mapStateToProps(state, props) {
     return {
-        viewedPerson: state.persons.viewedPerson,
-        activities: state.activities.items,
-        ids: state.activities.ids,
-        deals: personDealsSelector(state, props.match.params.personId)
-    };
+        viewedPerson: state.persons.viewedPerson
+    }
 }
 
 export default connect(mapStateToProps, {
     getById,
     createNote,
-    getActivitiesByPersonId,
     getTimelineByPersonId,
     getTimelineLoadMoreByPersonId,
-    getTimelineByPersonIdAndRefresh,
-    getDealsByPersonId,
-    deleteDeal
+    getTimelineByPersonIdAndRefresh
 })(ContactDetail);

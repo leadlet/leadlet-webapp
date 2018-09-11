@@ -59,7 +59,7 @@ export function loadChannel(input, callback) {
 
 };
 
-export function loadPerson(input, callback, organization) {
+export function loadPerson(input, callback) {
 
     let successCallBack = (data) => {
         callback(null, {options: data.map(person => ({value: person.id, label: person.name}))});
@@ -68,14 +68,8 @@ export function loadPerson(input, callback, organization) {
         callback(error, null);
     };
 
-    let organizationId = "";
 
-    // TODO ygokirmak
-    if( organization !== undefined){
-        organizationId = organization.value;
-    }
-
-    getAllPersonByFilterAndReturn(`name:${input},organization:${organizationId}`, successCallBack, failCallBack);
+    getAllPersonByFilterAndReturn(`name:${input}`, successCallBack, failCallBack);
 
 }
 
