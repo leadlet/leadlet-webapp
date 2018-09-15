@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
 import moment from 'moment';
 import connect from "react-redux/es/connect/connect";
-import Waypoint from 'react-waypoint';
-import {resetTimelines} from "../../actions/timeline.actions";
+import {getTimelineByFilter, resetTimelines} from "../../actions/timeline.actions";
+import './../../styles/timeline.css';
+import EditOrCreateActivity from "../Activity/EditOrCreateActivity";
+import {searchQuerySelector, sortSelector, timelinesSelector} from "../../models/selectors";
+import NoteCreated from "./NoteCreated";
 
 
 class Timeline extends Component {
@@ -13,218 +16,100 @@ class Timeline extends Component {
         super(props);
 
         this.state = {
-            currentPage: 0
+            currentPage: 0,
+            isActivityModalVisible: false
         };
 
         this.renderTimelineItems = this.renderTimelineItems.bind(this);
-        this.loadMoreItems = this.loadMoreItems.bind(this);
-
-        this._handleWaypointEnter = this._handleWaypointEnter.bind(this);
+        this.openActivityModal = this.openActivityModal.bind(this);
+        this.closeActivityModal = this.closeActivityModal.bind(this);
     }
 
     componentWillUnmount() {
-        this.props.resetTimelines();
+        //this.props.resetTimelines();
     }
 
     componentDidMount() {
-        console.log("component mount: " + this.props.itemId);
-        this.loadMoreItems();
+        this.props.getTimelineByFilter();
     }
 
-    loadMoreItems() {
-        this.props.getTimelineItems(null, this.state.currentPage, this.PAGE_SIZE, this.props.itemId);
+    openActivityModal() {
+        this.setState({isActivityModalVisible: true});
     }
 
+    closeActivityModal() {
+        this.setState({isActivityModalVisible: false});
+    }
     renderTimelineItems() {
-        return (
-            <div>
-                {this.props.timeLineIds.map(timelineId => {
-                    const timelineItem = this.props.timeLines[timelineId];
-
+        return this.props.timelines.map(timelineItem => {
                     if (timelineItem.type === 'NOTE_CREATED') {
                         return (
-                            <div key={timelineId} className="vertical-timeline-block">
-                                <div className="vertical-timeline-icon navy-bg">
-                                    <i className="fa fa-sticky-note-o" aria-hidden="true"/>
-                                </div>
-
-                                <div className="vertical-timeline-content">
-                                    <h2>Note</h2>
-                                    <p>
-                                        {timelineItem.source.content}
-                                    </p>
-                                    <span className="vertical-date">
-                                        {moment(timelineItem.createdDate).format('HH:mm').toString()} <br/>
-                                        <small>{moment(timelineItem.createdDate).format('DD-MMM-YYYY').toString()}</small>
-                    </span>
-                                </div>
-                            </div>
-
+                            <NoteCreated item={timelineItem}/>
                         )
-                    } else if (timelineItem.type === 'DOCUMENT_CREATED') {
-                        return (
-                            <div key={timelineId} className="vertical-timeline-block">
-                                <div className="vertical-timeline-icon navy-bg">
-                                    <i className="fa fa-file"/>
-                                </div>
-
-                                <div className="vertical-timeline-content">
-                                    <h2>Document</h2>
-                                    <p>
-                                        {timelineItem.source.name}
-                                    </p>
-                                    <span className="vertical-date">
-                                        {moment(timelineItem.createdDate).format('HH:mm').toString()} <br/>
-                                        <small>{moment(timelineItem.createdDate).format('DD-MMM-YYYY').toString()}</small>
-                    </span>
-                                </div>
-                            </div>
-
-                        )
-                    } else if (timelineItem.type === 'ACTIVITY_CREATED' && timelineItem.source.type === "CALL") {
-                        return (
-                            <div key={timelineId} className="vertical-timeline-block">
-                                <div className="vertical-timeline-icon navy-bg">
-                                    <i className="fa fa-phone"/>
-                                </div>
-
-                                <div className="vertical-timeline-content">
-                                    <h2>{timelineItem.source.title}</h2>
-                                    <p>
-                                        {timelineItem.source.memo}
-                                    </p>
-                                    <span className="vertical-date">
-                                        {moment(timelineItem.createdDate).format('HH:mm').toString()} <br/>
-                                        <small>{moment(timelineItem.createdDate).format('DD-MMM-YYYY').toString()}</small>
-                    </span>
-                                </div>
-                            </div>
-                        );
-                    } else if (timelineItem.type === 'ACTIVITY_CREATED' && timelineItem.source.type === "MEETING") {
-                        return (
-                            <div key={timelineId} className="vertical-timeline-block">
-                                <div className="vertical-timeline-icon navy-bg">
-                                    <i className="fa fa-users"/>
-                                </div>
-
-                                <div className="vertical-timeline-content">
-                                    <h2>{timelineItem.source.title}</h2>
-                                    <p>
-                                        {timelineItem.source.memo}
-                                    </p>
-                                    <span className="vertical-date">
-                                        {moment(timelineItem.createdDate).format('HH:mm').toString()} <br/>
-                                        <small>{moment(timelineItem.createdDate).format('DD-MMM-YYYY').toString()}</small>
-                    </span>
-                                </div>
-                            </div>
-                        );
-                    } else if (timelineItem.type === 'ACTIVITY_CREATED' && timelineItem.source.type === "TASK") {
-                        return (
-                            <div key={timelineId} className="vertical-timeline-block">
-                                <div className="vertical-timeline-icon navy-bg">
-                                    <i className="fa fa-clock-o"/>
-                                </div>
-
-                                <div className="vertical-timeline-content">
-                                    <h2>{timelineItem.source.title}</h2>
-                                    <p>
-                                        {timelineItem.source.memo}
-                                    </p>
-                                    <span className="vertical-date">
-                                        {moment(timelineItem.createdDate).format('HH:mm').toString()} <br/>
-                                        <small>{moment(timelineItem.createdDate).format('DD-MMM-YYYY').toString()}</small>
-                    </span>
-                                </div>
-                            </div>
-                        );
-                    } else if (timelineItem.type === 'ACTIVITY_CREATED' && timelineItem.source.type === "DEADLINE") {
-                        return (
-                            <div key={timelineId} className="vertical-timeline-block">
-                                <div className="vertical-timeline-icon navy-bg">
-                                    <i className="fa fa-flag"/>
-                                </div>
-
-                                <div className="vertical-timeline-content">
-                                    <h2>{timelineItem.source.title}</h2>
-                                    <p>
-                                        {timelineItem.source.memo}
-                                    </p>
-                                    <span className="vertical-date">
-                                        {moment(timelineItem.createdDate).format('HH:mm').toString()} <br/>
-                                        <small>{moment(timelineItem.createdDate).format('DD-MMM-YYYY').toString()}</small>
-                    </span>
-                                </div>
-                            </div>
-                        );
-                    } else if (timelineItem.type === 'ACTIVITY_CREATED' && timelineItem.source.type === "EMAIL") {
-                        return (
-                            <div key={timelineId} className="vertical-timeline-block">
-                                <div className="vertical-timeline-icon navy-bg">
-                                    <i className="fa fa-paper-plane"/>
-                                </div>
-
-                                <div className="vertical-timeline-content">
-                                    <h2>{timelineItem.source.title}</h2>
-                                    <p>
-                                        {timelineItem.source.memo}
-                                    </p>
-                                    <span className="vertical-date">
-                                        {moment(timelineItem.createdDate).format('HH:mm').toString()} <br/>
-                                        <small>{moment(timelineItem.createdDate).format('DD-MMM-YYYY').toString()}</small>
-                    </span>
-                                </div>
-                            </div>
-                        );
                     } else {
                         return (
                             <em>Loading...</em>
                         );
                     }
-                })}
-            </div>
-        );
-    }
-
-    _handleWaypointEnter(waypointUpdate) {
-        if (this.props.timeLineIds.length !== this.props.dataTotalSize) {
-            this.setState({currentPage: this.state.currentPage + 1},
-                this.loadMoreItems)
-        }
+                });
     }
 
     render() {
-        if (this.props.timeLineIds && this.props.timeLineIds.length > 0) {
             return (
                 <div className="ibox-content">
-                    <div id="vertical-timeline"
-                         className="vertical-container dark-timeline center-orientation full-height">
-                        <div>
-                            {this.renderTimelineItems()}
-                            <Waypoint
-                                onEnter={this._handleWaypointEnter}
-                            />
+                    <div className="tracking-list">
+
+
+                        <div className="tracking-item">
+                            <div className="tracking-icon status-intransit">
+                                <svg className="svg-inline--fa fa-circle fa-w-16" aria-hidden="true" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
+                                    <path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"/>
+                                </svg>
+
+                            </div>
+                            <div className="tracking-content"><a className="btn btn-primary btn-sm" onClick={() => this.openActivityModal()}>New Activity</a></div>
                         </div>
+
+                        <div className="tracking-item">
+                            <div className="tracking-icon status-intransit">
+                                <svg className="svg-inline--fa fa-circle fa-w-16" aria-hidden="true" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
+                                    <path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"/>
+                                </svg>
+
+                            </div>
+                            <div className="tracking-date">Aug 10, 2018<span>11:19 AM</span></div>
+                            <div className="tracking-content">SHIPMENT DELAYSHIPPER INSTRUCTION TO DESTROY<span>SHENZHEN, CHINA, PEOPLE'S REPUBLIC</span></div>
+                        </div>
+
+                        <div className="tracking-item-separator"><h2><span>past</span></h2></div>
+
+                        {
+                            this.renderTimelineItems()
+                        }
                     </div>
+
+                    {
+                        this.state.isActivityModalVisible &&
+                        <EditOrCreateActivity showModal={this.state.isActivityModalVisible}
+                                              close={this.closeActivityModal}
+                                              initialValues={this.props.initialValues}
+                                              createCallback={this.refreshTimeline}
+                                              showPersonSelection={false}
+                        />
+
+                    }
                 </div>
-            )
-        }
-        else {
-            return (
-                <div></div>
             );
-        }
     }
 }
 
 function mapStateToProps(state) {
     return {
-        timeLines: state.timeLines.items,
-        timeLineIds: state.timeLines.ids,
-        dataTotalSize: state.timeLines.dataTotalSize
+        timelines: timelinesSelector(state),
+        query: searchQuerySelector(state, {group: "timelines-page"}),
+        sort: sortSelector(state, {group: "timelines-page"}),
+        maxTimelineCount: state.timelines.maxTimelineCount
     };
 }
 
-export default connect(mapStateToProps, {
-    resetTimelines
-})(Timeline);
+export default connect(mapStateToProps, {resetTimelines, getTimelineByFilter})(Timeline);

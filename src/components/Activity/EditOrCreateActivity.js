@@ -16,7 +16,6 @@ import renderInputField from "../../formUtils/renderInputField";
 import renderAsyncSelectField from "../../formUtils/renderAsyncSelectField";
 import {loadDeal, loadUser} from "../../formUtils/form.actions";
 import renderTextAreaField from "../../formUtils/renderTextAreaField";
-import {getTimelineByUserIdAndRefresh} from "../../actions/timeline.actions";
 import moment from 'moment';
 
 
@@ -129,7 +128,7 @@ class EditOrCreateActivity extends Component {
         if (this.props.initialValues && this.props.initialValues.id) {
             this.props.update(activity);
         } else {
-            this.props.create(activity, () => this.props.getTimelineByUserIdAndRefresh(null, null, null, activity.userId));
+            this.props.create(activity);
         }
         this.props.close();
     }
@@ -332,7 +331,6 @@ export default reduxForm({
     connect(mapStateToProps, {
         create,
         update,
-        _delete,
-        getTimelineByUserIdAndRefresh
+        _delete
     })(EditOrCreateActivity)
 );

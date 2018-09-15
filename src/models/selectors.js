@@ -201,3 +201,11 @@ export const activitiesSelector = createSelector(
         return session.Activity.all().toRefArray();
     }
 );
+
+export const timelinesSelector = createSelector(
+    orm,
+    dbStateSelector,
+    session => {
+        return session.Timeline.all().toRefArray();
+    }
+);

@@ -1,59 +1,22 @@
 import {authHeader} from '../helpers';
 import {userActions} from "../actions/user.actions";
+import {buildRequestString} from "../helpers/requestUtils";
 
 export const timelineService = {
-    getPaginated,
-    getByPersonId,
-    getByOrganizationId,
-    getByDealId,
-    getByUserId
+    getTimelinesByFilter
 };
 
-function getByUserId(filter, page, size, userId) {
+function getTimelinesByFilter(query, sort, page, size) {
     const requestOptions = {
         method: 'GET',
-        headers: authHeader()
+        headers: {...authHeader(), 'Content-Type': 'application/json'}
     };
 
-    return fetch(`/api/timeLines/user/${userId}?filter=${filter}&page=${page}&size=${size}&sort=createdDate,desc`, requestOptions).then(handlePaginationResponse);
+    let requestString = buildRequestString(query, sort, page, size);
+
+    return fetch(`/api/timeLines?${requestString}`, requestOptions).then(handlePaginationResponse);
 }
 
-function getByDealId(filter, page, size, dealId) {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
-
-    return fetch(`/api/timeLines/deal/${dealId}?filter=${filter}&page=${page}&size=${size}&sort=createdDate,desc`, requestOptions).then(handlePaginationResponse);
-}
-
-function getByPersonId(filter, page, size, personId) {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
-
-    return fetch(`/api/timeLines/person/${personId}?filter=${filter}&page=${page}&size=${size}&sort=createdDate,desc`, requestOptions).then(handlePaginationResponse);
-}
-
-function getByOrganizationId(filter, page, size, organizationId) {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
-
-    return fetch(`/api/timeLines/organization/${organizationId}?filter=${filter}&page=${page}&size=${size}&sort=createdDate,desc`, requestOptions).then(handlePaginationResponse);
-}
-
-
-function getPaginated(filter, page, size) {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
-
-    return fetch(`/api/timeLines?filter=${filter}&page=${page}&size=${size}&sort=createdDate,desc`, requestOptions).then(handlePaginationResponse);
-}
 
 function handlePaginationResponse(response) {
     if (response.ok !== true) {

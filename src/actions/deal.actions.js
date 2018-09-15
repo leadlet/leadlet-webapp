@@ -1,45 +1,6 @@
 import {dealConstants} from "../constants/deal.constants";
 import {dealService} from "../services/deal.service";
 import {alertActions} from "./alert.actions";
-import {productService} from "../services/product.service";
-
-
-
-export function getDealsByPersonId(personId) {
-    return dispatch => {
-        dispatch(request(personId));
-
-        dealService.getDealsByPersonId(personId)
-            .then(
-                deals => {
-                    dispatch(success(deals));
-                },
-                error => dispatch(failure(error))
-            );
-    };
-
-    function request() { return { type: dealConstants.GET_ALL_REQUEST } }
-    function success(payload) { return { type: dealConstants.GET_ALL_SUCCESS, payload } }
-    function failure(error) { return { type: dealConstants.GET_ALL_FAILURE, error } }
-}
-
-export function getDealsByOrganizationId(organizationId) {
-    return dispatch => {
-        dispatch(request(organizationId));
-
-        dealService.getDealsByOrganizationId(organizationId)
-            .then(
-                deals => {
-                    dispatch(success(deals));
-                },
-                error => dispatch(failure(error))
-            );
-    };
-
-    function request() { return { type: dealConstants.GET_ALL_REQUEST } }
-    function success(payload) { return { type: dealConstants.GET_ALL_SUCCESS, payload } }
-    function failure(error) { return { type: dealConstants.GET_ALL_FAILURE, error } }
-}
 
 export function getDealById(dealId) {
     return dispatch => {

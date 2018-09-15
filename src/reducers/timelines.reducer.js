@@ -1,51 +1,22 @@
 import {timelineConstants} from "../constants/timeline.constants";
-import {normalize, schema} from 'normalizr';
 
-const timeLineSchema = new schema.Entity('timeLines');
-
-// or use shorthand syntax:
-const timelineListSchema = [timeLineSchema];
-
-export function timeLines(state = { items: {}, ids: []}, action) {
+export function timelines(state = { ids: [], items: {}}, action) {
     switch (action.type) {
-        /* ALL timelineS */
-        case timelineConstants.RESET_TIMELINES:
-            return { items: [], ids: []};
-        case timelineConstants.GETALL_REQUEST:
+        case timelineConstants.APPEND_TIMELINES_SUCCESS:
+            var maxTimelineCount = action.payload.maxTimelineCount;
             return {
                 ...state,
-                loading: true
+                maxTimelineCount: maxTimelineCount
             };
-        case timelineConstants.GETALL_SUCCESS:
-            const _items = normalize(action.data.items, timelineListSchema);
 
+        case timelineConstants.LOAD_TIMELINES_SUCCESS:
+            var maxTimelineCount = action.payload.maxTimelineCount;
             return {
                 ...state,
-                items: { ...state.items, ..._items.entities.timeLines},
-                ids: [ ...new Set([...state.ids, ..._items.result]) ],
-                dataTotalSize: action.data.dataTotalSize
+                maxTimelineCount: maxTimelineCount
+            };
 
-            };
-        case timelineConstants.GETALL_FAILURE:
-            return {
-                error: action.error
-            };
-        case timelineConstants.GETALL_REQUEST_REFRESH:
-            return {
-                ...state,
-                loading: true
-            };
-        case timelineConstants.GETALL_SUCCESS_REFRESH:
-            const _items2 = normalize(action.data.items, timelineListSchema);
-            return {
-                ...state,
-                items: _items2.entities.timeLines,
-                ids: _items2.result
-            };
-        case timelineConstants.GETALL_FAILURE_REFRESH:
-            return {
-                error: action.error
-            };
+
         default:
             return state
     }

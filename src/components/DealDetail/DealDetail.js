@@ -3,14 +3,12 @@ import '../../../node_modules/fullcalendar/dist/fullcalendar.css';
 import connect from "react-redux/es/connect/connect";
 import {getDealById} from "../../actions/deal.actions";
 import {createNote} from "../../actions/note.actions";
-import {getTimelineByDealId, getTimelineByDealIdAndRefresh} from "../../actions/timeline.actions";
 import Timeline from "../Timeline/Timeline";
 import {getById} from "../../actions/person.actions";
 import CreateEditDeal from '../DealDetail/CreateEditDeal'
 import LostReason from '../DealDetail/LostReason'
 import moment from 'moment';
 import Link from "react-router-dom/es/Link";
-import {getActivitiesByDealId} from "../../actions/activity.actions";
 import {detailedDealSelector} from "../../models/selectors";
 
 
@@ -21,21 +19,17 @@ class DealDetail extends Component {
 
         this.state = {
             value: '',
-            isEditDealModalVisible: false,
-            isActivityModalVisible: false
+            isEditDealModalVisible: false
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.openActivityModal = this.openActivityModal.bind(this);
-        this.closeActivityModal = this.closeActivityModal.bind(this);
         this.openEditDealModal = this.openEditDealModal.bind(this);
         this.closeEditDealModal = this.closeEditDealModal.bind(this);
         this.closeLostReasonModal = this.closeLostReasonModal.bind(this);
         this.renderAssignee = this.renderAssignee.bind(this);
         this.renderLastUpdateDate = this.renderLastUpdateDate.bind(this);
         this.renderPossibleCloseDate = this.renderPossibleCloseDate.bind(this);
-        this.refreshTimeline = this.refreshTimeline.bind(this);
         this.renderCreatedDate = this.renderCreatedDate.bind(this);
         this.renderDealValue = this.renderDealValue.bind(this);
         this.openLostReasonModal = this.openLostReasonModal.bind(this);
@@ -79,7 +73,6 @@ class DealDetail extends Component {
 
     componentDidMount() {
         this.props.getDealById(this.props.match.params.dealId);
-        this.props.getActivitiesByDealId(this.props.match.params.dealId);
     }
 
     componentDidUpdate() {
@@ -87,18 +80,6 @@ class DealDetail extends Component {
         if (!this.props.ids) {
             return;
         }
-    }
-
-    openActivityModal() {
-        this.setState({isActivityModalVisible: true});
-    }
-
-    closeActivityModal() {
-        this.setState({isActivityModalVisible: false});
-    }
-
-    refreshTimeline() {
-        this.props.getTimelineByDealIdAndRefresh(null, null, null, this.props.viewedDeal.id)
     }
 
     render() {
@@ -112,9 +93,9 @@ class DealDetail extends Component {
         } else {
 
             return (
-                <div className="container-fluid">
+                <div className="container-fluid m-lg">
                     <div className="row">
-                        <div className="col-md-3">
+                        <div className="col-md-4">
                             <div className="ibox">
                                 <div className="ibox-content info-card">
                                     <div className="row">
@@ -150,58 +131,32 @@ class DealDetail extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-md-5">
+                        <div className="col-md-8">
                             <div className="ibox">
                                 <div className="ibox-content">
-                                    <div className="row m-t-sm">
-                                        <div className="col-lg-12">
-                                            <div className="panel blank-panel">
-                                                <div className="panel-heading">
-                                                    <div className="panel-options">
-                                                        <ul className="nav nav-tabs">
-                                                            <li className="active"><a href="#tab-1"
-                                                                                      data-toggle="tab">Add
-                                                                a Note</a></li>
-                                                            <li className="disabled"><a href="#tab-2">Send an
-                                                                Email</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div className="panel-body">
-                                                    <div className="tab-content">
-                                                        <div className="tab-pane active" id="tab-1">
-                                                            <div className="note-form">
-                                                                <form onSubmit={this.handleSubmit}>
-                                                                    <div className="form-group">
-                                                                            <textarea placeholder="Please enter a note."
-                                                                                      className="form-control"
-                                                                                      value={this.state.value}
-                                                                                      onChange={this.handleChange}
-                                                                            />
-                                                                    </div>
-                                                                    <div className="text-right">
-                                                                        <button type="submit"
-                                                                                className="btn btn-sm btn-primary m-t-n-xs">
-                                                                            <strong>Save</strong></button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                        <div className="tab-pane" id="tab-2">
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                    <form onSubmit={this.handleSubmit}>
+                                        <div className="form-group">
+                                        <textarea placeholder="Please enter a note."
+                                                  className="form-control"
+                                                  value={this.state.value}
+                                                  onChange={this.handleChange}
+                                        />
                                         </div>
-                                    </div>
+                                        <div className="text-right">
+                                            <button type="submit"
+                                                    className="btn btn-sm btn-primary m-t-n-xs">
+                                                <strong>Save</strong></button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                             <div className="ibox">
                                 <Timeline
-                                    pageSize={5}
-                                    getTimelineItems={this.props.getTimelineByDealId}
-                                    itemId={this.props.viewedDeal.id}
+                                    initialValues={{
+                                        deal: {
+                                            id: this.props.viewedDeal.id
+                                        }
+                                    }}
                                 />
                             </div>
                         </div>
@@ -319,17 +274,12 @@ class DealDetail extends Component {
 
 function mapStateToProps(state, props) {
     return {
-        viewedDeal: detailedDealSelector(state, props.match.params.dealId),
-        activities: state.activities.items,
-        ids: state.activities.ids
+        viewedDeal: detailedDealSelector(state, props.match.params.dealId)
     };
 }
 
 export default connect(mapStateToProps, {
     getDealById,
     createNote,
-    getTimelineByDealId,
-    getTimelineByDealIdAndRefresh,
     getById,
-    getActivitiesByDealId
 })(DealDetail);

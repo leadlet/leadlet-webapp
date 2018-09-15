@@ -10,7 +10,7 @@ import CustomDragLayer from "./CustomDragLayer";
 import {deleteDeal} from "../../actions/deal.actions";
 import SweetAlert from 'sweetalert-react';
 import CreateEditDeal from '../DealDetail/CreateEditDeal'
-import {dealsSelector, pipelinesSelector, stagesSelector} from "../../models/selectors";
+import {pipelinesSelector, stagesSelector} from "../../models/selectors";
 import ListFilter from "../Search/ListFilter";
 import {getAllStages} from "../../actions/stage.actions";
 import RangeFilter from "../Search/RangeFilter";
@@ -305,8 +305,7 @@ class DealBoard extends Component {
 function mapStateToProps(state) {
     return {
         pipelines: pipelinesSelector(state),
-        stages: stagesSelector(state),
-        deals: dealsSelector(state)
+        stages: stagesSelector(state)
     }
 }
 
