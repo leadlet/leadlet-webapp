@@ -1,5 +1,4 @@
 import {normalize, schema} from 'normalizr';
-import {pipelineConstants} from "../constants/pipeline.constants";
 import {stageConstants} from "../constants/stage.constants";
 
 const stageSchema = new schema.Entity('stages');
@@ -16,8 +15,6 @@ export function stageStore(state = {}, action) {
                 items: stages.entities.stages,
                 ids: stages.result
             };
-
-            break;
         case stageConstants.CREATE_SUCCESS:
             return  {
                 ...state,
@@ -27,7 +24,6 @@ export function stageStore(state = {}, action) {
                 },
                 ids: [ ...state.ids, action.payload.id]
             };
-            break;
         case stageConstants.UPDATE_SUCCESS:
             return {
                 ...state,
@@ -36,10 +32,10 @@ export function stageStore(state = {}, action) {
                     [action.payload.id]: action.payload
                 }
             };
-            break;
         case stageConstants.DELETE_SUCCESS:
 
             // TODO
+            break;
 
         default:
             return state

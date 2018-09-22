@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {deleteStage, getAllStages} from "../../actions/stage.actions";
 import StageNewOrEdit from "./StageNewOrEdit";
 import SweetAlert from 'sweetalert-react';
-import {stagesSelector} from "../../models/selectors";
 import * as _ from "lodash";
 
 class Stages extends React.Component {

@@ -11,7 +11,6 @@ export function activityStore(state = { ids: [], items: {}}, action) {
         case activityConstants.APPEND_ACTIVITIES_SUCCESS:
             var activities = normalize(action.payload.activities, activityListSchema);
             var maxActivityCount =  action.payload.maxActivityCount;
-            // TODO append here
             return {
                 ...state,
                 items:Object.assign (state.items, activities.entities.activities),

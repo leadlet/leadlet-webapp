@@ -4,7 +4,7 @@ import {DropTarget} from 'react-dnd';
 import {findDOMNode} from 'react-dom'
 import {dealConstants} from "../../../constants/deal.constants";
 import PropTypes from 'prop-types';
-import {searchQuerySelector, sortSelector, stageDealsSelector} from "../../../models/selectors";
+import {searchQuerySelector, sortSelector} from "../../../models/selectors";
 import {connect} from "react-redux";
 import {getStageDeals, patchDeal} from "../../../actions/deal.actions";
 import {QueryUtils} from "../../Search/QueryUtils";

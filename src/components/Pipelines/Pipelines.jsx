@@ -6,7 +6,6 @@ import Stages from "./Stages";
 import PipelineNewOrEdit from "./PipelineNewOrEdit";
 import {deletePipeline, getAllPipelines} from "../../actions/pipeline.actions";
 import SweetAlert from 'sweetalert-react';
-import {pipelinesSelector} from "../../models/selectors";
 import * as _ from "lodash";
 
 class Pipelines extends React.Component {

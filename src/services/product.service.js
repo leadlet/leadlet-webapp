@@ -1,5 +1,5 @@
 import { authHeader } from '../helpers';
-import {userActions} from "../actions/user.actions";
+import {handleResponse} from "../helpers/service.utils";
 
 export const productService = {
     getAllProducts,
@@ -54,16 +54,4 @@ function _deleteProduct(id) {
     };
 
     return fetch('/api/products/' + id, requestOptions).then(handleResponse);
-}
-
-function handleResponse(response) {
-    if (response.ok !== true) {
-        if( response.status === 401 ) {
-            userActions.logout();
-        }
-        return Promise.reject(response.statusText);
-    }
-
-    return response.json();
-
 }

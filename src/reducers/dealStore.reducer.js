@@ -21,8 +21,6 @@ export function dealStore(state = { ids: [], items: {}}, action) {
                 ]
             };
 
-            break;
-
         case dealConstants.LOAD_STAGE_DEALS_SUCCESS:
             var deals = normalize(action.payload.deals, dealListSchema);
             var stageId = action.payload.stageId;
@@ -35,7 +33,6 @@ export function dealStore(state = { ids: [], items: {}}, action) {
                     ...deals.result
                 ]
             };
-            break;
 
         case dealConstants.CREATE_SUCCESS:
             return  {
@@ -46,7 +43,6 @@ export function dealStore(state = { ids: [], items: {}}, action) {
                 },
                 ids: [ ...state.ids, action.payload.id]
             };
-            break;
         case dealConstants.UPDATE_SUCCESS:
         case dealConstants.GET_SUCCESS:
 
@@ -59,11 +55,10 @@ export function dealStore(state = { ids: [], items: {}}, action) {
                 ids: [ ...state.ids, action.payload.id]
 
             };
-            break;
         case dealConstants.DELETE_SUCCESS:
 
             // TODO
-
+            break;
         default:
             return state
     }

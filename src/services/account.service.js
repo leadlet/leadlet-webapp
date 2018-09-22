@@ -1,5 +1,5 @@
 import { authHeader } from '../helpers';
-import {userActions} from "../actions/user.actions";
+import {handleResponse} from "../helpers/service.utils";
 
 export const accountService = {
     getCurrentAccount,
@@ -23,15 +23,4 @@ function update(account) {
     };
 
     return fetch('/api/account', requestOptions).then(handleResponse);
-}
-
-function handleResponse(response) {
-    if (response.ok !== true) {
-        if( response.status === 401 ){
-            userActions.logout();
-        }
-        return Promise.reject(response.statusText);
-    }
-
-    return response.json();
 }

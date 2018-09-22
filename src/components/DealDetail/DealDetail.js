@@ -17,7 +17,8 @@ class DealDetail extends Component {
         super(props);
 
         this.state = {
-            isEditDealModalVisible: false
+            isEditDealModalVisible: false,
+            lastModifiedDate: moment()
         };
 
         this.openEditDealModal = this.openEditDealModal.bind(this);
@@ -30,6 +31,17 @@ class DealDetail extends Component {
         this.renderDealValue = this.renderDealValue.bind(this);
         this.openLostReasonModal = this.openLostReasonModal.bind(this);
         this.getViewedDeal = this.getViewedDeal.bind(this);
+        this.onPageUpdate = this.onPageUpdate.bind(this);
+    }
+
+
+    /*
+    When we add an activity for deal or edit some field,
+    we should call this function to update state. This state will be passed to timeline as props
+    so timeline component will be notified about change and refresh itself.
+ */
+    onPageUpdate() {
+        this.setState({lastModifiedDate: moment()});
     }
 
     closeEditDealModal() {
@@ -58,11 +70,12 @@ class DealDetail extends Component {
         this.props.getDealById(this.props.match.params.dealId);
     }
 
-    getViewedDeal(){
-        if ( _.has(this, ["props","dealStore","items",this.props.match.params.dealId])) {
+    getViewedDeal() {
+        if (_.has(this, ["props", "dealStore", "items", this.props.match.params.dealId])) {
             return this.props.dealStore.items[this.props.match.params.dealId];
         }
     }
+
     render() {
         const deal = this.getViewedDeal();
 
@@ -117,34 +130,32 @@ class DealDetail extends Component {
                                 <div className="ibox-content">
                                     <Note initialValues={{
                                         dealId: deal.id
-                                        }}
+                                    }}
+                                          onChange={this.onPageUpdate}
                                     />
                                 </div>
                             </div>
-                            {
-                                /*
-                                <div className="ibox">
-                                    <Timeline
-                                        initialValues={{
-                                            deal: {
-                                                id: deal.id
-                                            }
-                                        }}
-                                        defaultFilter={`deal_id:${deal.id}`}
-                                        options={[
-                                            {
-                                                label: 'Activities',
-                                                fields: ['ACTIVITY_CREATED']
-                                            },
-                                            {
-                                                label: 'Notes',
-                                                fields: ['NOTE_CREATED']
-                                            }
-                                        ]}
-                                    />
-                                </div>
-                                */
-                            }
+                            <div className="ibox">
+                                <Timeline
+                                    initialValues={{
+                                        deal: {
+                                            id: deal.id
+                                        }
+                                    }}
+                                    defaultFilter={`deal_id:${deal.id}`}
+                                    options={[
+                                        {
+                                            label: 'Activities',
+                                            fields: ['ACTIVITY_CREATED']
+                                        },
+                                        {
+                                            label: 'Notes',
+                                            fields: ['NOTE_CREATED']
+                                        }
+                                    ]}
+                                />
+                            </div>
+
                         </div>
 
 
@@ -200,12 +211,12 @@ class DealDetail extends Component {
     renderPersons() {
         const deal = this.getViewedDeal();
 
-        if(deal.person){
+        if (deal.person) {
 
             return (<Link className="text-navy" to={"/person/" + deal.person.id}>{deal.person.name}</Link>);
 
 
-        }else{
+        } else {
             return (<em>Not set</em>);
         }
     }
@@ -213,11 +224,11 @@ class DealDetail extends Component {
     renderLastUpdateDate() {
         const deal = this.getViewedDeal();
 
-        if(deal.lastModifiedDate){
+        if (deal.lastModifiedDate) {
             return (
                 moment(deal.lastModifiedDate, "YYYY-MM-DDTHH:mm:ss+-HH:mm").format("DD.MM.YYYY")
             );
-        }else{
+        } else {
             return (<em>Not set</em>);
         }
     }
@@ -225,22 +236,23 @@ class DealDetail extends Component {
     renderPossibleCloseDate() {
         const deal = this.getViewedDeal();
 
-        if(deal.possibleCloseDate){
+        if (deal.possibleCloseDate) {
             return (
                 moment(deal.possibleCloseDate, "YYYY-MM-DDTHH:mm:ss+-HH:mm").format("DD.MM.YYYY")
             );
-        }else{
+        } else {
             return (<em>Not set</em>);
         }
     }
+
     renderCreatedDate() {
         const deal = this.getViewedDeal();
 
-        if(deal.createdDate){
+        if (deal.createdDate) {
             return (
                 moment(deal.createdDate, "YYYY-MM-DDTHH:mm:ss+-HH:mm").format("DD.MM.YYYY")
             );
-        }else{
+        } else {
             return (<em>Not set</em>);
         }
     }
@@ -248,11 +260,11 @@ class DealDetail extends Component {
     renderDealValue() {
         const deal = this.getViewedDeal();
 
-        if(deal.dealValue){
+        if (deal.dealValue) {
             return (
                 <b>{deal.dealValue.potentialValue}</b>
             );
-        }else{
+        } else {
             return (<em>Not set</em>);
         }
     }

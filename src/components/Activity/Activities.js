@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {getActivities, update} from "../../actions/activity.actions";
 import '../../../node_modules/fullcalendar/dist/fullcalendar.css';
-import {activitiesSelector, searchQuerySelector, sortSelector} from "../../models/selectors";
+import {searchQuerySelector, sortSelector} from "../../models/selectors";
 import * as _ from "lodash";
 import ListFilter from "../Search/ListFilter";
 import SelectedFilters from "../Search/SelectedFilters";
@@ -14,25 +14,6 @@ import './../../styles/side-search.css';
 
 var VisibilitySensor = require('react-visibility-sensor');
 
-const sortOptions = [
-    {
-        "fields": ["start_date"],
-        "label": "Start Date",
-        "default": true
-    },
-    {
-        "fields": ["created_date"],
-        "label": "Created Date"
-    },
-    {
-        "fields": ["activity_type"],
-        "label": "Activity Type"
-    },
-    {
-        "fields": ["start_date","activity_type"],
-        "label": "Start Date + Activity Type"
-    }
-];
 class Activities extends Component {
 
     constructor(props) {

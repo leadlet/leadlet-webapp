@@ -1,5 +1,5 @@
 import { authHeader } from '../helpers';
-import {userActions} from "../actions/user.actions";
+import {handlePaginationResponse, handleResponse} from "../helpers/service.utils";
 
 export const teamService = {
     getAll,
@@ -54,28 +54,4 @@ function deleteTeam(id) {
     };
 
     return fetch('/api/teams/' + id, requestOptions).then(handleResponse);
-}
-
-
-function handlePaginationResponse(response) {
-    if (response.ok !== true) {
-        if( response.status === 401 ) {
-            userActions.logout();
-        }
-        return Promise.reject(response.statusText);
-    }
-    return Promise.all([ response.json(), response.headers.get("x-total-count")]);
-
-}
-
-function handleResponse(response) {
-    if (response.ok !== true) {
-        if( response.status === 401 ) {
-            userActions.logout();
-        }
-        return Promise.reject(response.statusText);
-    }
-
-    return response.json();
-
 }
