@@ -62,7 +62,7 @@ class Activities extends Component {
     }
 
     componentDidMount() {
-        this.props.getActivities(this.props.searchQuery);
+        this.props.getActivities(this.props.query);
     }
 
     componentDidUpdate(prevProps) {
@@ -73,9 +73,10 @@ class Activities extends Component {
     }
 
     renderActivityRows() {
-        if (this.props.activities && this.props.activities.length > 0) {
+        if( _.has(this, ["props", "activity", "ids"])){
 
-            return this.props.activities.map(activity => {
+            return this.props.activity.ids.map(activityId => {
+                    let activity = this.props.activity.items[activityId];
                     const startDate = moment(activity.start);
                     return (
                         <tr key={activity.id}>
@@ -181,7 +182,7 @@ class Activities extends Component {
 
 function mapStateToProps(state) {
     return {
-        activities: activitiesSelector(state),
+        activity: state.activity,
         query: searchQuerySelector(state, {group: "activities-page"}),
         sort: sortSelector(state, {group: "activities-page"}),
         maxActivityCount: state.activities.maxActivityCount

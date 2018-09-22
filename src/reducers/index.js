@@ -6,14 +6,14 @@ import { users } from './users.reducer';
 import { alert } from './alert.reducer';
 import { reducer as formReducer } from 'redux-form';
 import {persons} from "./person.reducer";
-import {activities} from './activities.reducer';
+import {activity} from './activity.reducer';
 import {teams} from "./team.reducer";
 import {account} from "./account.reducer";
-
-import { schema } from './../models/models';
-import {db} from "./orm.reducers";
 import {products} from "./product.reducer";
-import {timelines} from "./timelines.reducer";
+import {timeLine} from "./timelines.reducer";
+import {dealStore} from "./dealStore.reducer";
+import {pipelineStore} from "./pipelineStore.reducer";
+import {stageStore} from "./stageStore.reducer";
 
 const rootReducer = combineReducers({
     authentication,
@@ -22,12 +22,14 @@ const rootReducer = combineReducers({
     alert,
     persons,
     form: formReducer,
-    db,
-    timelines,
-    activities,
+    timeLine,
+    activity,
+    dealStore,
     teams,
     account,
-    products
+    products,
+    pipelineStore,
+    stageStore
 });
 
 export default rootReducer;

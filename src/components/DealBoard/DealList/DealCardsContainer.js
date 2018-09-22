@@ -67,6 +67,7 @@ class CardsContainer extends Component {
                     <div className="stage-name">{stage.name}</div>
                 </div>
                 <Cards
+                    key={stage.id}
                     stage={stage}
                     startScrolling={this.props.startScrolling}
                     stopScrolling={this.props.stopScrolling}

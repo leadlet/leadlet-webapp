@@ -5,59 +5,6 @@ import * as _ from "lodash";
 
 const dbStateSelector = state => state.db;
 
-// ???
-export const pipelinesSelector = createSelector(
-    orm,
-    dbStateSelector,
-    session => {
-        return session.Pipeline.all().toRefArray();
-    }
-);
-
-export const stagesSelector = createSelector(
-    orm,
-    dbStateSelector,
-    session => {
-        return session.Stage.all().toRefArray();
-    }
-);
-
-export const personDealsSelector = createSelector(
-    orm,
-    [
-        dbStateSelector,
-        (state, personId) => personId
-    ],
-    (session, personId) => {
-        return session.Deal.all().filter(deal => {
-            // personId is string in arguments
-            return deal.personId === personId
-        }).toRefArray();
-    }
-);
-
-export const organizationDealsSelector = createSelector(
-    orm,
-    [
-        dbStateSelector,
-        (state, organizationId) => organizationId
-    ],
-    (session, organizationId) => {
-        return session.Deal.all().filter(deal => {
-            // personId is string in arguments
-            return _.get(deal, ["organization", "id"]) === organizationId
-        }).toRefArray();
-    }
-);
-
-
-export const dealsSelector = createSelector(
-    orm,
-    dbStateSelector,
-    session => {
-        return session.Deal.all().toRefArray();
-    }
-);
 
 export const stageDealsSelector = createSelector(
     orm,

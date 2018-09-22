@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import '../../../node_modules/fullcalendar/dist/fullcalendar.css';
 import connect from "react-redux/es/connect/connect";
 import {getDealById} from "../../actions/deal.actions";
-import {createNote} from "../../actions/note.actions";
 import Timeline from "../Timeline/Timeline";
 import {getById} from "../../actions/person.actions";
 import CreateEditDeal from '../DealDetail/CreateEditDeal'
@@ -10,6 +9,7 @@ import LostReason from '../DealDetail/LostReason'
 import moment from 'moment';
 import Link from "react-router-dom/es/Link";
 import {detailedDealSelector} from "../../models/selectors";
+import Note from "../Note/Note";
 
 
 class DealDetail extends Component {
@@ -18,12 +18,9 @@ class DealDetail extends Component {
         super(props);
 
         this.state = {
-            value: '',
             isEditDealModalVisible: false
         };
 
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.openEditDealModal = this.openEditDealModal.bind(this);
         this.closeEditDealModal = this.closeEditDealModal.bind(this);
         this.closeLostReasonModal = this.closeLostReasonModal.bind(this);
@@ -55,20 +52,6 @@ class DealDetail extends Component {
 
     openLostReasonModal() {
         this.setState({isLostReasonModalVisible: true});
-    }
-
-    handleChange(event) {
-        this.setState({value: event.target.value});
-    }
-
-    handleSubmit(event) {
-        event.preventDefault();
-        console.log("Note Event: ", event.target);
-        this.props.createNote({
-            content: this.state.value,
-            dealId: this.props.viewedDeal.id
-        }, () => this.props.getTimelineByDealIdAndRefresh(null, null, null, this.props.match.params.dealId));
-        this.setState({value: ''});
     }
 
     componentDidMount() {
@@ -134,20 +117,10 @@ class DealDetail extends Component {
                         <div className="col-md-8">
                             <div className="ibox">
                                 <div className="ibox-content">
-                                    <form onSubmit={this.handleSubmit}>
-                                        <div className="form-group">
-                                        <textarea placeholder="Please enter a note."
-                                                  className="form-control"
-                                                  value={this.state.value}
-                                                  onChange={this.handleChange}
-                                        />
-                                        </div>
-                                        <div className="text-right">
-                                            <button type="submit"
-                                                    className="btn btn-sm btn-primary m-t-n-xs">
-                                                <strong>Save</strong></button>
-                                        </div>
-                                    </form>
+                                    <Note initialValues={{
+                                        dealId: this.props.viewedDeal.id
+                                        }}
+                                    />
                                 </div>
                             </div>
                             <div className="ibox">
@@ -157,6 +130,17 @@ class DealDetail extends Component {
                                             id: this.props.viewedDeal.id
                                         }
                                     }}
+                                    defaultFilter={`deal_id:${this.props.viewedDeal.id}`}
+                                    options={[
+                                        {
+                                            label: 'Activities',
+                                            fields: ['ACTIVITY_CREATED']
+                                        },
+                                        {
+                                            label: 'Notes',
+                                            fields: ['NOTE_CREATED']
+                                        }
+                                    ]}
                                 />
                             </div>
                         </div>
@@ -280,6 +264,5 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
     getDealById,
-    createNote,
     getById,
 })(DealDetail);

@@ -22,6 +22,7 @@ import SortSelector from "../Search/SortSelector";
 
 import './../../styles/deals.css';
 import './../../styles/side-search.css';
+import * as _ from "lodash";
 
 
 let sortOptions = [
@@ -163,8 +164,8 @@ class DealBoard extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if( this.state.selectedPipeline === null && nextProps.pipelines.length > 0){
-            this.pipelineChanged(nextProps.pipelines[0]);
+        if( this.state.selectedPipeline === null && _.get(nextProps, ["pipelineStore", "ids", "length"], 0) > 0){
+            this.pipelineChanged(nextProps.pipelineStore.items[nextProps.pipelineStore.ids[0]]);
         }
 
 
@@ -191,7 +192,7 @@ class DealBoard extends Component {
                         options = {sortOptions}
                     />
                     <PipelineSelector className="m-l-xs pipeline-selector"
-                                      pipelines={this.props.pipelines}
+                                      pipelineStore={this.props.pipelineStore}
                                       onChange={this.pipelineChanged}
                                       value={this.state.selectedPipeline}
                     />
@@ -281,21 +282,27 @@ class DealBoard extends Component {
 
     renderCards() {
 
-        if (this.props.pipelines.length > 0 && this.props.stages.length > 0 && this.state.selectedPipeline) {
-            return this.props.stages
+        if( _.has(this, ["props", "pipelineStore", "ids", "length"])
+                && _.has(this, ["props", "stageStore", "ids", "length"])
+                && this.state.selectedPipeline ) {
+
+            return this.props.stageStore.ids.map( stageId => this.props.stageStore.items[stageId])
                 .filter(stage => stage.pipelineId === this.state.selectedPipeline.id)
                 .map(stage =>
-                <CardsContainer
-                    key={stage.id}
-                    id={stage.id}
-                    stage={stage}
-                    moveList={this.moveList}
-                    startScrolling={this.startScrolling}
-                    stopScrolling={this.stopScrolling}
-                    isScrolling={this.state.isScrolling}
-                    deleteDeal={this.onDeleteDeal}
-                />
-            );
+                    <CardsContainer
+                        key={stage.id}
+                        id={stage.id}
+                        stage={stage}
+                        moveList={this.moveList}
+                        startScrolling={this.startScrolling}
+                        stopScrolling={this.stopScrolling}
+                        isScrolling={this.state.isScrolling}
+                        deleteDeal={this.onDeleteDeal}
+                    />
+                );
+        } else {
+            console.log("pipelinelar yok");
+            console.log(this.state.selectedPipeline)
         }
 
 
@@ -304,8 +311,8 @@ class DealBoard extends Component {
 
 function mapStateToProps(state) {
     return {
-        pipelines: pipelinesSelector(state),
-        stages: stagesSelector(state)
+        pipelineStore: state.pipelineStore,
+        stageStore: state.stageStore
     }
 }
 

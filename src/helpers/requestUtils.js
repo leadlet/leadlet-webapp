@@ -1,6 +1,6 @@
 import {isEmpty} from "lodash";
 
-export function buildRequestString(query, sort, page, size) {
+export function buildRequestString(query, sort, page, size=10) {
 
     let params = [];
 
@@ -8,12 +8,12 @@ export function buildRequestString(query, sort, page, size) {
         params.push(`q=${query}`);
     }
     if( !isEmpty(sort)){
-        params.push(`sort=${sort}`);
+        params.push(`${sort}`);
     }
-    if( !isEmpty(page)){
+    if( page !== undefined ){
         params.push(`page=${page}`);
     }
-    if( !isEmpty(size)){
+    if( size !== undefined){
         params.push(`size=${size}`);
     }
 

@@ -8,6 +8,7 @@ import {searchQuerySelector, sortSelector, stageDealsSelector} from "../../../mo
 import {connect} from "react-redux";
 import {getStageDeals, patchDeal} from "../../../actions/deal.actions";
 import {QueryUtils} from "../../Search/QueryUtils";
+import * as _ from "lodash";
 var VisibilitySensor = require('react-visibility-sensor');
 
 const MAX_INDEX = 100000;
@@ -138,34 +139,40 @@ class Cards extends Component {
     }
 
     render() {
-        const {connectDropTarget, isOver, canDrop, deals} = this.props;
+        const {connectDropTarget, isOver, canDrop} = this.props;
         const {placeholderIndex} = this.state;
         let isPlaceHold = false;
         let cardList = [];
-        deals.forEach( (deal,i) => {
-            if (isOver && canDrop) {
-                isPlaceHold = false;
-                if (i === 0 && placeholderIndex === -1) {
-                    cardList.push(<li key="placeholder" className="placeholder"/>);
-                } else if (placeholderIndex > i) {
-                    isPlaceHold = true;
-                }
-            }
-            if (deal !== undefined) {
-                cardList.push(
-                    <Card x={deal.stageId} y={deal.order}
-                          item={deal}
-                          key={deal.id}
-                          stopScrolling={this.props.stopScrolling}
-                          deleteDeal={this.props.deleteDeal}
-                    />
-                );
-            }
-            if (isOver && canDrop && placeholderIndex === i) {
-                cardList.push(<li key="placeholder" className="info-element placeholder"/>);
-            }
-        });
-
+        if( _.has(this, ["props","dealStore", "ids"])){
+            this.props.dealStore.ids
+                .filter( dealId => {
+                    return this.props.dealStore.items[dealId].stage.id === this.props.stage.id
+                } )
+                .forEach( (dealId,i) => {
+                    let deal = this.props.dealStore.items[dealId];
+                    if (isOver && canDrop) {
+                        isPlaceHold = false;
+                        if (i === 0 && placeholderIndex === -1) {
+                            cardList.push(<li key="placeholder" className="placeholder"/>);
+                        } else if (placeholderIndex > i) {
+                            isPlaceHold = true;
+                        }
+                    }
+                    if (deal !== undefined) {
+                        cardList.push(
+                            <Card x={deal.stage.id} y={deal.order}
+                                  item={deal}
+                                  key={deal.id}
+                                  stopScrolling={this.props.stopScrolling}
+                                  deleteDeal={this.props.deleteDeal}
+                            />
+                        );
+                    }
+                    if (isOver && canDrop && placeholderIndex === i) {
+                        cardList.push(<li key="placeholder" className="info-element placeholder"/>);
+                    }
+                });
+        }
 
         // if placeholder index is greater than array.length, display placeholder as last
         if (isPlaceHold) {
@@ -173,7 +180,7 @@ class Cards extends Component {
         }
 
         // if there is no items in cards currently, display a placeholder anyway
-        if (isOver && canDrop && deals.length === 0) {
+        if (isOver && canDrop && _.get(this, ["dealStore","ids","length"],0 ) === 0) {
             cardList.push(<li key="placeholder" className="info-element placeholder"/>);
         }
 
@@ -197,13 +204,13 @@ class Cards extends Component {
         }
     }
     hasMoreItem(){
-        return this.props.stage.maxDealCount > this.props.deals.length ;
+        //return this.props.stage.maxDealCount > this.props.deals.length ;
     }
 }
 
 function mapStateToProps(state, props) {
     return {
-        deals: stageDealsSelector(state,props),
+        dealStore: state.dealStore,
         query: searchQuerySelector(state, {group: "deals-page"}),
         sort: sortSelector(state, {group: "deals-page"}),
     }

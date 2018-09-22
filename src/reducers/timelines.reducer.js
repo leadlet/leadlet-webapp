@@ -1,6 +1,6 @@
 import {timelineConstants} from "../constants/timeline.constants";
 
-export function timelines(state = { ids: [], items: {}}, action) {
+export function timeLine(state = { ids: [], items: {}}, action) {
     switch (action.type) {
         case timelineConstants.APPEND_TIMELINES_SUCCESS:
             var maxTimelineCount = action.payload.maxTimelineCount;

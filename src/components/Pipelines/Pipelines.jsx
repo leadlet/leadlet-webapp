@@ -7,6 +7,7 @@ import PipelineNewOrEdit from "./PipelineNewOrEdit";
 import {deletePipeline, getAllPipelines} from "../../actions/pipeline.actions";
 import SweetAlert from 'sweetalert-react';
 import {pipelinesSelector} from "../../models/selectors";
+import * as _ from "lodash";
 
 class Pipelines extends React.Component {
 
@@ -68,11 +69,12 @@ class Pipelines extends React.Component {
     }
 
     renderPipelines(){
-        if( !this.props.pipelines ) {
+        if( !_.has(this, ["props","pipeline","ids"]) ) {
             return ( <em>Loading Pipelines.. </em>);
         }else {
-            return this.props.pipelines.map( pipeline => {
+            return this.props.pipeline.ids.map( id => {
 
+                let pipeline = this.props.pipeline.items[id];
                 return (
                     <Tab eventKey={pipeline.id} key={pipeline.id}
                          title={
@@ -132,7 +134,7 @@ class Pipelines extends React.Component {
 
 function mapStateToProps(state){
     return {
-        pipelines: pipelinesSelector(state)
+        pipeline: state.pipeline
     };
 }
 

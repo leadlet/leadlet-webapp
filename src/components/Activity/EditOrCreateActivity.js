@@ -128,7 +128,7 @@ class EditOrCreateActivity extends Component {
         if (this.props.initialValues && this.props.initialValues.id) {
             this.props.update(activity);
         } else {
-            this.props.create(activity);
+            this.props.create(activity, this.props.createCallback);
         }
         this.props.close();
     }

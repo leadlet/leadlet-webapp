@@ -33,9 +33,9 @@ class ListFilter extends Component {
 
     inputChanged(checkboxElem){
         if (checkboxElem.target.checked) {
-            this.props.termSelected(this.props.id, checkboxElem.target.value);
+            this.props.termSelected(this.props.id, [checkboxElem.target.value]);
         } else {
-            this.props.termUnSelected(this.props.id, checkboxElem.target.value);
+            this.props.termUnSelected(this.props.id, [checkboxElem.target.value]);
         }
     }
 

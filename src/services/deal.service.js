@@ -70,7 +70,7 @@ function getDealsByFilter(query, sort, page, size) {
 
     let requestString = buildRequestString(query, sort, page, size);
 
-    return fetch(`/api/deals/search?${requestString}`, requestOptions).then(handlePaginationResponse);
+    return fetch(`/api/deals?${requestString}`, requestOptions).then(handlePaginationResponse);
 }
 
 function _delete(id) {

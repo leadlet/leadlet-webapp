@@ -68,14 +68,14 @@ export function pipelineSelected( pipelineFilter ) {
     };
 }
 
-export function termSelected(facetId, term) {
+export function termSelected(facetId, terms, clear=false) {
     return dispatch => {
-        dispatch( {type: searchConstants.FACET_TERM_SELECTED, payload: {"facetId": facetId, "term": term}});
+        dispatch( {type: searchConstants.FACET_TERM_SELECTED, payload: {"facetId": facetId, "terms": terms, clear: clear}});
     };
 }
-export function termUnSelected(facetId, term) {
+export function termUnSelected(facetId, terms) {
     return dispatch => {
-        dispatch( {type: searchConstants.FACET_TERM_UNSELECTED, payload: {"facetId": facetId, "term": term}});
+        dispatch( {type: searchConstants.FACET_TERM_UNSELECTED, payload: {"facetId": facetId, "terms": terms}});
     };
 }
 

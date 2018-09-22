@@ -5,6 +5,8 @@ import {getById} from "../../actions/person.actions";
 import ContactPerson from "./ContactPerson";
 import Timeline from "../Timeline/Timeline";
 import CreateEditDeal from "../DealDetail/CreateEditDeal";
+import Note from "../Note/Note";
+import moment from "moment";
 
 class ContactDetail extends Component {
 
@@ -14,29 +16,24 @@ class ContactDetail extends Component {
         this.state = {
             isPersonModalVisible: false,
             isDealModalVisible: false,
-            value: '',
+            lastModifiedDate: moment()
         };
 
         this.openEditModal = this.openEditModal.bind(this);
         this.closeEditModal = this.closeEditModal.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.openDealModal = this.openDealModal.bind(this);
         this.closeDealModal = this.closeDealModal.bind(this);
+        this.onPageUpdate = this.onPageUpdate.bind(this);
+
     }
 
-    handleChange(event) {
-        this.setState({value: event.target.value});
-    }
-
-    handleSubmit(event) {
-        event.preventDefault();
-        console.log("Note Event: ", event.target);
-        this.props.createNote({
-            content: this.state.value,
-            personId: this.props.viewedPerson.id
-        }, () => this.props.getTimelineByPersonIdAndRefresh(null, null, null, this.props.match.params.personId));
-        this.setState({value: ''});
+    /*
+        When we add an activity for deal or edit some field,
+        we should call this function to update state. This state will be passed to timeline as props
+        so timeline component will be notified about change and refresh itself.
+     */
+    onPageUpdate( ){
+        this.setState({lastModifiedDate: moment()});
     }
 
     openEditModal() {
@@ -100,23 +97,14 @@ class ContactDetail extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-md-8">
+                        <div className="col-md-8 m-b-lg">
                             <div className="ibox">
                                 <div className="ibox-content">
-                                    <form onSubmit={this.handleSubmit}>
-                                        <div className="form-group">
-                                            <textarea placeholder="Please enter a note."
-                                                      className="form-control"
-                                                      value={this.state.value}
-                                                      onChange={this.handleChange}
-                                            />
-                                        </div>
-                                        <div className="text-right">
-                                            <button type="submit"
-                                                    className="btn btn-sm btn-primary m-t-n-xs">
-                                                <strong>Save</strong></button>
-                                        </div>
-                                    </form>
+                                    <Note initialValues={{
+                                            personId: this.props.viewedPerson.id
+                                        }}
+                                        onChange={this.onPageUpdate}
+                                    />
                                 </div>
                             </div>
                             <Timeline
@@ -125,6 +113,22 @@ class ContactDetail extends Component {
                                         id: this.props.match.params.personId
                                     }
                                 }}
+                                lastModifiedDate={this.state.lastModifiedDate}
+                                defaultFilter={`person_id:${this.props.match.params.personId}`}
+                                options={[
+                                    {
+                                        label: 'Activities',
+                                        fields: ['ACTIVITY_CREATED']
+                                    },
+                                    {
+                                        label: 'Notes',
+                                        fields: ['NOTE_CREATED']
+                                    },
+                                    {
+                                        label: 'Deals',
+                                        fields: ['DEAL_CREATED']
+                                    }
+                                ]}
                             />
                         {
                             this.state.isPersonModalVisible &&

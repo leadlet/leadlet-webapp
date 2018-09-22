@@ -6,124 +6,6 @@ import {dealConstants} from "../constants/deal.constants";
 import {searchConstants} from "../constants/search.constants";
 import * as _ from "lodash";
 
-/* Pipeline */
-export class Pipeline extends Model {
-
-    static reducer(action, Pipeline, session) {
-        switch (action.type) {
-            case pipelineConstants.GETALL_SUCCESS:
-                const pipelines = action.payload;
-                pipelines.forEach(pipeline => Pipeline.upsert(pipeline));
-                break;
-            case pipelineConstants.CREATE_SUCCESS:
-                Pipeline.create(action.payload);
-                break;
-            case pipelineConstants.UPDATE_SUCCESS:
-                Pipeline.withId(action.payload.id).update(action.payload);
-                break;
-            case pipelineConstants.DELETE_SUCCESS:
-                Pipeline.withId(action.payload).delete();
-                break;
-        }
-        // Return value is ignored.
-        return undefined;
-    }
-
-}
-Pipeline.modelName = 'Pipeline';
-
-Pipeline.fields = {
-    id: attr(), // non-relational field for any value; optional but highly recommended
-    name: attr()
-    //, stages: many('Stage')
-};
-
-/* Stage */
-
-export class Stage extends Model {
-    static reducer(action, Stage, session) {
-        switch (action.type) {
-            case stageConstants.GETALL_SUCCESS:
-                const stages = action.payload;
-                stages.forEach(stage => Stage.upsert(stage));       // upsert ???
-                break;
-            case stageConstants.CREATE_SUCCESS:
-                Stage.create(action.payload);
-                break;
-            case stageConstants.UPDATE_SUCCESS:
-                Stage.withId(action.payload.id).update(action.payload);
-                break;
-            case stageConstants.DELETE_SUCCESS:
-                Stage.withId(action.payload).delete();
-                break;
-        }
-        // Return value is ignored.
-        return undefined;
-    }
-}
-Stage.modelName = 'Stage';
-
-Stage.fields = {
-    id: attr(),
-    maxDealCount: attr(),
-    name: attr(),
-    color: attr(),
-    pipelineId: fk('Pipeline')
-};
-
-/* Deal */
-
-export class Deal extends Model {
-    static reducer(action, Deal, session) {
-        switch (action.type) {
-            case dealConstants.APPEND_STAGE_DEALS_SUCCESS:
-                var deals = action.payload.deals;
-                var stageId = action.payload.stageId;
-                var maxDealCount = action.payload.maxDealCount;
-                session.Stage.withId(stageId).update({ maxDealCount: maxDealCount });
-                deals.forEach(stage => Deal.upsert(stage));
-                break;
-
-            case dealConstants.LOAD_STAGE_DEALS_SUCCESS:
-                var deals = action.payload.deals;
-                var stageId = action.payload.stageId;
-                var maxDealCount = action.payload.maxDealCount;
-                session.Stage.withId(stageId).dealSet.delete();
-                session.Stage.withId(stageId).update({ maxDealCount: maxDealCount });
-                deals.forEach(stage => Deal.create(stage));
-                break;
-
-            case dealConstants.GET_SUCCESS:
-                const deal = action.payload;
-                Deal.upsert(deal);
-                break;
-
-            case dealConstants.CREATE_SUCCESS:
-                Deal.create(action.payload);
-                break;
-            case dealConstants.UPDATE_SUCCESS:
-                Deal.withId(action.payload.id).update(action.payload);
-                break;
-            case dealConstants.DELETE_SUCCESS:
-                Deal.withId(action.payload).delete();
-                break;
-        }
-        // Return value is ignored.
-        return undefined;
-    }
-}
-Deal.modelName = 'Deal';
-
-Deal.fields = {
-    id: attr(),
-    title: attr(),
-    priority: attr(),
-    dealValue: attr(),
-    possibleCloseDate: attr(),
-
-    pipelineId: fk('Pipeline'),
-    stageId: fk('Stage')
-};
 
 
 /* SearchFilter */
@@ -144,16 +26,20 @@ export class SearchFilter extends Model {
                 SearchFilter.upsert(Object.assign(action.payload, action.filter));
                 break;
             case searchConstants.FACET_TERM_SELECTED:
-                var oldSelected = SearchFilter.withId(action.payload.facetId).selected;
-                var oldSelectedOptions = (oldSelected && oldSelected.options) || [];
-                var newSelectedOptions = _.concat( oldSelectedOptions, action.payload.term );
+                var oldSelectedOptions = [];
+                if( !action.payload.clear){
+                    var oldSelected = SearchFilter.withId(action.payload.facetId).selected;
+                    oldSelectedOptions = (oldSelected && oldSelected.options) || [];
+                }
+
+                var newSelectedOptions = _.concat( oldSelectedOptions, action.payload.terms );
                 SearchFilter.withId(action.payload.facetId).set("selected", {options: newSelectedOptions});
                 break;
             case searchConstants.FACET_TERM_UNSELECTED:
                 var oldSelected = SearchFilter.withId(action.payload.facetId).selected;
                 var oldSelectedOptions = (oldSelected && oldSelected.options) || [];
-                var index = oldSelectedOptions.indexOf(action.payload.term);
-                var newSelectedOptions = oldSelectedOptions.slice(0,index).concat(oldSelectedOptions.slice(index+1));
+
+                var newSelectedOptions = oldSelectedOptions.filter(item => !action.payload.terms.includes(item));
 
                 SearchFilter.withId(action.payload.facetId).set("selected", {options: newSelectedOptions});
                 break;
@@ -187,5 +73,4 @@ SearchFilter.fields = {
     options: attr(),
     operator: attr(),
     selectedOptions: attr()
-    //, stages: many('Stage')
 };
