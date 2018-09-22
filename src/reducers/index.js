@@ -6,7 +6,6 @@ import { users } from './users.reducer';
 import { alert } from './alert.reducer';
 import { reducer as formReducer } from 'redux-form';
 import {persons} from "./person.reducer";
-import {activity} from './activity.reducer';
 import {teams} from "./team.reducer";
 import {account} from "./account.reducer";
 import {products} from "./product.reducer";
@@ -14,6 +13,7 @@ import {timeLine} from "./timelines.reducer";
 import {dealStore} from "./dealStore.reducer";
 import {pipelineStore} from "./pipelineStore.reducer";
 import {stageStore} from "./stageStore.reducer";
+import {activityStore} from "./activityStore.reducer";
 
 const rootReducer = combineReducers({
     authentication,
@@ -23,7 +23,7 @@ const rootReducer = combineReducers({
     persons,
     form: formReducer,
     timeLine,
-    activity,
+    activityStore,
     dealStore,
     teams,
     account,

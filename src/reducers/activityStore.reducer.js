@@ -6,35 +6,34 @@ const activitySchema = new schema.Entity('activities');
 // or use shorthand syntax:
 const activityListSchema = [activitySchema];
 
-export function activity(state = { ids: [], items: {}}, action) {
+export function activityStore(state = { ids: [], items: {}}, action) {
     switch (action.type) {
         case activityConstants.APPEND_ACTIVITIES_SUCCESS:
-            var activityPayload = normalize(action.payload, activityListSchema);
-
-            var maxActivityCount = action.payload.maxActivityCount;
+            var activities = normalize(action.payload.activities, activityListSchema);
+            var maxActivityCount =  action.payload.maxActivityCount;
+            // TODO append here
             return {
                 ...state,
-                maxActivityCount: maxActivityCount,
-                items: {
-                    ...state.items,
-                },
+                items:Object.assign (state.items, activities.entities.activities),
                 ids: [
                     ...state.ids,
-                    activityPayload.result
-                ]
-
+                    ...activities.result
+                ],
+                maxActivityCount: maxActivityCount
             };
+
+            break;
 
         case activityConstants.LOAD_ACTIVITIES_SUCCESS:
-            var maxActivityCount = action.payload.maxActivityCount;
-            var activityPayload = normalize(action.payload, activityListSchema);
-
+            var activities = normalize(action.payload.activities, activityListSchema);
+            var maxActivityCount =  action.payload.maxActivityCount;
             return {
                 ...state,
-                maxActivityCount: maxActivityCount,
-                items: activityPayload.entities.activities,
-                ids: activityPayload.result
+                items: activities.entities.activities,
+                ids: activities.result,
+                maxActivityCount: maxActivityCount
             };
+            break;
 
         case activityConstants.CREATE_SUCCESS:
             return  {

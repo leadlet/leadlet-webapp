@@ -1,16 +1,13 @@
 import { authHeader } from '../helpers';
 
 import {userActions} from "../actions/user.actions";
+import {buildRequestString} from "../helpers/requestUtils";
 
 export const activityService = {
     getActivitiesByFilter,
     create,
     update,
-    _delete,
-    getActivitiesByPersonId,
-    getActivitiesByOrganizationId,
-    getActivitiesByAgentId,
-    getActivitiesByDealId
+    _delete
 };
 
 function create(activity, callback) {
@@ -33,66 +30,15 @@ function update(activity) {
     return fetch('/api/activities/', requestOptions).then(handleResponse);
 }
 
-function getActivitiesByFilter(query, sort, page) {
+function getActivitiesByFilter(query, sort, page, size=10) {
     const requestOptions = {
         method: 'GET',
         headers: { ...authHeader(), 'Content-Type': 'application/json' }
     };
 
-    let params = [];
+    let requestString = buildRequestString(query, sort, page, size);
 
-    if( query !== undefined && query !== ""){
-        params.push(`q=${query}`);
-    }
-    if( page !== undefined && page !== ""){
-        params.push(`page=${page}`);
-    }
-    params.push(`size=20`);
-
-    if( sort !== undefined && sort !== ""){
-        params.push(sort);
-    }
-
-    let paramString = params.join("&");
-
-
-    return fetch(`/api/activities/search?${paramString}`, requestOptions).then(handlePaginationResponse);
-}
-
-function getActivitiesByPersonId(id) {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
-
-    return fetch(`/api/activities/person/${id}`, requestOptions).then(handleResponse);
-}
-
-function getActivitiesByOrganizationId(id) {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
-
-    return fetch(`/api/activities/organization/${id}`, requestOptions).then(handleResponse);
-}
-
-function getActivitiesByAgentId(id) {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
-
-    return fetch(`/api/activities/user/${id}?size=1000`, requestOptions).then(handleResponse);
-}
-
-function getActivitiesByDealId(id) {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
-
-    return fetch(`/api/activities/deal/${id}?size=1000`, requestOptions).then(handleResponse);
+    return fetch(`/api/activities?${requestString}`, requestOptions).then(handlePaginationResponse);
 }
 
 

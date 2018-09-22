@@ -3,13 +3,12 @@ import '../../../node_modules/fullcalendar/dist/fullcalendar.css';
 import connect from "react-redux/es/connect/connect";
 import {getDealById} from "../../actions/deal.actions";
 import Timeline from "../Timeline/Timeline";
-import {getById} from "../../actions/person.actions";
 import CreateEditDeal from '../DealDetail/CreateEditDeal'
 import LostReason from '../DealDetail/LostReason'
 import moment from 'moment';
 import Link from "react-router-dom/es/Link";
-import {detailedDealSelector} from "../../models/selectors";
 import Note from "../Note/Note";
+import * as _ from "lodash";
 
 
 class DealDetail extends Component {
@@ -24,12 +23,13 @@ class DealDetail extends Component {
         this.openEditDealModal = this.openEditDealModal.bind(this);
         this.closeEditDealModal = this.closeEditDealModal.bind(this);
         this.closeLostReasonModal = this.closeLostReasonModal.bind(this);
-        this.renderAssignee = this.renderAssignee.bind(this);
+        this.renderAgent = this.renderAgent.bind(this);
         this.renderLastUpdateDate = this.renderLastUpdateDate.bind(this);
         this.renderPossibleCloseDate = this.renderPossibleCloseDate.bind(this);
         this.renderCreatedDate = this.renderCreatedDate.bind(this);
         this.renderDealValue = this.renderDealValue.bind(this);
         this.openLostReasonModal = this.openLostReasonModal.bind(this);
+        this.getViewedDeal = this.getViewedDeal.bind(this);
     }
 
     closeEditDealModal() {
@@ -58,18 +58,16 @@ class DealDetail extends Component {
         this.props.getDealById(this.props.match.params.dealId);
     }
 
-    componentDidUpdate() {
-
-        if (!this.props.ids) {
-            return;
+    getViewedDeal(){
+        if ( _.has(this, ["props","dealStore","items",this.props.match.params.dealId])) {
+            return this.props.dealStore.items[this.props.match.params.dealId];
         }
     }
-
     render() {
-        const deal = this.props.viewedDeal;
+        const deal = this.getViewedDeal();
 
         // TODO fix this part
-        if (!deal || !deal.pipeline) {
+        if (!deal) {
             return (
                 <em>Loading details for {this.props.match.params.dealId}</em>
             );
@@ -91,8 +89,8 @@ class DealDetail extends Component {
                                             <dd>{deal.stage.name}</dd>
                                             <dt>Deal Value:</dt>
                                             <dd>{this.renderDealValue()}</dd>
-                                            <dt>Owner:</dt>
-                                            <dd>{this.renderAssignee()}</dd>
+                                            <dt>Agent:</dt>
+                                            <dd>{this.renderAgent()}</dd>
                                             <dt>Contact:</dt>
                                             <dd>{this.renderPersons()}</dd>
                                             <dt>Last Updated:</dt>
@@ -118,31 +116,35 @@ class DealDetail extends Component {
                             <div className="ibox">
                                 <div className="ibox-content">
                                     <Note initialValues={{
-                                        dealId: this.props.viewedDeal.id
+                                        dealId: deal.id
                                         }}
                                     />
                                 </div>
                             </div>
-                            <div className="ibox">
-                                <Timeline
-                                    initialValues={{
-                                        deal: {
-                                            id: this.props.viewedDeal.id
-                                        }
-                                    }}
-                                    defaultFilter={`deal_id:${this.props.viewedDeal.id}`}
-                                    options={[
-                                        {
-                                            label: 'Activities',
-                                            fields: ['ACTIVITY_CREATED']
-                                        },
-                                        {
-                                            label: 'Notes',
-                                            fields: ['NOTE_CREATED']
-                                        }
-                                    ]}
-                                />
-                            </div>
+                            {
+                                /*
+                                <div className="ibox">
+                                    <Timeline
+                                        initialValues={{
+                                            deal: {
+                                                id: deal.id
+                                            }
+                                        }}
+                                        defaultFilter={`deal_id:${deal.id}`}
+                                        options={[
+                                            {
+                                                label: 'Activities',
+                                                fields: ['ACTIVITY_CREATED']
+                                            },
+                                            {
+                                                label: 'Notes',
+                                                fields: ['NOTE_CREATED']
+                                            }
+                                        ]}
+                                    />
+                                </div>
+                                */
+                            }
                         </div>
 
 
@@ -150,7 +152,7 @@ class DealDetail extends Component {
                             this.state.isEditDealModalVisible &&
                             <CreateEditDeal showModal={this.state.isEditDealModalVisible}
                                             close={this.closeEditDealModal}
-                                            initialValues={this.props.viewedDeal}
+                                            initialValues={deal}
                                             showPipelineSelection={false}
                             />
                         }
@@ -159,7 +161,7 @@ class DealDetail extends Component {
                             this.state.isLostReasonModalVisible &&
                             <LostReason showModal={this.state.isLostReasonModalVisible}
                                         close={this.closeLostReasonModal}
-                                        initialValues={this.props.viewedDeal}
+                                        initialValues={deal}
                             />
                         }
 
@@ -184,19 +186,19 @@ class DealDetail extends Component {
 
     }
 
-    renderAssignee() {
-        const deal = this.props.viewedDeal;
+    renderAgent() {
+        const deal = this.getViewedDeal();
 
-        if (deal.owner) {
+        if (deal.agent) {
             return (<Link className="text-navy"
-                          to={"/user/" + deal.owner.id}>{deal.owner.firstName} {deal.owner.lastName}</Link>);
+                          to={"/user/" + deal.agent.id}>{deal.agent.firstName} {deal.agent.lastName}</Link>);
         } else {
             return (<em>Not set</em>);
         }
     }
 
     renderPersons() {
-        const deal = this.props.viewedDeal;
+        const deal = this.getViewedDeal();
 
         if(deal.person){
 
@@ -209,7 +211,7 @@ class DealDetail extends Component {
     }
 
     renderLastUpdateDate() {
-        const deal = this.props.viewedDeal;
+        const deal = this.getViewedDeal();
 
         if(deal.lastModifiedDate){
             return (
@@ -221,7 +223,7 @@ class DealDetail extends Component {
     }
 
     renderPossibleCloseDate() {
-        const deal = this.props.viewedDeal;
+        const deal = this.getViewedDeal();
 
         if(deal.possibleCloseDate){
             return (
@@ -232,7 +234,7 @@ class DealDetail extends Component {
         }
     }
     renderCreatedDate() {
-        const deal = this.props.viewedDeal;
+        const deal = this.getViewedDeal();
 
         if(deal.createdDate){
             return (
@@ -244,7 +246,7 @@ class DealDetail extends Component {
     }
 
     renderDealValue() {
-        const deal = this.props.viewedDeal;
+        const deal = this.getViewedDeal();
 
         if(deal.dealValue){
             return (
@@ -256,13 +258,15 @@ class DealDetail extends Component {
     }
 }
 
+//         viewedDeal: detailedDealSelector(state, props.match.params.dealId)
+
+
 function mapStateToProps(state, props) {
     return {
-        viewedDeal: detailedDealSelector(state, props.match.params.dealId)
+        dealStore: state.dealStore
     };
 }
 
 export default connect(mapStateToProps, {
-    getDealById,
-    getById,
+    getDealById
 })(DealDetail);

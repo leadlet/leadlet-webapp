@@ -76,10 +76,10 @@ class CreateEditDeal extends Component {
         let deal = {
             id: formValues.id,
             title: formValues.title,
-            personId: formValues.person && formValues.person.id,
-            stageId: formValues.stage && formValues.stage.id,
-            pipelineId: formValues.pipeline && formValues.pipeline.id,
-            ownerId: formValues.owner && formValues.owner.id,
+            person: formValues.person,
+            stage: formValues.stage,
+            pipeline: formValues.pipeline,
+            agent: formValues.agent,
             dealValue: formValues.dealValue,
             possibleCloseDate: formValues.possibleCloseDate && formValues.possibleCloseDate._d,
             products: formValues.products,
@@ -102,7 +102,7 @@ class CreateEditDeal extends Component {
     }
 
     render() {
-        const {handleSubmit, pipelineId} = this.props;
+        const {handleSubmit} = this.props;
 
         return (
             <Modal show={this.props.showModal} onHide={this.onClose} >
@@ -175,9 +175,9 @@ class CreateEditDeal extends Component {
 
                         { this.props.showUserSelection &&
                             <Field
-                                name="owner"
-                                label="Owner"
-                                placeholder="Select deal owner"
+                                name="agent"
+                                label="Agent"
+                                placeholder="Select deal agent"
                                 component={renderAsyncSelectField}
                                 loadOptions={loadUser}
                                 parse={(value) => {

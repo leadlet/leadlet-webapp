@@ -6,7 +6,7 @@ const dealSchema = new schema.Entity('deals');
 // or use shorthand syntax:
 const dealListSchema = [dealSchema];
 
-export function dealStore(state = {}, action) {
+export function dealStore(state = { ids: [], items: {}}, action) {
     switch (action.type) {
 
         case dealConstants.APPEND_STAGE_DEALS_SUCCESS:
@@ -48,12 +48,16 @@ export function dealStore(state = {}, action) {
             };
             break;
         case dealConstants.UPDATE_SUCCESS:
+        case dealConstants.GET_SUCCESS:
+
             return {
                 ...state,
                 items: {
                     ...state.items,
                     [action.payload.id]: action.payload
-                }
+                },
+                ids: [ ...state.ids, action.payload.id]
+
             };
             break;
         case dealConstants.DELETE_SUCCESS:

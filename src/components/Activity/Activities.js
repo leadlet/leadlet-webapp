@@ -73,10 +73,10 @@ class Activities extends Component {
     }
 
     renderActivityRows() {
-        if( _.has(this, ["props", "activity", "ids"])){
+        if( _.has(this, ["props", "activityStore", "ids"])){
 
-            return this.props.activity.ids.map(activityId => {
-                    let activity = this.props.activity.items[activityId];
+            return this.props.activityStore.ids.map(activityId => {
+                    let activity = this.props.activityStore.items[activityId];
                     const startDate = moment(activity.start);
                     return (
                         <tr key={activity.id}>
@@ -182,10 +182,10 @@ class Activities extends Component {
 
 function mapStateToProps(state) {
     return {
-        activity: state.activity,
+        activityStore: state.activityStore,
         query: searchQuerySelector(state, {group: "activities-page"}),
         sort: sortSelector(state, {group: "activities-page"}),
-        maxActivityCount: state.activities.maxActivityCount
+        maxActivityCount: state.activityStore.maxActivityCount
     }
 }
 
