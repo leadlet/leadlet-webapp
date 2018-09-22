@@ -2,6 +2,7 @@ import {channelService} from "../services/channel.service";
 import {channelConstants} from "../constants/channel.constants";
 import {alertActions} from "./alert.actions";
 
+
 export function getChannelById(channelId) {
     return dispatch => {
         dispatch(request(channelId));

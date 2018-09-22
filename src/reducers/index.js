@@ -14,6 +14,7 @@ import {dealStore} from "./dealStore.reducer";
 import {pipelineStore} from "./pipelineStore.reducer";
 import {stageStore} from "./stageStore.reducer";
 import {activityStore} from "./activityStore.reducer";
+import {filterStore} from "./filterStore.reducer";
 
 const rootReducer = combineReducers({
     authentication,
@@ -29,7 +30,8 @@ const rootReducer = combineReducers({
     products,
     pipelineStore,
     stageStore,
-    timeLineStore
+    timeLineStore,
+    filterStore
 });
 
 export default rootReducer;

@@ -10,7 +10,6 @@ import CustomDragLayer from "./CustomDragLayer";
 import {deleteDeal} from "../../actions/deal.actions";
 import SweetAlert from 'sweetalert-react';
 import CreateEditDeal from '../DealDetail/CreateEditDeal'
-import {pipelinesSelector, stagesSelector} from "../../models/selectors";
 import ListFilter from "../Search/ListFilter";
 import {getAllStages} from "../../actions/stage.actions";
 import RangeFilter from "../Search/RangeFilter";
@@ -26,35 +25,35 @@ import * as _ from "lodash";
 
 
 let sortOptions = [
-                    {
-                        value: {
-                            dataField : 'created_date',
-                            order: 'desc'
-                        },
-                        label: 'Newest'
-                    },
-                    {
-                        value: {
-                            dataField : 'created_date',
-                                order: 'asc'
-                        },
-                        label: 'Oldest'
-                    },
-                    {
-                        value: {
-                            dataField : 'priority',
-                                order: 'desc'
-                        },
-                        label: 'Most Prior'
-                    },
-                    {
-                        value: {
-                            dataField : 'priority',
-                                order: 'asc'
-                        },
-                        label: 'Least Prior'
-                    }
-                    ];
+    {
+        value: {
+            dataField: 'created_date',
+            order: 'desc'
+        },
+        label: 'Newest'
+    },
+    {
+        value: {
+            dataField: 'created_date',
+            order: 'asc'
+        },
+        label: 'Oldest'
+    },
+    {
+        value: {
+            dataField: 'priority',
+            order: 'desc'
+        },
+        label: 'Most Prior'
+    },
+    {
+        value: {
+            dataField: 'priority',
+            order: 'asc'
+        },
+        label: 'Least Prior'
+    }
+];
 
 class DealBoard extends Component {
 
@@ -69,7 +68,6 @@ class DealBoard extends Component {
             deletingDeal: null,
             selectedPipeline: null,
             sidebarOpen: true
-
         };
 
         this.toggleNewDealModal = this.toggleNewDealModal.bind(this);
@@ -160,24 +158,22 @@ class DealBoard extends Component {
     componentDidMount() {
         this.props.getAllPipelines();
         this.props.getAllStages();
-
     }
 
     componentWillReceiveProps(nextProps) {
-        if( this.state.selectedPipeline === null && _.get(nextProps, ["pipelineStore", "ids", "length"], 0) > 0){
+        if (this.state.selectedPipeline === null && _.get(nextProps, ["pipelineStore", "ids", "length"], 0) > 0) {
             this.pipelineChanged(nextProps.pipelineStore.items[nextProps.pipelineStore.ids[0]]);
         }
-
-
     }
 
-    pipelineChanged(pipeline){
-        this.setState({ selectedPipeline: pipeline });
+    pipelineChanged(pipeline) {
+        this.setState({selectedPipeline: pipeline});
 
         this.props.pipelineSelected({
             pipeline: pipeline,
             group: "deals-page",
-            id: "pipeline-selector"});
+            id: "pipeline-selector"
+        });
     }
 
     render() {
@@ -189,7 +185,7 @@ class DealBoard extends Component {
                         className="m-l-xs sort-selector"
                         group="deals-page"
                         id="deal-sort-selector"
-                        options = {sortOptions}
+                        options={sortOptions}
                     />
                     <PipelineSelector className="m-l-xs pipeline-selector"
                                       pipelineStore={this.props.pipelineStore}
@@ -197,8 +193,10 @@ class DealBoard extends Component {
                                       value={this.state.selectedPipeline}
                     />
 
-                    <Button bsStyle="primary" bsSize="small" className="m-l-xs" onClick={this.toggleNewDealModal}>New Deal</Button>
-                        <Button bsStyle="primary" bsSize="small" className="m-l-xs" onClick={this.toggleSearchMenu}><i className="fa fa-filter fa-xs"/></Button>
+                    <Button bsStyle="primary" bsSize="small" className="m-l-xs" onClick={this.toggleNewDealModal}>New
+                        Deal</Button>
+                    <Button bsStyle="primary" bsSize="small" className="m-l-xs" onClick={this.toggleSearchMenu}><i
+                        className="fa fa-filter fa-xs"/></Button>
                 </div>
 
                 <div className="row stages">
@@ -208,7 +206,7 @@ class DealBoard extends Component {
                             id="Products"
                             dataField="products.keyword"
                             title="Products"
-                            emptyText ="No Product"
+                            emptyText="No Product"
                             multi={true}
                             group="deals-page"
                             index="leadlet-deal"
@@ -217,7 +215,7 @@ class DealBoard extends Component {
                             id="Channels"
                             dataField="channel.keyword"
                             title="Channels"
-                            emptyText ="No Channel"
+                            emptyText="No Channel"
                             multi={true}
                             group="deals-page"
                             index="leadlet-deal"
@@ -226,7 +224,7 @@ class DealBoard extends Component {
                             id="Sources"
                             dataField="source.keyword"
                             title="Sources"
-                            emptyText ="No Source"
+                            emptyText="No Source"
                             multi={true}
                             group="deals-page"
                             index="leadlet-deal"
@@ -252,7 +250,7 @@ class DealBoard extends Component {
                         {this.renderCards()}
                     </div>
 
-            </div>
+                </div>
                 <SweetAlert
                     title="Are you sure?"
                     text="You will loose information related to deal!"
@@ -270,7 +268,7 @@ class DealBoard extends Component {
                                     close={this.toggleNewDealModal}
                                     showPipelineSelection={false}
                                     initialValues={{
-                                        pipeline : {
+                                        pipeline: {
                                             id: this.state.selectedPipeline.id
                                         }
                                     }}
@@ -282,11 +280,11 @@ class DealBoard extends Component {
 
     renderCards() {
 
-        if( _.has(this, ["props", "pipelineStore", "ids", "length"])
-                && _.has(this, ["props", "stageStore", "ids", "length"])
-                && this.state.selectedPipeline ) {
+        if (_.has(this, ["props", "pipelineStore", "ids", "length"])
+            && _.has(this, ["props", "stageStore", "ids", "length"])
+            && this.state.selectedPipeline) {
 
-            return this.props.stageStore.ids.map( stageId => this.props.stageStore.items[stageId])
+            return this.props.stageStore.ids.map(stageId => this.props.stageStore.items[stageId])
                 .filter(stage => stage.pipelineId === this.state.selectedPipeline.id)
                 .map(stage =>
                     <CardsContainer
@@ -300,12 +298,7 @@ class DealBoard extends Component {
                         deleteDeal={this.onDeleteDeal}
                     />
                 );
-        } else {
-            console.log("pipelinelar yok");
-            console.log(this.state.selectedPipeline)
         }
-
-
     }
 }
 

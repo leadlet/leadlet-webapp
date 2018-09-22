@@ -3,27 +3,6 @@ import {stageConstants} from "../constants/stage.constants";
 import {stageService} from "../services/stage.service"
 import {alertActions} from "./alert.actions";
 
-/*
-export function getAllStagesByPipelineId(id) {
-
-    return dispatch => {
-        dispatch(request());
-
-        stageService.getByPipelineId(id)
-            .then(
-                payload => dispatch(success(payload)),
-                error => dispatch(failure(error))
-            );
-
-    };
-
-    function request() { return { type: stageConstants.GETALL_REQUEST } }
-    function success(payload) { return { type: stageConstants.GETALL_SUCCESS, payload } }
-    function failure(error) { return { type: stageConstants.GETALL_FAILURE, error } }
-
-}
-*/
-
 export function getAllStages() {
 
     return dispatch => {

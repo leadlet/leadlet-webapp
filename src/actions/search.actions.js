@@ -1,5 +1,4 @@
 import {searchConstants} from "../constants/search.constants";
-import {timelineService} from "../services/timeline.service";
 import {searchService} from "../services/search.service";
 
 export function clearFilter(facetId) {

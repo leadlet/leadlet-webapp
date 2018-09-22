@@ -9,19 +9,6 @@ const propTypes = {
     style: PropTypes.object
 };
 
-function createPhoneMail(item) {
-    var phones_mail = [];
-
-    if (item.person.phones && item.person.phones.length > 0) {
-        phones_mail.push(item.person.phones[0].phone);
-    }
-    if (item.person.email) {
-        phones_mail.push(item.person.email);
-    }
-
-    return phones_mail.join(" / ");
-}
-
 function getActivityStatusColor(item) {
     if (item.activityStatus === "EXPIRED") {
         return "red-bg";
@@ -73,6 +60,7 @@ const Card = (props) => {
         </li>
     );
 };
+
 
 Card.propTypes = propTypes;
 

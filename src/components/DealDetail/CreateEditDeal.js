@@ -3,27 +3,18 @@ import {Field, Fields, reduxForm} from 'redux-form';
 import Modal from '../../modal-shim';
 import {connect} from 'react-redux';
 import SweetAlert from 'sweetalert-react';
-
 import 'react-select/dist/react-select.css';
 import {createDeal, updateDeal} from "../../actions/deal.actions";
-
 import renderInputField from '../../formUtils/renderInputField'
 import renderPriceCurrencyField from '../../formUtils/renderPriceCurrencyField'
-import formValueSelector from "redux-form/es/formValueSelector";
 import renderAsyncSelectField from "../../formUtils/renderAsyncSelectField";
-
 import renderDatePicker from "../../formUtils/renderDatePicker";
 import {loadUser, loadProduct, loadSource, loadChannel, loadPerson} from "../../formUtils/form.actions";
 import renderPipelineAndStageFields from "../../formUtils/renderPipelineAndStageFields";
 
-/*let currencies = [
-    {value: 'USD', label: 'USD'},
-    {value: 'TL', label: 'TL'},
-    {value: 'EURO', label: 'EURO'}
-];*/
 
 const validate = values => {
-    const errors = {}
+    const errors = {};
 
     /*  title validation */
     if (!values.title) {

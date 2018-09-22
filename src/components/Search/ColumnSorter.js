@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import {changeSort, clearFilter} from "../../actions/search.actions";
+import {changeSort} from "../../actions/search.actions";
 import {sortByGroupAndId} from "../../models/selectors";
 import * as _ from "lodash";
 
@@ -44,7 +44,6 @@ class ColumnSorter extends Component {
 function mapStateToProps(state, props) {
     return {
         sort: sortByGroupAndId(state, {group: props.group, id: props.dataField})
-
     };
 }
 

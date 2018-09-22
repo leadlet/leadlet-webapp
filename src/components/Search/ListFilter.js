@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {getDistinctTerms, termSelected, termUnSelected} from "../../actions/search.actions";
-import {filterByIdSelector, searchQuerySelector} from "../../models/selectors";
+import { searchQuerySelector} from "../../models/selectors";
+import * as _ from "lodash";
 
 class ListFilter extends Component {
 
@@ -51,9 +52,11 @@ class ListFilter extends Component {
         }
     }
     renderTerms(){
-        if( this.props.filter ){
+        if( _.has(this, ["props","filterStore",this.props.id]) ){
 
-            const terms = this.props.filter.options;
+            let filter = _.get(this, ["props","filterStore",this.props.id]);
+
+            const terms = filter.options;
 
             return Object.keys(terms).map((key,index) => {
                 let keyText = this.getKeyText(key);
@@ -64,7 +67,7 @@ class ListFilter extends Component {
                     <div key={key} className="form-check">
                         <input className="form-check-input" type="checkbox"
                                value={key} id={key} onChange={this.inputChanged}
-                               checked={this.props.filter.selected && this.props.filter.selected.options.includes(key)}/>
+                               checked={filter.selected && filter.selected.options.includes(key)}/>
                         <label className="form-check-label item-name">
                             {keyText }  <span className="item-count">({terms[key]})</span>
                         </label>
@@ -87,7 +90,7 @@ class ListFilter extends Component {
 
 function mapStateToProps(state, props) {
     return {
-        filter: filterByIdSelector(state, props.id),
+        filterStore: state.filterStore,
         searchQuery: searchQuerySelector(state, {excludeMe: props.id, group: props.group})
     };
 }

@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {clearFilter} from "../../actions/search.actions";
-import {filtersSelector} from "../../models/selectors";
 import moment from "moment";
 
 class SelectedFilters extends Component {
@@ -17,48 +16,51 @@ class SelectedFilters extends Component {
     render(){
         let searchFilters = [];
 
-        if( this.props.filters ){
-            var termFilters = this.props.filters
+
+        let filters = Object.values(this.props.filterStore).filter( item => item.group === this.props.group);
+
+        if( filters ){
+            let termFilters = filters
                 .filter(filter => filter.type === "TERMS" && filter.selected && filter.selected.options && filter.selected.options.length > 0)
                 .map( filter => {
-                    var text = filter.id + ": " + filter.selected.options.join(",");
+                    let text = filter.id + ": " + filter.selected.options.join(",");
                     return (<button type="button" className="btn btn-default btn-small"
                                     key={filter.id}
                                     id={filter.id} onClick={()=>this.onClearFilter(filter.id)}>{text} <i className="fa fa-close fa-xs"/></button>);
                 });
 
-            var rangeFilters = this.props.filters
+            let rangeFilters = filters
                 .filter(filter => filter.type === "RANGE" && filter.selected)
                 .map( filter => {
-                    var text = filter.id + ": " + filter.selected.min + "-" + filter.selected.max;
+                    let text = filter.id + ": " + filter.selected.min + "-" + filter.selected.max;
                     return (<button type="button" className="btn btn-default btn-small"
                                     key={filter.id}
                                     id={filter.id} onClick={()=>this.onClearFilter(filter.id)}>{text} <i className="fa fa-close fa-xs"/></button>);
                 });
 
-            var dateRangeFilters = this.props.filters
+            let dateRangeFilters = filters
                 .filter(filter => filter.type === "DATERANGE" && filter.selected)
                 .map( filter => {
-                    var text = filter.id + ": " + moment(filter.selected.min).format("DD/MM/YYYY") + " - " + moment(filter.selected.max).format("DD/MM/YYYY");
+                    let text = filter.id + ": " + moment(filter.selected.min).format("DD/MM/YYYY") + " - " + moment(filter.selected.max).format("DD/MM/YYYY");
                     return (<button type="button" className="btn btn-default btn-small"
                                     key={filter.id}
                                     id={filter.id} onClick={()=>this.onClearFilter(filter.id)}>{text} <i className="fa fa-close fa-xs"/></button>);
                 });
 
+            searchFilters = [ ...termFilters, ...rangeFilters, ...dateRangeFilters];
+
+            return ( <div className={this.props.className ? this.props.className : " selected-filters"}>{searchFilters}</div>);
         }
 
-        searchFilters = [ ...termFilters, ...rangeFilters, ...dateRangeFilters];
 
-        return ( <div className={this.props.className ? this.props.className : "" + " selected-filters"}>{searchFilters}</div>);
     }
 }
 
-function mapStateToProps(state, props) {
+function mapStateToProps(state) {
     return {
-        filters: filtersSelector(state, props)
+        filterStore: state.filterStore
     };
 }
-
 
 export default connect(mapStateToProps, {clearFilter})(SelectedFilters);
 
