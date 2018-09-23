@@ -4,8 +4,6 @@ import {getAllPipelines} from "../../actions/pipeline.actions";
 import {connect} from "react-redux";
 import Button from "react-bootstrap/es/Button";
 import HTML5Backend from 'react-dnd-html5-backend';
-import {DragDropContext} from 'react-dnd';
-import CardsContainer from "./DealList/DealCardsContainer";
 import CustomDragLayer from "./CustomDragLayer";
 import {deleteDeal} from "../../actions/deal.actions";
 import SweetAlert from 'sweetalert-react';
@@ -17,11 +15,13 @@ import SelectedFilters from "../Search/SelectedFilters";
 import DateRangeFilter from "../Search/DateRangeFilter";
 import {pipelineSelected} from "../../actions/search.actions";
 import SortSelector from "../Search/SortSelector";
+import {DragDropContext} from 'react-dnd';
 
 
 import './../../styles/deals.css';
 import './../../styles/side-search.css';
 import * as _ from "lodash";
+import StageColumn from "./StageColumn";
 
 
 let sortOptions = [
@@ -77,7 +77,6 @@ class DealBoard extends Component {
         this.stopScrolling = this.stopScrolling.bind(this);
         this.startScrolling = this.startScrolling.bind(this);
         this.onDeleteDeal = this.onDeleteDeal.bind(this);
-        this.moveList = this.moveList.bind(this);
         this.pipelineChanged = this.pipelineChanged.bind(this);
 
     }
@@ -102,10 +101,6 @@ class DealBoard extends Component {
             deletingDeal: deal,
             showDeleteDealDialog: true
         });
-    }
-
-    moveList(listId, nextX) {
-        console.log(arguments);
     }
 
     startScrolling(direction) {
@@ -287,16 +282,19 @@ class DealBoard extends Component {
             return this.props.stageStore.ids.map(stageId => this.props.stageStore.items[stageId])
                 .filter(stage => stage.pipelineId === this.state.selectedPipeline.id)
                 .map(stage =>
-                    <CardsContainer
-                        key={stage.id}
-                        id={stage.id}
-                        stage={stage}
-                        moveList={this.moveList}
-                        startScrolling={this.startScrolling}
-                        stopScrolling={this.stopScrolling}
-                        isScrolling={this.state.isScrolling}
-                        deleteDeal={this.onDeleteDeal}
-                    />
+                    <div key={stage.id} className="list">
+                        <div className="stage-header">
+                            <div className="stage-name">{stage.name}</div>
+                        </div>
+                        <StageColumn
+                            key={stage.id}
+                            stage={stage}
+                            startScrolling={this.startScrolling}
+                            stopScrolling={this.stopScrolling}
+                            isScrolling={this.state.isScrolling}
+                            deleteDeal={this.props.deleteDeal}
+                        />
+                    </div>
                 );
         }
     }

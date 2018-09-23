@@ -1,30 +1,14 @@
 import React, {Component} from 'react';
 import Card from './DraggableDealCard';
 import {DropTarget} from 'react-dnd';
-import {findDOMNode} from 'react-dom'
-import {dealConstants} from "../../../constants/deal.constants";
 import PropTypes from 'prop-types';
 import {connect} from "react-redux";
-import {getStageDeals, patchDeal} from "../../../actions/deal.actions";
-import {QueryUtils} from "../../Search/QueryUtils";
+import {getStageDeals, patchDeal} from "../../actions/deal.actions";
+import {QueryUtils} from "../Search/QueryUtils";
 import * as _ from "lodash";
 
 let VisibilitySensor = require('react-visibility-sensor');
 
-const MAX_INDEX = 100000;
-const MIN_INDEX = 0;
-
-function getPlaceholderIndex(y, scrollY) {
-    // shift placeholder if y position more than card height / 2
-    const yPos = y - dealConstants.OFFSET_HEIGHT + scrollY;
-    let placeholderIndex;
-    if (yPos < dealConstants.CARD_HEIGHT / 2) {
-        placeholderIndex = -1; // place at the start
-    } else {
-        placeholderIndex = Math.floor((yPos - dealConstants.CARD_HEIGHT / 2) / (dealConstants.CARD_HEIGHT + dealConstants.CARD_MARGIN));
-    }
-    return placeholderIndex;
-}
 
 const specs = {
 
@@ -41,22 +25,7 @@ const specs = {
             return;
         }
 
-
-        let calculateNewPriority = (deals, newIndex) => {
-            let prevDeal = deals[newIndex - 1];
-            let nextDeal = deals[newIndex];
-
-            let prevPriority = prevDeal ? prevDeal.priority : MIN_INDEX;
-            let nextPriority = nextDeal ? nextDeal.priority : MAX_INDEX;
-
-            let newPriority = prevPriority + (( nextPriority - prevPriority ) / 2 );
-            return Math.round(newPriority);
-        };
-
-
-        let newPriority = calculateNewPriority(props.deals, nextY);
-
-        props.patchDeal({id: monitor.getItem().id, priority: newPriority, stageId: props.stage.id});
+        props.patchDeal({id: monitor.getItem().id, priority: 0, stageId: props.stage.id});
 
 
     },
@@ -64,10 +33,7 @@ const specs = {
 
     hover(props, monitor, component) {
         // defines where placeholder is rendered
-        const placeholderIndex = getPlaceholderIndex(
-            monitor.getClientOffset().y,
-            findDOMNode(component).scrollTop
-        );
+        const placeholderIndex = 0;
 
         // horizontal scroll
         if (!props.isScrolling) {
@@ -99,7 +65,7 @@ const specs = {
 };
 
 
-class Cards extends Component {
+class StageColumn extends Component {
     static propTypes = {
         connectDropTarget: PropTypes.func.isRequired,
         deleteDeal: PropTypes.func.isRequired,
@@ -152,9 +118,13 @@ class Cards extends Component {
 
     render() {
         const {connectDropTarget, isOver, canDrop} = this.props;
-        const {placeholderIndex} = this.state;
-        let isPlaceHold = false;
         let cardList = [];
+
+        // if there is no items in cards currently, display a placeholder anyway
+        if (isOver && canDrop ) {
+            cardList.push(<li key="placeholder" className="info-element placeholder"/>);
+        }
+
         if (_.has(this, ["props", "dealStore", "ids"])) {
             this.props.dealStore.ids
                 .filter(dealId => {
@@ -162,45 +132,22 @@ class Cards extends Component {
                 })
                 .forEach((dealId, i) => {
                     let deal = this.props.dealStore.items[dealId];
-                    if (isOver && canDrop) {
-                        isPlaceHold = false;
-                        if (i === 0 && placeholderIndex === -1) {
-                            cardList.push(<li key="placeholder" className="placeholder"/>);
-                        } else if (placeholderIndex > i) {
-                            isPlaceHold = true;
-                        }
-                    }
-                    if (deal !== undefined) {
-                        cardList.push(
-                            <Card x={deal.stage.id} y={deal.order}
-                                  item={deal}
-                                  key={deal.id}
-                                  stopScrolling={this.props.stopScrolling}
-                                  deleteDeal={this.props.deleteDeal}
-                            />
-                        );
-                    }
-                    if (isOver && canDrop && placeholderIndex === i) {
-                        cardList.push(<li key="placeholder" className="info-element placeholder"/>);
-                    }
+                    cardList.push(
+                        <Card x={deal.stage.id} y={deal.order}
+                              item={deal}
+                              key={deal.id}
+                              stopScrolling={this.props.stopScrolling}
+                              deleteDeal={this.props.deleteDeal}
+                        />
+                    );
                 });
         }
 
-        // if placeholder index is greater than array.length, display placeholder as last
-        if (isPlaceHold) {
-            cardList.push(<li key="placeholder" className="info-element placeholder"/>);
-        }
-
-        // if there is no items in cards currently, display a placeholder anyway
-        if (isOver && canDrop && _.get(this, ["dealStore", "ids", "length"], 0) === 0) {
-            cardList.push(<li key="placeholder" className="info-element placeholder"/>);
-        }
 
         return connectDropTarget(
             <ul>
                 {cardList}
                 <VisibilitySensor onChange={this.loadMoreDeal}/>
-
             </ul>
         );
     }
@@ -235,7 +182,7 @@ let dropWrapper = DropTarget('card', specs, (connectDragSource, monitor) => ({
     isOver: monitor.isOver(),
     canDrop: monitor.canDrop(),
     item: monitor.getItem()
-}))(Cards);
+}))(StageColumn);
 
 export default connect(mapStateToProps, {getStageDeals, patchDeal})(dropWrapper);
 

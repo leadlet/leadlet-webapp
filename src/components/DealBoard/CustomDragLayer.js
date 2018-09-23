@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { DragLayer } from 'react-dnd';
 import PropTypes from 'prop-types';
 
-import CardDragPreview from './CardDragPreview';
+import DealCardDragPreview from './DealCardDragPreview';
 import snapToGrid from './snapToGrid';
 
 
@@ -59,7 +59,7 @@ class CustomDragLayer extends Component {
     switch (type) {
       case 'card':
         return (
-          <CardDragPreview card={item} />
+          <DealCardDragPreview card={item} />
         );
       default:
         return null;

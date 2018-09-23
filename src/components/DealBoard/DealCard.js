@@ -24,7 +24,7 @@ function getActivityStatusColor(item) {
     }
 }
 
-const Card = (props) => {
+const DealCard = (props) => {
     const {style, item} = props;
 
     const formattedDate = moment(item.createdDate).fromNow();
@@ -62,6 +62,6 @@ const Card = (props) => {
 };
 
 
-Card.propTypes = propTypes;
+DealCard.propTypes = propTypes;
 
-export default Card;
+export default DealCard;
