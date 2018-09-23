@@ -62,7 +62,7 @@ function getAllDeals(filter, page, size) {
     return fetch(`/api/deals?filter=${filter}&page=${page}&size=${size}`, requestOptions).then(handlePaginationResponse);
 }
 
-function getDealsByFilter(query, sort, page, size) {
+function getDealsByFilter(query, sort, page, size=20) {
     const requestOptions = {
         method: 'GET',
         headers: {...authHeader(), 'Content-Type': 'application/json'}

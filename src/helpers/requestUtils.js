@@ -1,6 +1,6 @@
 import {isEmpty} from "lodash";
 
-export function buildRequestString(query, sort, page, size=10) {
+export function buildRequestString(query, sort, page, size) {
 
     let params = [];
 

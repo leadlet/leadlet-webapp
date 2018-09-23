@@ -30,7 +30,7 @@ function update(activity) {
     return fetch('/api/activities/', requestOptions).then(handleResponse);
 }
 
-function getActivitiesByFilter(query, sort, page, size=10) {
+function getActivitiesByFilter(query, sort, page, size=20) {
     const requestOptions = {
         method: 'GET',
         headers: { ...authHeader(), 'Content-Type': 'application/json' }

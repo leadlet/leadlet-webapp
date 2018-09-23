@@ -54,7 +54,10 @@ class Activities extends Component {
     componentDidUpdate(prevProps) {
         if( (this.getQuery() !== this.getQuery(prevProps))
             || (this.getSort() !== this.getSort(prevProps))){
-            this.props.getActivities( this.getQuery(), this.getSort(), true );
+            this.setState({currentPage: 0},
+                () => this.props.getActivities(this.getQuery(), this.getSort(),
+                    this.state.currentPage,
+                    false));
         }
     }
 
