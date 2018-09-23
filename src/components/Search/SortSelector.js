@@ -1,6 +1,5 @@
 import React from 'react';
 import Select from 'react-select';
-import {sortByGroupAndId, sortSelector} from "../../models/selectors";
 import {connect} from "react-redux";
 import {changeSort, clearSort} from "../../actions/search.actions";
 
@@ -10,6 +9,7 @@ class SortSelector extends React.Component {
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
+
     }
 
     handleChange = (selectedOption) => {
@@ -24,8 +24,7 @@ class SortSelector extends React.Component {
 
     }
     render() {
-        const { sort } = this.props;
-
+        let sort = this.props.sortStore[this.props.id];
         return (
             <Select
                 className={this.props.className}
@@ -46,7 +45,7 @@ class SortSelector extends React.Component {
 
 function mapStateToProps(state, props) {
     return {
-        sort: sortByGroupAndId(state, {group: "deals-page", id: props.id})
+        sortStore: state.sortStore
     }
 }
 

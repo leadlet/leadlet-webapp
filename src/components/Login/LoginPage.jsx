@@ -8,9 +8,7 @@ class LoginPage extends React.Component {
     constructor(props) {
         super(props);
 
-        // reset login status
         this.props.logout();
-//        this.props.dispatch(userActions.logout());
 
         this.state = {
             username: '',
@@ -32,12 +30,9 @@ class LoginPage extends React.Component {
 
         this.setState({ submitted: true });
         const { username, password } = this.state;
-        const { dispatch } = this.props;
         if (username && password) {
             // TODO passing props is workaround
             this.props.login(username, password, this.props, this.props.getAccount);
-
-//            dispatch(userActions.login(username, password, this.props, ));
         }
     }
 

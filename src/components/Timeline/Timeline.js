@@ -3,7 +3,6 @@ import connect from "react-redux/es/connect/connect";
 import {getTimelineByFilter, resetTimelines} from "../../actions/timeline.actions";
 import './../../styles/timeline.css';
 import EditOrCreateActivity from "../Activity/EditOrCreateActivity";
-import {searchQuerySelector} from "../../models/selectors";
 import NoteCreated from "./NoteCreated";
 import * as _ from "lodash";
 import ActivityCreated from "./ActivityCreated";
@@ -12,8 +11,9 @@ import moment from "moment";
 import UpcomingActivity from "./UpcomingActivity";
 import NavigationFilter from "../Search/NavigationFilter";
 import DealCreated from "./DealCreated";
+import {QueryUtils} from "../Search/QueryUtils";
 
-var VisibilitySensor = require('react-visibility-sensor');
+let VisibilitySensor = require('react-visibility-sensor');
 
 
 class Timeline extends Component {
@@ -35,11 +35,11 @@ class Timeline extends Component {
         this.hasMoreItem = this.hasMoreItem.bind(this);
         this.refreshTimeline = this.refreshTimeline.bind(this);
         this.renderUpcomingActivities = this.renderUpcomingActivities.bind(this);
-
+        this.getQuery = this.getQuery.bind(this);
     }
 
     refreshTimeline() {
-        let newQuery = this.combineDefaultFilter2Query(this.props.query, this.props.defaultFilter);
+        let newQuery = this.combineDefaultFilter2Query(this.getQuery(), this.props.defaultFilter);
         this.props.getTimelineByFilter(newQuery, this.SORT);
 
         let newActivityQuery = this.combineDefaultFilter2Query(this.props.defaultFilter, `start_date:[${moment()} TO *]`);
@@ -55,14 +55,14 @@ class Timeline extends Component {
 
     componentDidUpdate(prevProps) {
         if ((this.props.lastModifiedDate !== prevProps.lastModifiedDate)
-            || ( this.props.query !== prevProps.query)) {
+            || ( this.getQuery() !== this.getQuery(prevProps))) {
             this.refreshTimeline();
         }
     }
 
     loadMoreItem(isVisible) {
         if (isVisible && this.hasMoreItem()) {
-            let newQuery = this.combineDefaultFilter2Query(this.props.query, this.props.defaultFilter);
+            let newQuery = this.combineDefaultFilter2Query(this.getQuery(), this.props.defaultFilter);
 
             this.setState({currentPage: this.state.currentPage + 1},
                 () => this.props.getTimelineByFilter(newQuery,
@@ -181,13 +181,16 @@ class Timeline extends Component {
             _.get(this, ["props", "timeLineStore", "ids", "length"], 0);
     }
 
+    getQuery(props = this.props) {
+        return QueryUtils.getQuery(props.filterStore, {group: "timelines-page"})
+    }
 }
 
 function mapStateToProps(state) {
     return {
         activityStore: state.activityStore,
         timeLineStore: state.timeLineStore,
-        query: searchQuerySelector(state, {group: "timelines-page"}),
+        filterStore: state.filterStore,
         maxTimelineCount: state.timeLineStore.maxTimelineCount
     };
 }

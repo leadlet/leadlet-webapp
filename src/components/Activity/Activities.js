@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {getActivities, update} from "../../actions/activity.actions";
 import '../../../node_modules/fullcalendar/dist/fullcalendar.css';
-import {searchQuerySelector, sortSelector} from "../../models/selectors";
 import * as _ from "lodash";
 import ListFilter from "../Search/ListFilter";
 import SelectedFilters from "../Search/SelectedFilters";
@@ -11,8 +10,9 @@ import Button from "react-bootstrap/es/Button";
 import ColumnSorter from "../Search/ColumnSorter";
 import EditOrCreateActivity from "./EditOrCreateActivity";
 import './../../styles/side-search.css';
+import {QueryUtils} from "../Search/QueryUtils";
 
-var VisibilitySensor = require('react-visibility-sensor');
+let VisibilitySensor = require('react-visibility-sensor');
 
 class Activities extends Component {
 
@@ -31,6 +31,11 @@ class Activities extends Component {
         this.renderActivityRows = this.renderActivityRows.bind(this);
         this.loadMoreDeal = this.loadMoreDeal.bind(this);
         this.hasMoreItem = this.hasMoreItem.bind(this);
+        this.getQuery = this.getQuery.bind(this);
+        this.getSort = this.getSort.bind(this);
+    }
+    getSort(props = this.props) {
+        return QueryUtils.getSort(props.sortStore, {group: "activities-page"})
     }
 
     openActivityModal(activity) {
@@ -43,13 +48,13 @@ class Activities extends Component {
     }
 
     componentDidMount() {
-        this.props.getActivities(this.props.query);
+        this.props.getActivities(this.getQuery());
     }
 
     componentDidUpdate(prevProps) {
-        if( (this.props.query !== prevProps.query)
-            || (this.props.sort !== prevProps.sort)){
-            this.props.getActivities( this.props.query, this.props.sort );
+        if( (this.getQuery() !== this.getQuery(prevProps))
+            || (this.getSort() !== this.getSort(prevProps))){
+            this.props.getActivities( this.getQuery(), this.getSort(), true );
         }
     }
 
@@ -58,6 +63,9 @@ class Activities extends Component {
 
             return this.props.activityStore.ids.map(activityId => {
                     let activity = this.props.activityStore.items[activityId];
+                    if( activity === undefined ){
+                        debugger;
+                    }
                     const startDate = moment(activity.start);
                     return (
                         <tr key={activity.id}>
@@ -148,7 +156,7 @@ class Activities extends Component {
     loadMoreDeal(isVisible) {
         if (isVisible && this.hasMoreItem()) {
             this.setState({currentPage: this.state.currentPage + 1},
-                () => this.props.getActivities(this.props.query, this.props.sort,
+                () => this.props.getActivities(this.getQuery(), this.props.sort,
                     this.state.currentPage,
                     true));
         }
@@ -159,13 +167,18 @@ class Activities extends Component {
             _.get(this, ["props", "activities", "length"], 0);
     }
 
+    getQuery(props = this.props) {
+        return QueryUtils.getQuery(props.filterStore, {group: "activities-page"})
+    }
+
+
 }
 
 function mapStateToProps(state) {
     return {
         activityStore: state.activityStore,
-        query: searchQuerySelector(state, {group: "activities-page"}),
-        sort: sortSelector(state, {group: "activities-page"}),
+        filterStore: state.filterStore,
+        sortStore: state.sortStore,
         maxActivityCount: state.activityStore.maxActivityCount
     }
 }

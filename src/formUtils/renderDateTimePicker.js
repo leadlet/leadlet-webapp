@@ -139,7 +139,7 @@ class renderDateTimePicker extends React.Component {
     render() {
         const {
             input, label,
-            meta: {touched, error}
+//            meta: {touched, error}
         } = this.props
 
         return (

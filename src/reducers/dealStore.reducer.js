@@ -13,10 +13,7 @@ export function dealStore(state = { ids: [], items: {}}, action) {
             return {
                 ...state,
                 items:Object.assign (state.items, deals.entities.deals),
-                ids: [
-                    ...state.ids,
-                    ...deals.result
-                ]
+                ids: [...new Set([...state.ids,...deals.result])]
             };
 
         case dealConstants.LOAD_STAGE_DEALS_SUCCESS:
@@ -26,10 +23,7 @@ export function dealStore(state = { ids: [], items: {}}, action) {
             return {
                 ...state,
                 items: Object.assign (cleanedState.items, deals.entities.deals),
-                ids: [
-                    ...cleanedState.ids,
-                    ...deals.result
-                ]
+                ids: [...new Set([...cleanedState.ids,...deals.result])]
             };
 
         case dealConstants.CREATE_SUCCESS:
@@ -39,7 +33,7 @@ export function dealStore(state = { ids: [], items: {}}, action) {
                     ...state.items,
                     [action.payload.id]: action.payload
                 },
-                ids: [ ...state.ids, action.payload.id]
+                ids: [...new Set([...state.ids, ...action.payload.id])]
             };
         case dealConstants.UPDATE_SUCCESS:
         case dealConstants.GET_SUCCESS:
@@ -50,7 +44,7 @@ export function dealStore(state = { ids: [], items: {}}, action) {
                     ...state.items,
                     [action.payload.id]: action.payload
                 },
-                ids: [ ...state.ids, action.payload.id]
+                ids: [...new Set([...state.ids, ...action.payload.id])]
 
             };
         case dealConstants.DELETE_SUCCESS:
@@ -68,6 +62,10 @@ function deleteDealsFromStage(state, stageId) {
     if (state.ids) {
 
         filteredIds = state.ids.filter( dealId => {
+
+            if( state.items[dealId] === undefined ){
+                console.log("test");
+            }
             return state.items[dealId].stage.id !== stageId
         });
 

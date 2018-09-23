@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {getDistinctTerms, termSelected, termUnSelected} from "../../actions/search.actions";
-import { searchQuerySelector} from "../../models/selectors";
 import * as _ from "lodash";
+import {QueryUtils} from "./QueryUtils";
 
 class ListFilter extends Component {
 
@@ -10,6 +10,7 @@ class ListFilter extends Component {
         super(props);
         this.inputChanged = this.inputChanged.bind(this);
         this.getKeyText = this.getKeyText.bind(this);
+        this.getQuery = this.getQuery.bind(this);
         this.state = {
             definition: {
                 id: this.props.id,
@@ -22,14 +23,18 @@ class ListFilter extends Component {
             }
         };
     }
+    getQuery(props = this.props) {
+        return QueryUtils.getQuery(props.filterStore, {excludeMe: props.id, group: props.group})
+    }
+
     componentDidUpdate(prevProps) {
-        if( this.props.searchQuery !== prevProps.searchQuery){
-            this.props.getDistinctTerms( this.state.definition, this.props.searchQuery );
+        if( this.getQuery() !== this.getQuery(prevProps)){
+            this.props.getDistinctTerms( this.state.definition, this.getQuery() );
         }
     }
 
     componentDidMount(){
-        this.props.getDistinctTerms( this.state.definition,  this.props.searchQuery );
+        this.props.getDistinctTerms( this.state.definition,  this.getQuery() );
     }
 
     inputChanged(checkboxElem){
@@ -90,8 +95,7 @@ class ListFilter extends Component {
 
 function mapStateToProps(state, props) {
     return {
-        filterStore: state.filterStore,
-        searchQuery: searchQuerySelector(state, {excludeMe: props.id, group: props.group})
+        filterStore: state.filterStore
     };
 }
 

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import {clearFilter, getDistinctTerms, termSelected, termUnSelected} from "../../actions/search.actions";
+import {clearFilter, getDistinctTerms, termSelected} from "../../actions/search.actions";
 
 class NavigationFilter extends Component {
 
@@ -37,23 +37,21 @@ class NavigationFilter extends Component {
 
     renderOptions(){
         return this.props.options.map( option => (
-            <li role="presentation"><a href="#" onClick={() => this.filter(option.fields)}>{option.label}</a></li>
+            <li role="presentation">
+                <button type="button" className="btn btn-link" onClick={() => this.filter(option.fields)}>{option.label}</button>
+            </li>
         ))
     }
     render(){
         return (<ul className="nav nav-pills">
-                    <li role="presentation"><a href="#" onClick={this.clearFilter}>All</a></li>
+                    <li role="presentation">
+                        <button type="button" className="btn btn-link" onClick={this.clearFilter}>All</button>
+                    </li>
                     {this.renderOptions()}
                 </ul>
             );
     }
 }
 
-function mapStateToProps(state, props) {
-    return {
-    };
-}
-
-
-export default connect(mapStateToProps, {termSelected, clearFilter, getDistinctTerms})(NavigationFilter);
+export default connect(null, {termSelected, clearFilter, getDistinctTerms})(NavigationFilter);
 

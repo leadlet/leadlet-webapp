@@ -16,7 +16,6 @@ export function pipelineStore(state = {}, action) {
                 ids: pipelines.result
             };
 
-            break;
         case pipelineConstants.CREATE_SUCCESS:
             return  {
                 ...state,
@@ -24,9 +23,9 @@ export function pipelineStore(state = {}, action) {
                     ...state.items,
                     [action.payload.id]: action.payload
                 },
-                ids: [ ...state.ids, action.payload.id]
+                ids: [...new Set([...state.ids, action.payload.id])]
             };
-            break;
+
         case pipelineConstants.UPDATE_SUCCESS:
             return {
                 ...state,
@@ -35,11 +34,11 @@ export function pipelineStore(state = {}, action) {
                     [action.payload.id]: action.payload
                 }
             };
-            break;
+
         case pipelineConstants.DELETE_SUCCESS:
 
             // TODO
-
+            break;
         default:
             return state
     }

@@ -62,7 +62,7 @@ class RangeFilter extends Component {
 
             return [
 
-                <div className="selector">
+                <div key="rangePickerSelector" className="selector">
                     <Range
                         min={filter.min}
                         max={filter.max}
@@ -73,7 +73,7 @@ class RangeFilter extends Component {
                         onChange={this.onChange}
                         allowCross={false}/>
                 </div>,
-                <div className="text-center">
+                <div key="rangePickerSummary" className="text-center">
                     {this.state.min || ( filter.selected && filter.selected.min) || filter.min} - {this.state.max || ( filter.selected && filter.selected.max) || filter.max}
                 </div>
             ];

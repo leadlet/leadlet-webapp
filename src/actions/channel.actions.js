@@ -1,8 +1,6 @@
 import {channelService} from "../services/channel.service";
-import {channelConstants} from "../constants/channel.constants";
-import {alertActions} from "./alert.actions";
 
-
+/*
 export function getChannelById(channelId) {
     return dispatch => {
         dispatch(request(channelId));
@@ -144,7 +142,7 @@ function _deleteChannel(id) {
         return {type: channelConstants.DELETE_FAILURE, id, error}
     }
 }
-
+*/
 export function getAllChannelByFilterAndReturn(filter, successCallback, failCallback) {
     channelService.getAllChannels(filter, 0, 20)
         .then(

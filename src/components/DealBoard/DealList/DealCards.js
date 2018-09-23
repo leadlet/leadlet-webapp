@@ -4,12 +4,12 @@ import {DropTarget} from 'react-dnd';
 import {findDOMNode} from 'react-dom'
 import {dealConstants} from "../../../constants/deal.constants";
 import PropTypes from 'prop-types';
-import {searchQuerySelector, sortSelector} from "../../../models/selectors";
 import {connect} from "react-redux";
 import {getStageDeals, patchDeal} from "../../../actions/deal.actions";
 import {QueryUtils} from "../../Search/QueryUtils";
 import * as _ from "lodash";
-var VisibilitySensor = require('react-visibility-sensor');
+
+let VisibilitySensor = require('react-visibility-sensor');
 
 const MAX_INDEX = 100000;
 const MIN_INDEX = 0;
@@ -43,11 +43,11 @@ const specs = {
 
 
         let calculateNewPriority = (deals, newIndex) => {
-            let prevDeal = deals[newIndex-1];
+            let prevDeal = deals[newIndex - 1];
             let nextDeal = deals[newIndex];
 
-            let prevPriority = prevDeal? prevDeal.priority : MIN_INDEX;
-            let nextPriority = nextDeal? nextDeal.priority : MAX_INDEX;
+            let prevPriority = prevDeal ? prevDeal.priority : MIN_INDEX;
+            let nextPriority = nextDeal ? nextDeal.priority : MAX_INDEX;
 
             let newPriority = prevPriority + (( nextPriority - prevPriority ) / 2 );
             return Math.round(newPriority);
@@ -56,7 +56,7 @@ const specs = {
 
         let newPriority = calculateNewPriority(props.deals, nextY);
 
-        props.patchDeal( { id: monitor.getItem().id, priority: newPriority, stageId: props.stage.id});
+        props.patchDeal({id: monitor.getItem().id, priority: newPriority, stageId: props.stage.id});
 
 
     },
@@ -123,18 +123,30 @@ class Cards extends Component {
 
         this.loadMoreDeal = this.loadMoreDeal.bind(this);
         this.hasMoreItem = this.hasMoreItem.bind(this);
+        this.getQuery = this.getQuery.bind(this);
 
     }
+
+    getSort(props = this.props) {
+        return QueryUtils.getSort(props.sortStore, {group: "deals-page"})
+    }
+
+    getQuery(props = this.props) {
+        return QueryUtils.getQuery(props.filterStore, {group: "deals-page"})
+    }
+
     componentDidUpdate(prevProps) {
-        if( this.props.query !== prevProps.query
-            || this.props.sort !== prevProps.sort ){
-            this.props.getStageDeals( QueryUtils.addStageFilter(this.props.query, this.props.stage.id), this.props.sort, this.props.stage.id);
+
+        if (this.getQuery(prevProps) !== this.getQuery()
+            || this.getSort(prevProps) !== this.getSort()) {
+            this.props.getStageDeals(QueryUtils.addStageFilter(this.getQuery(), this.props.stage.id),
+                this.getSort(), this.props.stage.id);
         }
     }
 
     componentDidMount() {
-        if( this.props.stage ){
-            this.props.getStageDeals( QueryUtils.addStageFilter(this.props.query, this.props.stage.id), this.props.sort, this.props.stage.id);
+        if (this.props.stage) {
+            this.props.getStageDeals(QueryUtils.addStageFilter(this.getQuery(), this.props.stage.id), this.getSort(), this.props.stage.id);
         }
     }
 
@@ -143,12 +155,12 @@ class Cards extends Component {
         const {placeholderIndex} = this.state;
         let isPlaceHold = false;
         let cardList = [];
-        if( _.has(this, ["props","dealStore", "ids"])){
+        if (_.has(this, ["props", "dealStore", "ids"])) {
             this.props.dealStore.ids
-                .filter( dealId => {
+                .filter(dealId => {
                     return this.props.dealStore.items[dealId].stage.id === this.props.stage.id
-                } )
-                .forEach( (dealId,i) => {
+                })
+                .forEach((dealId, i) => {
                     let deal = this.props.dealStore.items[dealId];
                     if (isOver && canDrop) {
                         isPlaceHold = false;
@@ -180,39 +192,41 @@ class Cards extends Component {
         }
 
         // if there is no items in cards currently, display a placeholder anyway
-        if (isOver && canDrop && _.get(this, ["dealStore","ids","length"],0 ) === 0) {
+        if (isOver && canDrop && _.get(this, ["dealStore", "ids", "length"], 0) === 0) {
             cardList.push(<li key="placeholder" className="info-element placeholder"/>);
         }
 
         return connectDropTarget(
             <ul>
                 {cardList}
-                <VisibilitySensor onChange={this.loadMoreDeal} />
+                <VisibilitySensor onChange={this.loadMoreDeal}/>
 
             </ul>
         );
     }
 
     loadMoreDeal(isVisible) {
-        if( isVisible && this.hasMoreItem()){
-            this.setState({ currentPage: this.state.currentPage+1},
-                () => this.props.getStageDeals( QueryUtils.addStageFilter(this.props.query, this.props.stage.id),
-                                            this.props.sort,
-                                            this.props.stage.id,
-                                            this.state.currentPage,
-                                            true));
+        if (isVisible && this.hasMoreItem()) {
+            this.setState({currentPage: this.state.currentPage + 1},
+                () => this.props.getStageDeals(QueryUtils.addStageFilter(this.getQuery(), this.props.stage.id),
+                    this.props.sort,
+                    this.props.stage.id,
+                    this.state.currentPage,
+                    true));
         }
     }
-    hasMoreItem(){
+
+    hasMoreItem() {
         //return this.props.stage.maxDealCount > this.props.deals.length ;
     }
+
 }
 
 function mapStateToProps(state, props) {
     return {
         dealStore: state.dealStore,
-        query: searchQuerySelector(state, {group: "deals-page"}),
-        sort: sortSelector(state, {group: "deals-page"}),
+        filterStore: state.filterStore,
+        sortStore: state.sortStore
     }
 }
 

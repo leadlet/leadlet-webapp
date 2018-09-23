@@ -12,6 +12,7 @@ export function filterStore(state = {}, action) {
             return {
                 ...state,
                 [action.payload.id]: {
+                    id: action.payload.id,
                     group: action.payload.group,
                     selected : {pipeline: action.payload.pipeline}
                 }

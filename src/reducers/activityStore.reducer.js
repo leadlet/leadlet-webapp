@@ -14,14 +14,9 @@ export function activityStore(state = {ids: [], items: {}}, action) {
             return {
                 ...state,
                 items: Object.assign(state.items, activities.entities.activities),
-                ids: [
-                    ...state.ids,
-                    ...activities.result
-                ],
+                ids: [...new Set([...state.ids, ...activities.result])],
                 maxActivityCount: maxActivityCount
             };
-
-            break;
 
         case activityConstants.LOAD_ACTIVITIES_SUCCESS:
             activities = normalize(action.payload.activities, activityListSchema);
@@ -32,7 +27,6 @@ export function activityStore(state = {ids: [], items: {}}, action) {
                 ids: activities.result,
                 maxActivityCount: maxActivityCount
             };
-            break;
 
         case activityConstants.CREATE_SUCCESS:
             return {
@@ -41,9 +35,9 @@ export function activityStore(state = {ids: [], items: {}}, action) {
                     ...state.items,
                     [action.payload.id]: action.payload
                 },
-                ids: [...state.ids, action.payload.id]
+                ids: [...new Set([...state.ids, action.payload.id])],
             };
-            break;
+
         case activityConstants.UPDATE_SUCCESS:
             return {
                 ...state,
@@ -52,10 +46,9 @@ export function activityStore(state = {ids: [], items: {}}, action) {
                     [action.payload.id]: action.payload
                 }
             };
-            break;
 
         case activityConstants.DELETE_SUCCESS:
-
+            break;
         default:
             return state
     }
