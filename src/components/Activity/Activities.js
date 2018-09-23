@@ -163,8 +163,8 @@ class Activities extends Component {
     }
 
     hasMoreItem() {
-        return _.get(this, ["props", "maxActivityCount"], -1) >
-            _.get(this, ["props", "activities", "length"], 0);
+        return _.get(this, ["props", "activityStore", "maxActivityCount"], -1) >
+            _.get(this, ["props", "activityStore","ids", "length"], 0);
     }
 
     getQuery(props = this.props) {
@@ -178,8 +178,7 @@ function mapStateToProps(state) {
     return {
         activityStore: state.activityStore,
         filterStore: state.filterStore,
-        sortStore: state.sortStore,
-        maxActivityCount: state.activityStore.maxActivityCount
+        sortStore: state.sortStore
     }
 }
 

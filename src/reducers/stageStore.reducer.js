@@ -1,5 +1,6 @@
 import {normalize, schema} from 'normalizr';
 import {stageConstants} from "../constants/stage.constants";
+import {dealConstants} from "../constants/deal.constants";
 
 const stageSchema = new schema.Entity('stages');
 
@@ -8,6 +9,20 @@ const stageListSchema = [stageSchema];
 
 export function stageStore(state = {}, action) {
     switch (action.type) {
+        case dealConstants.APPEND_STAGE_DEALS_SUCCESS:
+        case dealConstants.LOAD_STAGE_DEALS_SUCCESS:
+
+            return {
+                ...state,
+                items: {
+                    ...state.items,
+                    [ action.payload.stageId ]: {
+                        ...state.items[action.payload.stageId],
+                        maxDealCount: action.payload.maxDealCount
+                    }
+                },
+            };
+
         case stageConstants.GETALL_SUCCESS:
             const stages = normalize(action.payload, stageListSchema);
             return {

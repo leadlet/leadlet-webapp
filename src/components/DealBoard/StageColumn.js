@@ -164,7 +164,16 @@ class StageColumn extends Component {
     }
 
     hasMoreItem() {
-        //return this.props.stage.maxDealCount > this.props.deals.length ;
+
+        if( _.has(this, ["props","stageStore","items",this.props.stage.id,"maxDealCount"]) ){
+            let stageDealCount =  this.props.dealStore.ids
+                .filter( dealId => this.props.dealStore.items[dealId].stage.id === this.props.stage.id)
+                .length;
+            return this.props.stageStore.items[this.props.stage.id].maxDealCount > stageDealCount;
+        }else{
+            return false;
+        }
+
     }
 
 }
@@ -173,7 +182,9 @@ function mapStateToProps(state, props) {
     return {
         dealStore: state.dealStore,
         filterStore: state.filterStore,
-        sortStore: state.sortStore
+        sortStore: state.sortStore,
+        stageStore: state.stageStore
+
     }
 }
 
