@@ -86,7 +86,7 @@ class Timeline extends Component {
         if( _.get(this, ["props","activityStore", "ids", "length"],0) > 0 ){
             return this.props.activityStore.ids.map(activityId => {
                     let activity = this.props.activityStore.items[activityId];
-                    return (<UpcomingActivity item={activity}/>);
+                    return (<UpcomingActivity key={activityId} item={activity}/>);
                 }
             );
         }
@@ -96,20 +96,17 @@ class Timeline extends Component {
         if( _.get(this, ["props","timeLineStore", "ids", "length"],0) > 0 ){
             return this.props.timeLineStore.ids.map(timelineId => {
                 let timelineItem = this.props.timeLineStore.items[timelineId];
-                if (timelineItem === undefined){
-                    console.log("ryye");
-                }
                 if (timelineItem.type === 'NOTE_CREATED') {
                     return (
-                        <NoteCreated item={timelineItem}/>
+                        <NoteCreated key={timelineId} item={timelineItem}/>
                     )
                 } else if (timelineItem.type === 'ACTIVITY_CREATED') {
                     return (
-                        <ActivityCreated item={timelineItem}/>
+                        <ActivityCreated key={timelineId} item={timelineItem}/>
                     )
                 } else if (timelineItem.type === 'DEAL_CREATED') {
                     return (
-                        <DealCreated item={timelineItem}/>
+                        <DealCreated key={timelineId} item={timelineItem}/>
                     )
                 } else {
                     return (
