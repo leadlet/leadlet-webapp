@@ -56,7 +56,7 @@ let hours = [
     {value: '23:30', label: '23:30'}
 ];
 
-const TIME_FORMAT= "YYYY-MM-DDTHH:mm:ss";
+const TIME_FORMAT= "YYYY-MM-DDTHH:mm:ss[Z]";
 
 class renderDateTimePicker extends React.Component {
 
