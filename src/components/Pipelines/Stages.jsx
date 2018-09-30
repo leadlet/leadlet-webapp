@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {deleteStage, getAllStages} from "../../actions/stage.actions";
 import StageNewOrEdit from "./StageNewOrEdit";
 import SweetAlert from 'sweetalert-react';
-import {stagesSelector} from "../../models/selectors";
+import * as _ from "lodash";
 
 class Stages extends React.Component {
 
@@ -65,10 +65,11 @@ class Stages extends React.Component {
     }
 
     renderStages() {
-        if (this.props.stages) {
-            return this.props.stages.filter( stage =>
-                stage.pipelineId === this.props.pipelineId
-            ).map(stage => {
+        if (_.has(this, [ "props","stage","ids"])) {
+            return this.props.stage.ids.filter( stageId =>
+                this.props.stage.items[stageId].pipelineId === this.props.pipelineId
+            ).map(stageId => {
+                let stage = this.props.stage.items[stageId];
                 return (
                     <div key={stage.id} className="step" style={{"--stage-color": stage.color}}>
                         {stage.name}
@@ -120,7 +121,7 @@ class Stages extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        stages: stagesSelector(state)
+        stage: state.stage
     };
 }
 

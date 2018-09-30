@@ -1,13 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import ContactPerson from "./ContactPerson";
-import ToggleButton from "react-bootstrap/es/ToggleButton";
-import ToggleButtonGroup from "react-bootstrap/es/ToggleButtonGroup";
-import FormGroup from "react-bootstrap/es/FormGroup";
-import FormControl from "react-bootstrap/es/FormControl";
 import Badge from "react-bootstrap/es/Badge";
 import SweetAlert from 'sweetalert-react';
-import _ from "lodash"
 import Dropdown from "react-bootstrap/es/Dropdown";
 import MenuItem from "react-bootstrap/es/MenuItem";
 import {getAllPerson, _deletePersons} from "../../actions/person.actions";
@@ -24,8 +19,6 @@ class Contacts extends Component {
         this.state = {
             currentPage: 1,
             pageSize: 10,
-            selectedPersonIds: [],
-            term: "",
             checked: false,
             showDeleteDialog: false,
             showPersonModal: false,
@@ -33,11 +26,8 @@ class Contacts extends Component {
             selectedType: CONTACT_PERSON
         };
 
-        this.onSearchSubmit = this.onSearchSubmit.bind(this);
-        this.onInputChange = this.onInputChange.bind(this);
         this.openPersonModal = this.openPersonModal.bind(this);
         this.closeEditModal = this.closeEditModal.bind(this);
-        this.onTypeChange = this.onTypeChange.bind(this);
         this.onCheckChange = this.onCheckChange.bind(this);
         this.onPersonRowSelected = this.onPersonRowSelected.bind(this);
         this.onPersonRowSelectAll = this.onPersonRowSelectAll.bind(this);
@@ -46,21 +36,14 @@ class Contacts extends Component {
 
         this.openDeleteDialog = this.openDeleteDialog.bind(this);
 
-        this.getFilterQuery = this.getFilterQuery.bind(this);
         this.filterContacts = this.filterContacts.bind(this);
 
         this.sizePerPageListChange = this.sizePerPageListChange.bind(this);
         this.onPageChange = this.onPageChange.bind(this);
 
-        this.handleSearchTermChange = this.handleSearchTermChange.bind(this);
-
         this.getSelectedCount = this.getSelectedCount.bind(this);
         this.clearSelections = this.clearSelections.bind(this);
 
-        this.handleSearchDebounced = _.debounce(function () {
-            if (this.state.term && this.state.term.length > 2)
-                this.filterContacts();
-        }, 500);
     }
 
 
@@ -73,12 +56,6 @@ class Contacts extends Component {
     }
 
 
-    handleSearchTermChange(event) {
-        this.setState({term: event.target.value});
-        this.handleSearchDebounced();
-    }
-
-
     onPageChange(page, sizePerPage) {
         this.setState({
             pageSize: sizePerPage,
@@ -88,15 +65,6 @@ class Contacts extends Component {
         });
     }
 
-    getFilterQuery() {
-        let query = '';
-
-        if (this.state.term && this.state.term.length > 0) {
-            query = `name:${this.state.term}`;
-        }
-
-        return query;
-    }
 
     openDeleteDialog() {
         this.setState({
@@ -123,20 +91,11 @@ class Contacts extends Component {
     }
 
     filterContacts() {
-        this.props.getAllPerson(this.getFilterQuery(), this.state.currentPage - 1, this.state.pageSize);
+        this.props.getAllPerson("", this.state.currentPage - 1, this.state.pageSize);
     }
 
     componentDidMount() {
         this.filterContacts();
-    }
-
-    onSearchSubmit(event) {
-        event.preventDefault();
-        this.filterContacts();
-    }
-
-    onInputChange(event) {
-        this.setState({term: event.target.value});
     }
 
     openPersonModal(contact) {
@@ -149,11 +108,6 @@ class Contacts extends Component {
         this.setState({showOrganizationModal: false});
     }
 
-    onTypeChange = (value) => {
-        this.setState({selectedType: value}, () => {
-            this.filterContacts();
-        });
-    };
 
     onCheckChange() {
         if (this.state.checked === false) {
@@ -232,28 +186,7 @@ class Contacts extends Component {
                         </div>
                         <div className="row">
                             <div className="row row-flex">
-                                <ToggleButtonGroup type="radio"
-                                                   name="contactType"
-                                                   value={this.state.selectedType}
-                                                   onChange={this.onTypeChange}>
-                                    <ToggleButton className="btn-sm"
-                                                  value={CONTACT_PERSON}>Person <i
-                                        className="fa fa-users"/>&nbsp;
-                                        <Badge>{this.props.persons.dataTotalSize}</Badge></ToggleButton>
-                                </ToggleButtonGroup>
-                                <form className="form-inline m-l-sm">
-                                    <FormGroup
-                                        controlId="formBasicText">
-                                        <FormControl
-                                            type="text"
-                                            value={this.state.value}
-                                            placeholder="Search name"
-                                            onChange={this.handleSearchTermChange}
-                                            bsSize="small"
-                                        />
-                                        <FormControl.Feedback/>
-                                    </FormGroup>
-                                </form>
+
                                 <Dropdown bsSize="small" className="m-l-sm" id="contactAdd">
                                     <Dropdown.Toggle noCaret>
                                         <i className="fa fa-plus"/> Add

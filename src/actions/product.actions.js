@@ -1,7 +1,6 @@
-import {productConstants} from "../constants/product.constants";
 import {productService} from "../services/product.service";
-import {alertActions} from "./alert.actions";
 
+/*
 export function getProductById(productId) {
     return dispatch => {
         dispatch(request(productId));
@@ -143,7 +142,7 @@ function _deleteProduct(id) {
         return {type: productConstants.DELETE_FAILURE, id, error}
     }
 }
-
+*/
 export function getAllProductByFilterAndReturn(filter, successCallback, failCallback) {
     productService.getAllProducts(filter, 0, 20)
         .then(

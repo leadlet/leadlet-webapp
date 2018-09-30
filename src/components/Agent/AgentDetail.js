@@ -5,7 +5,6 @@ import Timeline from "../Timeline/Timeline";
 import moment from 'moment';
 import EditOrCreateActivity from "../Activity/EditOrCreateActivity";
 import {getUserById} from "../../actions/user.actions";
-import {getTimelineByUserId, getTimelineByUserIdAndRefresh} from "../../actions/timeline.actions";
 import {createNote} from "../../actions/note.actions";
 import CreateEditAgent from "./CreateEditAgent";
 import {getActivitiesByAgentId} from "../../actions/activity.actions";
@@ -26,10 +25,6 @@ class AgentDetail extends Component {
         this.openEditAgentModal = this.openEditAgentModal.bind(this);
         this.closeAgentModal = this.closeAgentModal.bind(this);
         this.refreshTimeline = this.refreshTimeline.bind(this);
-    }
-
-    refreshTimeline() {
-        this.props.getTimelineByUserIdAndRefresh(null, null, null, this.props.viewedUser.id)
     }
 
     closeAgentModal() {
@@ -120,11 +115,7 @@ class AgentDetail extends Component {
 
 
                             <div className="ibox">
-                                <Timeline
-                                    pageSize={5}
-                                    getTimelineItems={this.props.getTimelineByUserId}
-                                    itemId={this.props.viewedUser.id}
-                                />
+                                <Timeline/>
                             </div>
                           
                         </div>
@@ -163,7 +154,5 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, {
     getUserById,
     createNote,
-    getTimelineByUserId,
-    getTimelineByUserIdAndRefresh,
     getActivitiesByAgentId
 })(AgentDetail);

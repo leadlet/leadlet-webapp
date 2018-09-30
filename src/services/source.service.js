@@ -1,5 +1,5 @@
 import { authHeader } from '../helpers';
-import {userActions} from "../actions/user.actions";
+import { handleResponse} from "../helpers/service.utils";
 
 export const sourceService = {
     createSource,
@@ -58,23 +58,3 @@ function _deleteSource(id) {
 
 
 
-function handlePaginationResponse(response) {
-    if (response.ok !== true) {
-        return Promise.reject(response.statusText);
-    }
-
-    return Promise.all([ response.json(), response.headers.get("x-total-count")]);
-
-}
-
-function handleResponse(response) {
-    if (response.ok !== true) {
-        if( response.status === 401 ) {
-            userActions.logout();
-        }
-        return Promise.reject(response.statusText);
-    }
-
-    return response.json();
-
-}

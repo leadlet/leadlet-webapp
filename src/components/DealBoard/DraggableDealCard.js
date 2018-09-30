@@ -4,7 +4,7 @@ import { DragSource } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 import PropTypes from 'prop-types';
 
-import Card from './DealCard';
+import DealCard from './DealCard';
 
 
 function getStyles(isDragging) {
@@ -79,7 +79,7 @@ class CardComponent extends Component {
 
     return connectDragSource(
       <div>
-        <Card style={getStyles(isDragging)}
+        <DealCard style={getStyles(isDragging)}
               item={item}
               deleteDeal={this.props.deleteDeal}
         />

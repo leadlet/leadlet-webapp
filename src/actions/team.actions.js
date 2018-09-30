@@ -113,31 +113,3 @@ export function updateTeam(team) {
         return {type: teamConstants.UPDATE_FAILURE, error}
     }
 }
-
-function deleteTeam(id) {
-    return dispatch => {
-        dispatch(request(id));
-
-        teamService.deleteTeam(id)
-            .then(
-                team => {
-                    dispatch(success(id));
-                },
-                error => {
-                    dispatch(failure(id, error));
-                }
-            );
-    };
-
-    function request(id) {
-        return {type: teamConstants.DELETE_REQUEST, id}
-    }
-
-    function success(id) {
-        return {type: teamConstants.DELETE_SUCCESS, id}
-    }
-
-    function failure(id, error) {
-        return {type: teamConstants.DELETE_FAILURE, id, error}
-    }
-}

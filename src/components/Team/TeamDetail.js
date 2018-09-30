@@ -94,7 +94,7 @@ class TeamDetail extends Component {
                                             <th>Agent Name</th>
                                             <th>Email</th>
                                             <th>Is Lead</th>
-                                            <th></th>
+                                            <th/>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -126,9 +126,4 @@ mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, {getByTeamId})
-
-(
-    TeamDetail
-)
-;
+export default connect(mapStateToProps, {getByTeamId})(TeamDetail);

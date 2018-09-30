@@ -58,27 +58,3 @@ export function createNote(note, successCallback) {
     function success(note) { return { type: noteConstants.CREATE_SUCCESS, note } }
     function failure(error) { return { type: noteConstants.CREATE_FAILURE, error } }
 }
-
-export function updateNote(note, successCallback) {
-    return dispatch => {
-        dispatch(request());
-
-        return noteService.updateNote(note)
-            .then(
-                note => {
-                    dispatch(success(note));
-                    dispatch(alertActions.success('Note update successful'));
-                },
-                error => {
-                    // TODO catch validation error here and throw submission error
-                    // throw new SubmissionError({name: 'hedeler' , title: 'hedeler2', _error: 'olmadi'});
-                    dispatch(failure(error));
-                    dispatch(alertActions.error(error));
-                }
-            );
-    };
-
-    function request() { return { type: noteConstants.UPDATE_REQUEST } }
-    function success(note) { return { type: noteConstants.UPDATE_SUCCESS, note } }
-    function failure(error) { return { type: noteConstants.UPDATE_FAILURE, error } }
-}

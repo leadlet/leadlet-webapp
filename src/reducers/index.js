@@ -1,19 +1,21 @@
-import { combineReducers } from 'redux';
+import {combineReducers} from 'redux';
 
-import { authentication } from './authentication.reducer';
-import { registration } from './registration.reducer';
-import { users } from './users.reducer';
-import { alert } from './alert.reducer';
-import { reducer as formReducer } from 'redux-form';
+import {authentication} from './authentication.reducer';
+import {registration} from './registration.reducer';
+import {users} from './users.reducer';
+import {alert} from './alert.reducer';
+import {reducer as formReducer} from 'redux-form';
 import {persons} from "./person.reducer";
-import {activities} from './activities.reducer';
-import {timeLines} from "./timelines.reducer";
 import {teams} from "./team.reducer";
 import {account} from "./account.reducer";
-
-import { schema } from './../models/models';
-import {db} from "./orm.reducers";
 import {products} from "./product.reducer";
+import {timeLineStore} from "./timeLineStore.reducer";
+import {dealStore} from "./dealStore.reducer";
+import {pipelineStore} from "./pipelineStore.reducer";
+import {stageStore} from "./stageStore.reducer";
+import {activityStore} from "./activityStore.reducer";
+import {filterStore} from "./filterStore.reducer";
+import {sortStore} from "./sortStore.reducer";
 
 const rootReducer = combineReducers({
     authentication,
@@ -22,12 +24,16 @@ const rootReducer = combineReducers({
     alert,
     persons,
     form: formReducer,
-    db,
-    activities,
-    timeLines,
+    activityStore,
+    dealStore,
     teams,
     account,
-    products
+    products,
+    pipelineStore,
+    stageStore,
+    timeLineStore,
+    filterStore,
+    sortStore
 });
 
 export default rootReducer;

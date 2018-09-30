@@ -16,7 +16,6 @@ import renderInputField from "../../formUtils/renderInputField";
 import renderAsyncSelectField from "../../formUtils/renderAsyncSelectField";
 import {loadDeal, loadUser} from "../../formUtils/form.actions";
 import renderTextAreaField from "../../formUtils/renderTextAreaField";
-import {getTimelineByUserIdAndRefresh} from "../../actions/timeline.actions";
 import moment from 'moment';
 
 
@@ -31,7 +30,7 @@ const validate = values => {
     }
 
     /* activity type */
-    if (!values.activityType) {
+    if (!values.type) {
         errors.title = "Please select a type"
     }
 
@@ -107,20 +106,22 @@ class EditOrCreateActivity extends Component {
         this.setState({showDeleteDialog: true});
     }
 
-    onSubmit = (formValue) => {
+    onSubmit = (formValues) => {
 
-        let activity = {};
-        activity.id = formValue.id;
-        activity.start = formValue.start ? formValue.start._d : '';
-        activity.end = formValue.end ? formValue.end._d : '';
-        activity.memo = formValue.memo;
-        activity.type = formValue.activityType;
-        activity.title = formValue.title;
-        activity.person = formValue.person;
-        activity.agent = formValue.agent;
-        activity.deal = formValue.deal;
-        activity.location = formValue.location;
-        activity.done = formValue.done;
+        let activity = {
+            ...formValues,
+            id : formValues.id,
+            start : formValues.start,
+            end : formValues.end,
+            memo : formValues.memo,
+            type : formValues.type,
+            title : formValues.title,
+            person : formValues.person,
+            agent : formValues.agent,
+            deal : formValues.deal,
+            location : formValues.location,
+            done : formValues.done,
+        };
 
         if(this.state.activityStatus === false){
             activity.isClosed = true;
@@ -129,7 +130,7 @@ class EditOrCreateActivity extends Component {
         if (this.props.initialValues && this.props.initialValues.id) {
             this.props.update(activity);
         } else {
-            this.props.create(activity, () => this.props.getTimelineByUserIdAndRefresh(null, null, null, activity.userId));
+            this.props.create(activity, this.props.createCallback);
         }
         this.props.close();
     }
@@ -160,7 +161,7 @@ class EditOrCreateActivity extends Component {
                         <fieldset disabled={this.props.initialValues && this.props.initialValues.done}>
                             {this.props.initialValues && this.props.initialValues.done && <p> Activity is done! </p>}
                             <Field
-                                name="activityType"
+                                name="type"
                                 component={renderTypeField}
                                 label="Activity Type"
                             />
@@ -332,7 +333,6 @@ export default reduxForm({
     connect(mapStateToProps, {
         create,
         update,
-        _delete,
-        getTimelineByUserIdAndRefresh
+        _delete
     })(EditOrCreateActivity)
 );

@@ -2,7 +2,6 @@ import React from 'react';
 import Modal from '../../modal-shim';
 import {Field, reduxForm, reset} from 'redux-form'
 import {connect} from 'react-redux';
-import Select from '../../../node_modules/react-select';
 import FormGroup from "react-bootstrap/es/FormGroup";
 import InputGroup from "react-bootstrap/es/InputGroup";
 import FormControl from "react-bootstrap/es/FormControl";
@@ -113,33 +112,7 @@ const renderEmailField = ({
 
         </div>
     </div>
-)
-
-const renderSelectField = ({
-                               input,
-                               options,
-                               onChange,
-                               label,
-                               multi,
-                               selected
-                           }) => (
-    <div className="form-group">
-        <label>{label}</label>
-        <Select
-            closeOnSelect={true}
-            disabled={false}
-            multi={multi}
-            placeholder="Select..."
-            options={options}
-            removeSelected={true}
-            rtl={false}
-            onChange={input.onChange}
-            value={input.value}
-            simpleValue
-            selected={input.value ? input.value : null}
-        />
-    </div>
-)
+);
 
 const renderLocationField = ({
                                  input,

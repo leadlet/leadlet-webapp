@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import {filterByIdSelector} from "../../models/selectors";
 
 import 'rc-slider/assets/index.css';
 import 'rc-tooltip/assets/bootstrap.css';
 import Tooltip from 'rc-tooltip';
 import {Handle, Range} from 'rc-slider';
 import {getFieldRange, rangeChanged} from "../../actions/search.actions";
+import * as _ from "lodash";
 
 
 const handle = (props) => {
@@ -54,35 +54,47 @@ class RangeFilter extends Component {
         this.setState({ min: null, max: null});
         this.props.rangeChanged(this.props.id, newRange[0], newRange[1]);
     }
+
+    renderRangePicker(){
+        if (_.has(this, ["props", "filterStore", this.props.id])) {
+
+            let filter = _.get(this, ["props", "filterStore", this.props.id]);
+
+            return [
+
+                <div key="rangePickerSelector" className="selector">
+                    <Range
+                        min={filter.min}
+                        max={filter.max}
+                        value={[ this.state.min || ( filter.selected && filter.selected.min) || filter.min
+                            , this.state.max || ( filter.selected && filter.selected.max) || filter.max]}
+                        handle={handle}
+                        onAfterChange={this.onAfterChange}
+                        onChange={this.onChange}
+                        allowCross={false}/>
+                </div>,
+                <div key="rangePickerSummary" className="text-center">
+                    {this.state.min || ( filter.selected && filter.selected.min) || filter.min} - {this.state.max || ( filter.selected && filter.selected.max) || filter.max}
+                </div>
+            ];
+
+        }
+
+    }
     render(){
-        if(this.props.filter){
             return (<div className="range-filter">
                     <h6 className="filter-name">{this.props.title}</h6>
-                    <div className="selector">
-                        <Range
-                            min={this.props.filter.min}
-                            max={this.props.filter.max}
-                            value={[ this.state.min || ( this.props.filter.selected && this.props.filter.selected.min) || this.props.filter.min
-                                , this.state.max || ( this.props.filter.selected && this.props.filter.selected.max) || this.props.filter.max]}
-                            handle={handle}
-                            onAfterChange={this.onAfterChange}
-                            onChange={this.onChange}
-                            allowCross={false}/>
-                    </div>
-                    <div className="text-center">
-                        {this.state.min || ( this.props.filter.selected && this.props.filter.selected.min) || this.props.filter.min} - {this.state.max || ( this.props.filter.selected && this.props.filter.selected.max) || this.props.filter.max}
-                    </div>
+                    { this.renderRangePicker()}
+
                 </div>
             );
-        }else{
-            return (<h3>Loading</h3>);
-        }
+
     }
 }
 
 function mapStateToProps(state, props) {
     return {
-        filter: filterByIdSelector(state, props.id)
+        filterStore: state.filterStore
     };
 }
 

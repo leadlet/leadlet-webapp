@@ -1,9 +1,8 @@
 import {authHeader} from '../helpers';
-import {userActions} from "../actions/user.actions";
+import {handlePaginationResponse, handleResponse} from "../helpers/service.utils";
 
 export const personService = {
     getAllPerson,
-    getAllPersonByOrganization,
     getById,
     createPerson,
     updatePerson,
@@ -39,15 +38,6 @@ function getById(id) {
     return fetch('/api/persons/' + id, requestOptions).then(handleResponse);
 }
 
-function getAllPersonByOrganization(organizationId, page, size) {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
-
-    return fetch(`/api/persons/organization/${organizationId}?page=${page}&size=${size}`, requestOptions).then(handlePaginationResponse);
-}
-
 
 function getAllPerson(filter, page, size) {
     const requestOptions = {
@@ -65,28 +55,4 @@ function _delete(idList) {
     };
 
     return fetch('/api/persons/' + idList, requestOptions).then(handleResponse);
-}
-
-function handlePaginationResponse(response) {
-    if (response.ok !== true) {
-        if( response.status === 401 ) {
-            userActions.logout();
-        }
-        return Promise.reject(response.statusText);
-    }
-
-    return Promise.all([response.json(), response.headers.get("x-total-count")]);
-
-}
-
-function handleResponse(response) {
-    if (response.ok !== true) {
-        if( response.status === 401 ) {
-            userActions.logout();
-        }
-        return Promise.reject(response.statusText);
-    }
-
-    return response.json();
-
 }

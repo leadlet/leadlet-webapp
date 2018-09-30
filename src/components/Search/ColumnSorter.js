@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import {changeSort, clearFilter} from "../../actions/search.actions";
-import {sortByGroupAndId} from "../../models/selectors";
+import {changeSort} from "../../actions/search.actions";
 import * as _ from "lodash";
 
 class ColumnSorter extends Component {
@@ -15,11 +14,13 @@ class ColumnSorter extends Component {
     changeSort(){
         let newSortOrder = "";
 
-        if(_.get(this.props.sort,["order"]) === undefined || _.get(this.props.sort,["order"]) === "" ){
+        let sort = this.props.sortStore[this.props.dataField];
+
+        if(_.get(sort,["order"]) === undefined || _.get(sort,["order"]) === "" ){
             newSortOrder = "desc";
-        }else if (_.get(this.props.sort,["order"]) === "desc"){
+        }else if (_.get(sort,["order"]) === "desc"){
             newSortOrder = "asc";
-        }if (_.get(this.props.sort,["order"]) === "asc"){
+        }if (_.get(sort,["order"]) === "asc"){
             newSortOrder = "";
         }
 
@@ -27,7 +28,9 @@ class ColumnSorter extends Component {
 
     }
     putSortOrder(){
-        let order = _.get(this.props.sort,["order"]);
+        let sort = this.props.sortStore[this.props.dataField];
+
+        let order = _.get(sort,["order"]);
         if(order === undefined || order === ""){
             return "fa-sort";
         } else if(order === "desc"){
@@ -43,8 +46,7 @@ class ColumnSorter extends Component {
 
 function mapStateToProps(state, props) {
     return {
-        sort: sortByGroupAndId(state, {group: props.group, id: props.dataField})
-
+        sortStore: state.sortStore
     };
 }
 

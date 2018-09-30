@@ -1,5 +1,6 @@
 import {authHeader} from '../helpers';
-import {userActions} from "../actions/user.actions";
+import {buildRequestString} from "../helpers/requestUtils";
+import {handlePaginationResponse, handleResponse} from "../helpers/service.utils";
 
 export const dealService = {
     getAllDeals,
@@ -8,30 +9,10 @@ export const dealService = {
     create,
     update,
     _delete,
-    getDealsByPersonId,
-    getDealsByOrganizationId,
     patchDeal,
     getAllLostReason
 };
 
-
-function getDealsByPersonId(personId) {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
-
-    return fetch('/api/deals/person/' + personId, requestOptions).then(handleResponse);
-}
-
-function getDealsByOrganizationId(organizationId) {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
-
-    return fetch('/api/deals/organization/' + organizationId, requestOptions).then(handleResponse);
-}
 
 function create(stage) {
     const requestOptions = {
@@ -81,30 +62,15 @@ function getAllDeals(filter, page, size) {
     return fetch(`/api/deals?filter=${filter}&page=${page}&size=${size}`, requestOptions).then(handlePaginationResponse);
 }
 
-function getDealsByFilter(query, sort, page) {
+function getDealsByFilter(query, sort, page, size=20) {
     const requestOptions = {
         method: 'GET',
         headers: {...authHeader(), 'Content-Type': 'application/json'}
     };
 
-    let params = [];
+    let requestString = buildRequestString(query, sort, page, size);
 
-    if (query !== undefined && query !== "") {
-        params.push(`q=${query}`);
-    }
-    if (page !== undefined && page !== "") {
-        params.push(`page=${page}`);
-    }
-    params.push(`size=12`);
-
-    if (sort !== undefined && sort !== "") {
-        params.push(sort);
-    }
-
-    let paramString = params.join("&");
-
-
-    return fetch(`/api/deals/search?${paramString}`, requestOptions).then(handlePaginationResponse);
+    return fetch(`/api/deals?${requestString}`, requestOptions).then(handlePaginationResponse);
 }
 
 function _delete(id) {
@@ -114,32 +80,6 @@ function _delete(id) {
     };
 
     return fetch('/api/deals/' + id, requestOptions).then(handleResponse);
-}
-
-function handleResponse(response) {
-    if (response.ok !== true) {
-        if (response.status === 401) {
-            userActions.logout();
-        }
-        return Promise.reject(response.statusText);
-    }
-
-    // The response of a fetch() request is a Stream object, which means that when we call the json() method,
-    // a Promise is returned since the reading of the stream will happen asynchronously.
-
-    return response.json();
-}
-
-function handlePaginationResponse(response) {
-    if (response.ok !== true) {
-        if (response.status === 401) {
-            userActions.logout();
-        }
-        return Promise.reject(response.statusText);
-    }
-
-    return Promise.all([response.json(), response.headers.get("x-total-count")]);
-
 }
 
 function getAllLostReason(filter, page, size) {

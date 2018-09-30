@@ -1,7 +1,5 @@
 import {sourceService} from "../services/source.service";
-import {sourceConstants} from "../constants/source.constants";
-import {alertActions} from "./alert.actions";
-
+/*
 export function getSourceById(sourceId) {
     return dispatch => {
         dispatch(request(sourceId));
@@ -143,7 +141,7 @@ function _deleteSource(id) {
         return {type: sourceConstants.DELETE_FAILURE, id, error}
     }
 }
-
+*/
 export function getAllSourceByFilterAndReturn(filter, successCallback, failCallback) {
     sourceService.getAllSources(filter, 0, 20)
         .then(

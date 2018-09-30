@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {getDistinctTerms, termSelected, termUnSelected} from "../../actions/search.actions";
-import {filterByIdSelector, searchQuerySelector} from "../../models/selectors";
+import * as _ from "lodash";
+import {QueryUtils} from "./QueryUtils";
 
 class ListFilter extends Component {
 
@@ -9,6 +10,7 @@ class ListFilter extends Component {
         super(props);
         this.inputChanged = this.inputChanged.bind(this);
         this.getKeyText = this.getKeyText.bind(this);
+        this.getQuery = this.getQuery.bind(this);
         this.state = {
             definition: {
                 id: this.props.id,
@@ -21,21 +23,25 @@ class ListFilter extends Component {
             }
         };
     }
+    getQuery(props = this.props) {
+        return QueryUtils.getQuery(props.filterStore, {excludeMe: props.id, group: props.group})
+    }
+
     componentDidUpdate(prevProps) {
-        if( this.props.searchQuery !== prevProps.searchQuery){
-            this.props.getDistinctTerms( this.state.definition, this.props.searchQuery );
+        if( this.getQuery() !== this.getQuery(prevProps)){
+            this.props.getDistinctTerms( this.state.definition, this.getQuery() );
         }
     }
 
     componentDidMount(){
-        this.props.getDistinctTerms( this.state.definition,  this.props.searchQuery );
+        this.props.getDistinctTerms( this.state.definition,  this.getQuery() );
     }
 
     inputChanged(checkboxElem){
         if (checkboxElem.target.checked) {
-            this.props.termSelected(this.props.id, checkboxElem.target.value);
+            this.props.termSelected(this.props.id, [checkboxElem.target.value]);
         } else {
-            this.props.termUnSelected(this.props.id, checkboxElem.target.value);
+            this.props.termUnSelected(this.props.id, [checkboxElem.target.value]);
         }
     }
 
@@ -51,9 +57,11 @@ class ListFilter extends Component {
         }
     }
     renderTerms(){
-        if( this.props.filter ){
+        if( _.has(this, ["props","filterStore",this.props.id]) ){
 
-            const terms = this.props.filter.options;
+            let filter = _.get(this, ["props","filterStore",this.props.id]);
+
+            const terms = filter.options;
 
             return Object.keys(terms).map((key,index) => {
                 let keyText = this.getKeyText(key);
@@ -64,7 +72,7 @@ class ListFilter extends Component {
                     <div key={key} className="form-check">
                         <input className="form-check-input" type="checkbox"
                                value={key} id={key} onChange={this.inputChanged}
-                               checked={this.props.filter.selected && this.props.filter.selected.options.includes(key)}/>
+                               checked={filter.selected && filter.selected.options.includes(key)}/>
                         <label className="form-check-label item-name">
                             {keyText }  <span className="item-count">({terms[key]})</span>
                         </label>
@@ -87,8 +95,7 @@ class ListFilter extends Component {
 
 function mapStateToProps(state, props) {
     return {
-        filter: filterByIdSelector(state, props.id),
-        searchQuery: searchQuerySelector(state, {excludeMe: props.id, group: props.group})
+        filterStore: state.filterStore
     };
 }
 

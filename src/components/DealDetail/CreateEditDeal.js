@@ -3,27 +3,18 @@ import {Field, Fields, reduxForm} from 'redux-form';
 import Modal from '../../modal-shim';
 import {connect} from 'react-redux';
 import SweetAlert from 'sweetalert-react';
-
 import 'react-select/dist/react-select.css';
-import {createDeal,updateDeal} from "../../actions/deal.actions";
-
+import {createDeal, updateDeal} from "../../actions/deal.actions";
 import renderInputField from '../../formUtils/renderInputField'
 import renderPriceCurrencyField from '../../formUtils/renderPriceCurrencyField'
-import formValueSelector from "redux-form/es/formValueSelector";
-import renderAsyncSelectField  from "../../formUtils/renderAsyncSelectField";
-
+import renderAsyncSelectField from "../../formUtils/renderAsyncSelectField";
 import renderDatePicker from "../../formUtils/renderDatePicker";
 import {loadUser, loadProduct, loadSource, loadChannel, loadPerson} from "../../formUtils/form.actions";
 import renderPipelineAndStageFields from "../../formUtils/renderPipelineAndStageFields";
 
-/*let currencies = [
-    {value: 'USD', label: 'USD'},
-    {value: 'TL', label: 'TL'},
-    {value: 'EURO', label: 'EURO'}
-];*/
 
 const validate = values => {
-    const errors = {}
+    const errors = {};
 
     /*  title validation */
     if (!values.title) {
@@ -74,23 +65,24 @@ class CreateEditDeal extends Component {
     onSubmit = (formValues) => {
 
         let deal = {
+            ...formValues,
             id: formValues.id,
             title: formValues.title,
-            personId: formValues.person && formValues.person.id,
-            stageId: formValues.stage && formValues.stage.id,
-            pipelineId: formValues.pipeline && formValues.pipeline.id,
-            ownerId: formValues.owner && formValues.owner.id,
+            person: formValues.person,
+            stage: formValues.stage,
+            pipeline: formValues.pipeline,
+            agent: formValues.agent,
             dealValue: formValues.dealValue,
             possibleCloseDate: formValues.possibleCloseDate && formValues.possibleCloseDate._d,
             products: formValues.products,
             dealSource: formValues.dealSource,
             dealChannel: formValues.dealChannel,
             createdDate: formValues.createdDate
-        }
+        };
 
-        if( deal.id ){
+        if (deal.id) {
             this.props.updateDeal(deal);
-        }else {
+        } else {
             this.props.createDeal(deal);
         }
         this.props.close();
@@ -102,10 +94,10 @@ class CreateEditDeal extends Component {
     }
 
     render() {
-        const {handleSubmit, pipelineId} = this.props;
+        const {handleSubmit} = this.props;
 
         return (
-            <Modal show={this.props.showModal} onHide={this.onClose} >
+            <Modal show={this.props.showModal} onHide={this.onClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Create New Deal</Modal.Title>
                 </Modal.Header>
@@ -119,17 +111,17 @@ class CreateEditDeal extends Component {
                         />
                         <Fields
                             label="Potential Value"
-                            names={[ 'dealValue.potentialValue', 'dealValue.currency' ]}
-                                component={renderPriceCurrencyField}/>
+                            names={['dealValue.potentialValue', 'dealValue.currency']}
+                            component={renderPriceCurrencyField}/>
 
 
                         <Fields
-                            names={[ 'pipeline', 'stage' ]}
+                            names={['pipeline', 'stage']}
                             component={renderPipelineAndStageFields}
                             showPipelineSelection={this.props.showPipelineSelection}
                             showStageSelection={this.props.showStageSelection}
                             parse={(value, name) => {
-                                if( value ) {
+                                if (value) {
                                     return {
                                         'id': value.value,
                                         'name': value.label
@@ -137,7 +129,7 @@ class CreateEditDeal extends Component {
                                 }
                             }}
                             format={(value, name) => {
-                                if( value ){
+                                if (value) {
                                     return {
                                         'value': value.id,
                                         'label': value.name
@@ -146,7 +138,7 @@ class CreateEditDeal extends Component {
 
                             }}
                         />
-                        { this.props.showPersonSelection &&
+                        {this.props.showPersonSelection &&
                         <Field
                             name="person"
                             label="Person"
@@ -154,7 +146,7 @@ class CreateEditDeal extends Component {
                             component={renderAsyncSelectField}
                             loadOptions={loadPerson}
                             parse={(value) => {
-                                if( value ) {
+                                if (value) {
                                     return {
                                         'id': value.value,
                                         'name': value.label
@@ -162,7 +154,7 @@ class CreateEditDeal extends Component {
                                 }
                             }}
                             format={(value) => {
-                                if( value ){
+                                if (value) {
                                     return {
                                         'value': value.id,
                                         'label': value.name
@@ -173,31 +165,31 @@ class CreateEditDeal extends Component {
                         />
                         }
 
-                        { this.props.showUserSelection &&
-                            <Field
-                                name="owner"
-                                label="Owner"
-                                placeholder="Select deal owner"
-                                component={renderAsyncSelectField}
-                                loadOptions={loadUser}
-                                parse={(value) => {
-                                    if( value ) {
-                                        return {
-                                            'id': value.value,
-                                            'name': value.label
-                                        };
+                        {this.props.showUserSelection &&
+                        <Field
+                            name="agent"
+                            label="Agent"
+                            placeholder="Select deal agent"
+                            component={renderAsyncSelectField}
+                            loadOptions={loadUser}
+                            parse={(value) => {
+                                if (value) {
+                                    return {
+                                        'id': value.value,
+                                        'name': value.label
+                                    };
+                                }
+                            }}
+                            format={(value) => {
+                                if (value) {
+                                    return {
+                                        'value': value.id,
+                                        'label': value.name
                                     }
-                                }}
-                                format={(value) => {
-                                    if( value ){
-                                        return {
-                                            'value': value.id,
-                                            'label': value.name
-                                        }
-                                    }
+                                }
 
-                                }}
-                            />
+                            }}
+                        />
                         }
 
                         <Field
@@ -215,8 +207,8 @@ class CreateEditDeal extends Component {
                             multi={true}
                             loadOptions={loadProduct}
                             parse={(values) => {
-                                if( values ) {
-                                    return values.map( value =>
+                                if (values) {
+                                    return values.map(value =>
                                         ({
                                             id: value.value,
                                             name: value.label
@@ -226,8 +218,8 @@ class CreateEditDeal extends Component {
                                 }
                             }}
                             format={(values) => {
-                                if( values ) {
-                                    return values.map( value =>
+                                if (values) {
+                                    return values.map(value =>
                                         ({
                                             value: value.id,
                                             label: value.name
@@ -244,7 +236,7 @@ class CreateEditDeal extends Component {
                             component={renderAsyncSelectField}
                             loadOptions={loadSource}
                             parse={(value) => {
-                                if( value ) {
+                                if (value) {
                                     return {
                                         'id': value.value,
                                         'name': value.label
@@ -252,7 +244,7 @@ class CreateEditDeal extends Component {
                                 }
                             }}
                             format={(value) => {
-                                if( value ){
+                                if (value) {
                                     return {
                                         'value': value.id,
                                         'label': value.name
@@ -268,7 +260,7 @@ class CreateEditDeal extends Component {
                             component={renderAsyncSelectField}
                             loadOptions={loadChannel}
                             parse={(value) => {
-                                if( value ) {
+                                if (value) {
                                     return {
                                         'id': value.value,
                                         'name': value.label
@@ -276,7 +268,7 @@ class CreateEditDeal extends Component {
                                 }
                             }}
                             format={(value) => {
-                                if( value ){
+                                if (value) {
                                     return {
                                         'value': value.id,
                                         'label': value.name
@@ -323,20 +315,12 @@ CreateEditDeal.defaultProps = {
     showStageSelection: true,
     showPersonSelection: true,
     showUserSelection: true
-}
-
-
-const selector = formValueSelector('postNewDealForm');
-
-function mapStateToProps(state) {
-    return {
-    };
-}
+};
 
 export default reduxForm({
     form: 'postNewDealForm',
     validate, // <--- validation function given to redux-form
     enableReinitialize: true
 })(
-    connect(mapStateToProps, {createDeal, updateDeal})(CreateEditDeal)
+    connect(null, {createDeal, updateDeal})(CreateEditDeal)
 );

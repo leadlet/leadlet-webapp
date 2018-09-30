@@ -4,12 +4,9 @@ import {createNote} from "../../actions/note.actions";
 import {getById} from "../../actions/person.actions";
 import ContactPerson from "./ContactPerson";
 import Timeline from "../Timeline/Timeline";
-import {
-    getTimelineByPersonId, getTimelineByPersonIdAndRefresh,
-    getTimelineLoadMoreByPersonId
-} from "../../actions/timeline.actions";
-import EditOrCreateActivity from "../Activity/EditOrCreateActivity";
 import CreateEditDeal from "../DealDetail/CreateEditDeal";
+import Note from "../Note/Note";
+import moment from "moment";
 
 class ContactDetail extends Component {
 
@@ -19,38 +16,24 @@ class ContactDetail extends Component {
         this.state = {
             isPersonModalVisible: false,
             isDealModalVisible: false,
-            isActivityModalVisible: false,
-            value: '',
+            lastModifiedDate: moment()
         };
 
         this.openEditModal = this.openEditModal.bind(this);
         this.closeEditModal = this.closeEditModal.bind(this);
-        this.openActivityModal = this.openActivityModal.bind(this);
-        this.closeActivityModal = this.closeActivityModal.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.refreshTimeline = this.refreshTimeline.bind(this);
         this.openDealModal = this.openDealModal.bind(this);
         this.closeDealModal = this.closeDealModal.bind(this);
+        this.onPageUpdate = this.onPageUpdate.bind(this);
+
     }
 
-
-    refreshTimeline() {
-        this.props.getTimelineByPersonIdAndRefresh(null, null, null, this.props.match.params.personId)
-    }
-
-    handleChange(event) {
-        this.setState({value: event.target.value});
-    }
-
-    handleSubmit(event) {
-        event.preventDefault();
-        console.log("Note Event: ", event.target);
-        this.props.createNote({
-            content: this.state.value,
-            personId: this.props.viewedPerson.id
-        }, () => this.props.getTimelineByPersonIdAndRefresh(null, null, null, this.props.match.params.personId));
-        this.setState({value: ''});
+    /*
+        When we add an activity for deal or edit some field,
+        we should call this function to update state. This state will be passed to timeline as props
+        so timeline component will be notified about change and refresh itself.
+     */
+    onPageUpdate( ){
+        this.setState({lastModifiedDate: moment()});
     }
 
     openEditModal() {
@@ -61,13 +44,7 @@ class ContactDetail extends Component {
         this.setState({isPersonModalVisible: false});
     }
 
-    openActivityModal() {
-        this.setState({isActivityModalVisible: true});
-    }
 
-    closeActivityModal() {
-        this.setState({isActivityModalVisible: false});
-    }
 
     openDealModal() {
         this.setState({isDealModalVisible: true});
@@ -115,86 +92,44 @@ class ContactDetail extends Component {
                                         <a onClick={() => this.openEditModal()}
                                            className="btn btn-primary btn-sm">Edit</a>
 
-                                        <a onClick={() => this.openActivityModal()}
-                                           className="btn btn-primary btn-sm m-l-sm">New Activity</a>
-
                                         <a onClick={() => this.openDealModal()}
                                            className="btn btn-primary btn-sm m-l-sm">New Deal</a>
                                 </div>
                             </div>
                         </div>
-                        <div className="col-md-8">
+                        <div className="col-md-8 m-b-lg">
                             <div className="ibox">
                                 <div className="ibox-content">
-                                    <div className="row m-t-sm">
-                                        <div className="col-lg-12">
-                                            <div className="panel blank-panel">
-                                                <div className="panel-heading">
-                                                    <div className="panel-options">
-                                                        <ul className="nav nav-tabs">
-                                                            <li className="active"><a href="#tab-1"
-                                                                                      data-toggle="tab">Add
-                                                                a Note</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div className="panel-body">
-                                                    <div className="tab-content">
-                                                        <div className="tab-pane active" id="tab-1">
-                                                            <div className="note-form">
-                                                                <form onSubmit={this.handleSubmit}>
-                                                                    <div className="form-group">
-                                                                            <textarea placeholder="Please enter a note."
-                                                                                      className="form-control"
-                                                                                      value={this.state.value}
-                                                                                      onChange={this.handleChange}
-                                                                            />
-                                                                    </div>
-                                                                    <div className="text-right">
-                                                                        <button type="submit"
-                                                                                className="btn btn-sm btn-primary m-t-n-xs">
-                                                                            <strong>Save</strong></button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                        <div className="tab-pane" id="tab-2">
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <Note initialValues={{
+                                            personId: this.props.viewedPerson.id
+                                        }}
+                                        onChange={this.onPageUpdate}
+                                    />
                                 </div>
                             </div>
-                            <div className="ibox">
-                                <Timeline
-                                    pageSize={5}
-                                    getTimelineItems={this.props.getTimelineByPersonId}
-                                    itemId={this.props.match.params.personId}
-                                    loadMoreTimeline={this.props.getTimelineLoadMoreByPersonId}
-                                />
-                            </div>
-                        </div>
-
-
-                        {
-                            this.state.isActivityModalVisible &&
-                            <EditOrCreateActivity showModal={this.state.isActivityModalVisible}
-                                                  close={this.closeActivityModal}
-                                                  initialValues={{
-                                                      person: {
-                                                          id: this.props.match.params.personId
-                                                      }
-
-                                                  }}
-                                                  createCallback={this.refreshTimeline}
-                                                  showPersonSelection={false}
+                            <Timeline
+                                initialValues={{
+                                    person: {
+                                        id: this.props.match.params.personId
+                                    }
+                                }}
+                                lastModifiedDate={this.state.lastModifiedDate}
+                                defaultFilter={`person_id:${this.props.match.params.personId}`}
+                                options={[
+                                    {
+                                        label: 'Activities',
+                                        fields: ['ACTIVITY_CREATED']
+                                    },
+                                    {
+                                        label: 'Notes',
+                                        fields: ['NOTE_CREATED']
+                                    },
+                                    {
+                                        label: 'Deals',
+                                        fields: ['DEAL_CREATED']
+                                    }
+                                ]}
                             />
-
-                        }
-
                         {
                             this.state.isPersonModalVisible &&
                             <ContactPerson showEditModal={this.state.isPersonModalVisible}
@@ -215,6 +150,7 @@ class ContactDetail extends Component {
                                             showPersonSelection={false}
                             />
                         }
+                        </div>
                     </div>
                 </div>
             )
@@ -231,8 +167,5 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
     getById,
-    createNote,
-    getTimelineByPersonId,
-    getTimelineLoadMoreByPersonId,
-    getTimelineByPersonIdAndRefresh
+    createNote
 })(ContactDetail);

@@ -1,16 +1,13 @@
 import { authHeader } from '../helpers';
 
-import {userActions} from "../actions/user.actions";
+import {handlePaginationResponse, handleResponse} from "../helpers/service.utils";
+import {buildRequestString} from "../helpers/requestUtils";
 
 export const activityService = {
     getActivitiesByFilter,
     create,
     update,
-    _delete,
-    getActivitiesByPersonId,
-    getActivitiesByOrganizationId,
-    getActivitiesByAgentId,
-    getActivitiesByDealId
+    _delete
 };
 
 function create(activity, callback) {
@@ -33,66 +30,15 @@ function update(activity) {
     return fetch('/api/activities/', requestOptions).then(handleResponse);
 }
 
-function getActivitiesByFilter(query, sort, page) {
+function getActivitiesByFilter(query, sort, page, size=20) {
     const requestOptions = {
         method: 'GET',
         headers: { ...authHeader(), 'Content-Type': 'application/json' }
     };
 
-    let params = [];
+    let requestString = buildRequestString(query, sort, page, size);
 
-    if( query !== undefined && query !== ""){
-        params.push(`q=${query}`);
-    }
-    if( page !== undefined && page !== ""){
-        params.push(`page=${page}`);
-    }
-    params.push(`size=20`);
-
-    if( sort !== undefined && sort !== ""){
-        params.push(sort);
-    }
-
-    let paramString = params.join("&");
-
-
-    return fetch(`/api/activities/search?${paramString}`, requestOptions).then(handlePaginationResponse);
-}
-
-function getActivitiesByPersonId(id) {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
-
-    return fetch(`/api/activities/person/${id}`, requestOptions).then(handleResponse);
-}
-
-function getActivitiesByOrganizationId(id) {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
-
-    return fetch(`/api/activities/organization/${id}`, requestOptions).then(handleResponse);
-}
-
-function getActivitiesByAgentId(id) {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
-
-    return fetch(`/api/activities/user/${id}?size=1000`, requestOptions).then(handleResponse);
-}
-
-function getActivitiesByDealId(id) {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
-
-    return fetch(`/api/activities/deal/${id}?size=1000`, requestOptions).then(handleResponse);
+    return fetch(`/api/activities?${requestString}`, requestOptions).then(handlePaginationResponse);
 }
 
 
@@ -103,30 +49,4 @@ function _delete(id) {
     };
 
     return fetch('/api/activities/' + id, requestOptions).then(handleResponse);
-}
-
-function handleResponse(response) {
-    if (response.ok !== true) {
-        if( response.status === 401 ){
-            userActions.logout();
-        }
-        return Promise.reject(response.statusText);
-    }
-
-    // The response of a fetch() request is a Stream object, which means that when we call the json() method,
-    // a Promise is returned since the reading of the stream will happen asynchronously.
-
-    return response.json();
-}
-
-function handlePaginationResponse(response) {
-    if (response.ok !== true) {
-        if( response.status === 401 ) {
-            userActions.logout();
-        }
-        return Promise.reject(response.statusText);
-    }
-
-    return Promise.all([response.json(), response.headers.get("x-total-count")]);
-
 }

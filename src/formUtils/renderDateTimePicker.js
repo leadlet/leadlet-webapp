@@ -56,6 +56,8 @@ let hours = [
     {value: '23:30', label: '23:30'}
 ];
 
+const TIME_FORMAT= "YYYY-MM-DDTHH:mm:ss[Z]";
+
 class renderDateTimePicker extends React.Component {
 
     constructor(props) {
@@ -72,7 +74,7 @@ class renderDateTimePicker extends React.Component {
     }
 
     handleDateChange(date) {
-        this.props.input.onChange(date);
+        this.props.input.onChange(date.format(TIME_FORMAT));
     }
 
     handleTimeChange(timeStr) {
@@ -139,7 +141,7 @@ class renderDateTimePicker extends React.Component {
     render() {
         const {
             input, label,
-            meta: {touched, error}
+//            meta: {touched, error}
         } = this.props
 
         return (
@@ -151,11 +153,7 @@ class renderDateTimePicker extends React.Component {
                         numberOfMonths={1}
                         small={true}
                         block={true}
-                        date={input.value ?
-                            (typeof(input.value) === moment ?
-                                input.value
-                                : moment(this.props.input.value, "YYYY-MM-DDTHH:mm:ss+-HH:mm"))
-                            : null} // momentPropTypes.momentObj or null
+                        date={input.value ? moment(this.props.input.value, TIME_FORMAT) : null} // momentPropTypes.momentObj or null
                         onDateChange={this.handleDateChange} // PropTypes.func.isRequired
                         focused={this.state.focused} // PropTypes.bool
                         onFocusChange={({focused}) => this.setState({focused})} // PropTypes.func.isRequired
@@ -173,7 +171,7 @@ class renderDateTimePicker extends React.Component {
                         removeSelected={false}
                         rtl={false}
                         onChange={this.handleTimeChange}
-                        value={moment(this.props.input.value, "YYYY-MM-DDTHH:mm:ss+-HH:mm").format("HH:mm")}
+                        value={moment(this.props.input.value, TIME_FORMAT).format("HH:mm")}
                         simpleValue
                     />
                 </div>

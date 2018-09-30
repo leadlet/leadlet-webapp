@@ -45,12 +45,10 @@
     "react-select": "^1.1.0",
     "react-sidebar": "^3.0.2",
     "react-visibility-sensor": "^3.11.1",
-    "react-waypoint": "^8.0.0",
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.2",
     "redux-form": "^7.1.1",
     "redux-logger": "^3.0.6",
-    "redux-orm": "^0.9.4",
     "redux-thunk": "^2.2.0",
     "sweetalert-react": "^0.4.11"
   },

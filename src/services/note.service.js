@@ -1,5 +1,5 @@
 import { authHeader } from '../helpers';
-import {userActions} from "../actions/user.actions";
+import {handlePaginationResponse, handleResponse} from "../helpers/service.utils";
 
 export const noteService = {
     getAll,
@@ -47,24 +47,3 @@ function getAll(filter , page, size) {
 }
 
 
-
-function handlePaginationResponse(response) {
-    if (response.ok !== true) {
-        return Promise.reject(response.statusText);
-    }
-
-    return Promise.all([ response.json(), response.headers.get("x-total-count")]);
-
-}
-
-function handleResponse(response) {
-    if (response.ok !== true) {
-        if( response.status === 401 ) {
-            userActions.logout();
-        }
-        return Promise.reject(response.statusText);
-    }
-
-    return response.json();
-
-}

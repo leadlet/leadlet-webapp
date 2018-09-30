@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Card from "./DealList/DealCard";
+import Card from "./DealCard";
 
 const propTypes = {
     card: PropTypes.object
 };
 
-const CardDragPreview = (props) => {
+const DealCardDragPreview = (props) => {
     let styles = {
         listStyle: 'none',
         backgroundColor: '#FAFAFB',
@@ -28,6 +28,6 @@ const CardDragPreview = (props) => {
     );
 };
 
-CardDragPreview.propTypes = propTypes;
+DealCardDragPreview.propTypes = propTypes;
 
-export default CardDragPreview;
+export default DealCardDragPreview;
