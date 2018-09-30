@@ -224,6 +224,14 @@ class DealBoard extends Component {
                             group="deals-page"
                             index="leadlet-deal"
                         />
+                        <ListFilter
+                            id="Status"
+                            dataField="dealStatus.keyword"
+                            title="Status"
+                            multi={true}
+                            group="deals-page"
+                            index="leadlet-deal"
+                        />
                         <RangeFilter
                             id="Priority"
                             dataField="priority"
