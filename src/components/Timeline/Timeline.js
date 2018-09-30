@@ -45,8 +45,6 @@ class Timeline extends Component {
         let newActivityQuery = this.combineDefaultFilter2Query(this.props.defaultFilter, `start_date:[${moment()} TO *]`);
 
         this.props.getActivities(newActivityQuery, this.SORT);
-
-
     }
 
     componentDidMount() {
@@ -98,6 +96,9 @@ class Timeline extends Component {
         if( _.get(this, ["props","timeLineStore", "ids", "length"],0) > 0 ){
             return this.props.timeLineStore.ids.map(timelineId => {
                 let timelineItem = this.props.timeLineStore.items[timelineId];
+                if (timelineItem === undefined){
+                    console.log("ryye");
+                }
                 if (timelineItem.type === 'NOTE_CREATED') {
                     return (
                         <NoteCreated item={timelineItem}/>
