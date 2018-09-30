@@ -33,7 +33,7 @@ export function dealStore(state = { ids: [], items: {}}, action) {
                     ...state.items,
                     [action.payload.id]: action.payload
                 },
-                ids: [...new Set([...state.ids, ...action.payload.id])]
+                ids: [...new Set([...state.ids, action.payload.id])]
             };
         case dealConstants.UPDATE_SUCCESS:
         case dealConstants.GET_SUCCESS:
@@ -44,7 +44,7 @@ export function dealStore(state = { ids: [], items: {}}, action) {
                     ...state.items,
                     [action.payload.id]: action.payload
                 },
-                ids: [...new Set([...state.ids, ...action.payload.id])]
+                ids: [...new Set([...state.ids, action.payload.id])]
 
             };
         case dealConstants.DELETE_SUCCESS:

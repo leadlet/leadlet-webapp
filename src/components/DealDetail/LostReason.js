@@ -19,6 +19,7 @@ class LostReason extends Component {
     onSubmit = (formValues) => {
 
         let deal = {
+            ...formValues,
             id: formValues.id,
             title: formValues.title,
             personId: formValues.person && formValues.person.id,

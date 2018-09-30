@@ -65,6 +65,7 @@ class CreateEditDeal extends Component {
     onSubmit = (formValues) => {
 
         let deal = {
+            ...formValues,
             id: formValues.id,
             title: formValues.title,
             person: formValues.person,
@@ -77,7 +78,7 @@ class CreateEditDeal extends Component {
             dealSource: formValues.dealSource,
             dealChannel: formValues.dealChannel,
             createdDate: formValues.createdDate
-        }
+        };
 
         if (deal.id) {
             this.props.updateDeal(deal);
