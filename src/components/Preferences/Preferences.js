@@ -3,6 +3,7 @@ import {Tab, Tabs} from "react-bootstrap";
 import Profile from "./Profile";
 import Pipelines from "../Pipelines/Pipelines";
 import AccountPreferences from "./AccountPreferences";
+import Products from "./Products";
 
 
 class Preferences extends Component {
@@ -32,6 +33,9 @@ class Preferences extends Component {
                                         </Tab>
                                         <Tab eventKey={3} title="Pipelines">
                                             <Pipelines/>
+                                        </Tab>
+                                        <Tab eventKey={4} title="Products">
+                                            <Products/>
                                         </Tab>
                                     </Tabs>
                                 </div>

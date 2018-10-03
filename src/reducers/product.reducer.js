@@ -50,9 +50,9 @@ export function products(state = {}, action) {
                 ...state,
                 items: {
                     ...state.items,
-                    [action.product.id]: action.product
+                    [action.payload.id]: action.payload
                 },
-                ids: [ ...state.ids, action.product.id],
+                ids: [ ...state.ids, action.payload.id],
                 dataTotalSize: state.dataTotalSize + 1
             };
 

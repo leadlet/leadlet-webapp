@@ -9,7 +9,7 @@ export const productService = {
     _deleteProduct
 };
 
-function createProduct(product, callback) {
+function createProduct(product) {
     const requestOptions = {
         method: 'POST',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },

@@ -133,7 +133,7 @@ class Pipelines extends React.Component {
 
 function mapStateToProps(state){
     return {
-        pipeline: state.pipeline
+        pipeline: state.pipelineStore
     };
 }
 

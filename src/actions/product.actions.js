@@ -1,4 +1,6 @@
 import {productService} from "../services/product.service";
+import {alertActions} from "./alert.actions";
+import {productConstants} from "../constants/product.constants";
 
 /*
 export function getProductById(productId) {
@@ -47,22 +49,19 @@ export function getAllProducts(filter, page, size) {
     function failure(error) {
         return {type: productConstants.GETALL_FAILURE, error}
     }
-}
+}*/
 
-export function createProduct(product, successCallback) {
+export function createProduct(product) {
     return dispatch => {
         dispatch(request());
 
         return productService.createProduct(product)
             .then(
-                product => {
-                    dispatch(successCallback);
-                    dispatch(success(product));
-                    dispatch(alertActions.success('Product create successful'));
+                payload => {
+                    dispatch(success(payload));
+                    dispatch(alertActions.success('Product successfully created'));
                 },
                 error => {
-                    // TODO catch validation error here and throw submission error
-                    // throw new SubmissionError({name: 'hedeler' , title: 'hedeler2', _error: 'olmadi'});
                     dispatch(failure(error));
                     dispatch(alertActions.error(error));
                 }
@@ -73,8 +72,8 @@ export function createProduct(product, successCallback) {
         return {type: productConstants.CREATE_REQUEST}
     }
 
-    function success(product) {
-        return {type: productConstants.CREATE_SUCCESS, product}
+    function success(payload) {
+        return {type: productConstants.CREATE_SUCCESS, payload}
     }
 
     function failure(error) {
@@ -82,6 +81,7 @@ export function createProduct(product, successCallback) {
     }
 }
 
+/*
 export function updateProduct(product, successCallback) {
     return dispatch => {
         dispatch(request());
