@@ -3,6 +3,7 @@ import connect from "react-redux/es/connect/connect";
 import Link from "react-router-dom/es/Link";
 import {getAllProducts} from "../../actions/product.actions";
 import CreateEditProduct from "./CreateEditProduct";
+import * as _ from "lodash";
 
 class ProductList extends Component {
 
@@ -70,7 +71,7 @@ class ProductList extends Component {
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        {this.props.products.items && this.renderProductsTable(this.props.products.items)}
+                                        {_.get(this,["props","products","ids","length"],0) > 0 && this.renderProductsTable(this.props.products.items)}
                                         </tbody>
                                     </table>
                                 </div>

@@ -26,8 +26,7 @@ export function products(state = {items: {}, ids: []}, action) {
         /* ALL productS */
         case productConstants.GETALL_REQUEST:
             return {
-                ...state,
-                loading: true
+                ...state
             };
         case productConstants.GETALL_SUCCESS:
             const _items = normalize(action.data.items, productListSchema);
