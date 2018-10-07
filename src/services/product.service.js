@@ -38,13 +38,13 @@ function getProductById(id) {
     return fetch('/api/products/' + id, requestOptions).then(handleResponse);
 }
 
-function getAllProducts(filter , page, size) {
+function getAllProducts() {
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
     };
 
-    return fetch(`/api/products?filter=${filter}&page=${page}&size=${size}` , requestOptions).then(handleResponse);
+    return fetch(`/api/products` , requestOptions).then(handleResponse);
 }
 
 function _deleteProduct(id) {

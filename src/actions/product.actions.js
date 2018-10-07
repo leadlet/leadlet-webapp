@@ -26,14 +26,14 @@ export function getProductById(productId) {
         return {type: productConstants.GET_FAILURE, error}
     }
 }
-
-export function getAllProducts(filter, page, size) {
+*/
+export function getAllProducts() {
     return dispatch => {
         dispatch(request());
 
-        productService.getAllProducts(filter, page, size)
+        productService.getAllProducts()
             .then(
-                response => dispatch(success({items: response[0], dataTotalSize: response[1]})),
+                items => dispatch(success(items)),
                 error => dispatch(failure(error))
             );
     };
@@ -49,7 +49,7 @@ export function getAllProducts(filter, page, size) {
     function failure(error) {
         return {type: productConstants.GETALL_FAILURE, error}
     }
-}*/
+}
 
 export function createProduct(product) {
     return dispatch => {

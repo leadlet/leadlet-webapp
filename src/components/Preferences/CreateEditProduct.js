@@ -20,7 +20,7 @@ const renderField = ({
     </div>
 )
 
-class Products extends Component {
+class CreateEditProduct extends Component {
 
     constructor(props) {
         super(props);
@@ -91,5 +91,5 @@ export default reduxForm({
     form: 'postNewProductForm',
     enableReinitialize: true
 })(
-    connect(mapStateToProps, {createProduct})(Products)
+    connect(mapStateToProps, {createProduct})(CreateEditProduct)
 );

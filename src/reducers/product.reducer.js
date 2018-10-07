@@ -6,7 +6,7 @@ const productSchema = new schema.Entity('products');
 // or use shorthand syntax:
 const productListSchema = [productSchema];
 
-export function products(state = {}, action) {
+export function products(state = {items: {}, ids: []}, action) {
     switch (action.type) {
         /* get by id */
         case productConstants.GET_REQUEST:

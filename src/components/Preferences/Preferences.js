@@ -3,7 +3,7 @@ import {Tab, Tabs} from "react-bootstrap";
 import Profile from "./Profile";
 import Pipelines from "../Pipelines/Pipelines";
 import AccountPreferences from "./AccountPreferences";
-import Products from "./Products";
+import Products from "./ProductList";
 
 
 class Preferences extends Component {
