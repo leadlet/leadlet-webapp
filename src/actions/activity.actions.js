@@ -59,32 +59,6 @@ export function getActivities(query="", sort="", page=0, append=false) {
     }
 }
 
-
-export function getAll() {
-    return dispatch => {
-        dispatch(request());
-
-        activityService.getAll()
-            .then(
-                payload => dispatch(success(payload)),
-                error => dispatch(failure(error))
-            );
-
-    };
-
-    function request() {
-        return {type: activityConstants.GETALL_REQUEST}
-    }
-
-    function success(payload) {
-        return {type: activityConstants.GETALL_SUCCESS, payload}
-    }
-
-    function failure(error) {
-        return {type: activityConstants.GETALL_FAILURE, error}
-    }
-}
-
 export function getActivitiesByPersonId(id) {
     return dispatch => {
         dispatch(request());

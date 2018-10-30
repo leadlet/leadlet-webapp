@@ -10,6 +10,7 @@ import PersonDetail from "../components/Contacts/PersonDetail";
 import DealDetail from "../components/DealDetail/DealDetail";
 import Activities from "../components/Activity/Activities";
 import Preferences from "../components/Preferences/Preferences";
+import Products from "../components/Preferences/CreateEditProduct";
 import TeamAgentManagement from "../components/Team/TeamAgentManagement";
 import {PrivateRoute} from "../components/PrivateRoute";
 import AgentDetail from "../components/Agent/AgentDetail";
@@ -36,6 +37,7 @@ class TopMenuLayout extends Component {
                                 <PrivateRoute path="/pipelines" component={PipelinesPage}/>
                                 <PrivateRoute path="/activities" component={Activities}/>
                                 <PrivateRoute path="/preferences" component={Preferences}/>
+                                <PrivateRoute path="/products" component={Products}/>
                                 <Route component={NotFound} />
                             </Switch>
                         </div>
