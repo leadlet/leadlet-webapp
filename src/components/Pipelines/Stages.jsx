@@ -65,11 +65,11 @@ class Stages extends React.Component {
     }
 
     renderStages() {
-        if (_.has(this, [ "props","stage","ids"])) {
-            return this.props.stage.ids.filter( stageId =>
-                this.props.stage.items[stageId].pipelineId === this.props.pipelineId
+        if (_.has(this, [ "props","stageStore","ids"])) {
+            return this.props.stageStore.ids.filter( stageId =>
+                this.props.stageStore.items[stageId].pipelineId === this.props.pipelineId
             ).map(stageId => {
-                let stage = this.props.stage.items[stageId];
+                let stage = this.props.stageStore.items[stageId];
                 return (
                     <div key={stage.id} className="step" style={{"--stage-color": stage.color}}>
                         {stage.name}
@@ -121,7 +121,7 @@ class Stages extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        stage: state.stage
+        stageStore: state.stageStore
     };
 }
 
