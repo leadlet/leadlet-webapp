@@ -29,7 +29,7 @@ export function products(state = {items: {}, ids: []}, action) {
                 ...state
             };
         case productConstants.GETALL_SUCCESS:
-            const _items = normalize(action.data.items, productListSchema);
+            const _items = normalize(action.data, productListSchema);
             return {
                 ...state,
                 items: _items.entities.products,
@@ -51,7 +51,7 @@ export function products(state = {items: {}, ids: []}, action) {
                     ...state.items,
                     [action.payload.id]: action.payload
                 },
-                ids: [ ...state.ids, action.payload.id],
+                ids: [...state.ids, action.payload.id],
                 dataTotalSize: state.dataTotalSize + 1
             };
 
@@ -84,14 +84,12 @@ export function products(state = {items: {}, ids: []}, action) {
         case productConstants.DELETE_REQUEST:
             return state;
         case productConstants.DELETE_SUCCESS:
-            action.ids.forEach(id => {
-                delete state.items[id];
-            })
+            delete state.items[action.id];
+
             return {
                 ...state,
                 items: state.items,
-                ids: state.ids.filter(id => !action.ids.includes(id)),
-                dataTotalSize: state.dataTotalSize - action.ids.length
+                ids: state.ids.filter(id => action.id !== id)
             };
 
         default:

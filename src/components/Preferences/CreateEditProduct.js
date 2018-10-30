@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from "react-redux";
 import {createProduct} from "../../actions/product.actions";
+import Modal from "react-bootstrap/es/Modal";
 
 const renderField = ({
                          input,
@@ -28,6 +29,7 @@ class CreateEditProduct extends Component {
         this.state = {};
 
         this.onSubmit = this.onSubmit.bind(this);
+        this.onClose = this.onClose.bind(this);
     }
 
     onSubmit = (formValue) => {
@@ -43,40 +45,66 @@ class CreateEditProduct extends Component {
             this.props.createProduct(product);
         }
 
+        this.onClose();
+    }
+
+    onClose() {
+
+        this.props.reset();
+        this.props.close();
     }
 
     render() {
-        const {handleSubmit} = this.props;
+        const {handleSubmit, initialValues} = this.props;
+
+        let title = "Create";
+        if (initialValues && initialValues.name) {
+            title = "Update";
+        }
 
         return (
-            <div className="m-t">
-                <form className="form-horizontal">
-                    <Field
-                        name="name"
-                        type="text"
-                        component={renderField}
-                        label=" Name"
-                    />
-                    <Field
-                        name="price"
-                        type="text"
-                        component={renderField}
-                        label="Price"
-                    />
-                    <Field
-                        name="description"
-                        type="text"
-                        component={renderField}
-                        label="Description"
-                    />
-                    <div className="hr-line-dashed"/>
-                    <div className="form-group">
-                        <div className="col-sm-4 col-sm-offset-4">
-                            <button className="btn btn-primary" onClick={handleSubmit(this.onSubmit)}>Save</button>
+            <Modal show={this.props.showModal} onHide={this.onClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>{title} Product</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <form className="form-horizontal">
+                        <Field
+                            name="name"
+                            type="text"
+                            component={renderField}
+                            label=" Name"
+                        />
+                        <Field
+                            name="price"
+                            type="text"
+                            component={renderField}
+                            label="Price"
+                        />
+                        <Field
+                            name="description"
+                            type="text"
+                            component={renderField}
+                            label="Description"
+                        />
+                    </form>
+                </Modal.Body>
+                <Modal.Footer>
+
+                    <div className="row">
+                        <div className="col-md-6 pull-right">
+                            <div className="pull-right activity-detail-submit">
+                                <button className="btn btn-sm btn-default" onClick={this.props.close}>Cancel</button>
+                                <button className="btn btn-sm btn-primary"
+                                        onClick={handleSubmit(this.onSubmit)}>
+                                    <strong>Submit</strong></button>
+                            </div>
                         </div>
                     </div>
-                </form>
-            </div>
+
+                </Modal.Footer>
+            </Modal>
+
         )
     }
 }

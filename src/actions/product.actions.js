@@ -113,9 +113,9 @@ export function updateProduct(product, successCallback) {
         return {type: productConstants.UPDATE_FAILURE, error}
     }
 }
-
+*/
 // prefixed function name with underscore because delete is a reserved word in javascript
-function _deleteProduct(id) {
+export function deleteProduct(id) {
     return dispatch => {
         dispatch(request(id));
 
@@ -142,7 +142,7 @@ function _deleteProduct(id) {
         return {type: productConstants.DELETE_FAILURE, id, error}
     }
 }
-*/
+
 export function getAllProductByFilterAndReturn(filter, successCallback, failCallback) {
     productService.getAllProducts(filter, 0, 20)
         .then(
