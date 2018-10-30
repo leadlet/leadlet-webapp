@@ -51,11 +51,6 @@ class TopHeader extends React.Component {
                             <li>
                                 <Link aria-expanded="false" role="button" to="/activities">Activities</Link>
                             </li>
-                            { isAuthorized(['ROLE_MANAGER']) &&
-                                <li>
-                                    <Link aria-expanded="false" role="button" to="/teams">Teams</Link>
-                                </li>
-                            }
                         </ul>
                         <ul className="nav navbar-nav navbar-right">
                             <li>
