@@ -68,12 +68,12 @@ class Pipelines extends React.Component {
     }
 
     renderPipelines(){
-        if( !_.has(this, ["props","pipeline","ids"]) ) {
+        if( !_.has(this, ["props","pipelineStore","ids"]) ) {
             return ( <em>Loading Pipelines.. </em>);
         }else {
-            return this.props.pipeline.ids.map( id => {
+            return this.props.pipelineStore.ids.map( id => {
 
-                let pipeline = this.props.pipeline.items[id];
+                let pipeline = this.props.pipelineStore.items[id];
                 return (
                     <Tab eventKey={pipeline.id} key={pipeline.id}
                          title={
@@ -133,7 +133,7 @@ class Pipelines extends React.Component {
 
 function mapStateToProps(state){
     return {
-        pipeline: state.pipelineStore
+        pipelineStore: state.pipelineStore
     };
 }
 

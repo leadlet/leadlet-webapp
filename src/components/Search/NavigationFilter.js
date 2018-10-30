@@ -37,14 +37,14 @@ class NavigationFilter extends Component {
 
     renderOptions(){
         return this.props.options.map( option => (
-            <li role="presentation">
+            <li role="presentation" key={option.label}>
                 <button type="button" className="btn btn-link" onClick={() => this.filter(option.fields)}>{option.label}</button>
             </li>
         ))
     }
     render(){
         return (<ul className="nav nav-pills">
-                    <li role="presentation">
+                    <li role="presentation" key="all">
                         <button type="button" className="btn btn-link" onClick={this.clearFilter}>All</button>
                     </li>
                     {this.renderOptions()}

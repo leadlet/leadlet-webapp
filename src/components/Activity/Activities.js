@@ -159,7 +159,7 @@ class Activities extends Component {
     loadMoreDeal(isVisible) {
         if (isVisible && this.hasMoreItem()) {
             this.setState({currentPage: this.state.currentPage + 1},
-                () => this.props.getActivities(this.getQuery(), this.props.sort,
+                () => this.props.getActivities(this.getQuery(), this.getSort(),
                     this.state.currentPage,
                     true));
         }

@@ -11,7 +11,6 @@ import DropdownButton from "react-bootstrap/es/DropdownButton";
 import MenuItem from "react-bootstrap/es/MenuItem";
 import formValueSelector from "redux-form/es/formValueSelector";
 import renderDateTimePicker from "../../formUtils/renderDateTimePicker";
-import MapWithASearchBox from "../Map/MapWithASearchBox";
 import renderInputField from "../../formUtils/renderInputField";
 import renderAsyncSelectField from "../../formUtils/renderAsyncSelectField";
 import {loadDeal, loadUser} from "../../formUtils/form.actions";
@@ -119,7 +118,7 @@ class EditOrCreateActivity extends Component {
             person : formValues.person,
             agent : formValues.agent,
             deal : formValues.deal,
-            location : formValues.location,
+//            location : formValues.location,
             done : formValues.done,
         };
 
@@ -259,11 +258,6 @@ class EditOrCreateActivity extends Component {
                                     type="checkbox"
                                 />
                             }
-                            <Field
-                                name="location"
-                                label="Location"
-                                component={MapWithASearchBox}
-                            />
                         </fieldset>
 
                     </form>

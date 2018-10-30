@@ -33,9 +33,7 @@ class TopMenuLayout extends Component {
                                 <PrivateRoute path="/contacts" component={Contacts}/>
                                 <PrivateRoute path="/deal/:dealId" component={DealDetail}/>
                                 <PrivateRoute path="/user/:userId" component={AgentDetail}/>
-                                <PrivateRoute path="/team/:teamId" component={TeamDetail}/>
                                 <PrivateRoute path="/deals" component={Deals}/>
-                                <PrivateRoute authorize={['ROLE_MANAGER']} path="/teams" component={TeamAgentManagement}/>
                                 <PrivateRoute path="/pipelines" component={PipelinesPage}/>
                                 <PrivateRoute path="/activities" component={Activities}/>
                                 <PrivateRoute path="/preferences" component={Preferences}/>
