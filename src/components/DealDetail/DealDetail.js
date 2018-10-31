@@ -137,6 +137,7 @@ class DealDetail extends Component {
                             </div>
                             <div className="ibox">
                                 <Timeline
+                                    lastModifiedDate={this.state.lastModifiedDate}
                                     initialValues={{
                                         deal: {
                                             id: deal.id
@@ -153,6 +154,7 @@ class DealDetail extends Component {
                                             fields: ['NOTE_CREATED']
                                         }
                                     ]}
+                                    showDealSelection={false}
                                 />
                             </div>
 

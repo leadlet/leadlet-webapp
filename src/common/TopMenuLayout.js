@@ -11,10 +11,8 @@ import DealDetail from "../components/DealDetail/DealDetail";
 import Activities from "../components/Activity/Activities";
 import Preferences from "../components/Preferences/Preferences";
 import Products from "../components/Preferences/CreateEditProduct";
-import TeamAgentManagement from "../components/Team/TeamAgentManagement";
 import {PrivateRoute} from "../components/PrivateRoute";
 import AgentDetail from "../components/Agent/AgentDetail";
-import TeamDetail from "../components/Team/TeamDetail";
 import {Route} from "react-router-dom";
 import {NotFound} from "../components/ErrorPages/NotFound";
 
