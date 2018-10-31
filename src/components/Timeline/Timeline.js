@@ -53,7 +53,8 @@ class Timeline extends Component {
 
     componentDidUpdate(prevProps) {
         if ((this.props.lastModifiedDate !== prevProps.lastModifiedDate)
-            || ( this.getQuery() !== this.getQuery(prevProps))) {
+            || ( this.getQuery() !== this.getQuery(prevProps))
+            || (this.props.activityStore.ids !== prevProps.activityStore.ids)) {
             this.refreshTimeline();
         }
     }
@@ -165,7 +166,9 @@ class Timeline extends Component {
                                           close={this.closeActivityModal}
                                           initialValues={this.props.initialValues}
                                           createCallback={this.refreshTimeline}
-                                          showPersonSelection={false}
+                                          showPersonSelection={this.props.showPersonSelection}
+                                          showDealSelection={this.props.showDealSelection}
+
                     />
 
                 }

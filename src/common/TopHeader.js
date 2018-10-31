@@ -4,7 +4,6 @@ import $ from 'jquery';
 import {userActions} from "../actions/user.actions";
 import { connect } from 'react-redux';
 import {Link} from "react-router-dom";
-import {isAuthorized} from "../helpers/auth-check";
 
 class TopHeader extends React.Component {
 

@@ -44,7 +44,6 @@ export function pipelineStore(state = {}, action) {
                 items: state.items,
                 ids: state.ids.filter(stateId => stateId!==id),
             };
-            break;
 
         default:
             return state
