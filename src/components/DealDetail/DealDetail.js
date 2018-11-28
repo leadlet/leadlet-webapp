@@ -112,8 +112,13 @@ class DealDetail extends Component {
                                             <dd>{this.renderCreatedDate()}</dd>
                                             <dt>Possible Close:</dt>
                                             <dd>{this.renderLastUpdateDate()}</dd>
+                                            {
+                                                deal.dealStatus === "LOST" &&
+                                                [<dt>Lost Reason:</dt>, <dd>{deal.lostReason.name}</dd>]
+                                            }
                                             <dt>Deal Status:</dt>
                                             <dd>{this.renderDealStatus()}</dd>
+
                                         </dl>
                                     </div>
                                     <div className="row">
@@ -136,26 +141,7 @@ class DealDetail extends Component {
                                 </div>
                             </div>
                             <div className="ibox">
-                                <Timeline
-                                    lastModifiedDate={this.state.lastModifiedDate}
-                                    initialValues={{
-                                        deal: {
-                                            id: deal.id
-                                        }
-                                    }}
-                                    defaultFilter={`deal_id:${deal.id}`}
-                                    options={[
-                                        {
-                                            label: 'Activities',
-                                            fields: ['ACTIVITY_CREATED']
-                                        },
-                                        {
-                                            label: 'Notes',
-                                            fields: ['NOTE_CREATED']
-                                        }
-                                    ]}
-                                    showDealSelection={false}
-                                />
+
                             </div>
 
                         </div>
@@ -165,7 +151,7 @@ class DealDetail extends Component {
                             this.state.isEditDealModalVisible &&
                             <CreateEditDeal showModal={this.state.isEditDealModalVisible}
                                             close={this.closeEditDealModal}
-                                            initialValues={deal}
+                                            initialValues={{...deal, dealStatus: "WON"}}
                                             showPipelineSelection={false}
                             />
                         }
@@ -174,7 +160,7 @@ class DealDetail extends Component {
                             this.state.isLostReasonModalVisible &&
                             <LostReason showModal={this.state.isLostReasonModalVisible}
                                         close={this.closeLostReasonModal}
-                                        initialValues={deal}
+                                        initialValues={{...deal, dealStatus: "LOST"}}
                             />
                         }
 
