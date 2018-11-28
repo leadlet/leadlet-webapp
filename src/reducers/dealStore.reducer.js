@@ -26,6 +26,7 @@ export function dealStore(state = { ids: [], items: {}}, action) {
                 ids: [...new Set([...cleanedState.ids,...deals.result])]
             };
 
+        case dealConstants.UPDATE_SUCCESS:
         case dealConstants.CREATE_SUCCESS:
             return  {
                 ...state,
@@ -35,7 +36,6 @@ export function dealStore(state = { ids: [], items: {}}, action) {
                 },
                 ids: [...new Set([...state.ids, action.payload.id])]
             };
-        case dealConstants.UPDATE_SUCCESS:
         case dealConstants.GET_SUCCESS:
 
             return {
