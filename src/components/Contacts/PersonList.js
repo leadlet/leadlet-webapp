@@ -54,9 +54,8 @@ export const PersonList = function (props) {
             options={{
                 sizePerPage: props.sizePerPage,
                 onPageChange: props.onPageChange,
-                sizePerPageList: [5, 10],
                 page: props.currentPage,
-                onSizePerPageList: props.onSizePerPageList
+                hideSizePerPage: true
             }}
 
         >

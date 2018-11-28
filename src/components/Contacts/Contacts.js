@@ -38,23 +38,12 @@ class Contacts extends Component {
 
         this.filterContacts = this.filterContacts.bind(this);
 
-        this.sizePerPageListChange = this.sizePerPageListChange.bind(this);
         this.onPageChange = this.onPageChange.bind(this);
 
         this.getSelectedCount = this.getSelectedCount.bind(this);
         this.clearSelections = this.clearSelections.bind(this);
 
     }
-
-
-    sizePerPageListChange(sizePerPage) {
-        this.setState({
-            pageSize: sizePerPage
-        }, () => {
-            this.filterContacts();
-        });
-    }
-
 
     onPageChange(page, sizePerPage) {
         this.setState({
@@ -157,7 +146,6 @@ class Contacts extends Component {
                     currentPage={this.state.currentPage}
                     onRowSelect={this.onPersonRowSelected}
                     onSelectAll={this.onPersonRowSelectAll}
-                    sizePerPageListChange={this.sizePerPageListChange}
                     onPageChange={this.onPageChange}
                 />
             )
