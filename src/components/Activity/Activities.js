@@ -91,7 +91,7 @@ class Activities extends Component {
                         <SelectedFilters
                             group="activities-page"
                             index="leadlet-activity"/>
-                        <Button bsStyle="primary" bsSize="small" className="m-l-sm" onClick={this.openActivityModal}>New Deal</Button>
+                        <Button bsStyle="primary" bsSize="small" className="m-l-sm" onClick={this.openActivityModal}>New Activity</Button>
 
                 </div>
                 <div className="row">

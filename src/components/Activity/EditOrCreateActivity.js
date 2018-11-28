@@ -278,11 +278,6 @@ class EditOrCreateActivity extends Component {
                 <Modal.Footer>
 
                     <div className="row">
-                        <div className="col-md-1">
-                            <DropdownButton noCaret id="detail-operations" className="btn-primary" title="...">
-                                <MenuItem href="#" onClick={this.onDeleteActivity}>Delete</MenuItem>
-                            </DropdownButton>
-                        </div>
                         <div className="col-md-6 pull-right">
                             <div className="pull-right activity-detail-submit">
                                 <button className="btn btn-sm btn-default" onClick={this.props.close}>Cancel</button>
