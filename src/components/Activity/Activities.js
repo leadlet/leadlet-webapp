@@ -9,7 +9,6 @@ import moment from "moment";
 import Button from "react-bootstrap/es/Button";
 import ColumnSorter from "../Search/ColumnSorter";
 import EditOrCreateActivity from "./EditOrCreateActivity";
-import './../../styles/side-search.css';
 import {QueryUtils} from "../Search/QueryUtils";
 
 let VisibilitySensor = require('react-visibility-sensor');

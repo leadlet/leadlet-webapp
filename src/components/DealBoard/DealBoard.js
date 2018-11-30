@@ -17,9 +17,6 @@ import {pipelineSelected} from "../../actions/search.actions";
 import SortSelector from "../Search/SortSelector";
 import {DragDropContext} from 'react-dnd';
 
-
-import './../../styles/deals.css';
-import './../../styles/side-search.css';
 import * as _ from "lodash";
 import StageColumn from "./StageColumn";
 

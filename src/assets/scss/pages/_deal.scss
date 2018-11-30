@@ -1,0 +1,301 @@
+.deal-board {
+    height: 100%;
+
+    .toolbar {
+        display: flex; /* or inline-flex */
+        flex-direction: row;
+        justify-content: flex-end;
+        margin: 8px 0px 4px 0px;
+    }
+    
+    .toolbar .sort-selector,
+    .toolbar .pipeline-selector{
+        width: 150px;
+    }
+    
+    .toolbar .Select-control {
+        height: 30px;
+    }
+    
+    .toolbar .Select-value {
+        line-height: 28px;
+    }
+    
+    .toolbar .Select-input{
+        height: 28px;
+    }
+    
+    .toolbar .Select-placeholder {
+        line-height: 28px;
+    }
+    
+    
+    
+    /* stages */
+    
+    .stages {
+        display: flex; /* or inline-flex */
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-around;
+        margin-bottom: 40px;
+        min-height: calc(100% - 44px);
+    }
+    
+    .lists {
+        display: flex;
+        overflow-x: auto;
+        padding: 4px 10px;
+    
+    }
+    
+    
+    .list {
+        width: 270px;
+        flex: 0 0 auto;
+        border-radius: 3px;
+        margin: 0;
+        vertical-align: top;
+        background-color: #ffffff;
+        padding: 0;
+        border-right: 1px solid #e7eaec;
+        
+        footer {
+            line-height: 20px;
+            padding: 5px 8px;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+            color: #888;
+        }
+        
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 10px 10px;
+        }
+        
+        li {
+            background: #F8F8F8;
+            margin: 0 0 10px 0;
+        
+        }
+        
+        li:hover {
+            cursor: pointer;
+            background: #E9E9E9;
+        }
+        
+        .placeholder {
+            border: 1px dashed #cecece !important;
+            visibility: visible !important;
+            background: #e7eaec !important;
+        }
+    }
+    
+    
+    
+    .stage-header {
+        padding: 15px 9px 5px;
+
+        .stage-name {
+            font-weight: 700;
+            font-size: 15px;
+        }
+    }
+    
+    
+
+    .lead-card {
+        position: relative;
+        min-height: 60px;
+        .lead-user {
+            font-weight: 600;
+            font-size:12px;
+            background-color: #E1E1E2;
+            width: 28px;
+            height: 28px;
+            position: absolute;
+            top: 7px;
+            left: 5px;
+            text-align: center;
+            line-height: 29px;
+        }
+        .lead-product {
+            font-weight: 300;
+            color: #000000;
+            font-size: 7px;
+            left: 37px;
+            position: absolute;
+            top: 10px;
+        }
+        .lead-name {
+            font-size: 13px;
+            color: #000000;
+            font-weight: 600;
+            position: absolute;
+            left: 37px;
+            top: 20px;
+        }
+        .lead-price {
+            font-weight: 700;
+            color: #000000;
+            font-size: 11px;
+            position: absolute;
+            right: 5px;
+            top: 6px;
+        }
+        .lead-status {
+            font-size: 9px;
+            font-weight: 700;
+            color: #F5F4F5;
+            position: absolute;
+            right: 5px;
+            top: 25px;
+            padding: 1px 5px;
+        }
+        .lead-time {
+            font-size: 8px;
+            color: #000000;
+            font-weight: 400;
+            position: absolute;
+            right: 5px;
+            bottom: 3px;
+        }
+        .lead-source {
+            position: absolute;
+            left: 5px;
+            bottom: 0;
+            .icon {
+                display: inline-block;
+                width: 14px;
+                height: 14px;
+                text-align: center;
+                font-size: 14px;
+                border-radius: 50%;
+                margin-right: 4px;
+                overflow: hidden;
+                padding: 0;
+                line-height: 0;
+            }
+        }
+        .lead-score {
+            background-color: #DEDEDE;
+            height: 2px;
+            position: absolute;
+            bottom: 0;
+            left: 2px;
+            right: 2px;
+
+            .green {
+                background-color: #7ED321;
+            }
+
+            .high {
+                width: 70%;
+            }
+
+            .score {
+                display:block;
+                height: 2px;
+            }
+        }
+    }
+}
+
+/* toolbar */
+
+
+.pac-container {
+    background-color: #FFF;
+    z-index: 10000;
+    position: fixed;
+    display: inline-block;
+    float: left;
+}
+
+.card-body {
+    height: 35px;
+}
+
+.info-card .dl-horizontal dt {
+    width: 100px;
+}
+
+.info-card .dl-horizontal dd {
+    margin-left: 120px;
+}
+
+.card-body{
+    display: flex;
+    flex-direction: column;
+}
+
+.small-line{
+    justify-content: space-between;
+    flex-direction: row;
+    display: flex;
+    min-height: 15px;
+    margin-bottom: 1px;
+}
+
+.short-text{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.width-chars-9 {
+    max-width: 9ch;
+}
+
+.width-chars-15 {
+    max-width: 15ch;
+}
+
+.font-size-small{
+    font-size: small;
+}
+
+.font-size-smaller{
+    font-size: smaller;
+}
+
+.edit-trash-icon {
+    display: flex;
+    flex-direction: row-reverse;
+    min-height: 10px;
+
+}
+
+.edit-trash-icon .edit-icon{
+    padding: 2px;
+}
+
+.edit-trash-icon .trash-icon{
+    padding: 1px;
+    margin-left: 5px;
+}
+
+.potential-value{
+    font-size: smaller;
+    white-space: nowrap;
+}
+
+.dot {
+    font-size: small;
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+}
+
+.source-channel-product{
+    justify-content: flex-start;
+    flex-direction: row;
+    display: flex;
+    min-height: 15px;
+    margin-bottom: 1px;
+}
+
+.deal-search {
+    margin: 4px 10px 4px 10px;
+}

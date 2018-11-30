@@ -34,27 +34,33 @@ const DealCard = (props) => {
 
         <li style={style} className="info-element" id={style ? item.id : null}>
             <Link style={{ textDecoration: 'inherit', color:'inherit' }} to={"/deal/" + item.id}>
-                <div className="card-body">
-                    <div className="small-line">
-                        <div className="source-channel-product">
-                            <div
-                                className='short-text width-chars-9 font-size-smaller'>{ _.has(item, ["products","0","name"])? _.get(item, ["products","0","name"]) : "-"}</div>|
-                            <div className='short-text width-chars-9 font-size-smaller'>{item.dealChannel ? item.dealChannel.name : "-"}</div>|
-                            <div className='short-text width-chars-9 font-size-smaller'>{item.dealSource ? item.dealSource.name : "-"}</div>
-                        </div>
-                        <div className="potential-value">{item.dealValue && item.dealValue.potentialValue} <i className="fa fa-money"/> </div>
+                <div className="lead-card">
+                    <span className="lead-user">SK</span>
+                    <span className="lead-product">BREAST AUGMENTATION</span>
+                    <span className="lead-name">Emre Anıl Gözel</span>
+                    <span className="lead-price">${item.dealValue && item.dealValue.potentialValue}</span>
+                    <span className={"lead-status " + getActivityStatusColor(item)}>{item.activityStatus}</span>
+                    <span className="lead-time">{formattedDate}</span>
+                    <div className="lead-source">
+                        <span className="icon">
+                            <i className="icon-channel-facebook"></i>
+                        </span>
+                        <span className="icon">
+                            <span class="icon-channel-web"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></span>
+                        </span>
+                        <span className="icon country">
+                            <span className="icon-channel-flag-turkey">
+                                <span className="path1"></span><span className="path2"></span><span className="path3"></span><span className="path4"></span><span className="path5"></span><span className="path6"></span><span className="path7"></span><span className="path8"></span><span className="path9"></span><span className="path10"></span><span className="path11"></span><span className="path12"></span><span className="path13"></span>
+                            </span>
+                        </span>
+                        <span className="icon">
+                            <span class="icon-channel-phone"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></span>
+                        </span>
+                        <span className="icon">
+                            <span class="icon-channel-write"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span></span>
+                        </span>
                     </div>
-                    <div className="small-line">
-                        <div className="source-channel-product">
-                            <div className="short-text width-chars-9 font-size-small">{  _.has(item, ["person","phones","0","phone"]) ? _.get(item, ["person","phones","0","phone"]) : "-"}</div> /
-                            <div className="short-text width-chars-9 font-size-small">{  _.has(item, ["person","email"]) ?  _.get(item, ["person","email"])  : "-"}</div>
-                        </div>
-                        <div className={"dot " + getActivityStatusColor(item)}/>
-                    </div>
-                    <div className="small-line">
-                        <div className="short-text width-chars-15 font-size-smaller">{ _.has(item, ["person","name"])? _.has(item, ["person","name"]) : "-"}</div>
-                        <div className="short-text width-chars-15 font-size-smaller text-right">{formattedDate}</div>
-                    </div>
+                    <span className="lead-score"><span class="score high green"></span></span>
                 </div>
             </Link>
         </li>

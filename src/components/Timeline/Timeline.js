@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import connect from "react-redux/es/connect/connect";
 import {getTimelineByFilter, resetTimelines} from "../../actions/timeline.actions";
-import './../../styles/timeline.css';
 import EditOrCreateActivity from "../Activity/EditOrCreateActivity";
 import NoteCreated from "./NoteCreated";
 import * as _ from "lodash";
