@@ -7,6 +7,7 @@ import Timeline from "../Timeline/Timeline";
 import CreateEditDeal from "../DealDetail/CreateEditDeal";
 import Note from "../Note/Note";
 import moment from "moment";
+import * as _ from "lodash";
 
 class ContactDetail extends Component {
 
@@ -24,6 +25,7 @@ class ContactDetail extends Component {
         this.openDealModal = this.openDealModal.bind(this);
         this.closeDealModal = this.closeDealModal.bind(this);
         this.onPageUpdate = this.onPageUpdate.bind(this);
+        this.renderGender = this.renderGender.bind(this);
 
     }
 
@@ -58,6 +60,14 @@ class ContactDetail extends Component {
         this.props.getById(this.props.match.params.personId);
     }
 
+
+    renderGender(){
+        if(_.has(this, ["props", "viewedPerson", "gender"])){
+            return _.get(this, ["props", "viewedPerson", "gender"]);
+
+        }
+    }
+
     render() {
         if (!this.props.viewedPerson) {
             return (
@@ -75,8 +85,9 @@ class ContactDetail extends Component {
                                     <h3 className="m-b-xs">
                                         <strong>{this.props.viewedPerson && this.props.viewedPerson.name}</strong></h3>
                                     <div
-                                        className="font-bold">{this.props.viewedPerson && this.props.viewedPerson.title}</div>
+                                        className="font-bold">{this.props.viewedPerson && this.props.viewedPerson.login}</div>
                                     <address className="m-t-md">
+                                        {this.renderGender()}<br/>
                                         {this.props.viewedPerson && this.props.viewedPerson.address}<br/>
                                         {this.props.viewedPerson && this.props.viewedPerson.phones.map(phoneItem => {
                                             return (
@@ -107,29 +118,6 @@ class ContactDetail extends Component {
                                     />
                                 </div>
                             </div>
-                            <Timeline
-                                initialValues={{
-                                    person: {
-                                        id: this.props.match.params.personId
-                                    }
-                                }}
-                                lastModifiedDate={this.state.lastModifiedDate}
-                                defaultFilter={`person_id:${this.props.match.params.personId}`}
-                                options={[
-                                    {
-                                        label: 'Activities',
-                                        fields: ['ACTIVITY_CREATED']
-                                    },
-                                    {
-                                        label: 'Notes',
-                                        fields: ['NOTE_CREATED']
-                                    },
-                                    {
-                                        label: 'Deals',
-                                        fields: ['DEAL_CREATED']
-                                    }
-                                ]}
-                            />
                         {
                             this.state.isPersonModalVisible &&
                             <ContactPerson showEditModal={this.state.isPersonModalVisible}

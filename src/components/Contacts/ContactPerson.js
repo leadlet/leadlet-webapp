@@ -7,6 +7,9 @@ import InputGroup from "react-bootstrap/es/InputGroup";
 import FormControl from "react-bootstrap/es/FormControl";
 import {createPerson, updatePerson, getById} from "../../actions/person.actions";
 import InputMask from 'react-input-mask';
+import ButtonToolbar from "react-bootstrap/es/ButtonToolbar";
+import ToggleButtonGroup from "react-bootstrap/es/ToggleButtonGroup";
+import ToggleButton from "react-bootstrap/es/ToggleButton";
 
 const validate = values => {
     const errors = {};
@@ -41,8 +44,8 @@ const validate = values => {
 
 const warn = values => {
     const warnings = {};
-    if (values.title && values.title.length < 2) {
-        warnings.title = 'too short!'
+    if (values.login && values.login.length < 2) {
+        warnings.login = 'too short!'
     }
     return warnings
 };
@@ -78,7 +81,7 @@ const renderPhoneField = ({
             <FormGroup>
                 <InputGroup>
                     <InputGroup.Addon><i className="fa fa-phone" aria-hidden="true"/></InputGroup.Addon>
-                    <InputMask {...input} type={type} className="form-control" mask="+99 999 999 99 99" />
+                    <InputMask {...input} type={type} className="form-control" mask="+99 999 999 99 99"/>
                 </InputGroup>
             </FormGroup>
             <span className="help-block m-b-none">{touched &&
@@ -133,6 +136,26 @@ const renderLocationField = ({
     </div>
 )
 
+const renderGenderField = ({
+                               input,
+                               label,
+                               meta: {touched, error}
+                           }) => (
+    <div className="form-group">
+        <label>{label}</label>
+        <ButtonToolbar>
+            <ToggleButtonGroup {...input} type="radio" value={input.value}>
+                <ToggleButton value="M">Male <i className="fa fa-male"/></ToggleButton>
+                <ToggleButton value="F">Female <i className="fa fa-female"/></ToggleButton>
+            </ToggleButtonGroup>
+        </ButtonToolbar>
+
+        <span className="help-block m-b-none">{touched &&
+        ((error && <span>{error}</span>))}
+        </span>
+    </div>
+)
+
 class ContactNew extends React.Component {
 
     constructor(props) {
@@ -144,8 +167,7 @@ class ContactNew extends React.Component {
     onSubmit = (values) => {
 
         if (this.props.initialValues && this.props.initialValues.id) {
-            return this.props.updatePerson(values, () =>
-            {
+            return this.props.updatePerson(values, () => {
                 this.props.getById(this.props.initialValues.id);
                 this.onClose();
             });
@@ -181,10 +203,16 @@ class ContactNew extends React.Component {
                             label="Name"
                         />
                         <Field
-                            name="title"
+                            name="login"
                             type="text"
                             component={renderField}
-                            label="Title"
+                            label="Login"
+                        />
+                        <Field
+                            name="gender"
+                            type="text"
+                            component={renderGenderField}
+                            label="Gender"
                         />
                         <Field
                             name="phones[0].phone"
@@ -225,8 +253,7 @@ class ContactNew extends React.Component {
 }
 
 function mapStateToProps(state) {
-    return {
-    };
+    return {};
 }
 
 export default reduxForm({
