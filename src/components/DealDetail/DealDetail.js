@@ -141,7 +141,26 @@ class DealDetail extends Component {
                                 </div>
                             </div>
                             <div className="ibox">
-
+                                <Timeline
+                                    lastModifiedDate={this.state.lastModifiedDate}
+                                    initialValues={{
+                                        deal: {
+                                            id: deal.id
+                                        }
+                                    }}
+                                    defaultFilter={`deal_id:${deal.id}`}
+                                    options={[
+                                        {
+                                            label: 'Activities',
+                                            fields: ['ACTIVITY_CREATED']
+                                        },
+                                        {
+                                            label: 'Notes',
+                                            fields: ['NOTE_CREATED']
+                                        }
+                                    ]}
+                                    showDealSelection={false}
+                                />
                             </div>
 
                         </div>

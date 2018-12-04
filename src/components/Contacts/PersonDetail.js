@@ -118,6 +118,29 @@ class ContactDetail extends Component {
                                     />
                                 </div>
                             </div>
+                            <Timeline
+                                initialValues={{
+                                    person: {
+                                        id: this.props.match.params.personId
+                                    }
+                                }}
+                                lastModifiedDate={this.state.lastModifiedDate}
+                                defaultFilter={`person_id:${this.props.match.params.personId}`}
+                                options={[
+                                    {
+                                        label: 'Activities',
+                                        fields: ['ACTIVITY_CREATED']
+                                    },
+                                    {
+                                        label: 'Notes',
+                                        fields: ['NOTE_CREATED']
+                                    },
+                                    {
+                                        label: 'Deals',
+                                        fields: ['DEAL_CREATED']
+                                    }
+                                ]}
+                            />
                         {
                             this.state.isPersonModalVisible &&
                             <ContactPerson showEditModal={this.state.isPersonModalVisible}

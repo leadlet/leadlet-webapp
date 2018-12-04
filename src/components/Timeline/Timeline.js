@@ -53,7 +53,7 @@ class Timeline extends Component {
     componentDidUpdate(prevProps) {
         if ((this.props.lastModifiedDate !== prevProps.lastModifiedDate)
             || ( this.getQuery() !== this.getQuery(prevProps))
-            || (this.props.activityStore.ids !== prevProps.activityStore.ids)) {
+            || !_.isEqual(this.props.activityStore.ids.sort(), prevProps.activityStore.ids.sort())) {
             this.refreshTimeline();
         }
     }
