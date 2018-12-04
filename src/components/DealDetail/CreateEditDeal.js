@@ -94,7 +94,7 @@ class CreateEditDeal extends Component {
     }
 
     render() {
-        const {handleSubmit} = this.props;
+        const {handleSubmit, pristine, submitting, valid, warn} = this.props;
 
         return (
             <Modal show={this.props.showModal} onHide={this.onClose}>
@@ -298,7 +298,7 @@ class CreateEditDeal extends Component {
                         <div className="col-md-6 pull-right">
                             <div className="pull-right activity-detail-submit">
                                 <button className="btn btn-sm btn-default" onClick={this.props.close}>Cancel</button>
-                                <button className="btn btn-sm btn-primary" onClick={handleSubmit(this.onSubmit)}>
+                                <button className="btn btn-sm btn-primary" onClick={handleSubmit(this.onSubmit)} disabled={pristine || submitting || !valid}>
                                     <strong>Submit</strong></button>
                             </div>
                         </div>
