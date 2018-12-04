@@ -27,7 +27,7 @@ export function timeLineStore(state = {ids: [], items: {}}, action) {
             maxTimelineCount = action.payload.maxTimelineCount;
             return {
                 ...state,
-                items: timelines.entities.timelines,
+                items: timelines.entities.timelines || [],
                 ids: timelines.result,
                 maxTimelineCount: maxTimelineCount
             };
