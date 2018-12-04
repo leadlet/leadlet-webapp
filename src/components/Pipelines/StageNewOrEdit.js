@@ -1,6 +1,6 @@
 import React from 'react';
 import Modal from '../../modal-shim';
-import { Field, reduxForm } from 'redux-form'
+import {Field, reduxForm, reset} from 'redux-form'
 import { connect } from 'react-redux';
 import {GithubPicker} from "react-color";
 import {createStage, updateStage} from "../../actions/stage.actions";
@@ -69,6 +69,7 @@ class StageNewOrEdit extends React.Component {
     constructor(props) {
         super(props);
         this.onSubmit = this.onSubmit.bind(this);
+        this.onClose = this.onClose.bind(this);
     }
 
     onSubmit = (values) => {
@@ -80,11 +81,16 @@ class StageNewOrEdit extends React.Component {
             pipelineId: this.props.pipelineId
         }
         if( stageDto.id ){
-            return this.props.updateStage(stageDto,this.props.close);
+            return this.props.updateStage(stageDto,() => this.onClose());
         } else {
-            return this.props.createStage(stageDto,this.props.close);
+            return this.props.createStage(stageDto,() => this.onClose());
         }
 
+    }
+
+    onClose() {
+        this.props.close();
+        this.props.dispatch(reset('stageNewOrEdit'));
     }
 
 
