@@ -9051,7 +9051,8 @@ body {
       font-size: 7px;
       left: 37px;
       position: absolute;
-      top: 10px; }
+      top: 10px;
+      text-transform: uppercase; }
     .deal-board .lead-card .lead-name {
       font-size: 13px;
       color: #000000;
