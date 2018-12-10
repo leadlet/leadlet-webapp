@@ -97,6 +97,7 @@ class renderDatePicker extends React.Component {
                     focused={this.state.focused} // PropTypes.bool
                     onFocusChange={({focused}) => this.setState({focused})} // PropTypes.func.isRequired
                     isOutsideRange={this.isOutRange}
+                    showClearDate={true}
                 />
                 {touched && error && <span>{error}</span>}
             </div>
