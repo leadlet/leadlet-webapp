@@ -11,6 +11,7 @@ import renderAsyncSelectField from "../../formUtils/renderAsyncSelectField";
 import renderDatePicker from "../../formUtils/renderDatePicker";
 import {loadUser, loadProduct, loadSource, loadChannel, loadPerson} from "../../formUtils/form.actions";
 import renderPipelineAndStageFields from "../../formUtils/renderPipelineAndStageFields";
+import * as _ from "lodash";
 
 
 const validate = values => {
@@ -80,8 +81,26 @@ class CreateEditDeal extends Component {
             createdDate: formValues.createdDate
         };
 
+        console.log("Title: ", deal.title);
+        console.log("Title 2: ", this.props.initialValues.title);
+
+        function difference(object, base) {
+            function changes(object, base) {
+                return _.transform(object, function(result, value, key) {
+                    if (!_.isEqual(value, base[key])) {
+                        result[key] = (_.isObject(value) && _.isObject(base[key])) ? changes(value, base[key]) : value;
+                    }
+                });
+            }
+            return changes(object, base);
+        }
+
+        let diff = difference(deal, this.props.initialValues);
+
+        let modifiedFileds = Object.keys(diff)
+
         if (deal.id) {
-            this.props.updateDeal(deal);
+            this.props.updateDeal(deal, modifiedFileds);
         } else {
             this.props.createDeal(deal);
         }
@@ -320,7 +339,9 @@ CreateEditDeal.defaultProps = {
 export default reduxForm({
     form: 'postNewDealForm',
     validate, // <--- validation function given to redux-form
-    enableReinitialize: true
+    enableReinitialize: true,
+    touchOnChange: true,
+    touchOnBlur: true
 })(
     connect(null, {createDeal, updateDeal})(CreateEditDeal)
 );
