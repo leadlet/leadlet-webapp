@@ -46,7 +46,8 @@ class DealDetail extends Component {
 
     closeEditDealModal() {
         this.setState({
-            isEditDealModalVisible: false
+            isEditDealModalVisible: false,
+            lastModifiedDate: moment()
         });
     }
 
@@ -172,6 +173,7 @@ class DealDetail extends Component {
                                             close={this.closeEditDealModal}
                                             initialValues={{...deal, dealStatus: "WON"}}
                                             showPipelineSelection={false}
+
                             />
                         }
 

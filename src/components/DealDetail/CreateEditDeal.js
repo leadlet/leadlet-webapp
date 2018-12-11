@@ -81,9 +81,6 @@ class CreateEditDeal extends Component {
             createdDate: formValues.createdDate
         };
 
-        console.log("Title: ", deal.title);
-        console.log("Title 2: ", this.props.initialValues.title);
-
         function difference(object, base) {
             function changes(object, base) {
                 return _.transform(object, function(result, value, key) {
