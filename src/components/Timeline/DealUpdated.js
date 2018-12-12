@@ -16,10 +16,17 @@ const DealCreated = (props) => (
 const renderUpdatedFields = (content) => {
 
     const contentObj = JSON.parse(content);
+    let resultArr = [];
 
-    return (
-        Object.keys(contentObj.previous).toString()
-    );
+    if (Object.keys(contentObj.previous) !== null && Object.keys(contentObj.previous) !== 'undefined') {
+        let len = Object.keys(contentObj.previous).length;
+
+        for (var i = 0; i < len; i++) {
+            resultArr.push(Object.values(contentObj.previous)[i] + " --> " + Object.values(contentObj.current)[i]);
+        }
+    }
+
+    return resultArr.join(", ");
 };
 
 export default DealCreated;
