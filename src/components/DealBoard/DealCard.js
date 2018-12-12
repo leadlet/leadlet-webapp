@@ -46,7 +46,7 @@ const DealCard = (props) => {
                             <i className="icon-channel-facebook"></i>
                         </span>
                         <span className="icon">
-                            <span class="icon-channel-web"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></span>
+                            <span className="icon-channel-web"><span className="path1"></span><span className="path2"></span><span className="path3"></span><span className="path4"></span></span>
                         </span>
                         <span className="icon country">
                             <span className="icon-channel-flag-turkey">
@@ -54,13 +54,13 @@ const DealCard = (props) => {
                             </span>
                         </span>
                         <span className="icon">
-                            <span class="icon-channel-phone"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></span>
+                            <span className="icon-channel-phone"><span className="path1"></span><span className="path2"></span><span className="path3"></span><span className="path4"></span></span>
                         </span>
                         <span className="icon">
-                            <span class="icon-channel-write"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span></span>
+                            <span className="icon-channel-write"><span className="path1"></span><span className="path2"></span><span className="path3"></span><span className="path4"></span><span className="path5"></span><span className="path6"></span></span>
                         </span>
                     </div>
-                    <span className="lead-score"><span class="score high green"></span></span>
+                    <span className="lead-score"><span className="score high green"></span></span>
                 </div>
             </Link>
         </li>
