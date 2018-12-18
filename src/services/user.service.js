@@ -60,7 +60,7 @@ function getAllUser(filter, page, size) {
         headers: authHeader()
     };
 
-    return fetch(`/api/users?filter=${filter}&page=${page}&size=${size}`, requestOptions).then(handleResponse);
+    return fetch(`/api/users?q=${filter}&page=${page}&size=${size}`, requestOptions).then(handleResponse);
 }
 
 
