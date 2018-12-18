@@ -16,7 +16,7 @@ export function loadUser(input, callback) {
         callback(error, null);
     };
 
-    getAllUserByFilterAndReturn(`name:${input}`, successCallBack, failCallBack);
+    getAllUserByFilterAndReturn(`*${input}*`, successCallBack, failCallBack);
 
 };
 
