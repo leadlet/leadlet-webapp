@@ -48,10 +48,11 @@ class Timeline extends Component {
 
     componentDidMount() {
         this.refreshTimeline();
+        setInterval(() => this.setState({ time: Date.now() }), 2000);
     }
 
-    componentDidUpdate(prevProps) {
-        if ((this.props.lastModifiedDate !== prevProps.lastModifiedDate)
+    componentDidUpdate(prevProps,prevState) {
+        if ((this.state.time !== prevState.time)
             || ( this.getQuery() !== this.getQuery(prevProps))
             || !_.isEqual(this.props.activityStore.ids.sort(), prevProps.activityStore.ids.sort())) {
             this.refreshTimeline();
