@@ -112,7 +112,7 @@ class DealDetail extends Component {
                                             <dt>Created:</dt>
                                             <dd>{this.renderCreatedDate()}</dd>
                                             <dt>Possible Close:</dt>
-                                            <dd>{this.renderLastUpdateDate()}</dd>
+                                            <dd>{this.renderPossibleCloseDate()}</dd>
                                             {
                                                 deal.dealStatus === "LOST" &&
                                                 [<dt>Lost Reason:</dt>, <dd>{deal.lostReason.name}</dd>]
