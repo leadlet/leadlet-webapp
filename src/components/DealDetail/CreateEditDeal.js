@@ -200,7 +200,7 @@ class CreateEditDeal extends Component {
                                 if (value) {
                                     return {
                                         'value': value.id,
-                                        'label': value.name
+                                        'label': value.name || value.firstName + " " + value.lastName
                                     }
                                 }
 
