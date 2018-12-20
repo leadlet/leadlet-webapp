@@ -9,7 +9,7 @@ import renderInputField from '../../formUtils/renderInputField'
 import renderPriceCurrencyField from '../../formUtils/renderPriceCurrencyField'
 import renderAsyncSelectField from "../../formUtils/renderAsyncSelectField";
 import renderDatePicker from "../../formUtils/renderDatePicker";
-import {loadUser, loadProduct, loadSource, loadChannel, loadPerson} from "../../formUtils/form.actions";
+import {loadUser, loadProduct, loadSource, loadChannel, loadContact} from "../../formUtils/form.actions";
 import renderPipelineAndStageFields from "../../formUtils/renderPipelineAndStageFields";
 
 
@@ -68,7 +68,7 @@ class CreateEditDeal extends Component {
             ...formValues,
             id: formValues.id,
             title: formValues.title,
-            person: formValues.person,
+            contact: formValues.contact,
             stage: formValues.stage,
             pipeline: formValues.pipeline,
             agent: formValues.agent,
@@ -138,13 +138,13 @@ class CreateEditDeal extends Component {
 
                             }}
                         />
-                        {this.props.showPersonSelection &&
+                        {this.props.showContactSelection &&
                         <Field
-                            name="person"
-                            label="Person"
+                            name="contact"
+                            label="Contact"
                             placeholder="Select deal contact"
                             component={renderAsyncSelectField}
-                            loadOptions={loadPerson}
+                            loadOptions={loadContact}
                             parse={(value) => {
                                 if (value) {
                                     return {
@@ -313,7 +313,7 @@ class CreateEditDeal extends Component {
 CreateEditDeal.defaultProps = {
     showPipelineSelection: true,
     showStageSelection: true,
-    showPersonSelection: true,
+    showContactSelection: true,
     showUserSelection: true
 };
 

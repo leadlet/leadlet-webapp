@@ -72,7 +72,7 @@ class Activities extends Component {
                     return (
                         <tr key={activity.id}>
                             <td><a onClick={(e) => { e.preventDefault(); this.openActivityModal(activity)}} >{activity.title}</a></td>
-                            <td>{_.get(activity, ["person","name"])}</td>
+                            <td>{_.get(activity, ["contact","name"])}</td>
                             <td>{activity.type}</td>
                             <td>{ activity.done ? "Done" : "Not Done"}</td>
                             <td>{startDate.format('DD/MM/YYYY')}</td>
@@ -128,7 +128,7 @@ class Activities extends Component {
                                     <thead>
                                     <tr>
                                         <th>Title <ColumnSorter dataField="title.keyword" group="activities-page"/></th>
-                                        <th>Person </th>
+                                        <th>Contact </th>
                                         <th>Type <ColumnSorter dataField="activity_type.keyword" group="activities-page"/></th>
                                         <th>Status <ColumnSorter dataField="is_done" group="activities-page"/></th>
                                         <th>Date <ColumnSorter dataField="start_date" group="activities-page"/></th>

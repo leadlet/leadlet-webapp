@@ -115,7 +115,7 @@ class EditOrCreateActivity extends Component {
             memo : formValues.memo,
             type : formValues.type,
             title : formValues.title,
-            person : formValues.person,
+            contact : formValues.contact,
             agent : formValues.agent,
             deal : formValues.deal,
 //            location : formValues.location,
@@ -296,7 +296,7 @@ class EditOrCreateActivity extends Component {
 }
 
 EditOrCreateActivity.defaultProps = {
-    showPersonSelection: true,
+    showContactSelection: true,
     showDealSelection: true,
     showUserSelection: true
 }
@@ -306,10 +306,10 @@ const selector = formValueSelector('createEditActivityForm');
 
 function mapStateToProps(state) {
     return {
-        persons: state.persons,
+        contacts: state.contacts,
         start: selector(state, 'start'),
         end: selector(state, 'end'),
-        person: selector(state, 'person'),
+        contact: selector(state, 'contact'),
         location: selector(state, 'location')
     };
 }

@@ -22,7 +22,7 @@ class LostReason extends Component {
             ...formValues,
             id: formValues.id,
             title: formValues.title,
-            personId: formValues.person && formValues.person.id,
+            contactId: formValues.contact && formValues.contact.id,
             organizationId: formValues.organization && formValues.organization.id,
             stageId: formValues.stage && formValues.stage.id,
             pipelineId: formValues.pipeline && formValues.pipeline.id,

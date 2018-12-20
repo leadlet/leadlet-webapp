@@ -166,7 +166,7 @@ class Timeline extends Component {
                                           close={this.closeActivityModal}
                                           initialValues={this.props.initialValues}
                                           createCallback={this.refreshTimeline}
-                                          showPersonSelection={this.props.showPersonSelection}
+                                          showContactSelection={this.props.showContactSelection}
                                           showDealSelection={this.props.showDealSelection}
 
                     />

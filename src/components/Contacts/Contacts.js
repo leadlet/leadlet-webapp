@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import ContactPerson from "./ContactPerson";
+import NewEditContact from "./NewEditContact";
 import Badge from "react-bootstrap/es/Badge";
 import SweetAlert from 'sweetalert-react';
 import Dropdown from "react-bootstrap/es/Dropdown";
 import MenuItem from "react-bootstrap/es/MenuItem";
-import {getAllPerson, _deletePersons} from "../../actions/person.actions";
-import {PersonList} from "./PersonList";
+import {getAllContact, _deleteContacts} from "../../actions/contact.actions";
+import {ContactList} from "./ContactList";
 
-const CONTACT_PERSON = 'person';
+const CONTACT_CONTACT = 'contact';
 
 
 class Contacts extends Component {
@@ -21,16 +21,16 @@ class Contacts extends Component {
             pageSize: 10,
             checked: false,
             showDeleteDialog: false,
-            showPersonModal: false,
+            showContactModal: false,
             contactSelectedForEdit: null,
-            selectedType: CONTACT_PERSON
+            selectedType: CONTACT_CONTACT
         };
 
-        this.openPersonModal = this.openPersonModal.bind(this);
+        this.openContactModal = this.openContactModal.bind(this);
         this.closeEditModal = this.closeEditModal.bind(this);
         this.onCheckChange = this.onCheckChange.bind(this);
-        this.onPersonRowSelected = this.onPersonRowSelected.bind(this);
-        this.onPersonRowSelectAll = this.onPersonRowSelectAll.bind(this);
+        this.onContactRowSelected = this.onContactRowSelected.bind(this);
+        this.onContactRowSelectAll = this.onContactRowSelectAll.bind(this);
         this.confirmDeleteActivity = this.confirmDeleteActivity.bind(this);
         this.cancelDeleteActivity = this.cancelDeleteActivity.bind(this);
 
@@ -65,10 +65,10 @@ class Contacts extends Component {
         this.setState({
             showDeleteDialog: false
         });
-        if( this.state.selectedType === CONTACT_PERSON ){
-            this.props._deletePersons(this.state.selectedPersonIds);
+        if( this.state.selectedType === CONTACT_CONTACT ){
+            this.props._deleteContacts(this.state.selectedContactIds);
             this.setState({
-                selectedPersonIds: []
+                selectedContactIds: []
             });
         }
     }
@@ -80,20 +80,20 @@ class Contacts extends Component {
     }
 
     filterContacts() {
-        this.props.getAllPerson("", this.state.currentPage - 1, this.state.pageSize);
+        this.props.getAllContact("", this.state.currentPage - 1, this.state.pageSize);
     }
 
     componentDidMount() {
         this.filterContacts();
     }
 
-    openPersonModal(contact) {
-        this.setState({showPersonModal: true});
+    openContactModal(contact) {
+        this.setState({showContactModal: true});
         this.setState({contactSelectedForEdit: contact});
     }
 
     closeEditModal() {
-        this.setState({showPersonModal: false});
+        this.setState({showContactModal: false});
         this.setState({showOrganizationModal: false});
     }
 
@@ -106,28 +106,28 @@ class Contacts extends Component {
         }
     }
 
-    onPersonRowSelected({id}, isSelected) {
+    onContactRowSelected({id}, isSelected) {
         if (isSelected) {
             this.setState({
-                selectedPersonIds: [...this.state.selectedPersonIds, id].sort()
+                selectedContactIds: [...this.state.selectedContactIds, id].sort()
             });
         } else {
-            this.setState({selectedPersonIds: this.state.selectedPersonIds.filter(it => it !== id)});
+            this.setState({selectedContactIds: this.state.selectedContactIds.filter(it => it !== id)});
         }
         return true;
     }
 
-    onPersonRowSelectAll(isSelected, currentDisplayAndSelectedData) {
+    onContactRowSelectAll(isSelected, currentDisplayAndSelectedData) {
         const ids = currentDisplayAndSelectedData.map(item => {
             return item.id
         });
 
         if (isSelected) {
             this.setState({
-                selectedPersonIds: [...this.state.selectedPersonIds, ...ids].sort()
+                selectedContactIds: [...this.state.selectedContactIds, ...ids].sort()
             });
         } else {
-            this.setState({selectedPersonIds: this.state.selectedPersonIds.filter(it => !ids.includes(it))});
+            this.setState({selectedContactIds: this.state.selectedContactIds.filter(it => !ids.includes(it))});
         }
     }
 
@@ -135,17 +135,17 @@ class Contacts extends Component {
 
         let data = null;
 
-        if (this.state.selectedType === CONTACT_PERSON) {
-            data = this.props.persons;
+        if (this.state.selectedType === CONTACT_CONTACT) {
+            data = this.props.contacts;
             return (
                 data.ids &&
-                <PersonList
+                <ContactList
                     data={data}
-                    selectedRows={this.state.selectedPersonIds}
+                    selectedRows={this.state.selectedContactIds}
                     sizePerPage={this.state.sizePerPage}
                     currentPage={this.state.currentPage}
-                    onRowSelect={this.onPersonRowSelected}
-                    onSelectAll={this.onPersonRowSelectAll}
+                    onRowSelect={this.onContactRowSelected}
+                    onSelectAll={this.onContactRowSelectAll}
                     onPageChange={this.onPageChange}
                 />
             )
@@ -153,14 +153,14 @@ class Contacts extends Component {
     }
 
     getSelectedCount() {
-        if (this.state.selectedType === CONTACT_PERSON) {
-            return this.state.selectedPersonIds && this.state.selectedPersonIds.length;
+        if (this.state.selectedType === CONTACT_CONTACT) {
+            return this.state.selectedContactIds && this.state.selectedContactIds.length;
         }
     }
 
     clearSelections(){
         this.setState({
-            selectedPersonIds: []
+            selectedContactIds: []
                         });
     }
     render() {
@@ -180,7 +180,7 @@ class Contacts extends Component {
                                         <i className="fa fa-plus"/> Add
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu>
-                                        <MenuItem href="#" onClick={this.openPersonModal}>Person</MenuItem>
+                                        <MenuItem href="#" onClick={this.openContactModal}>Contact</MenuItem>
                                     </Dropdown.Menu>
                                 </Dropdown>
                                 {
@@ -207,7 +207,7 @@ class Contacts extends Component {
                                 {this.renderList()}
                             </div>
                             <div>
-                                <ContactPerson showEditModal={this.state.showPersonModal}
+                                <NewEditContact showEditModal={this.state.showContactModal}
                                                close={this.closeEditModal}
                                                contact={this.state.contactSelectedForEdit}
                                 />
@@ -236,8 +236,8 @@ class Contacts extends Component {
 
 function mapStateToProps(state) {
     return {
-        persons: state.persons
+        contacts: state.contacts
     };
 }
 
-export default connect(mapStateToProps, {getAllPerson, _deletePersons})(Contacts);
+export default connect(mapStateToProps, {getAllContact, _deleteContacts})(Contacts);
