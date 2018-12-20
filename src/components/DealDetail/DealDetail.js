@@ -105,7 +105,7 @@ class DealDetail extends Component {
                                             <dt>Agent:</dt>
                                             <dd>{this.renderAgent()}</dd>
                                             <dt>Contact:</dt>
-                                            <dd>{this.renderPersons()}</dd>
+                                            <dd>{this.renderContacts()}</dd>
                                             <dt>Last Updated:</dt>
                                             <dd>{this.renderLastUpdateDate()}</dd>
                                             <dt>Created:</dt>
@@ -215,12 +215,12 @@ class DealDetail extends Component {
         }
     }
 
-    renderPersons() {
+    renderContacts() {
         const deal = this.getViewedDeal();
 
-        if (deal.person) {
+        if (deal.contact) {
 
-            return (<Link className="text-navy" to={"/person/" + deal.person.id}>{deal.person.name}</Link>);
+            return (<Link className="text-navy" to={"/contact/" + deal.contact.id}>{deal.contact.name}</Link>);
 
 
         } else {

@@ -1,32 +1,32 @@
 import {authHeader} from '../helpers';
 import {handlePaginationResponse, handleResponse} from "../helpers/service.utils";
 
-export const personService = {
-    getAllPerson,
+export const contactService = {
+    getAllContact,
     getById,
-    createPerson,
-    updatePerson,
+    createContact,
+    updateContact,
     _delete
 };
 
-function createPerson(person) {
+function createContact(contact) {
     const requestOptions = {
         method: 'POST',
         headers: {...authHeader(), 'Content-Type': 'application/json'},
-        body: JSON.stringify(person)
+        body: JSON.stringify(contact)
     };
 
-    return fetch('/api/persons/', requestOptions).then(handleResponse);
+    return fetch('/api/contacts/', requestOptions).then(handleResponse);
 }
 
-function updatePerson(person) {
+function updateContact(contact) {
     const requestOptions = {
         method: 'PUT',
         headers: {...authHeader(), 'Content-Type': 'application/json'},
-        body: JSON.stringify(person)
+        body: JSON.stringify(contact)
     };
 
-    return fetch('/api/persons/', requestOptions).then(handleResponse);
+    return fetch('/api/contacts/', requestOptions).then(handleResponse);
 }
 
 function getById(id) {
@@ -35,17 +35,17 @@ function getById(id) {
         headers: authHeader()
     };
 
-    return fetch('/api/persons/' + id, requestOptions).then(handleResponse);
+    return fetch('/api/contacts/' + id, requestOptions).then(handleResponse);
 }
 
 
-function getAllPerson(filter, page, size) {
+function getAllContact(filter, page, size) {
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
     };
 
-    return fetch(`/api/persons?filter=${filter}&page=${page}&size=${size}`, requestOptions).then(handlePaginationResponse);
+    return fetch(`/api/contacts?filter=${filter}&page=${page}&size=${size}`, requestOptions).then(handlePaginationResponse);
 }
 
 function _delete(idList) {
@@ -54,5 +54,5 @@ function _delete(idList) {
         headers: authHeader()
     };
 
-    return fetch('/api/persons/' + idList, requestOptions).then(handleResponse);
+    return fetch('/api/contacts/' + idList, requestOptions).then(handleResponse);
 }

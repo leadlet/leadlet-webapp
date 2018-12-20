@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import connect from "react-redux/es/connect/connect";
 import {createNote} from "../../actions/note.actions";
-import {getById} from "../../actions/person.actions";
-import ContactPerson from "./ContactPerson";
+import {getById} from "../../actions/contact.actions";
 import Timeline from "../Timeline/Timeline";
 import CreateEditDeal from "../DealDetail/CreateEditDeal";
 import Note from "../Note/Note";
@@ -15,7 +14,7 @@ class ContactDetail extends Component {
         super(props);
 
         this.state = {
-            isPersonModalVisible: false,
+            isContactModalVisible: false,
             isDealModalVisible: false,
             lastModifiedDate: moment()
         };
@@ -39,11 +38,11 @@ class ContactDetail extends Component {
     }
 
     openEditModal() {
-        this.setState({isPersonModalVisible: true});
+        this.setState({isContactModalVisible: true});
     }
 
     closeEditModal() {
-        this.setState({isPersonModalVisible: false});
+        this.setState({isContactModalVisible: false});
     }
 
 
@@ -57,19 +56,19 @@ class ContactDetail extends Component {
     }
 
     componentDidMount() {
-        this.props.getById(this.props.match.params.personId);
+        this.props.getById(this.props.match.params.contactId);
     }
 
 
     renderGender(){
-        if(_.has(this, ["props", "viewedPerson", "gender"])){
-            return _.get(this, ["props", "viewedPerson", "gender"]);
+        if(_.has(this, ["props", "viewedContact", "gender"])){
+            return _.get(this, ["props", "viewedContact", "gender"]);
 
         }
     }
 
     render() {
-        if (!this.props.viewedPerson) {
+        if (!this.props.viewedContact) {
             return (
                 <em>Loading details for {this.props.match.params.contactId}</em>
             );
@@ -80,23 +79,23 @@ class ContactDetail extends Component {
                         <div className="col-md-4">
 
                             <div className="contact-box center-version">
-                                <a onClick={() => this.openEditModal(this.props.viewedPerson.type)}>
+                                <a onClick={() => this.openEditModal(this.props.viewedContact.type)}>
                                     <i className="fa fa-user-circle-o fa-5x" aria-hidden="true"/>
                                     <h3 className="m-b-xs">
-                                        <strong>{this.props.viewedPerson && this.props.viewedPerson.name}</strong></h3>
+                                        <strong>{this.props.viewedContact && this.props.viewedContact.name}</strong></h3>
                                     <div
-                                        className="font-bold">{this.props.viewedPerson && this.props.viewedPerson.login}</div>
+                                        className="font-bold">{this.props.viewedContact && this.props.viewedContact.login}</div>
                                     <address className="m-t-md">
                                         {this.renderGender()}<br/>
-                                        {this.props.viewedPerson && this.props.viewedPerson.address}<br/>
-                                        {this.props.viewedPerson && this.props.viewedPerson.phones.map(phoneItem => {
+                                        {this.props.viewedContact && this.props.viewedContact.address}<br/>
+                                        {this.props.viewedContact && this.props.viewedContact.phones.map(phoneItem => {
                                             return (
                                                 <div><i className="fa fa-phone"/> {phoneItem.phone}<br/></div>
                                             );
                                         })}
 
-                                        {this.props.viewedPerson && this.props.viewedPerson.email &&
-                                        <span><i className="fa fa-envelope"/> {this.props.viewedPerson.email}</span>}
+                                        {this.props.viewedContact && this.props.viewedContact.email &&
+                                        <span><i className="fa fa-envelope"/> {this.props.viewedContact.email}</span>}
                                     </address>
                                 </a>
                                 <div className="contact-box-footer">
@@ -112,7 +111,7 @@ class ContactDetail extends Component {
                             <div className="ibox">
                                 <div className="ibox-content">
                                     <Note initialValues={{
-                                            personId: this.props.viewedPerson.id
+                                            contactId: this.props.viewedContact.id
                                         }}
                                         onChange={this.onPageUpdate}
                                     />
@@ -120,12 +119,12 @@ class ContactDetail extends Component {
                             </div>
                             <Timeline
                                 initialValues={{
-                                    person: {
-                                        id: this.props.match.params.personId
+                                    contact: {
+                                        id: this.props.match.params.contactId
                                     }
                                 }}
                                 lastModifiedDate={this.state.lastModifiedDate}
-                                defaultFilter={`person_id:${this.props.match.params.personId}`}
+                                defaultFilter={`contact_id:${this.props.match.params.contactId}`}
                                 options={[
                                     {
                                         label: 'Activities',
@@ -141,24 +140,17 @@ class ContactDetail extends Component {
                                     }
                                 ]}
                             />
-                        {
-                            this.state.isPersonModalVisible &&
-                            <ContactPerson showEditModal={this.state.isPersonModalVisible}
-                                           close={this.closeEditModal}
-                                           initialValues={this.props.viewedPerson}
-                            />
-                        }
 
                         {
                             this.state.isDealModalVisible &&
                             <CreateEditDeal showModal={this.state.isDealModalVisible}
                                             close={this.closeDealModal}
                                             initialValues={{
-                                                person: {
-                                                    id: this.props.match.params.personId
+                                                contact: {
+                                                    id: this.props.match.params.contactId
                                                 }
                                             }}
-                                            showPersonSelection={false}
+                                            showContactSelection={false}
                             />
                         }
                         </div>
@@ -172,7 +164,7 @@ class ContactDetail extends Component {
 
 function mapStateToProps(state, props) {
     return {
-        viewedPerson: state.persons.viewedPerson
+        viewedContact: state.contacts.viewedContact
     }
 }
 

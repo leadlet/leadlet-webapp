@@ -1,7 +1,7 @@
 import {getAllUserByFilterAndReturn} from "../actions/user.actions";
 import {getAllProductByFilterAndReturn} from "../actions/product.actions";
 import {getAllSourceByFilterAndReturn} from "../actions/source.actions";
-import {getAllPersonByFilterAndReturn} from "../actions/person.actions";
+import {getAllContactByFilterAndReturn} from "../actions/contact.actions";
 import {getAllDealByFilterAndReturn, getAllLostReasonByFilterAndReturn} from "../actions/deal.actions";
 import {getAllPipelineAndReturn} from "../actions/pipeline.actions";
 import {getAllStageReturn} from "../actions/stage.actions";
@@ -72,17 +72,17 @@ export function loadChannel(input, callback) {
 
 };
 
-export function loadPerson(input, callback) {
+export function loadContact(input, callback) {
 
     let successCallBack = (data) => {
-        callback(null, {options: data.map(person => ({value: person.id, label: person.name}))});
+        callback(null, {options: data.map(contact => ({value: contact.id, label: contact.name}))});
     };
     let failCallBack = (error) => {
         callback(error, null);
     };
 
 
-    getAllPersonByFilterAndReturn(`name:${input}`, successCallBack, failCallBack);
+    getAllContactByFilterAndReturn(`name:${input}`, successCallBack, failCallBack);
 
 }
 

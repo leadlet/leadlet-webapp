@@ -1,90 +1,90 @@
-import {personConstants} from "../constants/person.constants";
+import {contactConstants} from "../constants/contact.constants";
 import {normalize, schema} from 'normalizr';
 
-const personSchema = new schema.Entity('persons');
+const contactSchema = new schema.Entity('contacts');
 
 // or use shorthand syntax:
-const personListSchema = [personSchema];
+const contactListSchema = [contactSchema];
 
-export function persons(state = {}, action) {
+export function contacts(state = {}, action) {
     switch (action.type) {
         /* get by id */
-        case personConstants.GET_REQUEST:
+        case contactConstants.GET_REQUEST:
             return {
                 loading: true
             };
-        case personConstants.GET_SUCCESS:
+        case contactConstants.GET_SUCCESS:
             return {
                 ...state,
-                viewedPerson: action.person
+                viewedContact: action.contact
             };
-        case personConstants.GET_FAILURE:
+        case contactConstants.GET_FAILURE:
             return {
                 error: action.error
             };
 
-        /* ALL personS */
-        case personConstants.GETALL_REQUEST:
+        /* ALL contactS */
+        case contactConstants.GETALL_REQUEST:
             return {
                 ...state,
                 loading: true
             };
-        case personConstants.GETALL_SUCCESS:
-            const _items = normalize(action.data.items, personListSchema);
+        case contactConstants.GETALL_SUCCESS:
+            const _items = normalize(action.data.items, contactListSchema);
             return {
                 ...state,
-                items: _items.entities.persons,
+                items: _items.entities.contacts,
                 ids: _items.result,
                 dataTotalSize: action.data.dataTotalSize
             };
-        case personConstants.GETALL_FAILURE:
+        case contactConstants.GETALL_FAILURE:
             return {
                 error: action.error
             };
 
-        /* NEW person */
-        case personConstants.CREATE_REQUEST:
+        /* NEW contact */
+        case contactConstants.CREATE_REQUEST:
             return state;
-        case personConstants.CREATE_SUCCESS:
+        case contactConstants.CREATE_SUCCESS:
             let _state = {
                 ...state,
                 items: {
                     ...state.items,
-                    [action.person.id]: action.person
+                    [action.contact.id]: action.contact
                 },
-                ids: [ ...state.ids, action.person.id],
+                ids: [ ...state.ids, action.contact.id],
                 dataTotalSize: state.dataTotalSize + 1
             };
 
             return _state;
 
-        case personConstants.CREATE_FAILURE:
+        case contactConstants.CREATE_FAILURE:
             return {
                 ...state,
                 error: action.error
             };
-        /* UPDATE person */
-        case personConstants.UPDATE_REQUEST:
+        /* UPDATE contact */
+        case contactConstants.UPDATE_REQUEST:
             return state;
-        case personConstants.UPDATE_SUCCESS:
+        case contactConstants.UPDATE_SUCCESS:
             _state = {
                 ...state,
                 items: {
                     ...state.items,
-                    [action.person.id]: action.person
+                    [action.contact.id]: action.contact
                 }
             };
 
             return _state;
-        case personConstants.UPDATE_FAILURE:
+        case contactConstants.UPDATE_FAILURE:
             return {
                 ...state,
                 error: action.error
             };
-        /* DELETE person */
-        case personConstants.DELETE_REQUEST:
+        /* DELETE contact */
+        case contactConstants.DELETE_REQUEST:
             return state;
-        case personConstants.DELETE_SUCCESS:
+        case contactConstants.DELETE_SUCCESS:
             action.ids.forEach(id => {
                 delete state.items[id];
             })

@@ -5,7 +5,7 @@ import {registration} from './registration.reducer';
 import {users} from './users.reducer';
 import {alert} from './alert.reducer';
 import {reducer as formReducer} from 'redux-form';
-import {persons} from "./person.reducer";
+import {contacts} from "./contact.reducer";
 import {account} from "./account.reducer";
 import {products} from "./product.reducer";
 import {timeLineStore} from "./timeLineStore.reducer";
@@ -21,7 +21,7 @@ const rootReducer = combineReducers({
     registration,
     users,
     alert,
-    persons,
+    contacts,
     form: formReducer,
     activityStore,
     dealStore,
