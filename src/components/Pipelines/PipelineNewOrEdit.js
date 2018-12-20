@@ -55,7 +55,6 @@ class PipelineNewOrEdit extends React.Component {
 
     onSubmit = (pipeline) => {
         // print the form values to the console
-        console.log(pipeline);
         if( pipeline.id ){
             return this.props.updatePipeline(pipeline,this.props.close);
         } else {
@@ -83,13 +82,6 @@ class PipelineNewOrEdit extends React.Component {
                             type="text"
                             component={renderField}
                             label="Name"
-                        />
-
-                        <Field
-                            name="order"
-                            type="number"
-                            component={renderField}
-                            label="Order"
                         />
 
                         <button className="btn btn-sm btn-primary pull-right"

@@ -47,23 +47,6 @@ const renderField = ({
 );
 
 
-const renderColorPickerList = (props) => (
-        <div className="form-group">
-            <label>{props.label} <span style={{display: 'inline-block', backgroundColor:props.input.value , width: '72px', height: '10px'}}></span></label>
-            <div>
-                <GithubPicker width="100%"
-                              color={props.input.value}
-                              onChange={ (color,event)=> props.input.onChange(color.hex)}/>
-                <span className="help-block m-b-none">{props.meta.touched &&
-                ((props.meta.error && <span>{props.meta.error}</span>) ||
-                    (props.meta.warning && <span>{props.meta.warning}</span>))}
-                </span>
-            </div>
-
-
-        </div>
-    );
-
 class StageNewOrEdit extends React.Component {
 
     constructor(props) {
@@ -77,7 +60,6 @@ class StageNewOrEdit extends React.Component {
         const stageDto = {
             id: values.id,
             name: values.name,
-            color: values.color,
             pipelineId: this.props.pipelineId
         }
         if( stageDto.id ){
@@ -112,12 +94,6 @@ class StageNewOrEdit extends React.Component {
                             type="text"
                             component={renderField}
                             label="Name"
-                        />
-
-                        <Field
-                            name="color"
-                            component={renderColorPickerList}
-                            label="Color"
                         />
 
                         <button className="btn btn-sm btn-primary pull-right"
