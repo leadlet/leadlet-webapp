@@ -7,6 +7,7 @@ import CreateEditDeal from "../DealDetail/CreateEditDeal";
 import Note from "../Note/Note";
 import moment from "moment";
 import * as _ from "lodash";
+import NewEditContact from "./NewEditContact";
 
 class ContactDetail extends Component {
 
@@ -44,8 +45,6 @@ class ContactDetail extends Component {
     closeEditModal() {
         this.setState({isContactModalVisible: false});
     }
-
-
 
     openDealModal() {
         this.setState({isDealModalVisible: true});
@@ -140,7 +139,13 @@ class ContactDetail extends Component {
                                     }
                                 ]}
                             />
-
+                        {
+                            this.state.isContactModalVisible &&
+                            <NewEditContact showEditModal={this.state.isContactModalVisible}
+                                           close={this.closeEditModal}
+                                           initialValues={this.props.viewedContact}
+                            />
+                        }
                         {
                             this.state.isDealModalVisible &&
                             <CreateEditDeal showModal={this.state.isDealModalVisible}
