@@ -26,18 +26,22 @@ function getActivityStatusColor(item) {
 
 const DealCard = (props) => {
     const {style, item} = props;
-
+    const agentFirstName = item.agent.firstName.charAt(0);
+    const agentLastName = item.agent.lastName.charAt(0);
+    let dealProdutsName;
+    item.products.map(x => {
+        if (x.length !== 0) {
+            dealProdutsName = x.name;
+        }
+    });
     const formattedDate = moment(item.createdDate).fromNow();
-
     return (
-
-
         <li style={style} className="info-element" id={style ? item.id : null}>
             <Link style={{ textDecoration: 'inherit', color:'inherit' }} to={"/deal/" + item.id}>
                 <div className="lead-card">
-                    <span className="lead-user">SK</span>
-                    <span className="lead-product">BREAST AUGMENTATION</span>
-                    <span className="lead-name">Emre Anıl Gözel</span>
+                    <span className="lead-user">{agentFirstName + agentLastName}</span>
+                    <span className="lead-product">{dealProdutsName}</span>
+                    <span className="lead-name">{item.person.name}</span>
                     <span className="lead-price">${item.dealValue && item.dealValue.potentialValue}</span>
                     <span className={"lead-status " + getActivityStatusColor(item)}>{item.activityStatus}</span>
                     <span className="lead-time">{formattedDate}</span>
@@ -67,7 +71,5 @@ const DealCard = (props) => {
     );
 };
 
-
 DealCard.propTypes = propTypes;
-
 export default DealCard;
