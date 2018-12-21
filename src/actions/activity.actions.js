@@ -59,11 +59,11 @@ export function getActivities(query="", sort="", page=0, append=false) {
     }
 }
 
-export function getActivitiesByPersonId(id) {
+export function getActivitiesByContactId(id) {
     return dispatch => {
         dispatch(request());
 
-        activityService.getActivitiesByPersonId(id)
+        activityService.getActivitiesByContactId(id)
             .then(
                 items => dispatch(success(items)),
                 error => dispatch(failure(error))

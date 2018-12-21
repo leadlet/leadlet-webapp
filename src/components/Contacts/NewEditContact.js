@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import FormGroup from "react-bootstrap/es/FormGroup";
 import InputGroup from "react-bootstrap/es/InputGroup";
 import FormControl from "react-bootstrap/es/FormControl";
-import {createPerson, updatePerson, getById} from "../../actions/person.actions";
+import {createContact, updateContact, getById} from "../../actions/contact.actions";
 import InputMask from 'react-input-mask';
 import ButtonToolbar from "react-bootstrap/es/ButtonToolbar";
 import ToggleButtonGroup from "react-bootstrap/es/ToggleButtonGroup";
@@ -156,7 +156,7 @@ const renderGenderField = ({
     </div>
 )
 
-class ContactNew extends React.Component {
+class NewEditContact extends React.Component {
 
     constructor(props) {
         super(props);
@@ -167,18 +167,18 @@ class ContactNew extends React.Component {
     onSubmit = (values) => {
 
         if (this.props.initialValues && this.props.initialValues.id) {
-            return this.props.updatePerson(values, () => {
+            return this.props.updateContact(values, () => {
                 this.props.getById(this.props.initialValues.id);
                 this.onClose();
             });
         } else {
-            return this.props.createPerson(values, () => this.onClose());
+            return this.props.createContact(values, () => this.onClose());
         }
     }
 
     onClose() {
         this.props.close();
-        this.props.dispatch(reset('personForm'));
+        this.props.dispatch(reset('contactForm'));
     }
 
     render() {
@@ -192,7 +192,7 @@ class ContactNew extends React.Component {
         return (
             <Modal show={this.props.showEditModal} onHide={this.onClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>{title} New Person</Modal.Title>
+                    <Modal.Title>{title} New Contact</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <form onSubmit={handleSubmit(this.onSubmit)}>
@@ -257,9 +257,9 @@ function mapStateToProps(state) {
 }
 
 export default reduxForm({
-    form: 'personForm', // a unique identifier for this form
+    form: 'contactForm', // a unique identifier for this form
     validate, // <--- validation function given to redux-form
     warn // <--- warning function given to redux-form
 })(
-    connect(mapStateToProps, {updatePerson, createPerson, getById})(ContactNew)
+    connect(mapStateToProps, {updateContact, createContact, getById})(NewEditContact)
 );

@@ -41,7 +41,7 @@ const DealCard = (props) => {
                 <div className="lead-card">
                     <span className="lead-user">{agentFirstName + agentLastName}</span>
                     <span className="lead-product">{dealProdutsName}</span>
-                    <span className="lead-name">{item.person.name}</span>
+                    <span className="lead-name">{item.contact.name}</span>
                     <span className="lead-price">${item.dealValue && item.dealValue.potentialValue}</span>
                     <span className={"lead-status " + getActivityStatusColor(item)}>{item.activityStatus}</span>
                     <span className="lead-time">{formattedDate}</span>
