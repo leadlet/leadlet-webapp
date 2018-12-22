@@ -52,7 +52,8 @@
     "redux-form": "^7.1.1",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
-    "sweetalert-react": "^0.4.11"
+    "sweetalert-react": "^0.4.11",
+    "@fortawesome/fontawesome-free": "^5.5.0"
   },
   "scripts": {
     "build-css": "node-sass-chokidar src/ -o src/",
@@ -62,8 +63,5 @@
     "build": "npm run build-css && react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
-  },
-  "devDependencies": {
-    "@fortawesome/fontawesome-free": "^5.5.0"
   }
 }
