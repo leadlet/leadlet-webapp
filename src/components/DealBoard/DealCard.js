@@ -44,8 +44,8 @@ const DealCard = (props) => {
                     <span className="lead-phone">{dealPhoneNumber}</span>
                     <span className={"lead-status " + getActivityStatusColor(item)}>{item.activityStatus}</span>
                     <div className="lead-icon">
-                        <span><i className="fa fa-pencil" aria-hidden="true"></i></span>
-                        <span><i className="fa fa-pencil" aria-hidden="true"></i></span>
+                        <span></span>
+                        <span></span>
                         <span><i className="fa fa-pencil" aria-hidden="true"></i></span>
                     </div>
                     <div className="lead-channel">
