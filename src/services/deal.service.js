@@ -24,10 +24,10 @@ function create(stage) {
     return fetch('/api/deals/', requestOptions).then(handleResponse);
 }
 
-function update(stage) {
+function update(stage, modifiedFileds) {
     const requestOptions = {
         method: 'PUT',
-        headers: {...authHeader(), 'Content-Type': 'application/json'},
+        headers: {...authHeader(), 'Content-Type': 'application/json', 'modified-fields': modifiedFileds},
         body: JSON.stringify(stage)
     };
 
