@@ -77,7 +77,7 @@ class Activities extends Component {
                                 this.openActivityModal(activity)
                             }}>{activity.title}</a></td>
                             <td>{_.get(activity, ["contact", "name"])}</td>
-                            <td>{activity.type}</td>
+                            <td>{activity.type.name}</td>
                             <td>{activity.done ? "Done" : "Not Done"}</td>
                             <td>{startDate.format('DD/MM/YYYY')}</td>
                         </tr>

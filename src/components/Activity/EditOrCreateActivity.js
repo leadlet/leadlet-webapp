@@ -48,11 +48,11 @@ const validate = values => {
 const renderTypeField = (props) => (
     <div className="form-group">
         <ButtonToolbar>
-            <ToggleButtonGroup {...props.input} type="radio" value={props.input.value}>
-                {props.loadOptions.ids.map(id => {
+            <ToggleButtonGroup {...props.input} type="radio">
+                {props.loadOptions.ids && props.loadOptions.ids.map(id => {
                     let item = props.loadOptions.items[id];
                     return (
-                        <ToggleButton value={item.name}>{item.name} <i className={item.icon}/></ToggleButton>
+                        <ToggleButton key={item.id} value={item.id}>{item.name} <i className={item.icon}/></ToggleButton>
                     );
                 })}
             </ToggleButtonGroup>
@@ -79,8 +79,7 @@ class EditOrCreateActivity extends Component {
 
         this.state = {
             showDeleteDialog: false,
-            activityStatus: true,
-            activityType: null
+            activityStatus: true
         };
     }
 
@@ -166,20 +165,16 @@ class EditOrCreateActivity extends Component {
                                 component={renderTypeField}
                                 label="Activity Type"
                                 loadOptions={this.props.activityTypes}
-                                parse={(value, name) => {
+                                parse={(value) => {
                                     if (value) {
                                         return {
-                                            'id': value.value,
-                                            'title': value.label
+                                            'id': parseInt(value)
                                         };
                                     }
                                 }}
-                                format={(value, name) => {
+                                format={(value) => {
                                     if (value) {
-                                        return {
-                                            'value': value.id,
-                                            'label': value.title
-                                        }
+                                        return parseInt(value.id);
                                     }
 
                                 }}
