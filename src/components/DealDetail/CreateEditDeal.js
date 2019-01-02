@@ -110,7 +110,7 @@ class CreateEditDeal extends Component {
     }
 
     render() {
-        const {handleSubmit, pristine, submitting, valid, warn} = this.props;
+        const {handleSubmit, pristine, submitting, valid} = this.props;
 
         return (
             <Modal show={this.props.showModal} onHide={this.onClose}>

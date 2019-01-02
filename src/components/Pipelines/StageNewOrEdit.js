@@ -2,7 +2,6 @@ import React from 'react';
 import Modal from '../../modal-shim';
 import {Field, reduxForm, reset} from 'redux-form'
 import { connect } from 'react-redux';
-import {GithubPicker} from "react-color";
 import {createStage, updateStage} from "../../actions/stage.actions";
 
 const validate = values => {

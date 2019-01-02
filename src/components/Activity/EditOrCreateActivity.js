@@ -7,8 +7,6 @@ import {ButtonToolbar} from "react-bootstrap";
 import SweetAlert from 'sweetalert-react';
 import ToggleButtonGroup from "react-bootstrap/es/ToggleButtonGroup";
 import ToggleButton from "react-bootstrap/es/ToggleButton";
-import DropdownButton from "react-bootstrap/es/DropdownButton";
-import MenuItem from "react-bootstrap/es/MenuItem";
 import formValueSelector from "redux-form/es/formValueSelector";
 import renderDateTimePicker from "../../formUtils/renderDateTimePicker";
 import renderInputField from "../../formUtils/renderInputField";
@@ -16,6 +14,7 @@ import renderAsyncSelectField from "../../formUtils/renderAsyncSelectField";
 import {loadDeal, loadUser} from "../../formUtils/form.actions";
 import renderTextAreaField from "../../formUtils/renderTextAreaField";
 import moment from 'moment';
+import {getAllActivityTypes} from "../../actions/activityType.actions";
 
 
 const validate = values => {
@@ -46,23 +45,21 @@ const validate = values => {
     return errors
 };
 
-const renderTypeField = ({
-                             input,
-                             meta: {touched, error}
-                         }) => (
+const renderTypeField = (props) => (
     <div className="form-group">
         <ButtonToolbar>
-            <ToggleButtonGroup {...input} type="radio" value={input.value}>
-                <ToggleButton value="CALL">CALL <i className="fa fa-phone"/></ToggleButton>
-                <ToggleButton value="MEETING">MEETING <i className="fa fa-users"/></ToggleButton>
-                <ToggleButton value="TASK">TASK <i className="fa fa-clock-o"/></ToggleButton>
-                <ToggleButton value="DEADLINE">DEADLINE <i className="fa fa-flag"/></ToggleButton>
-                <ToggleButton value="EMAIL">EMAIL <i className="fa fa-paper-plane"/></ToggleButton>
+            <ToggleButtonGroup {...props.input} type="radio" value={props.input.value}>
+                {props.loadOptions.ids.map(id => {
+                    let item = props.loadOptions.items[id];
+                    return (
+                        <ToggleButton value={item.name}>{item.name} <i className={item.icon}/></ToggleButton>
+                    );
+                })}
             </ToggleButtonGroup>
         </ButtonToolbar>
 
-        <span className="help-block m-b-none">{touched &&
-        ((error && <span>{error}</span>))}
+        <span className="help-block m-b-none">{props.meta.touched &&
+        ((props.meta.error && <span>{props.meta.error}</span>))}
         </span>
     </div>
 )
@@ -82,11 +79,12 @@ class EditOrCreateActivity extends Component {
 
         this.state = {
             showDeleteDialog: false,
-            activityStatus: true
+            activityStatus: true,
+            activityType: null
         };
     }
 
-    closeActivity(){
+    closeActivity() {
         this.setState({activityStatus: false});
     }
 
@@ -105,24 +103,28 @@ class EditOrCreateActivity extends Component {
         this.setState({showDeleteDialog: true});
     }
 
+    componentDidMount() {
+        this.props.getAllActivityTypes();
+    }
+
     onSubmit = (formValues) => {
 
         let activity = {
             ...formValues,
-            id : formValues.id,
-            start : formValues.start,
-            end : formValues.end,
-            memo : formValues.memo,
-            type : formValues.type,
-            title : formValues.title,
-            contact : formValues.contact,
-            agent : formValues.agent,
-            deal : formValues.deal,
+            id: formValues.id,
+            start: formValues.start,
+            end: formValues.end,
+            memo: formValues.memo,
+            type: formValues.type,
+            title: formValues.title,
+            contact: formValues.contact,
+            agent: formValues.agent,
+            deal: formValues.deal,
 //            location : formValues.location,
-            done : formValues.done,
+            done: formValues.done,
         };
 
-        if(this.state.activityStatus === false){
+        if (this.state.activityStatus === false) {
             activity.isClosed = true;
         }
 
@@ -156,13 +158,31 @@ class EditOrCreateActivity extends Component {
                     <Modal.Title>{title} Activity</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <form >
+                    <form>
                         <fieldset disabled={this.props.initialValues && this.props.initialValues.done}>
                             {this.props.initialValues && this.props.initialValues.done && <p> Activity is done! </p>}
                             <Field
                                 name="type"
                                 component={renderTypeField}
                                 label="Activity Type"
+                                loadOptions={this.props.activityTypes}
+                                parse={(value, name) => {
+                                    if (value) {
+                                        return {
+                                            'id': value.value,
+                                            'title': value.label
+                                        };
+                                    }
+                                }}
+                                format={(value, name) => {
+                                    if (value) {
+                                        return {
+                                            'value': value.id,
+                                            'label': value.title
+                                        }
+                                    }
+
+                                }}
                             />
                             <Field
                                 name="title"
@@ -250,13 +270,13 @@ class EditOrCreateActivity extends Component {
                             />
                             }
 
-                            { this.props.initialValues && this.props.initialValues.id &&
-                                <Field
-                                    name="done"
-                                    component={renderInputField}
-                                    label="Done"
-                                    type="checkbox"
-                                />
+                            {this.props.initialValues && this.props.initialValues.id &&
+                            <Field
+                                name="done"
+                                component={renderInputField}
+                                label="Done"
+                                type="checkbox"
+                            />
                             }
                         </fieldset>
 
@@ -310,7 +330,8 @@ function mapStateToProps(state) {
         start: selector(state, 'start'),
         end: selector(state, 'end'),
         contact: selector(state, 'contact'),
-        location: selector(state, 'location')
+        location: selector(state, 'location'),
+        activityTypes: state.activityTypes
     };
 }
 
@@ -322,6 +343,7 @@ export default reduxForm({
     connect(mapStateToProps, {
         create,
         update,
-        _delete
+        _delete,
+        getAllActivityTypes
     })(EditOrCreateActivity)
 );

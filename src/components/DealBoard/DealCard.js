@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Link from "react-router-dom/es/Link";
 import moment from 'moment';
-import * as _ from "lodash";
 
 const propTypes = {
     item: PropTypes.object.isRequired,
