@@ -11,6 +11,7 @@ import formValueSelector from "redux-form/es/formValueSelector";
 import renderDateTimePicker from "../../formUtils/renderDateTimePicker";
 import renderInputField from "../../formUtils/renderInputField";
 import renderAsyncSelectField from "../../formUtils/renderAsyncSelectField";
+import renderInputFieldRow from "../../formUtils/renderInputFieldRow";
 import {loadDeal, loadUser} from "../../formUtils/form.actions";
 import renderTextAreaField from "../../formUtils/renderTextAreaField";
 import moment from 'moment';
@@ -29,7 +30,7 @@ const validate = values => {
 
     /* activity type */
     if (!values.type) {
-        errors.title = "Please select a type"
+        errors.type = "Please select a type"
     }
 
     /* start date */
@@ -52,15 +53,15 @@ const renderTypeField = (props) => (
                 {props.loadOptions.ids && props.loadOptions.ids.map(id => {
                     let item = props.loadOptions.items[id];
                     return (
-                        <ToggleButton key={item.id} value={item.id}>{item.name} <i className={item.icon}/></ToggleButton>
+                        <ToggleButton key={item.id} value={item.id}>{item.name} <i
+                            className={item.icon}/></ToggleButton>
                     );
                 })}
             </ToggleButtonGroup>
         </ButtonToolbar>
-
-        <span className="help-block m-b-none">{props.meta.touched &&
-        ((props.meta.error && <span>{props.meta.error}</span>))}
-        </span>
+        <span style={{color: "red"}} className="help-block m-b-none">
+                    {props.meta.error && <span>{props.meta.error}</span>}
+                </span>
     </div>
 )
 
@@ -268,7 +269,7 @@ class EditOrCreateActivity extends Component {
                             {this.props.initialValues && this.props.initialValues.id &&
                             <Field
                                 name="done"
-                                component={renderInputField}
+                                component={renderInputFieldRow}
                                 label="Done"
                                 type="checkbox"
                             />

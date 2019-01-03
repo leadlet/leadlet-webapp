@@ -56,7 +56,7 @@ let hours = [
     {value: '23:30', label: '23:30'}
 ];
 
-const TIME_FORMAT= "YYYY-MM-DDTHH:mm:ss[Z]";
+const TIME_FORMAT = "YYYY-MM-DDTHH:mm:ss[Z]";
 
 class renderDateTimePicker extends React.Component {
 
@@ -81,40 +81,40 @@ class renderDateTimePicker extends React.Component {
 
         const newTime = moment(timeStr, 'HH:mm');
         // TODO kancere anlat
-        let newDateTime = this.props.input.value? this.props.input.value.clone()
-                                : moment();
+        let newDateTime = this.props.input.value ? this.props.input.value.clone()
+            : moment();
         newDateTime.set('hour', newTime.hour());
         newDateTime.set('minute', newTime.minute());
         this.props.input.onChange(newDateTime);
     }
 
-    isOutRange(calendarDate){
+    isOutRange(calendarDate) {
         let isLessThenMinimumDate = false;
 
-        if(this.props.minimumDate){
-            isLessThenMinimumDate = calendarDate.isBefore(this.props.minimumDate,'day');
+        if (this.props.minimumDate) {
+            isLessThenMinimumDate = calendarDate.isBefore(this.props.minimumDate, 'day');
         }
 
         let isMoreThenMaximumDate = true;
-        if(this.props.maximumDate){
+        if (this.props.maximumDate) {
             isMoreThenMaximumDate = calendarDate.isAfter(this.props.maximumDate);
         }
 
         return isLessThenMinimumDate && isMoreThenMaximumDate;
     }
 
-    filterOptions(hours){
+    filterOptions(hours) {
         let threshold = "";
         var filteredHours = JSON.parse(JSON.stringify(hours))
 
-        if( this.props.minimumDate ){
-            if( this.props.minimumDate.isSame(this.props.input.value, 'day') ){
+        if (this.props.minimumDate) {
+            if (this.props.minimumDate.isSame(this.props.input.value, 'day')) {
                 // same day, we should filter some hours
                 threshold = this.props.minimumDate.format('HH:mm');
                 filteredHours = filteredHours.map((hour) => {
-                    if( hour.value <= threshold ){
+                    if (hour.value <= threshold) {
                         hour.disabled = true;
-                    }else{
+                    } else {
                         delete hour.disabled;
                     }
                     return hour;
@@ -122,14 +122,14 @@ class renderDateTimePicker extends React.Component {
             }
         }
 
-        if( this.props.maximumDate ){
-            if( this.props.maximumDate.isSame(this.props.input.value, 'day') ){
+        if (this.props.maximumDate) {
+            if (this.props.maximumDate.isSame(this.props.input.value, 'day')) {
                 // same day, we should filter some hours
                 threshold = this.props.maximumDate.format('HH:mm');
                 filteredHours = filteredHours.map((hour) => {
-                    if( hour.value >= threshold ){
+                    if (hour.value >= threshold) {
                         hour.disabled = true;
-                    }else{
+                    } else {
                         delete hour.disabled;
                     }
                     return hour;
@@ -138,6 +138,7 @@ class renderDateTimePicker extends React.Component {
         }
         return filteredHours;
     }
+
     render() {
         const {
             input, label,
@@ -146,10 +147,12 @@ class renderDateTimePicker extends React.Component {
 
         return (
             <div>
-                <label  className="col-sm-2 control-label">{label}</label>
+                <label className="col-sm-2 control-label">{label}</label>
                 <div className="col-sm-6">
                     <SingleDatePicker
-                        isDayHighlighted={date => {return moment().isSame(date, 'day')}}
+                        isDayHighlighted={date => {
+                            return moment().isSame(date, 'day')
+                        }}
                         numberOfMonths={1}
                         small={true}
                         block={true}
@@ -157,7 +160,7 @@ class renderDateTimePicker extends React.Component {
                         onDateChange={this.handleDateChange} // PropTypes.func.isRequired
                         focused={this.state.focused} // PropTypes.bool
                         onFocusChange={({focused}) => this.setState({focused})} // PropTypes.func.isRequired
-                        isOutsideRange={ this.isOutRange }
+                        isOutsideRange={this.isOutRange}
                     />
                 </div>
 
@@ -176,7 +179,7 @@ class renderDateTimePicker extends React.Component {
                     />
                 </div>
 
-                <span className="help-block m-b-none">
+                <span style={{color: "red"}} className="help-block m-b-none">
                     {this.props.meta.error && <span>{this.props.meta.error}</span>}
                 </span>
             </div>
