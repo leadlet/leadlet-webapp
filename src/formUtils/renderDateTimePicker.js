@@ -180,7 +180,7 @@ class renderDateTimePicker extends React.Component {
                 </div>
 
                 <span style={{color: "red"}} className="help-block m-b-none">
-                    {this.props.meta.error && <span>{this.props.meta.error}</span>}
+                    {this.props.meta.error && <span className="date-error-area">{this.props.meta.error}</span>}
                 </span>
             </div>
         )
