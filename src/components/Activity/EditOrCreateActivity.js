@@ -16,35 +16,9 @@ import {loadDeal, loadUser} from "../../formUtils/form.actions";
 import renderTextAreaField from "../../formUtils/renderTextAreaField";
 import moment from 'moment';
 import {getAllActivityTypes} from "../../actions/activityType.actions";
+import {required} from "../../formValidations/form.validations";
+import {maxLength64} from "../../formValidations/form.validations";
 
-
-const validate = values => {
-    const errors = {}
-
-    /*  title validation */
-    if (!values.title) {
-        errors.title = 'Please write a title'
-    } else if (values.title.length >= 64) {
-        errors.title = 'Must be 64 characters or less!'
-    }
-
-    /* activity type */
-    if (!values.type) {
-        errors.type = "Please select a type"
-    }
-
-    /* start date */
-    if (!values.start) {
-        errors.start = "Please select a start date"
-    }
-
-    /* end date */
-    if (!values.end) {
-        errors.end = "Please select an end date"
-    }
-
-    return errors
-};
 
 const renderTypeField = (props) => (
     <div className="form-group">
@@ -179,12 +153,14 @@ class EditOrCreateActivity extends Component {
                                     }
 
                                 }}
+                                validate={[required]}
                             />
                             <Field
                                 name="title"
                                 type="text"
                                 component={renderInputField}
                                 label="Title"
+                                validate={[required, maxLength64]}
                             />
 
                             <Field
@@ -200,6 +176,7 @@ class EditOrCreateActivity extends Component {
                                         name="start"
                                         maximumDate={moment(this.props.end)}
                                         component={renderDateTimePicker}
+                                        validate={[required]}
                                     />
                                 </div>
                                 <div className="form-group">
@@ -208,6 +185,7 @@ class EditOrCreateActivity extends Component {
                                         name="end"
                                         minimumDate={moment(this.props.start)}
                                         component={renderDateTimePicker}
+                                        validate={[required]}
                                     />
                                 </div>
                             </div>
@@ -333,7 +311,6 @@ function mapStateToProps(state) {
 
 export default reduxForm({
     form: 'createEditActivityForm',
-    validate,
     enableReinitialize: true
 })(
     connect(mapStateToProps, {
