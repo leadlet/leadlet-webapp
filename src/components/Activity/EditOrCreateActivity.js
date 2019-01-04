@@ -12,7 +12,7 @@ import renderDateTimePicker from "../../formUtils/renderDateTimePicker";
 import renderInputField from "../../formUtils/renderInputField";
 import renderAsyncSelectField from "../../formUtils/renderAsyncSelectField";
 import renderInputFieldRow from "../../formUtils/renderInputFieldRow";
-import {loadDeal, loadUser} from "../../formUtils/form.actions";
+import {loadDeal, loadUser, loadContact} from "../../formUtils/form.actions";
 import renderTextAreaField from "../../formUtils/renderTextAreaField";
 import moment from 'moment';
 import {getAllActivityTypes} from "../../actions/activityType.actions";
@@ -224,7 +224,7 @@ class EditOrCreateActivity extends Component {
                                 placeholder="Select deal agent"
                                 component={renderAsyncSelectField}
                                 loadOptions={loadUser}
-                                parse={(value, name) => {
+                                parse={(value) => {
                                     if (value) {
                                         return {
                                             'id': value.value,
@@ -232,11 +232,38 @@ class EditOrCreateActivity extends Component {
                                         };
                                     }
                                 }}
-                                format={(value, name) => {
+                                format={(value) => {
                                     if (value) {
                                         return {
                                             'value': value.id,
                                             'label': value.firstName
+                                        }
+                                    }
+
+                                }}
+                            />
+                            }
+
+                            {this.props.showContactSelection &&
+                            <Field
+                                name="contact"
+                                label="Contact"
+                                placeholder="Select deal contact"
+                                component={renderAsyncSelectField}
+                                loadOptions={loadContact}
+                                parse={(value) => {
+                                    if (value) {
+                                        return {
+                                            'id': value.value,
+                                            'name': value.label,
+                                        };
+                                    }
+                                }}
+                                format={(value) => {
+                                    if (value) {
+                                        return {
+                                            'value': value.id,
+                                            'label': value.name
                                         }
                                     }
 
@@ -292,7 +319,8 @@ class EditOrCreateActivity extends Component {
 EditOrCreateActivity.defaultProps = {
     showContactSelection: true,
     showDealSelection: true,
-    showUserSelection: true
+    showUserSelection: true,
+    showContactSelection: true
 }
 
 
@@ -300,7 +328,6 @@ const selector = formValueSelector('createEditActivityForm');
 
 function mapStateToProps(state) {
     return {
-        contacts: state.contacts,
         start: selector(state, 'start'),
         end: selector(state, 'end'),
         contact: selector(state, 'contact'),
