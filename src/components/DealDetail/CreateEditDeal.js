@@ -12,17 +12,11 @@ import renderDatePicker from "../../formUtils/renderDatePicker";
 import {loadUser, loadProduct, loadSource, loadChannel, loadContact} from "../../formUtils/form.actions";
 import renderPipelineAndStageFields from "../../formUtils/renderPipelineAndStageFields";
 import * as _ from "lodash";
-
+import {required} from "../../formValidations/form.validations";
+import {maxLength64} from "../../formValidations/form.validations";
 
 const validate = values => {
     const errors = {};
-
-    /*  title validation */
-    if (!values.title) {
-        errors.title = 'Please write a title'
-    } else if (values.title.length >= 64) {
-        errors.title = 'Must be 64 characters or less!'
-    }
 
     /* activity type */
     if (!values.stage) {
@@ -110,7 +104,7 @@ class CreateEditDeal extends Component {
     }
 
     render() {
-        const {handleSubmit, pristine, submitting, valid, warn} = this.props;
+        const {handleSubmit, pristine, submitting, valid} = this.props;
 
         return (
             <Modal show={this.props.showModal} onHide={this.onClose}>
@@ -124,6 +118,7 @@ class CreateEditDeal extends Component {
                             type="text"
                             component={renderInputField}
                             label="Title"
+                            validate={[required, maxLength64]}
                         />
                         <Fields
                             label="Potential Value"
@@ -136,7 +131,7 @@ class CreateEditDeal extends Component {
                             component={renderPipelineAndStageFields}
                             showPipelineSelection={this.props.showPipelineSelection}
                             showStageSelection={this.props.showStageSelection}
-                            parse={(value, name) => {
+                            parse={(value,) => {
                                 if (value) {
                                     return {
                                         'id': value.value,
@@ -144,7 +139,7 @@ class CreateEditDeal extends Component {
                                     };
                                 }
                             }}
-                            format={(value, name) => {
+                            format={(value) => {
                                 if (value) {
                                     return {
                                         'value': value.id,

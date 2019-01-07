@@ -26,8 +26,8 @@ function getActivityStatusColor(item) {
 
 const DealCard = (props) => {
     const {style, item} = props;
-    const agentFirstName = item.agent.firstName.charAt(0);
-    const agentLastName = item.agent.lastName.charAt(0);
+    const agentFirstName = item.agent && item.agent.firstName.charAt(0);
+    const agentLastName = item.agent && item.agent.lastName.charAt(0);
     const dealChannelName = item.dealChannel ? item.dealChannel.name.slice(0, 12) : 'Not Found';
     const dealSourceName = item.dealSource ? item.dealSource.name.slice(0, 8) : 'Not Found';
     const dealPhoneNumber = item.contact.phone ? item.contact.phone : 'Not Number';
@@ -40,7 +40,7 @@ const DealCard = (props) => {
                 <div className="lead-card">
                     <span className="lead-photo"><img src="https://media.nngroup.com/media/people/photos/Kim-Flaherty-Headshot.png.400x400_q95_autocrop_crop_upscale.png" /></span>
                     <span className="lead-product">{dealProdutsName}</span>
-                    <span className="lead-name">{item.contact.name}</span>
+                    <span className="lead-name">{item.contact && item.contact.name}</span>
                     <span className="lead-phone">{dealPhoneNumber}</span>
                     <span className={"lead-status " + getActivityStatusColor(item)}>{item.activityStatus}</span>
                     <div className="lead-icon">

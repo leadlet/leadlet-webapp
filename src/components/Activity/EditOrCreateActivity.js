@@ -7,63 +7,35 @@ import {ButtonToolbar} from "react-bootstrap";
 import SweetAlert from 'sweetalert-react';
 import ToggleButtonGroup from "react-bootstrap/es/ToggleButtonGroup";
 import ToggleButton from "react-bootstrap/es/ToggleButton";
-import DropdownButton from "react-bootstrap/es/DropdownButton";
-import MenuItem from "react-bootstrap/es/MenuItem";
 import formValueSelector from "redux-form/es/formValueSelector";
 import renderDateTimePicker from "../../formUtils/renderDateTimePicker";
 import renderInputField from "../../formUtils/renderInputField";
 import renderAsyncSelectField from "../../formUtils/renderAsyncSelectField";
-import {loadDeal, loadUser} from "../../formUtils/form.actions";
+import renderInputFieldRow from "../../formUtils/renderInputFieldRow";
+import {loadDeal, loadUser, loadContact} from "../../formUtils/form.actions";
 import renderTextAreaField from "../../formUtils/renderTextAreaField";
 import moment from 'moment';
+import {getAllActivityTypes} from "../../actions/activityType.actions";
+import {required} from "../../formValidations/form.validations";
+import {maxLength64} from "../../formValidations/form.validations";
 
 
-const validate = values => {
-    const errors = {}
-
-    /*  title validation */
-    if (!values.title) {
-        errors.title = 'Please write a title'
-    } else if (values.title.length >= 64) {
-        errors.title = 'Must be 64 characters or less!'
-    }
-
-    /* activity type */
-    if (!values.type) {
-        errors.title = "Please select a type"
-    }
-
-    /* start date */
-    if (!values.start) {
-        errors.start = "Please select a start date"
-    }
-
-    /* end date */
-    if (!values.end) {
-        errors.end = "Please select an end date"
-    }
-
-    return errors
-};
-
-const renderTypeField = ({
-                             input,
-                             meta: {touched, error}
-                         }) => (
+const renderTypeField = (props) => (
     <div className="form-group">
         <ButtonToolbar>
-            <ToggleButtonGroup {...input} type="radio" value={input.value}>
-                <ToggleButton value="CALL">CALL <i className="fa fa-phone"/></ToggleButton>
-                <ToggleButton value="MEETING">MEETING <i className="fa fa-users"/></ToggleButton>
-                <ToggleButton value="TASK">TASK <i className="fa fa-clock-o"/></ToggleButton>
-                <ToggleButton value="DEADLINE">DEADLINE <i className="fa fa-flag"/></ToggleButton>
-                <ToggleButton value="EMAIL">EMAIL <i className="fa fa-paper-plane"/></ToggleButton>
+            <ToggleButtonGroup {...props.input} type="radio">
+                {props.loadOptions.ids && props.loadOptions.ids.map(id => {
+                    let item = props.loadOptions.items[id];
+                    return (
+                        <ToggleButton key={item.id} value={item.id}>{item.name} <i
+                            className={item.icon}/></ToggleButton>
+                    );
+                })}
             </ToggleButtonGroup>
         </ButtonToolbar>
-
-        <span className="help-block m-b-none">{touched &&
-        ((error && <span>{error}</span>))}
-        </span>
+        <span style={{color: "red"}} className="help-block m-b-none">
+                    {props.meta.error && <span>{props.meta.error}</span>}
+                </span>
     </div>
 )
 
@@ -86,7 +58,7 @@ class EditOrCreateActivity extends Component {
         };
     }
 
-    closeActivity(){
+    closeActivity() {
         this.setState({activityStatus: false});
     }
 
@@ -105,24 +77,28 @@ class EditOrCreateActivity extends Component {
         this.setState({showDeleteDialog: true});
     }
 
+    componentDidMount() {
+        this.props.getAllActivityTypes();
+    }
+
     onSubmit = (formValues) => {
 
         let activity = {
             ...formValues,
-            id : formValues.id,
-            start : formValues.start,
-            end : formValues.end,
-            memo : formValues.memo,
-            type : formValues.type,
-            title : formValues.title,
-            contact : formValues.contact,
-            agent : formValues.agent,
-            deal : formValues.deal,
+            id: formValues.id,
+            start: formValues.start,
+            end: formValues.end,
+            memo: formValues.memo,
+            type: formValues.type,
+            title: formValues.title,
+            contact: formValues.contact,
+            agent: formValues.agent,
+            deal: formValues.deal,
 //            location : formValues.location,
-            done : formValues.done,
+            done: formValues.done,
         };
 
-        if(this.state.activityStatus === false){
+        if (this.state.activityStatus === false) {
             activity.isClosed = true;
         }
 
@@ -156,19 +132,35 @@ class EditOrCreateActivity extends Component {
                     <Modal.Title>{title} Activity</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <form >
+                    <form>
                         <fieldset disabled={this.props.initialValues && this.props.initialValues.done}>
                             {this.props.initialValues && this.props.initialValues.done && <p> Activity is done! </p>}
                             <Field
                                 name="type"
                                 component={renderTypeField}
                                 label="Activity Type"
+                                loadOptions={this.props.activityTypes}
+                                parse={(value) => {
+                                    if (value) {
+                                        return {
+                                            'id': parseInt(value)
+                                        };
+                                    }
+                                }}
+                                format={(value) => {
+                                    if (value) {
+                                        return parseInt(value.id);
+                                    }
+
+                                }}
+                                validate={[required]}
                             />
                             <Field
                                 name="title"
                                 type="text"
                                 component={renderInputField}
                                 label="Title"
+                                validate={[required, maxLength64]}
                             />
 
                             <Field
@@ -184,6 +176,7 @@ class EditOrCreateActivity extends Component {
                                         name="start"
                                         maximumDate={moment(this.props.end)}
                                         component={renderDateTimePicker}
+                                        validate={[required]}
                                     />
                                 </div>
                                 <div className="form-group">
@@ -192,6 +185,7 @@ class EditOrCreateActivity extends Component {
                                         name="end"
                                         minimumDate={moment(this.props.start)}
                                         component={renderDateTimePicker}
+                                        validate={[required]}
                                     />
                                 </div>
                             </div>
@@ -230,7 +224,7 @@ class EditOrCreateActivity extends Component {
                                 placeholder="Select deal agent"
                                 component={renderAsyncSelectField}
                                 loadOptions={loadUser}
-                                parse={(value, name) => {
+                                parse={(value) => {
                                     if (value) {
                                         return {
                                             'id': value.value,
@@ -238,7 +232,7 @@ class EditOrCreateActivity extends Component {
                                         };
                                     }
                                 }}
-                                format={(value, name) => {
+                                format={(value) => {
                                     if (value) {
                                         return {
                                             'value': value.id,
@@ -250,13 +244,40 @@ class EditOrCreateActivity extends Component {
                             />
                             }
 
-                            { this.props.initialValues && this.props.initialValues.id &&
-                                <Field
-                                    name="done"
-                                    component={renderInputField}
-                                    label="Done"
-                                    type="checkbox"
-                                />
+                            {this.props.showContactSelection &&
+                            <Field
+                                name="contact"
+                                label="Contact"
+                                placeholder="Select deal contact"
+                                component={renderAsyncSelectField}
+                                loadOptions={loadContact}
+                                parse={(value) => {
+                                    if (value) {
+                                        return {
+                                            'id': value.value,
+                                            'name': value.label,
+                                        };
+                                    }
+                                }}
+                                format={(value) => {
+                                    if (value) {
+                                        return {
+                                            'value': value.id,
+                                            'label': value.name
+                                        }
+                                    }
+
+                                }}
+                            />
+                            }
+
+                            {this.props.initialValues && this.props.initialValues.id &&
+                            <Field
+                                name="done"
+                                component={renderInputFieldRow}
+                                label="Done"
+                                type="checkbox"
+                            />
                             }
                         </fieldset>
 
@@ -298,7 +319,8 @@ class EditOrCreateActivity extends Component {
 EditOrCreateActivity.defaultProps = {
     showContactSelection: true,
     showDealSelection: true,
-    showUserSelection: true
+    showUserSelection: true,
+    showContactSelection: true
 }
 
 
@@ -306,22 +328,22 @@ const selector = formValueSelector('createEditActivityForm');
 
 function mapStateToProps(state) {
     return {
-        contacts: state.contacts,
         start: selector(state, 'start'),
         end: selector(state, 'end'),
         contact: selector(state, 'contact'),
-        location: selector(state, 'location')
+        location: selector(state, 'location'),
+        activityTypes: state.activityTypes
     };
 }
 
 export default reduxForm({
     form: 'createEditActivityForm',
-    validate,
     enableReinitialize: true
 })(
     connect(mapStateToProps, {
         create,
         update,
-        _delete
+        _delete,
+        getAllActivityTypes
     })(EditOrCreateActivity)
 );

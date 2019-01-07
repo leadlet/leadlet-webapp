@@ -33,6 +33,7 @@ class Activities extends Component {
         this.getQuery = this.getQuery.bind(this);
         this.getSort = this.getSort.bind(this);
     }
+
     getSort(props = this.props) {
         return QueryUtils.getSort(props.sortStore, {group: "activities-page"})
     }
@@ -51,8 +52,8 @@ class Activities extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if( (this.getQuery() !== this.getQuery(prevProps))
-            || (this.getSort() !== this.getSort(prevProps))){
+        if ((this.getQuery() !== this.getQuery(prevProps))
+            || (this.getSort() !== this.getSort(prevProps))) {
             this.setState({currentPage: 0},
                 () => this.props.getActivities(this.getQuery(), this.getSort(),
                     this.state.currentPage,
@@ -61,20 +62,23 @@ class Activities extends Component {
     }
 
     renderActivityRows() {
-        if( _.has(this, ["props", "activityStore", "ids"])){
+        if (_.has(this, ["props", "activityStore", "ids"])) {
 
             return this.props.activityStore.ids.map(activityId => {
                     let activity = this.props.activityStore.items[activityId];
-                    if( activity === undefined ){
+                    if (activity === undefined) {
                         debugger;
                     }
                     const startDate = moment(activity.start);
                     return (
                         <tr key={activity.id}>
-                            <td><a onClick={(e) => { e.preventDefault(); this.openActivityModal(activity)}} >{activity.title}</a></td>
-                            <td>{_.get(activity, ["contact","name"])}</td>
-                            <td>{activity.type}</td>
-                            <td>{ activity.done ? "Done" : "Not Done"}</td>
+                            <td><a onClick={(e) => {
+                                e.preventDefault();
+                                this.openActivityModal(activity)
+                            }}>{activity.title}</a></td>
+                            <td>{_.get(activity, ["contact", "name"])}</td>
+                            <td>{activity.type.name}</td>
+                            <td>{activity.done ? "Done" : "Not Done"}</td>
                             <td>{startDate.format('DD/MM/YYYY')}</td>
                         </tr>
                     );
@@ -87,10 +91,11 @@ class Activities extends Component {
         return (
             <div className="wrapper activities">
                 <div className="row activities-toolbar">
-                        <SelectedFilters
-                            group="activities-page"
-                            index="leadlet-activity"/>
-                        <Button bsStyle="primary" bsSize="small" className="m-l-sm" onClick={this.openActivityModal}>New Activity</Button>
+                    <SelectedFilters
+                        group="activities-page"
+                        index="leadlet-activity"/>
+                    <Button bsStyle="primary" bsSize="small" className="m-l-sm" onClick={this.openActivityModal}>New
+                        Activity</Button>
 
                 </div>
                 <div className="row">
@@ -102,7 +107,7 @@ class Activities extends Component {
                                     id="types"
                                     dataField="activity_type.keyword"
                                     title="Types"
-                                    emptyText ="No Product"
+                                    emptyText="No Product"
                                     multi={true}
                                     group="activities-page"
                                     index="leadlet-activity"
@@ -111,11 +116,11 @@ class Activities extends Component {
                                     id="status"
                                     dataField="is_done"
                                     title="Status"
-                                    emptyText ="No Product"
+                                    emptyText="No Product"
                                     multi={false}
                                     group="activities-page"
                                     index="leadlet-activity"
-                                    keyMapper={ (key) => ( key === "true"? "Done":"Not Done" )}
+                                    keyMapper={(key) => (key === "true" ? "Done" : "Not Done")}
                                 />
                             </div>
                         </div>
@@ -128,8 +133,9 @@ class Activities extends Component {
                                     <thead>
                                     <tr>
                                         <th>Title <ColumnSorter dataField="title.keyword" group="activities-page"/></th>
-                                        <th>Contact </th>
-                                        <th>Type <ColumnSorter dataField="activity_type.keyword" group="activities-page"/></th>
+                                        <th>Contact</th>
+                                        <th>Type <ColumnSorter dataField="activity_type.keyword"
+                                                               group="activities-page"/></th>
                                         <th>Status <ColumnSorter dataField="is_done" group="activities-page"/></th>
                                         <th>Date <ColumnSorter dataField="start_date" group="activities-page"/></th>
                                     </tr>
@@ -166,7 +172,7 @@ class Activities extends Component {
 
     hasMoreItem() {
         return _.get(this, ["props", "activityStore", "maxActivityCount"], -1) >
-            _.get(this, ["props", "activityStore","ids", "length"], 0);
+            _.get(this, ["props", "activityStore", "ids", "length"], 0);
     }
 
     getQuery(props = this.props) {
