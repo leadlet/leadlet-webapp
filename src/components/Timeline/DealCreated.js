@@ -8,7 +8,7 @@ const DealCreated = (props) => (
         </div>
         <div className="tracking-date">{moment(props.item.createdDate).fromNow()}
         </div>
-        <div className="tracking-content">Deal Created<span>{props.item.source.title}</span></div>
+        <div className="tracking-content">Deal Created<span>{props.item.source && props.item.source.title}</span></div>
     </div>
 );
 

@@ -44,7 +44,7 @@ const renderStage = (props) => (
             onBlur={() => props.stage.input.onBlur(props.stage.input.value)}
         />
         <span style={{color: "red"}} className="help-block m-b-none">
-                {props.stage.meta.touched && ((props.stage.meta.error && <span>{props.stage.meta.error}</span>))}
+                    {props.stage.meta.error && <span>{props.stage.meta.error}</span>}
             </span>
     </div>
 )

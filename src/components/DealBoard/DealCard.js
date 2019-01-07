@@ -25,8 +25,13 @@ function getActivityStatusColor(item) {
 
 const DealCard = (props) => {
     const {style, item} = props;
-    const agentFirstName = item.agent.firstName.charAt(0);
-    const agentLastName = item.agent.lastName.charAt(0);
+    let agentFirstName, agentLastName= null;
+
+    if (item.agent){
+         agentFirstName = item.agent.firstName.charAt(0);
+         agentLastName = item.agent.lastName.charAt(0);
+    }
+
     let dealProdutsName;
     item.products.map(x => {
         if (x.length !== 0) {
@@ -40,7 +45,7 @@ const DealCard = (props) => {
                 <div className="lead-card">
                     <span className="lead-user">{agentFirstName + agentLastName}</span>
                     <span className="lead-product">{dealProdutsName}</span>
-                    <span className="lead-name">{item.contact.name}</span>
+                    <span className="lead-name">{item.contact ? item.contact.name : null}</span>
                     <span className="lead-price">${item.dealValue && item.dealValue.potentialValue}</span>
                     <span className={"lead-status " + getActivityStatusColor(item)}>{item.activityStatus}</span>
                     <span className="lead-time">{formattedDate}</span>

@@ -28,7 +28,7 @@
     "prop-types": "^15.6.0",
     "rc-slider": "^8.6.2",
     "rc-tooltip": "^3.7.2",
-    "react": "^16.2.0",
+    "react": "^16.7.0",
     "react-bootstrap": "^0.31.3",
     "react-bootstrap-table": "^4.3.1",
     "react-bootstrap-toggle": "^2.2.6",
