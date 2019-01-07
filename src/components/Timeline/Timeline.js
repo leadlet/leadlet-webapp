@@ -10,6 +10,7 @@ import moment from "moment";
 import UpcomingActivity from "./UpcomingActivity";
 import NavigationFilter from "../Search/NavigationFilter";
 import DealCreated from "./DealCreated";
+import DealUpdated from "./DealUpdated";
 import {QueryUtils} from "../Search/QueryUtils";
 
 let VisibilitySensor = require('react-visibility-sensor');
@@ -109,7 +110,12 @@ class Timeline extends Component {
                     return (
                         <DealCreated key={timelineId} item={timelineItem}/>
                     )
-                } else {
+                }else if (timelineItem.type === 'DEAL_UPDATED') {
+                    return (
+                        <DealUpdated key={timelineId} item={timelineItem}/>
+                    )
+                }
+                else {
                     return (
                         <em>Loading...</em>
                     );
