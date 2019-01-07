@@ -4,7 +4,7 @@
   "private": true,
   "proxy": {
     "/api": {
-      "target": "http://localhost:8080"
+      "target": "http://ns344214.ip-188-165-194.eu:8080"
     }
   },
   "dependencies": {

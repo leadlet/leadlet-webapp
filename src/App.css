@@ -6,6 +6,7 @@
  *   version 2.7
  *
 */
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,500");
 h1,
 h2,
 h3,
@@ -9033,7 +9034,17 @@ body {
       font-size: 15px; }
   .deal-board .lead-card {
     position: relative;
-    min-height: 60px; }
+    min-height: 87px;
+    font-family: 'Montserrat', sans-serif;
+    color: #232323; }
+    .deal-board .lead-card .lead-photo {
+      display: inline-block;
+      border-radius: 8px;
+      width: 49px;
+      overflow: hidden;
+      margin: 8px 0 0 7px; }
+      .deal-board .lead-card .lead-photo img {
+        width: 100%; }
     .deal-board .lead-card .lead-user {
       font-weight: 600;
       font-size: 12px;
@@ -9046,71 +9057,88 @@ body {
       text-align: center;
       line-height: 29px; }
     .deal-board .lead-card .lead-product {
-      font-weight: 300;
-      color: #000000;
-      font-size: 7px;
-      left: 37px;
-      position: absolute;
-      top: 10px;
-      text-transform: uppercase; }
-    .deal-board .lead-card .lead-name {
       font-size: 13px;
-      color: #000000;
-      font-weight: 600;
       position: absolute;
-      left: 37px;
-      top: 20px; }
-    .deal-board .lead-card .lead-price {
-      font-weight: 700;
-      color: #000000;
+      top: 7px;
+      left: 61px; }
+    .deal-board .lead-card .lead-name {
       font-size: 11px;
       position: absolute;
-      right: 5px;
-      top: 6px; }
-    .deal-board .lead-card .lead-status {
-      font-size: 9px;
-      font-weight: 700;
-      color: #F5F4F5;
-      position: absolute;
-      right: 5px;
       top: 25px;
-      padding: 1px 5px; }
-    .deal-board .lead-card .lead-time {
-      font-size: 8px;
-      color: #000000;
-      font-weight: 400;
+      left: 61px; }
+    .deal-board .lead-card .lead-phone {
+      font-size: 10px;
       position: absolute;
-      right: 5px;
-      bottom: 3px; }
-    .deal-board .lead-card .lead-source {
+      top: 40px;
+      left: 61px; }
+    .deal-board .lead-card .lead-status {
+      display: inline-block;
+      color: #fff;
+      font-size: 11px;
+      text-align: center;
+      background-color: #dddddd;
+      border-radius: 10px;
+      padding: 2px 5px;
       position: absolute;
-      left: 5px;
-      bottom: 0; }
-      .deal-board .lead-card .lead-source .icon {
-        display: inline-block;
-        width: 14px;
-        height: 14px;
-        text-align: center;
-        font-size: 14px;
+      right: 7px;
+      top: 7px; }
+      .deal-board .lead-card .lead-status.red {
+        background-color: red; }
+      .deal-board .lead-card .lead-status.green {
+        background-color: #91D022; }
+      .deal-board .lead-card .lead-status.orange {
+        background-color: #f5a623; }
+      .deal-board .lead-card .lead-status.gray {
+        background-color: #ddd; }
+    .deal-board .lead-card .lead-icon {
+      position: absolute;
+      right: 7px;
+      top: 33px; }
+      .deal-board .lead-card .lead-icon span {
+        background-color: #EFEFEF;
+        width: 16px;
+        height: 16px;
         border-radius: 50%;
-        margin-right: 4px;
-        overflow: hidden;
-        padding: 0;
-        line-height: 0; }
+        font-size: 9px;
+        display: block;
+        float: left;
+        line-height: 16px;
+        text-align: center;
+        margin-right: 3px; }
+    .deal-board .lead-card .lead-channel {
+      font-size: 10px;
+      position: absolute;
+      left: 0;
+      bottom: 0; }
+      .deal-board .lead-card .lead-channel span {
+        display: inline-block;
+        padding: 4px 7px; }
+        .deal-board .lead-card .lead-channel span.first {
+          background-color: #d5d5d5; }
+        .deal-board .lead-card .lead-channel span.second {
+          background-color: #f0f0f0; }
+    .deal-board .lead-card .lead-time {
+      font-size: 7px;
+      color: #838282;
+      position: absolute;
+      right: 7px;
+      bottom: 6px; }
     .deal-board .lead-card .lead-score {
       background-color: #DEDEDE;
-      height: 2px;
+      height: 4px;
       position: absolute;
-      bottom: 0;
-      left: 2px;
-      right: 2px; }
+      bottom: -4px;
+      left: 0px;
+      right: 0px; }
       .deal-board .lead-card .lead-score .green {
         background-color: #7ED321; }
+      .deal-board .lead-card .lead-score .orange {
+        background-color: #f5a623; }
       .deal-board .lead-card .lead-score .high {
         width: 70%; }
       .deal-board .lead-card .lead-score .score {
         display: block;
-        height: 2px; }
+        height: 4px; }
 
 /* toolbar */
 .pac-container {

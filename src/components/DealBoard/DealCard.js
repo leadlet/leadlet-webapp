@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Link from "react-router-dom/es/Link";
 import moment from 'moment';
+import * as _ from "lodash";
 
 const propTypes = {
     item: PropTypes.object.isRequired,
@@ -10,65 +11,49 @@ const propTypes = {
 
 function getActivityStatusColor(item) {
     if (item.activityStatus === "EXPIRED") {
-        return "red-bg";
+        return "red";
     }
     if (item.activityStatus === "TODAY") {
-        return "yellow-green-bg";
+        return "green";
     }
     if (item.activityStatus === "IN_FUTURE") {
-        return "orange-bg";
+        return "orange";
     }
     if (item.activityStatus === "NO_ACTIVITY") {
-        return "slate-gray-bg";
+        return "gray";
     }
 }
 
 const DealCard = (props) => {
     const {style, item} = props;
-    let agentFirstName, agentLastName= null;
-
-    if (item.agent){
-         agentFirstName = item.agent.firstName.charAt(0);
-         agentLastName = item.agent.lastName.charAt(0);
-    }
-
-    let dealProdutsName;
-    item.products.map(x => {
-        if (x.length !== 0) {
-            dealProdutsName = x.name;
-        }
-    });
+    const agentFirstName = item.agent && item.agent.firstName.charAt(0);
+    const agentLastName = item.agent && item.agent.lastName.charAt(0);
+    const dealChannelName = item.dealChannel ? item.dealChannel.name.slice(0, 12) : 'Not Found';
+    const dealSourceName = item.dealSource ? item.dealSource.name.slice(0, 8) : 'Not Found';
+    const dealPhoneNumber = item.contact.phone ? item.contact.phone : 'Not Number';
+    let dealProdutsName = item.products.map( x => x.length !== 0 ? dealProdutsName = x.name.slice(0, 15) : dealProdutsName = 'Not Products Name');
+    console.log(item, '>>>item');
     const formattedDate = moment(item.createdDate).fromNow();
     return (
-        <li style={style} className="info-element" id={style ? item.id : null}>
+        <li className="info-element">
             <Link style={{ textDecoration: 'inherit', color:'inherit' }} to={"/deal/" + item.id}>
                 <div className="lead-card">
-                    <span className="lead-user">{agentFirstName + agentLastName}</span>
+                    <span className="lead-photo"><img src="https://media.nngroup.com/media/people/photos/Kim-Flaherty-Headshot.png.400x400_q95_autocrop_crop_upscale.png" /></span>
                     <span className="lead-product">{dealProdutsName}</span>
-                    <span className="lead-name">{item.contact ? item.contact.name : null}</span>
-                    <span className="lead-price">${item.dealValue && item.dealValue.potentialValue}</span>
+                    <span className="lead-name">{item.contact && item.contact.name}</span>
+                    <span className="lead-phone">{dealPhoneNumber}</span>
                     <span className={"lead-status " + getActivityStatusColor(item)}>{item.activityStatus}</span>
-                    <span className="lead-time">{formattedDate}</span>
-                    <div className="lead-source">
-                        <span className="icon">
-                            <i className="icon-channel-facebook"></i>
-                        </span>
-                        <span className="icon">
-                            <span className="icon-channel-web"><span className="path1"></span><span className="path2"></span><span className="path3"></span><span className="path4"></span></span>
-                        </span>
-                        <span className="icon country">
-                            <span className="icon-channel-flag-turkey">
-                                <span className="path1"></span><span className="path2"></span><span className="path3"></span><span className="path4"></span><span className="path5"></span><span className="path6"></span><span className="path7"></span><span className="path8"></span><span className="path9"></span><span className="path10"></span><span className="path11"></span><span className="path12"></span><span className="path13"></span>
-                            </span>
-                        </span>
-                        <span className="icon">
-                            <span className="icon-channel-phone"><span className="path1"></span><span className="path2"></span><span className="path3"></span><span className="path4"></span></span>
-                        </span>
-                        <span className="icon">
-                            <span className="icon-channel-write"><span className="path1"></span><span className="path2"></span><span className="path3"></span><span className="path4"></span><span className="path5"></span><span className="path6"></span></span>
-                        </span>
+                    <div className="lead-icon">
+                        <span></span>
+                        <span></span>
+                        <span><i className="fa fa-pencil" aria-hidden="true"></i></span>
                     </div>
-                    <span className="lead-score"><span className="score high green"></span></span>
+                    <div className="lead-channel">
+                        <span className="first">{dealSourceName}</span>
+                        <span className="second">{dealChannelName}</span>
+                    </div>
+                    <span className="lead-time">{formattedDate}</span>
+                    <span className="lead-score"><span className="score high orange"></span></span>
                 </div>
             </Link>
         </li>
