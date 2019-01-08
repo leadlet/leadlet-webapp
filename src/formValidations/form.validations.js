@@ -1,11 +1,10 @@
-import React from 'react';
 
 export const required = value => value ? undefined : 'Required'
 
 const maxLength = max => value =>
     value && value.length > max ? `Must be ${max} characters or less` : undefined
 export const maxLength64 = maxLength(64)
-
+/*
 const number = value => value && isNaN(Number(value)) ? 'Must be a number' : undefined
 
 const minValue = min => value =>
@@ -22,4 +21,4 @@ const tooOld = value =>
 const aol = value =>
     value && /.+@aol\.com/.test(value) ?
         'Really? You still use AOL for your email?' : undefined
-
+*/
