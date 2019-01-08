@@ -11,7 +11,7 @@ const NoteCreated = (props) => {
             </div>
             <div className="tracking-date">{moment(props.item.createdDate).fromNow()}
             </div>
-            <div className="tracking-content">Note Created<span>{contentObj.content}</span></div>
+            <div className="tracking-content">Note Created<span>{contentObj && contentObj.content}</span></div>
         </div>
     );
 

@@ -3,8 +3,6 @@ import {connect} from 'react-redux';
 import NewEditContact from "./NewEditContact";
 import Badge from "react-bootstrap/es/Badge";
 import SweetAlert from 'sweetalert-react';
-import Dropdown from "react-bootstrap/es/Dropdown";
-import MenuItem from "react-bootstrap/es/MenuItem";
 import {getAllContact, _deleteContacts} from "../../actions/contact.actions";
 import {ContactList} from "./ContactList";
 
@@ -173,16 +171,14 @@ class Contacts extends Component {
                             </div>
                         </div>
                         <div className="row">
-                            <div className="row row-flex">
+                            <div className="row row-flex pull-right">
 
-                                <Dropdown bsSize="small" className="m-l-sm" id="contactAdd">
-                                    <Dropdown.Toggle noCaret>
-                                        <i className="fa fa-plus"/> Add
-                                    </Dropdown.Toggle>
-                                    <Dropdown.Menu>
-                                        <MenuItem href="#" onClick={this.openContactModal}>Contact</MenuItem>
-                                    </Dropdown.Menu>
-                                </Dropdown>
+                                <button type="button"
+                                        className="btn btn-primary btn-sm"
+                                        onClick={this.openContactModal}>
+                                    <i className="fa fa-plus"/> Add
+                                </button>
+
                                 {
                                     this.getSelectedCount() > 0 &&
                                         <button type="button"
