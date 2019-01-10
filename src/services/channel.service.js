@@ -9,7 +9,7 @@ export const channelService = {
     _deleteChannel
 };
 
-function createChannel(channel, callback) {
+function createChannel(channel) {
     const requestOptions = {
         method: 'POST',
         headers: {...authHeader(), 'Content-Type': 'application/json'},
@@ -19,7 +19,7 @@ function createChannel(channel, callback) {
     return fetch('/api/channels/', requestOptions).then(handleResponse);
 }
 
-function updateChannel(channel, callback) {
+function updateChannel(channel) {
     const requestOptions = {
         method: 'PUT',
         headers: {...authHeader(), 'Content-Type': 'application/json'},
@@ -38,7 +38,7 @@ function getChannelById(id) {
     return fetch('/api/channels/' + id, requestOptions).then(handleResponse);
 }
 
-function getAllChannels(filter, page, size) {
+function getAllChannels() {
     const requestOptions = {
         method: 'GET',
         headers: authHeader()

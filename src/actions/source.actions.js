@@ -1,4 +1,7 @@
 import {sourceService} from "../services/source.service";
+import {alertActions} from "./alert.actions";
+import {sourceConstants} from "../constants/source.constants";
+
 /*
 export function getSourceById(sourceId) {
     return dispatch => {
@@ -23,14 +26,14 @@ export function getSourceById(sourceId) {
         return {type: sourceConstants.GET_FAILURE, error}
     }
 }
-
-export function getAllSources(filter, page, size) {
+*/
+export function getAllSources() {
     return dispatch => {
         dispatch(request());
 
-        sourceService.getAllSources(filter, page, size)
+        sourceService.getAllSources()
             .then(
-                response => dispatch(success({items: response[0], dataTotalSize: response[1]})),
+                items => dispatch(success(items)),
                 error => dispatch(failure(error))
             );
     };
@@ -48,14 +51,13 @@ export function getAllSources(filter, page, size) {
     }
 }
 
-export function createSource(source, successCallback) {
+export function createSource(source) {
     return dispatch => {
         dispatch(request());
 
         return sourceService.createSource(source)
             .then(
                 source => {
-                    dispatch(successCallback);
                     dispatch(success(source));
                     dispatch(alertActions.success('SOURCE create successful'));
                 },
@@ -81,7 +83,7 @@ export function createSource(source, successCallback) {
     }
 }
 
-export function updateSource(source, successCallback) {
+export function updateSource(source) {
     return dispatch => {
         dispatch(request());
 
@@ -114,7 +116,7 @@ export function updateSource(source, successCallback) {
 }
 
 // prefixed function name with underscore because delete is a reserved word in javascript
-function _deleteSource(id) {
+export function _deleteSource(id) {
     return dispatch => {
         dispatch(request(id));
 
@@ -141,7 +143,7 @@ function _deleteSource(id) {
         return {type: sourceConstants.DELETE_FAILURE, id, error}
     }
 }
-*/
+
 export function getAllSourceByFilterAndReturn(filter, successCallback, failCallback) {
     sourceService.getAllSources(filter, 0, 20)
         .then(

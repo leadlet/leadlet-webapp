@@ -30,7 +30,7 @@ export function sources(state = {}, action) {
                 loading: true
             };
         case sourceConstants.GETALL_SUCCESS:
-            const _items = normalize(action.data.items, sourceListSchema);
+            const _items = normalize(action.data, sourceListSchema);
             return {
                 ...state,
                 items: _items.entities.sources,
@@ -85,15 +85,14 @@ export function sources(state = {}, action) {
         case sourceConstants.DELETE_REQUEST:
             return state;
         case sourceConstants.DELETE_SUCCESS:
-            action.ids.forEach(id => {
-                delete state.items[id];
-            })
+            delete state.items[action.id];
+
             return {
                 ...state,
                 items: state.items,
-                ids: state.ids.filter(id => !action.ids.includes(id)),
-                dataTotalSize: state.dataTotalSize - action.ids.length
+                ids: state.ids.filter(id => action.id !== id)
             };
+
 
         default:
             return state

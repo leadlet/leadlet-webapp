@@ -5,6 +5,7 @@ import Pipelines from "../Pipelines/Pipelines";
 import AccountPreferences from "./AccountPreferences";
 import Products from "./ProductList";
 import Channels from "./ChannelList";
+import Sources from "./SourceList";
 
 
 class Preferences extends Component {
@@ -40,6 +41,9 @@ class Preferences extends Component {
                                         </Tab>
                                         <Tab eventKey={5} title="Channels">
                                             <Channels/>
+                                        </Tab>
+                                        <Tab eventKey={6} title="Sources">
+                                            <Sources/>
                                         </Tab>
                                     </Tabs>
                                 </div>

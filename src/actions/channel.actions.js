@@ -51,14 +51,13 @@ export function getAllChannels() {
     }
 }
 
-export function createChannel(channel, successCallback) {
+export function createChannel(channel) {
     return dispatch => {
         dispatch(request());
 
         return channelService.createChannel(channel)
             .then(
                 channel => {
-                    dispatch(successCallback);
                     dispatch(success(channel));
                     dispatch(alertActions.success('Channel create successful'));
                 },
@@ -84,7 +83,7 @@ export function createChannel(channel, successCallback) {
     }
 }
 
-export function updateChannel(channel, successCallback) {
+export function updateChannel(channel) {
     return dispatch => {
         dispatch(request());
 

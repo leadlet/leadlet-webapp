@@ -9,7 +9,7 @@ export const sourceService = {
     _deleteSource
 };
 
-function createSource(source, callback) {
+function createSource(source) {
     const requestOptions = {
         method: 'POST',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
@@ -19,7 +19,7 @@ function createSource(source, callback) {
     return fetch('/api/sources/', requestOptions).then(handleResponse);
 }
 
-function updateSource(source, callback) {
+function updateSource(source) {
     const requestOptions = {
         method: 'PUT',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
@@ -38,13 +38,13 @@ function getSourceById(id) {
     return fetch('/api/sources/' + id, requestOptions).then(handleResponse);
 }
 
-function getAllSources(filter , page, size) {
+function getAllSources() {
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
     };
 
-    return fetch(`/api/sources?filter=${filter}&page=${page}&size=${size}`, requestOptions).then(handleResponse);
+    return fetch(`/api/sources`, requestOptions).then(handleResponse);
 }
 
 function _deleteSource(id) {

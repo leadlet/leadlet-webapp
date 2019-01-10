@@ -84,15 +84,14 @@ export function channels(state = {}, action) {
         case channelConstants.DELETE_REQUEST:
             return state;
         case channelConstants.DELETE_SUCCESS:
-            action.ids.forEach(id => {
-                delete state.items[id];
-            })
+            delete state.items[action.id];
+
             return {
                 ...state,
                 items: state.items,
-                ids: state.ids.filter(id => !action.ids.includes(id)),
-                dataTotalSize: state.dataTotalSize - action.ids.length
+                ids: state.ids.filter(id => action.id !== id)
             };
+
 
         default:
             return state

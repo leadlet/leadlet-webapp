@@ -2,70 +2,70 @@ import React, {Component} from 'react';
 import connect from "react-redux/es/connect/connect";
 import SweetAlert from 'sweetalert-react';
 import * as _ from "lodash";
-import {_deleteChannel, getAllChannels} from "../../actions/channel.actions";
-import CreateEditChannel from "./CreateEditChannel";
+import {_deleteSource, getAllSources} from "../../actions/source.actions";
+import CreateEditSource from "./CreateEditSource";
 
-class ChannelList extends Component {
+class SourceList extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            isEditChannelModalVisible: false,
-            editingChannel: null
+            isSourceEditModalVisible: false,
+            editingSource: null
         };
 
-        this.openChannelModal = this.openChannelModal.bind(this);
-        this.closeChannelModal = this.closeChannelModal.bind(this);
-        this.onDeleteChannel = this.onDeleteChannel.bind(this);
-        this.cancelDeleteChannel = this.cancelDeleteChannel.bind(this);
-        this.confirmDeleteChannel = this.confirmDeleteChannel.bind(this);
-        this.renderChannelsTable = this.renderChannelsTable.bind(this);
+        this.openSourceModal = this.openSourceModal.bind(this);
+        this.closeSourceModal = this.closeSourceModal.bind(this);
+        this.onDeleteSource = this.onDeleteSource.bind(this);
+        this.cancelDeleteSource = this.cancelDeleteSource.bind(this);
+        this.confirmDeleteSource = this.confirmDeleteSource.bind(this);
+        this.renderSourcesTable = this.renderSourcesTable.bind(this);
     }
 
-    openChannelModal(channel) {
+    openSourceModal(source) {
         this.setState({
-            isEditChannelModalVisible: true,
-            editingChannel: channel
+            isEditSourceModalVisible: true,
+            editingSource: source
         });
     }
 
-    closeChannelModal() {
+    closeSourceModal() {
         this.setState({
-            isEditChannelModalVisible: false,
-            editingChannel: null
+            isEditSourceModalVisible: false,
+            editingSource: null
         });
     }
 
-    onDeleteChannel(id) {
-        this.setState({deletingChannelId: id});
+    onDeleteSource(id) {
+        this.setState({deletingSourceId: id});
         this.setState({showDeleteDialog: true});
     }
 
-    cancelDeleteChannel() {
-        this.setState({deletingChannelId: null});
+    cancelDeleteSource() {
+        this.setState({deletingSourceId: null});
         this.setState({showDeleteDialog: false});
     }
 
-    confirmDeleteChannel() {
-        this.props._deleteChannel(this.state.deletingChannelId);
-        this.setState({deletingChannelId: null});
+    confirmDeleteSource() {
+        this.props._deleteSource(this.state.deletingSourceId);
+        this.setState({deletingSourceId: null});
         this.setState({showDeleteDialog: false});
     }
 
     componentDidMount() {
-        this.props.getAllChannels();
+        this.props.getAllSources();
     }
 
-    renderChannelsTable(channels) {
-        return channels.ids.map(channelId => {
-            const channel = channels.items[channelId];
+    renderSourcesTable(sources) {
+        return sources.ids.map(sourceId => {
+            const source = sources.items[sourceId];
             return (
 
-                <tr key={channel.id}>
-                    <td>{channel.name}</td>
+                <tr key={source.id}>
+                    <td>{source.name}</td>
                     <td>
-                        <button type="button" onClick={() => this.openChannelModal(channel)} className="btn btn-link">edit</button> | <button type="button"  onClick={() => this.onDeleteChannel(channel.id)}className="btn btn-link">delete</button>
+                        <button type="button" onClick={() => this.openSourceModal(source)} className="btn btn-link">edit</button> | <button type="button"  onClick={() => this.onDeleteSource(source.id)}className="btn btn-link">delete</button>
                     </td>
                 </tr>
             );
@@ -88,12 +88,12 @@ class ChannelList extends Component {
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        {_.get(this,["props","channels","ids","length"],0) > 0 && this.renderChannelsTable(this.props.channels)}
+                                        {_.get(this,["props","sources","ids","length"],0) > 0 && this.renderSourcesTable(this.props.sources)}
                                         </tbody>
                                     </table>
                                 </div>
                                 <div className="row">
-                                    <button onClick={this.openChannelModal}
+                                    <button onClick={this.openSourceModal}
                                             className="btn btn-white btn-xs pull-right"> + Add
                                     </button>
                                 </div>
@@ -101,10 +101,10 @@ class ChannelList extends Component {
                         </div>
                     </div>
                     {
-                        this.state.isEditChannelModalVisible &&
-                        <CreateEditChannel showModal={this.state.isEditChannelModalVisible}
-                                           close={this.closeChannelModal}
-                                           initialValues={this.state.editingChannel}
+                        this.state.isEditSourceModalVisible &&
+                        <CreateEditSource showModal={this.state.isEditSourceModalVisible}
+                                           close={this.closeSourceModal}
+                                           initialValues={this.state.editingSource}
                         />
                     }
                     <div>
@@ -116,8 +116,8 @@ class ChannelList extends Component {
                             confirmButtonColor="#DD6B55"
                             confirmButtonText="Yes, delete it!"
                             show={this.state.showDeleteDialog}
-                            onConfirm={() => this.confirmDeleteChannel()}
-                            onCancel={() => this.cancelDeleteChannel()}
+                            onConfirm={() => this.confirmDeleteSource()}
+                            onCancel={() => this.cancelDeleteSource()}
                         />
                     </div>
                 </div>
@@ -128,8 +128,8 @@ class ChannelList extends Component {
 
 function mapStateToProps(state) {
     return {
-        channels: state.channels
+        sources: state.sources
     };
 }
 
-export default connect(mapStateToProps, {getAllChannels, _deleteChannel})(ChannelList);
+export default connect(mapStateToProps, {getAllSources, _deleteSource})(SourceList);
