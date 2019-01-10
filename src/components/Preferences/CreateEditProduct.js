@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from "react-redux";
-import {createProduct} from "../../actions/product.actions";
+import {createProduct, updateProduct} from "../../actions/product.actions";
 import Modal from "react-bootstrap/es/Modal";
 
 const renderField = ({
@@ -43,6 +43,8 @@ class CreateEditProduct extends Component {
 
         if (!product.id) {
             this.props.createProduct(product);
+        }else {
+            this.props.updateProduct(product);
         }
 
         this.onClose();
@@ -119,5 +121,5 @@ export default reduxForm({
     form: 'postNewProductForm',
     enableReinitialize: true
 })(
-    connect(mapStateToProps, {createProduct})(CreateEditProduct)
+    connect(mapStateToProps, {createProduct, updateProduct})(CreateEditProduct)
 );

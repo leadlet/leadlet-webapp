@@ -19,7 +19,7 @@ function createProduct(product) {
     return fetch('/api/products/', requestOptions).then(handleResponse);
 }
 
-function updateProduct(product, callback) {
+function updateProduct(product) {
     const requestOptions = {
         method: 'PUT',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },

@@ -81,8 +81,7 @@ export function createProduct(product) {
     }
 }
 
-/*
-export function updateProduct(product, successCallback) {
+export function updateProduct(product) {
     return dispatch => {
         dispatch(request());
 
@@ -93,8 +92,6 @@ export function updateProduct(product, successCallback) {
                     dispatch(alertActions.success('Product update successful'));
                 },
                 error => {
-                    // TODO catch validation error here and throw submission error
-                    // throw new SubmissionError({name: 'hedeler' , title: 'hedeler2', _error: 'olmadi'});
                     dispatch(failure(error));
                     dispatch(alertActions.error(error));
                 }
@@ -113,7 +110,7 @@ export function updateProduct(product, successCallback) {
         return {type: productConstants.UPDATE_FAILURE, error}
     }
 }
-*/
+
 // prefixed function name with underscore because delete is a reserved word in javascript
 export function deleteProduct(id) {
     return dispatch => {
