@@ -22,9 +22,6 @@ class Preferences extends Component {
                                 <h5>Configure your preferences</h5>
                             </div>
                             <div className="ibox-content">
-                                <p className="m-b-lg">
-                                    HEBELE!
-                                </p>
                                 <div className="row">
                                     <Tabs defaultActiveKey={1} animation={false} id="pipeline-tabs">
                                         <Tab eventKey={1} title="Account">
