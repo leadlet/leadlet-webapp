@@ -1,9 +1,12 @@
 
-export const required = value => value ? undefined : 'Required'
+export const required = value => value ? undefined : 'Required';
 
 const maxLength = max => value =>
-    value && value.length > max ? `Must be ${max} characters or less` : undefined
-export const maxLength64 = maxLength(64)
+    value && value.length > max ? `Must be ${max} characters or less` : undefined;
+export const maxLength64 = maxLength(64);
+
+export const maxLength32 = maxLength(32);
+
 /*
 const number = value => value && isNaN(Number(value)) ? 'Must be a number' : undefined
 
