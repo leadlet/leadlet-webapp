@@ -60,19 +60,19 @@ class CreateEditDeal extends Component {
     onSubmit = (formValues) => {
 
         let deal = {
-            ...formValues,
             id: formValues.id,
             title: formValues.title,
-            contact: formValues.contact,
-            stage: formValues.stage,
-            pipeline: formValues.pipeline,
-            agent: formValues.agent,
-            dealValue: formValues.dealValue,
-            possibleCloseDate: formValues.possibleCloseDate && formValues.possibleCloseDate._d,
-            products: formValues.products,
-            dealSource: formValues.dealSource,
-            dealChannel: formValues.dealChannel,
-            createdDate: formValues.createdDate
+            contact_id: _.get(formValues.contact,'id'),
+            stage_id: _.get(formValues.stage,'id'),
+            pipeline_id: _.get(formValues.pipeline,'id'),
+            agent_id: _.get(formValues.agent,'id'),
+            deal_value: formValues.deal_value,
+            possible_close_date: formValues.possibleCloseDate && formValues.possibleCloseDate._d,
+            product_ids: (formValues.products && formValues.products.map(p=>p.id)) || [],
+            activity_ids: (formValues.activities && formValues.activities.map(p=>p.id)) || [],
+            deal_source_id: _.get(formValues.deal_source,'id'),
+            deal_channel_id: _.get(formValues.deal_channel,'id'),
+            created_date: formValues.created_date
         };
 
         function difference(object, base) {
@@ -122,7 +122,7 @@ class CreateEditDeal extends Component {
                         />
                         <Fields
                             label="Potential Value"
-                            names={['dealValue.potentialValue', 'dealValue.currency']}
+                            names={['deal_value.potentialValue', 'deal_value.currency']}
                             component={renderPriceCurrencyField}/>
 
 
@@ -205,7 +205,7 @@ class CreateEditDeal extends Component {
 
                         <Field
                             label="Possible Close Date"
-                            name="possibleCloseDate"
+                            name="possible_close_date"
                             placeholder="Select Possible Close Date"
                             component={renderDatePicker}
                         />
@@ -241,7 +241,7 @@ class CreateEditDeal extends Component {
                             }}
                         />
                         <Field
-                            name="dealSource"
+                            name="deal_source"
                             label="Source"
                             placeholder="Select deal source"
                             component={renderAsyncSelectField}
@@ -265,7 +265,7 @@ class CreateEditDeal extends Component {
                             }}
                         />
                         <Field
-                            name="dealChannel"
+                            name="deal_channel"
                             label="Channel"
                             placeholder="Select deal channel"
                             component={renderAsyncSelectField}
