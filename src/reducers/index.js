@@ -16,6 +16,7 @@ import {activityStore} from "./activityStore.reducer";
 import {filterStore} from "./filterStore.reducer";
 import {sortStore} from "./sortStore.reducer";
 import {activityTypes} from "./activityType.reducer";
+import {channels} from "./channel.reducer";
 
 const rootReducer = combineReducers({
     authentication,
@@ -33,7 +34,8 @@ const rootReducer = combineReducers({
     timeLineStore,
     filterStore,
     sortStore,
-    activityTypes
+    activityTypes,
+    channels
 });
 
 export default rootReducer;

@@ -11,6 +11,7 @@ import DealDetail from "../components/DealDetail/DealDetail";
 import Activities from "../components/Activity/Activities";
 import Preferences from "../components/Preferences/Preferences";
 import Products from "../components/Preferences/CreateEditProduct";
+import Channels from "../components/Preferences/CreateEditChannel";
 import {PrivateRoute} from "../components/PrivateRoute";
 import AgentDetail from "../components/Agent/AgentDetail";
 import {Route} from "react-router-dom";
@@ -36,6 +37,7 @@ class TopMenuLayout extends Component {
                                 <PrivateRoute path="/activities" component={Activities}/>
                                 <PrivateRoute path="/preferences" component={Preferences}/>
                                 <PrivateRoute path="/products" component={Products}/>
+                                <PrivateRoute path="/channels" component={Channels}/>
                                 <Route component={NotFound} />
                             </Switch>
                         </div>

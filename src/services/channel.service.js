@@ -1,5 +1,5 @@
-import { authHeader } from '../helpers';
-import { handleResponse} from "../helpers/service.utils";
+import {authHeader} from '../helpers';
+import {handleResponse} from "../helpers/service.utils";
 
 export const channelService = {
     createChannel,
@@ -12,7 +12,7 @@ export const channelService = {
 function createChannel(channel, callback) {
     const requestOptions = {
         method: 'POST',
-        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+        headers: {...authHeader(), 'Content-Type': 'application/json'},
         body: JSON.stringify(channel)
     };
 
@@ -22,7 +22,7 @@ function createChannel(channel, callback) {
 function updateChannel(channel, callback) {
     const requestOptions = {
         method: 'PUT',
-        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+        headers: {...authHeader(), 'Content-Type': 'application/json'},
         body: JSON.stringify(channel)
     };
 
@@ -38,13 +38,13 @@ function getChannelById(id) {
     return fetch('/api/channels/' + id, requestOptions).then(handleResponse);
 }
 
-function getAllChannels(filter , page, size) {
+function getAllChannels(filter, page, size) {
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
     };
 
-    return fetch(`/api/channels?filter=${filter}&page=${page}&size=${size}`, requestOptions).then(handleResponse);
+    return fetch(`/api/channels`, requestOptions).then(handleResponse);
 }
 
 function _deleteChannel(id) {

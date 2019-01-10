@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from "react-redux";
-import {createProduct, updateProduct} from "../../actions/product.actions";
 import Modal from "react-bootstrap/es/Modal";
+import {createChannel, updateChannel} from "../../actions/channel.actions";
 
 const renderField = ({
                          input,
@@ -19,9 +19,9 @@ const renderField = ({
                 </span>
         </div>
     </div>
-);
+)
 
-class CreateEditProduct extends Component {
+class CreateEditChannel extends Component {
 
     constructor(props) {
         super(props);
@@ -34,17 +34,16 @@ class CreateEditProduct extends Component {
 
     onSubmit = (formValue) => {
 
-        let product = {
+        let channel = {
             ...formValue,
             id: formValue.id,
-            price: formValue.price,
-            description: formValue.description
+            name: formValue.name
         }
 
-        if (!product.id) {
-            this.props.createProduct(product);
+        if (!channel.id) {
+            this.props.createChannel(channel);
         } else {
-            this.props.updateProduct(product);
+            this.props.updateChannel(channel);
         }
 
         this.onClose();
@@ -67,7 +66,7 @@ class CreateEditProduct extends Component {
         return (
             <Modal show={this.props.showModal} onHide={this.onClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>{title} Product</Modal.Title>
+                    <Modal.Title>{title} Channel</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <form className="form-horizontal">
@@ -76,18 +75,6 @@ class CreateEditProduct extends Component {
                             type="text"
                             component={renderField}
                             label=" Name"
-                        />
-                        <Field
-                            name="price"
-                            type="number"
-                            component={renderField}
-                            label="Price"
-                        />
-                        <Field
-                            name="description"
-                            type="text"
-                            component={renderField}
-                            label="Description"
                         />
                     </form>
                 </Modal.Body>
@@ -113,13 +100,13 @@ class CreateEditProduct extends Component {
 
 function mapStateToProps(state) {
     return {
-        products: state.products
+        channels: state.channels
     };
 }
 
 export default reduxForm({
-    form: 'postNewProductForm',
+    form: 'postChannelForm',
     enableReinitialize: true
 })(
-    connect(mapStateToProps, {createProduct, updateProduct})(CreateEditProduct)
+    connect(mapStateToProps, {createChannel, updateChannel})(CreateEditChannel)
 );

@@ -1,4 +1,6 @@
 import {channelService} from "../services/channel.service";
+import {channelConstants} from "../constants/channel.constants";
+import {alertActions} from "./alert.actions";
 
 /*
 export function getChannelById(channelId) {
@@ -24,14 +26,14 @@ export function getChannelById(channelId) {
         return {type: channelConstants.GET_FAILURE, error}
     }
 }
-
-export function getAllChannels(filter, page, size) {
+*/
+export function getAllChannels() {
     return dispatch => {
         dispatch(request());
 
-        channelService.getAllChannels(filter, page, size)
+        channelService.getAllChannels()
             .then(
-                response => dispatch(success({items: response[0], dataTotalSize: response[1]})),
+                items => dispatch(success(items)),
                 error => dispatch(failure(error))
             );
     };
@@ -115,7 +117,7 @@ export function updateChannel(channel, successCallback) {
 }
 
 // prefixed function name with underscore because delete is a reserved word in javascript
-function _deleteChannel(id) {
+export function _deleteChannel(id) {
     return dispatch => {
         dispatch(request(id));
 
@@ -142,7 +144,7 @@ function _deleteChannel(id) {
         return {type: channelConstants.DELETE_FAILURE, id, error}
     }
 }
-*/
+
 export function getAllChannelByFilterAndReturn(filter, successCallback, failCallback) {
     channelService.getAllChannels(filter, 0, 20)
         .then(

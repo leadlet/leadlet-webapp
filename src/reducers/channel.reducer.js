@@ -26,11 +26,10 @@ export function channels(state = {}, action) {
         /* ALL channelS */
         case channelConstants.GETALL_REQUEST:
             return {
-                ...state,
-                loading: true
+                ...state
             };
         case channelConstants.GETALL_SUCCESS:
-            const _items = normalize(action.data.items, channelListSchema);
+            const _items = normalize(action.data, channelListSchema);
             return {
                 ...state,
                 items: _items.entities.channels,
