@@ -34,7 +34,7 @@ class ContactDetail extends Component {
         we should call this function to update state. This state will be passed to timeline as props
         so timeline component will be notified about change and refresh itself.
      */
-    onPageUpdate( ){
+    onPageUpdate() {
         this.setState({lastModifiedDate: moment()});
     }
 
@@ -59,8 +59,8 @@ class ContactDetail extends Component {
     }
 
 
-    renderGender(){
-        if(_.has(this, ["props", "viewedContact", "gender"])){
+    renderGender() {
+        if (_.has(this, ["props", "viewedContact", "gender"])) {
             return _.get(this, ["props", "viewedContact", "gender"]);
 
         }
@@ -81,7 +81,8 @@ class ContactDetail extends Component {
                                 <a onClick={() => this.openEditModal(this.props.viewedContact.type)}>
                                     <i className="fa fa-user-circle-o fa-5x" aria-hidden="true"/>
                                     <h3 className="m-b-xs">
-                                        <strong>{this.props.viewedContact && this.props.viewedContact.name}</strong></h3>
+                                        <strong>{this.props.viewedContact && this.props.viewedContact.name}</strong>
+                                    </h3>
                                     <div
                                         className="font-bold">{this.props.viewedContact && this.props.viewedContact.login}</div>
                                     <address className="m-t-md">
@@ -98,11 +99,11 @@ class ContactDetail extends Component {
                                     </address>
                                 </a>
                                 <div className="contact-box-footer">
-                                        <a onClick={() => this.openEditModal()}
-                                           className="btn btn-primary btn-sm">Edit</a>
+                                    <a onClick={() => this.openEditModal()}
+                                       className="btn btn-primary btn-sm">Edit</a>
 
-                                        <a onClick={() => this.openDealModal()}
-                                           className="btn btn-primary btn-sm m-l-sm">New Deal</a>
+                                    <a onClick={() => this.openDealModal()}
+                                       className="btn btn-primary btn-sm m-l-sm">New Deal</a>
                                 </div>
                             </div>
                         </div>
@@ -110,9 +111,9 @@ class ContactDetail extends Component {
                             <div className="ibox">
                                 <div className="ibox-content">
                                     <Note initialValues={{
-                                            contactId: this.props.viewedContact.id
-                                        }}
-                                        onChange={this.onPageUpdate}
+                                        contactId: this.props.viewedContact.id
+                                    }}
+                                          onChange={this.onPageUpdate}
                                     />
                                 </div>
                             </div>
@@ -138,26 +139,27 @@ class ContactDetail extends Component {
                                         fields: ['DEAL_CREATED']
                                     }
                                 ]}
+                                showContactSelection={false}
                             />
-                        {
-                            this.state.isContactModalVisible &&
-                            <NewEditContact showEditModal={this.state.isContactModalVisible}
-                                           close={this.closeEditModal}
-                                           initialValues={this.props.viewedContact}
-                            />
-                        }
-                        {
-                            this.state.isDealModalVisible &&
-                            <CreateEditDeal showModal={this.state.isDealModalVisible}
-                                            close={this.closeDealModal}
-                                            initialValues={{
-                                                contact: {
-                                                    id: this.props.match.params.contactId
-                                                }
-                                            }}
-                                            showContactSelection={false}
-                            />
-                        }
+                            {
+                                this.state.isContactModalVisible &&
+                                <NewEditContact showEditModal={this.state.isContactModalVisible}
+                                                close={this.closeEditModal}
+                                                initialValues={this.props.viewedContact}
+                                />
+                            }
+                            {
+                                this.state.isDealModalVisible &&
+                                <CreateEditDeal showModal={this.state.isDealModalVisible}
+                                                close={this.closeDealModal}
+                                                initialValues={{
+                                                    contact: {
+                                                        id: this.props.match.params.contactId
+                                                    }
+                                                }}
+                                                showContactSelection={false}
+                                />
+                            }
                         </div>
                     </div>
                 </div>
