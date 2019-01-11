@@ -52,7 +52,7 @@ export function contacts(state = {}, action) {
                     ...state.items,
                     [action.contact.id]: action.contact
                 },
-                ids: [ ...state.ids, action.contact.id],
+                ids: [action.contact.id, ...state.ids],
                 dataTotalSize: state.dataTotalSize + 1
             };
 
