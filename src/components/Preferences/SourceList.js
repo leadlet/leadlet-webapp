@@ -65,7 +65,11 @@ class SourceList extends Component {
                 <tr key={source.id}>
                     <td>{source.name}</td>
                     <td>
-                        <button type="button" onClick={() => this.openSourceModal(source)} className="btn btn-link">edit</button> | <button type="button"  onClick={() => this.onDeleteSource(source.id)}className="btn btn-link">delete</button>
+                        <button type="button" onClick={() => this.openSourceModal(source)}
+                                className="btn btn-link">edit
+                        </button>
+                        | <button type="button" onClick={() => this.onDeleteSource(source.id)}
+                                  className="btn btn-link">delete</button>
                     </td>
                 </tr>
             );
@@ -88,7 +92,7 @@ class SourceList extends Component {
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        {_.get(this,["props","sources","ids","length"],0) > 0 && this.renderSourcesTable(this.props.sources)}
+                                        {_.get(this, ["props", "sources", "ids", "length"], 0) > 0 && this.renderSourcesTable(this.props.sources)}
                                         </tbody>
                                     </table>
                                 </div>
@@ -103,8 +107,8 @@ class SourceList extends Component {
                     {
                         this.state.isEditSourceModalVisible &&
                         <CreateEditSource showModal={this.state.isEditSourceModalVisible}
-                                           close={this.closeSourceModal}
-                                           initialValues={this.state.editingSource}
+                                          close={this.closeSourceModal}
+                                          initialValues={this.state.editingSource}
                         />
                     }
                     <div>
