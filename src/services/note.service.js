@@ -4,23 +4,12 @@ import {handlePaginationResponse, handleResponse} from "../helpers/service.utils
 export const noteService = {
     getAll,
     getById,
-    createNote,
-    updateNote
+    createNote
 };
 
 function createNote(note, callback) {
     const requestOptions = {
         method: 'POST',
-        headers: { ...authHeader(), 'Content-Type': 'application/json' },
-        body: JSON.stringify(note)
-    };
-
-    return fetch('/api/notes/', requestOptions).then(handleResponse);
-}
-
-function updateNote(note, callback) {
-    const requestOptions = {
-        method: 'PUT',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
         body: JSON.stringify(note)
     };
