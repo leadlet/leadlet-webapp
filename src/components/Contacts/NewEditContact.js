@@ -10,59 +10,21 @@ import InputMask from 'react-input-mask';
 import ButtonToolbar from "react-bootstrap/es/ButtonToolbar";
 import ToggleButtonGroup from "react-bootstrap/es/ToggleButtonGroup";
 import ToggleButton from "react-bootstrap/es/ToggleButton";
-
-const validate = values => {
-    const errors = {};
-    let per_email_valid = true;
-
-    const re_per = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-    if (values.email !== undefined) {
-        per_email_valid = re_per.test(values.email);
-    }
-    else {
-        errors.email = ""
-    }
-    if (!values.name) {
-        errors.name = 'Required'
-    }
-    else {
-        errors.name = ""
-    }
-    if (values.name && (values.name.length > 30)) {
-        errors.name = 'Must be 30 characters or less'
-    } else {
-        errors.name = ""
-    }
-    if (!per_email_valid) {
-        errors.email = "mail is not valid"
-    } else {
-        errors.email = ""
-    }
-    return errors
-};
-
-const warn = values => {
-    const warnings = {};
-    if (values.login && values.login.length < 2) {
-        warnings.login = 'too short!'
-    }
-    return warnings
-};
+import {required} from "../../formValidations/form.validations";
+import {email} from "../../formValidations/form.validations";
 
 const renderField = ({
                          input,
                          label,
                          type,
-                         meta: {touched, error, warning}
+                         meta: {error}
                      }) => (
     <div className="form-group">
         <label>{label}</label>
         <div>
             <input {...input} placeholder={label} type={type} className="form-control"/>
-            <span className="help-block m-b-none">{touched &&
-            ((error && <span>{error}</span>) ||
-                (warning && <span>{warning}</span>))}
+            <span style={{color: "red"}} className="help-block m-b-none">
+                    {error && <span>{error}</span>}
                 </span>
 
         </div>
@@ -73,7 +35,7 @@ const renderPhoneField = ({
                               input,
                               label,
                               type,
-                              meta: {touched, error, warning}
+                              meta: {error}
                           }) => (
     <div className="form-group">
         <label>{label}</label>
@@ -84,9 +46,8 @@ const renderPhoneField = ({
                     <InputMask {...input} type={type} className="form-control" mask="+99 999 999 99 99"/>
                 </InputGroup>
             </FormGroup>
-            <span className="help-block m-b-none">{touched &&
-            ((error && <span>{error}</span>) ||
-                (warning && <span>{warning}</span>))}
+            <span style={{color: "red"}} className="help-block m-b-none">
+                    {error && <span>{error}</span>}
                 </span>
 
         </div>
@@ -97,7 +58,7 @@ const renderEmailField = ({
                               input,
                               label,
                               type,
-                              meta: {touched, error, warning}
+                              meta: {error}
                           }) => (
     <div className="form-group">
         <label>{label}</label>
@@ -108,11 +69,9 @@ const renderEmailField = ({
                     <FormControl {...input} placeholder={label} type={type} className="form-control"/>
                 </InputGroup>
             </FormGroup>
-            <span className="help-block m-b-none">{touched &&
-            ((error && <span>{error}</span>) ||
-                (warning && <span>{warning}</span>))}
+            <span style={{color: "red"}} className="help-block m-b-none">
+                    {error && <span>{error}</span>}
                 </span>
-
         </div>
     </div>
 );
@@ -121,15 +80,14 @@ const renderLocationField = ({
                                  input,
                                  label,
                                  type,
-                                 meta: {touched, error, warning}
+                                 meta: {error}
                              }) => (
     <div className="form-group">
         <label>{label}</label>
         <div>
             <FormControl {...input} componentClass="textarea" placeholder=""/>
-            <span className="help-block m-b-none">{touched &&
-            ((error && <span>{error}</span>) ||
-                (warning && <span>{warning}</span>))}
+            <span style={{color: "red"}} className="help-block m-b-none">
+                    {error && <span>{error}</span>}
                 </span>
 
         </div>
@@ -139,7 +97,7 @@ const renderLocationField = ({
 const renderGenderField = ({
                                input,
                                label,
-                               meta: {touched, error}
+                               meta: {error}
                            }) => (
     <div className="form-group">
         <label>{label}</label>
@@ -150,9 +108,9 @@ const renderGenderField = ({
             </ToggleButtonGroup>
         </ButtonToolbar>
 
-        <span className="help-block m-b-none">{touched &&
-        ((error && <span>{error}</span>))}
-        </span>
+        <span style={{color: "red"}} className="help-block m-b-none">
+                    {error && <span>{error}</span>}
+                </span>
     </div>
 )
 
@@ -182,7 +140,7 @@ class NewEditContact extends React.Component {
     }
 
     render() {
-        const {handleSubmit, pristine, submitting, initialValues, valid, warn} = this.props;
+        const {handleSubmit, initialValues, submitting, pristine, valid} = this.props;
 
         let title = "Create";
         if (initialValues && initialValues.id) {
@@ -201,6 +159,7 @@ class NewEditContact extends React.Component {
                             type="text"
                             component={renderField}
                             label="Name"
+                            validate={[required]}
                         />
                         <Field
                             name="login"
@@ -232,6 +191,7 @@ class NewEditContact extends React.Component {
                             type="text"
                             component={renderEmailField}
                             label="Email"
+                            validate={[email]}
                         />
                         <Field
                             name="address"
@@ -240,7 +200,7 @@ class NewEditContact extends React.Component {
                             label="Address"
                         />
                         <button className="btn btn-sm btn-primary pull-right"
-                                type="submit" disabled={pristine || submitting || !valid || !warn}>
+                                type="submit" disabled={pristine || submitting || !valid}>
                             <strong>Submit</strong>
                         </button>
                     </form>
@@ -257,9 +217,7 @@ function mapStateToProps(state) {
 }
 
 export default reduxForm({
-    form: 'contactForm', // a unique identifier for this form
-    validate, // <--- validation function given to redux-form
-    warn // <--- warning function given to redux-form
+    form: 'contactForm' // a unique identifier for this form
 })(
     connect(mapStateToProps, {updateContact, createContact, getById})(NewEditContact)
 );

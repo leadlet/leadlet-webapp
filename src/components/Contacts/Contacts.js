@@ -5,6 +5,7 @@ import Badge from "react-bootstrap/es/Badge";
 import SweetAlert from 'sweetalert-react';
 import {getAllContact, _deleteContacts} from "../../actions/contact.actions";
 import {ContactList} from "./ContactList";
+import * as _ from "lodash";
 
 const CONTACT_CONTACT = 'contact';
 
@@ -83,6 +84,18 @@ class Contacts extends Component {
 
     componentDidMount() {
         this.filterContacts();
+    }
+
+    componentDidUpdate(prevProps) {
+        // Typical usage (don't forget to compare props):
+        if ( !_.isEqual(_.get(this, ["props","contacts","ids","length"], 0), _.get(prevProps, ["contacts","ids","length"], 0))) {
+            this.setState({
+                pageSize: 10,
+                currentPage: 1
+            }, () => {
+                this.filterContacts();
+            });
+        }
     }
 
     openContactModal(contact) {
