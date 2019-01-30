@@ -171,7 +171,7 @@ class DealDetail extends Component {
                             this.state.isEditDealModalVisible &&
                             <CreateEditDeal showModal={this.state.isEditDealModalVisible}
                                             close={this.closeEditDealModal}
-                                            initialValues={{...deal, dealStatus: "WON"}}
+                                            initialValues={{...deal, deal_status: "WON"}}
                                             showPipelineSelection={false}
 
                             />
@@ -181,7 +181,7 @@ class DealDetail extends Component {
                             this.state.isLostReasonModalVisible &&
                             <LostReason showModal={this.state.isLostReasonModalVisible}
                                         close={this.closeLostReasonModal}
-                                        initialValues={{...deal, dealStatus: "LOST"}}
+                                        initialValues={{...deal, deal_status: "LOST"}}
                             />
                         }
 

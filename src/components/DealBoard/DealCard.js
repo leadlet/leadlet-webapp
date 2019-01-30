@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Link from "react-router-dom/es/Link";
 import moment from 'moment';
+import * as _ from "lodash";
 
 const propTypes = {
     item: PropTypes.object.isRequired,
@@ -9,16 +10,16 @@ const propTypes = {
 };
 
 function getActivityStatusColor(item) {
-    if (item.activityStatus === "EXPIRED") {
+    if (item.activity_status === "EXPIRED") {
         return "red";
     }
-    if (item.activityStatus === "TODAY") {
+    if (item.activity_status === "TODAY") {
         return "green";
     }
-    if (item.activityStatus === "IN_FUTURE") {
+    if (item.activity_status === "IN_FUTURE") {
         return "orange";
     }
-    if (item.activityStatus === "NO_ACTIVITY") {
+    if (item.activity_status === "NO_ACTIVITY") {
         return "gray";
     }
 }
@@ -27,9 +28,9 @@ const DealCard = (props) => {
     const {item} = props;
     //const agentFirstName = item.agent && item.agent.firstName.charAt(0);
     //const agentLastName = item.agent && item.agent.lastName.charAt(0);
-    const dealChannelName = item.dealChannel ? item.dealChannel.name.slice(0, 12) : 'Not Found';
-    const dealSourceName = item.dealSource ? item.dealSource.name.slice(0, 8) : 'Not Found';
-    const dealPhoneNumber = item.contact.phone ? item.contact.phone : 'Not Number';
+    const dealChannelName = item.deal_channel ? item.deal_channel.name.slice(0, 12) : 'Not Found';
+    const dealSourceName = item.deal_source ? item.deal_source.name.slice(0, 8) : 'Not Found';
+    const dealPhoneNumber = _.get(item, ["contact","phones","0","phone"], 'Not Number');
     let dealProdutsName = item.products.map( x => x.length !== 0 ? dealProdutsName = x.name.slice(0, 15) : dealProdutsName = 'Not Products Name');
     console.log(item, '>>>item');
     const formattedDate = moment(item.createdDate).fromNow();
@@ -41,7 +42,7 @@ const DealCard = (props) => {
                     <span className="lead-product">{dealProdutsName}</span>
                     <span className="lead-name">{item.contact && item.contact.name}</span>
                     <span className="lead-phone">{dealPhoneNumber}</span>
-                    <span className={"lead-status " + getActivityStatusColor(item)}>{item.activityStatus}</span>
+                    <span className={"lead-status " + getActivityStatusColor(item)}>{item.activity_status}</span>
                     <div className="lead-icon">
                         <span></span>
                         <span></span>
