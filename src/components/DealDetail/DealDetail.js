@@ -233,9 +233,9 @@ class DealDetail extends Component {
     renderLastUpdateDate() {
         const deal = this.getViewedDeal();
 
-        if (deal.lastModifiedDate) {
+        if (deal.last_modified_date) {
             return (
-                moment(deal.lastModifiedDate, "YYYY-MM-DDTHH:mm:ss+-HH:mm").format("DD.MM.YYYY")
+                moment(deal.last_modified_date, "YYYY-MM-DDTHH:mm:ss.sss+-HH:mm").format("DD.MM.YYYY")
             );
         } else {
             return (<em>Not set</em>);
@@ -245,9 +245,9 @@ class DealDetail extends Component {
     renderPossibleCloseDate() {
         const deal = this.getViewedDeal();
 
-        if (deal.possibleCloseDate) {
+        if (deal.possible_close_date) {
             return (
-                moment(deal.possibleCloseDate, "YYYY-MM-DDTHH:mm:ss+-HH:mm").format("DD.MM.YYYY")
+                moment(deal.possible_close_date, "YYYY-MM-DDTHH:mm:ss+-HH:mm").format("DD.MM.YYYY")
             );
         } else {
             return (<em>Not set</em>);
@@ -257,9 +257,9 @@ class DealDetail extends Component {
     renderCreatedDate() {
         const deal = this.getViewedDeal();
 
-        if (deal.createdDate) {
+        if (deal.created_date) {
             return (
-                moment(deal.createdDate, "YYYY-MM-DDTHH:mm:ss+-HH:mm").format("DD.MM.YYYY")
+                moment(deal.created_date, "YYYY-MM-DDTHH:mm:ss.sss+-HH:mm").format("DD.MM.YYYY")
             );
         } else {
             return (<em>Not set</em>);
@@ -269,9 +269,9 @@ class DealDetail extends Component {
     renderDealValue() {
         const deal = this.getViewedDeal();
 
-        if (deal.dealValue) {
+        if (deal.deal_value) {
             return (
-                <b>{deal.dealValue.potentialValue}</b>
+                <b>{deal.deal_value.potentialValue}</b>
             );
         } else {
             return (<em>Not set</em>);

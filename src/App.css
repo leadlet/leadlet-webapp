@@ -9026,7 +9026,8 @@ body {
     .deal-board .list .placeholder {
       border: 1px dashed #cecece !important;
       visibility: visible !important;
-      background: #e7eaec !important; }
+      background: #e7eaec !important;
+      min-height: 87px; }
   .deal-board .stage-header {
     padding: 15px 9px 5px; }
     .deal-board .stage-header .stage-name {

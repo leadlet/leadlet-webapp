@@ -67,7 +67,7 @@ class CreateEditDeal extends Component {
             pipeline_id: _.get(formValues.pipeline,'id'),
             agent_id: _.get(formValues.agent,'id'),
             deal_value: formValues.deal_value,
-            possible_close_date: formValues.possibleCloseDate && formValues.possibleCloseDate._d,
+            possible_close_date: formValues.possible_close_date && formValues.possible_close_date._d,
             product_ids: (formValues.products && formValues.products.map(p=>p.id)) || [],
             activity_ids: (formValues.activities && formValues.activities.map(p=>p.id)) || [],
             deal_source_id: _.get(formValues.deal_source,'id'),
