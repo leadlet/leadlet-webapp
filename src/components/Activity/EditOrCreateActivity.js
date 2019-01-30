@@ -143,13 +143,13 @@ class EditOrCreateActivity extends Component {
                                 parse={(value) => {
                                     if (value) {
                                         return {
-                                            'id': parseInt(value)
+                                            'id': parseInt(value,0)
                                         };
                                     }
                                 }}
                                 format={(value) => {
                                     if (value) {
-                                        return parseInt(value.id);
+                                        return parseInt(value.id,0);
                                     }
 
                                 }}

@@ -86,7 +86,7 @@ class DealBoard extends Component {
     }
 
     confirmDeleteDeal() {
-        this.props.deleteDeal(this.state.deletingDeal);
+        this.props.deleteDeal(this.state.deletingDeal.id);
         this.setState({
             deletingDeal: null,
             showDeleteDealDialog: false
@@ -297,7 +297,7 @@ class DealBoard extends Component {
                             startScrolling={this.startScrolling}
                             stopScrolling={this.stopScrolling}
                             isScrolling={this.state.isScrolling}
-                            deleteDeal={this.props.deleteDeal}
+                            deleteDeal={this.onDeleteDeal}
                         />
                     </div>
                 );

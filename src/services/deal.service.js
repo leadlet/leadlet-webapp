@@ -37,11 +37,10 @@ function update(stage, modifiedFileds) {
 function patchDeal(deal) {
     const requestOptions = {
         method: 'PUT',
-        headers: {...authHeader(), 'Content-Type': 'application/json'},
-        body: JSON.stringify(deal)
+        headers: {...authHeader(), 'Content-Type': 'application/json'}
     };
 
-    return fetch(`/api/deals/${deal.id}/partial?priority=${deal.priority}&stageId=${deal.stageId}`, requestOptions).then(handleResponse);
+    return fetch(`/api/deals/${deal.id}/stage/${deal.stageId}`, requestOptions).then(handleResponse);
 }
 
 function getDealById(id) {

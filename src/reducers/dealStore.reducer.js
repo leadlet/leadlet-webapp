@@ -47,10 +47,16 @@ export function dealStore(state = { ids: [], items: {}}, action) {
                 ids: [...new Set([...state.ids, action.payload.id])]
 
             };
+
         case dealConstants.DELETE_SUCCESS:
 
-            // TODO
-            break;
+            const id = action.payload;
+            delete state.items[id];
+            return {
+                ...state,
+                items: state.items,
+                ids: state.ids.filter(stateId => stateId!==id),
+            };
         default:
             return state
     }

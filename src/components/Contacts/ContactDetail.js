@@ -90,7 +90,7 @@ class ContactDetail extends Component {
                                         {this.props.viewedContact && this.props.viewedContact.address}<br/>
                                         {this.props.viewedContact && this.props.viewedContact.phones.map(phoneItem => {
                                             return (
-                                                <div><i className="fa fa-phone"/> {phoneItem.phone}<br/></div>
+                                                <div key={phoneItem.phone}><i className="fa fa-phone"/> {phoneItem.phone}<br/></div>
                                             );
                                         })}
 

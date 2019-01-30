@@ -43,7 +43,7 @@ export function getStageDeals(query, sort, stageId, page=0, append=false) {
     function success(response) {
         const type = append ? dealConstants.APPEND_STAGE_DEALS_SUCCESS : dealConstants.LOAD_STAGE_DEALS_SUCCESS;
 
-        return { type: type, payload: {'stageId': stageId, 'deals': response[0], 'maxDealCount': response[1]} }
+        return { type: type, payload: {'stage_id': stageId, 'deals': response[0], 'maxDealCount': response[1]} }
     }
     function failure(error) {
         const type = append ? dealConstants.APPEND_STAGE_DEALS_FAILURE : dealConstants.LOAD_STAGE_DEALS_FAILURE;

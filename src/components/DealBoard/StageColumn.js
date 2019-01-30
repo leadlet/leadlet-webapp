@@ -122,7 +122,7 @@ class StageColumn extends Component {
 
         // if there is no items in cards currently, display a placeholder anyway
         if (isOver && canDrop ) {
-            cardList.push(<li key="placeholder" className="info-element placeholder"/>);
+            cardList.push(<div><li key="placeholder" className="info-element placeholder"/></div>);
         }
 
         if (_.has(this, ["props", "dealStore", "ids"])) {

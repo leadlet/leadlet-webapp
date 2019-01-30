@@ -6,6 +6,7 @@ import Field from "redux-form/es/Field";
 import renderAsyncSelectField from "../../formUtils/renderAsyncSelectField";
 import {loadLostReason} from "../../formUtils/form.actions";
 import {updateDeal} from "../../actions/deal.actions";
+import * as _ from "lodash";
 
 class LostReason extends Component {
 
@@ -19,23 +20,21 @@ class LostReason extends Component {
     onSubmit = (formValues) => {
 
         let deal = {
-            ...formValues,
             id: formValues.id,
             title: formValues.title,
-            contactId: formValues.contact && formValues.contact.id,
-            organizationId: formValues.organization && formValues.organization.id,
-            stageId: formValues.stage && formValues.stage.id,
-            pipelineId: formValues.pipeline && formValues.pipeline.id,
-            ownerId: formValues.owner && formValues.owner.id,
-            dealValue: formValues.dealValue,
-            possibleCloseDate: formValues.possibleCloseDate && formValues.possibleCloseDate._d,
-            products: formValues.products,
-            dealSource: formValues.dealSource,
-            dealChannel: formValues.dealChannel,
-            activityStatus: formValues.activityStatus,
-            dealStatus: formValues.dealStatus,
-            lostReason: formValues.lostReason
-        }
+            contact_id: _.get(formValues.contact,'id'),
+            stage_id: _.get(formValues.stage,'id'),
+            pipeline_id: _.get(formValues.pipeline,'id'),
+            agent_id: _.get(formValues.agent,'id'),
+            deal_value: formValues.deal_value,
+            possible_close_date: formValues.possibleCloseDate && formValues.possibleCloseDate._d,
+            product_ids: (formValues.products && formValues.products.map(p=>p.id)) || [],
+            activity_ids: (formValues.activities && formValues.activities.map(p=>p.id)) || [],
+            deal_source_id: _.get(formValues.deal_source,'id'),
+            deal_channel_id: _.get(formValues.deal_channel,'id'),
+            created_date: formValues.created_date,
+            lost_reason_id: _.get(formValues.lostReason,'id'),
+        };
 
         this.props.updateDeal(deal);
 
