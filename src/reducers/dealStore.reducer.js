@@ -18,7 +18,7 @@ export function dealStore(state = { ids: [], items: {}}, action) {
 
         case dealConstants.LOAD_STAGE_DEALS_SUCCESS:
             deals = normalize(action.payload.deals, dealListSchema);
-            let stageId = action.payload.stageId;
+            let stageId = action.payload.stage_id;
             let cleanedState = deleteDealsFromStage(state, stageId);
             return {
                 ...state,
