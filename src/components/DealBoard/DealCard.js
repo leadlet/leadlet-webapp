@@ -33,11 +33,13 @@ const DealCard = (props) => {
     const dealPhoneNumber = _.get(item, ["contact","phones","0","phone"], 'Not Number');
     let dealProductsName = item.products.map( x => x.length !== 0 ? dealProductsName = x.name.slice(0, 15) : dealProductsName = 'Not Products Name');
     const formattedDate = moment(item.created_date).fromNow();
+    const agentImage = item.agent.imageUrl.length !== 0 ? item.agent.imageUrl : 'img/default-user-image.png' ;
+    console.log(item.agent.imageUrl, 'item');
     return (
         <li className="info-element" id={item.id} style={style}>
             <Link style={{ textDecoration: 'inherit', color:'inherit' }} to={"/deal/" + item.id}>
                 <div className="lead-card">
-                    <span className="lead-photo"><img alt="Deal Card" src="https://media.nngroup.com/media/people/photos/Kim-Flaherty-Headshot.png.400x400_q95_autocrop_crop_upscale.png" /></span>
+                    <span className="lead-photo"><img alt="Deal Card" src={agentImage} /></span>
                     <span className="lead-product">{dealProductsName}</span>
                     <span className="lead-name">{item.contact && item.contact.name}</span>
                     <span className="lead-phone">{dealPhoneNumber}</span>
