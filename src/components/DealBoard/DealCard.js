@@ -34,7 +34,6 @@ const DealCard = (props) => {
     let dealProductsName = item.products.map( x => x.length !== 0 ? dealProductsName = x.name.slice(0, 15) : dealProductsName = 'Not Products Name');
     const formattedDate = moment(item.created_date).fromNow();
     const agentImage = item.agent.imageUrl.length !== 0 ? item.agent.imageUrl : 'img/default-user-image.png' ;
-    console.log(item.agent.imageUrl, 'item');
     return (
         <li className="info-element" id={item.id} style={style}>
             <Link style={{ textDecoration: 'inherit', color:'inherit' }} to={"/deal/" + item.id}>
