@@ -33,7 +33,7 @@ const DealCard = (props) => {
     const dealPhoneNumber = _.get(item, ["contact","phones","0","phone"], 'Not Number');
     let dealProductsName = item.products.map( x => x.length !== 0 ? dealProductsName = x.name.slice(0, 15) : dealProductsName = 'Not Products Name');
     const formattedDate = moment(item.created_date).fromNow();
-    const agentImage = item.agent.imageUrl.length !== 0 ? item.agent.imageUrl : 'img/default-user-image.png' ;
+    const agentImage = _.get(item, ["agent","imageUrl","length"],0) !== 0 ? item.agent.imageUrl : 'img/default-user-image.png' ;
     return (
         <li className="info-element" id={item.id} style={style}>
             <Link style={{ textDecoration: 'inherit', color:'inherit' }} to={"/deal/" + item.id}>
