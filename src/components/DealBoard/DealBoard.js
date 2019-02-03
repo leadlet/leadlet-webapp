@@ -35,20 +35,6 @@ let sortOptions = [
             order: 'asc'
         },
         label: 'Oldest'
-    },
-    {
-        value: {
-            dataField: 'priority',
-            order: 'desc'
-        },
-        label: 'Most Prior'
-    },
-    {
-        value: {
-            dataField: 'priority',
-            order: 'asc'
-        },
-        label: 'Least Prior'
     }
 ];
 
@@ -218,21 +204,6 @@ class DealBoard extends Component {
                             title="Sources"
                             emptyText="No Source"
                             multi={true}
-                            group="deals-page"
-                            index="leadlet-deal"
-                        />
-                        <ListFilter
-                            id="Status"
-                            dataField="dealStatus.keyword"
-                            title="Status"
-                            multi={true}
-                            group="deals-page"
-                            index="leadlet-deal"
-                        />
-                        <RangeFilter
-                            id="Priority"
-                            dataField="priority"
-                            title="Priority"
                             group="deals-page"
                             index="leadlet-deal"
                         />
