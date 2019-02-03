@@ -42,7 +42,6 @@ const DealCard = (props) => {
                     <span className="lead-product">{dealProductsName}</span>
                     <span className="lead-name">{item.contact && item.contact.name}</span>
                     <span className="lead-phone">{dealPhoneNumber}</span>
-                    <span className={"lead-status " + getActivityStatusColor(item)}>{item.activity_status}</span>
                     <div className="lead-icon">
                         <span/>
                         <span><i className="fa fa-trash" aria-hidden="true"
