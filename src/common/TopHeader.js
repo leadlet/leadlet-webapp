@@ -42,10 +42,10 @@ class TopHeader extends React.Component {
                     <div className="navbar-collapse collapse" id="navbar">
                         <ul className="nav navbar-nav">
                             <li>
-                                <Link aria-expanded="false" role="button" to="/contacts">Contacts</Link>
+                                <Link aria-expanded="false" role="button" to="/deals">Deals</Link>
                             </li>
                             <li>
-                                <Link aria-expanded="false" role="button" to="/deals">Deals</Link>
+                                <Link aria-expanded="false" role="button" to="/contacts">Contacts</Link>
                             </li>
                             <li>
                                 <Link aria-expanded="false" role="button" to="/activities">Activities</Link>

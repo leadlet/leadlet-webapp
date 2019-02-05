@@ -28,7 +28,7 @@ class TopMenuLayout extends Component {
                         <TopHeader/>
                         <div className="wrapper-content">
                             <Switch>
-                                <PrivateRoute exact path="/" component={Dashboard}/>
+                                <PrivateRoute exact path="/" component={Deals}/>
                                 <PrivateRoute path="/contact/:contactId" component={ContactDetail}/>
                                 <PrivateRoute path="/contacts" component={Contacts}/>
                                 <PrivateRoute path="/deal/:dealId" component={DealDetail}/>
