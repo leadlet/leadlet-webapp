@@ -9,14 +9,11 @@ export function filterStore(state = {}, action) {
 
     switch (action.type) {
         case searchConstants.FACET_PIPELINE_SELECTED:
-            return {
-                ...state,
-                [action.payload.id]: {
+            return Object.assign({}, state, {[action.payload.id]: {
                     id: action.payload.id,
                     group: action.payload.group,
                     selected : {pipeline: action.payload.pipeline}
-                }
-            };
+                }});
 
         case searchConstants.FACET_CLEAR:
             return _.omit(state, [`${action.payload.facetId}.selected`]);

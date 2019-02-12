@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {deleteStage, getAllStages} from "../../actions/stage.actions";
+import {deleteStage, getPipelineStages} from "../../actions/stage.actions";
 import StageNewOrEdit from "./StageNewOrEdit";
 import SweetAlert from 'sweetalert-react';
 import * as _ from "lodash";
@@ -26,7 +26,7 @@ class Stages extends React.Component {
     }
 
     componentDidMount() {
-        this.props.getAllStages();
+        this.props.getPipelineStages(this.props.pipelineId);
     }
 
     confirmDeleteStage() {
@@ -126,4 +126,4 @@ function mapStateToProps(state) {
 }
 
 
-export default connect(mapStateToProps, {getAllStages, deleteStage})(Stages);
+export default connect(mapStateToProps, {getPipelineStages, deleteStage})(Stages);
