@@ -2,7 +2,6 @@ import { authHeader } from '../helpers';
 import { handleResponse} from "../helpers/service.utils";
 
 export const stageService = {
-    getAll,
     getByPipelineId,
     getById,
     createStage,
@@ -37,16 +36,6 @@ function getById(id) {
     };
 
     return fetch('/api/stages/' + id, requestOptions).then(handleResponse);
-}
-
-function getAll() {
-    // TODO ygokirmak - add pipelineId filter
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
-
-    return fetch('/api/stages', requestOptions).then(handleResponse);
 }
 
 function getByPipelineId(id) {

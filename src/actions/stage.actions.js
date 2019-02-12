@@ -3,11 +3,11 @@ import {stageConstants} from "../constants/stage.constants";
 import {stageService} from "../services/stage.service"
 import {alertActions} from "./alert.actions";
 
-export function getAllStages() {
+export function getPipelineStages(pipelineId) {
 
     return dispatch => {
         dispatch(request());
-        return stageService.getAll()
+        return stageService.getByPipelineId(pipelineId)
             .then(
                 payload => dispatch(success(payload)),
                 error => dispatch(failure(error))

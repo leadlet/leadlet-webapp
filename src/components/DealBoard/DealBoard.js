@@ -9,8 +9,7 @@ import {deleteDeal} from "../../actions/deal.actions";
 import SweetAlert from 'sweetalert-react';
 import CreateEditDeal from '../DealDetail/CreateEditDeal'
 import ListFilter from "../Search/ListFilter";
-import {getAllStages} from "../../actions/stage.actions";
-import RangeFilter from "../Search/RangeFilter";
+import {getPipelineStages} from "../../actions/stage.actions";
 import SelectedFilters from "../Search/SelectedFilters";
 import DateRangeFilter from "../Search/DateRangeFilter";
 import {pipelineSelected} from "../../actions/search.actions";
@@ -135,7 +134,6 @@ class DealBoard extends Component {
 
     componentDidMount() {
         this.props.getAllPipelines();
-        this.props.getAllStages();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -145,13 +143,13 @@ class DealBoard extends Component {
     }
 
     pipelineChanged(pipeline) {
-        this.setState({selectedPipeline: pipeline});
-
-        this.props.pipelineSelected({
-            pipeline: pipeline,
-            group: "deals-page",
-            id: "pipeline-selector"
-        });
+        this.props.getPipelineStages(pipeline.id);
+        this.setState({selectedPipeline: pipeline},
+            ()=>this.props.pipelineSelected({
+                pipeline: pipeline,
+                group: "deals-page",
+                id: "pipeline-selector"
+            }));
     }
 
     render() {
@@ -285,7 +283,7 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
     getAllPipelines,
-    getAllStages,
+    getPipelineStages,
     deleteDeal,
     pipelineSelected
 })(DragDropContext(HTML5Backend)(DealBoard));
