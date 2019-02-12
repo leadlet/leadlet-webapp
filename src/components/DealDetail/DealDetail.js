@@ -147,7 +147,9 @@ class DealDetail extends Component {
                                     initialValues={{
                                         deal: {
                                             id: deal.id
-                                        }
+                                        },
+                                        contact: deal.contact,
+                                        agent: deal.agent
                                     }}
                                     defaultFilter={`deal_id:${deal.id}`}
                                     options={[
