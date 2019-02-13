@@ -9028,6 +9028,8 @@ body {
       visibility: visible !important;
       background: #e7eaec !important;
       min-height: 87px; }
+  .deal-board .highlight {
+    background: #e7eaec !important; }
   .deal-board .stage-header {
     padding: 15px 9px 5px; }
     .deal-board .stage-header .stage-name {
