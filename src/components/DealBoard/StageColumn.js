@@ -117,12 +117,13 @@ class StageColumn extends Component {
     }
 
     render() {
-        const {connectDropTarget, isOver, canDrop} = this.props;
+        const {connectDropTarget, isOver, canDrop, stage} = this.props;
         let cardList = [];
 
         // if there is no items in cards currently, display a placeholder anyway
+        let styles = "list";
         if (isOver && canDrop ) {
-            cardList.push(<div><li key="placeholder" className="info-element placeholder"/></div>);
+            styles = "list highlight";
         }
 
         if (_.has(this, ["props", "dealStore", "ids"])) {
@@ -145,10 +146,15 @@ class StageColumn extends Component {
 
 
         return connectDropTarget(
-            <ul>
-                {cardList}
-                <VisibilitySensor onChange={this.loadMoreDeal}/>
-            </ul>
+            <div key={stage.id} className={styles}>
+                <div className="stage-header">
+                    <div className="stage-name">{stage.name}</div>
+                </div>
+                <ul>
+                    {cardList}
+                    <VisibilitySensor onChange={this.loadMoreDeal}/>
+                </ul>
+            </div>
         );
     }
 

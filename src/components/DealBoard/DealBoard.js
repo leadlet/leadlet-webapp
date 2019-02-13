@@ -256,10 +256,6 @@ class DealBoard extends Component {
             return this.props.stageStore.ids.map(stageId => this.props.stageStore.items[stageId])
                 .filter(stage => stage.pipelineId === this.state.selectedPipeline.id)
                 .map(stage =>
-                    <div key={stage.id} className="list">
-                        <div className="stage-header">
-                            <div className="stage-name">{stage.name}</div>
-                        </div>
                         <StageColumn
                             key={stage.id}
                             stage={stage}
@@ -268,7 +264,6 @@ class DealBoard extends Component {
                             isScrolling={this.state.isScrolling}
                             deleteDeal={this.onDeleteDeal}
                         />
-                    </div>
                 );
         }
     }
