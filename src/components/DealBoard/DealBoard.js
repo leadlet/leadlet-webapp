@@ -212,10 +212,12 @@ class DealBoard extends Component {
                             group="deals-page"
                             index="leadlet-deal"
                         />
-                        <DateRangeFilter
-                            id="CreateDate"
-                            dataField="created_date"
-                            title="Create Date"
+                        <ListFilter
+                            id="Agents"
+                            dataField="agent_name.keyword"
+                            title="Agents"
+                            emptyText="No Agent"
+                            multi={true}
                             group="deals-page"
                             index="leadlet-deal"
                         />
