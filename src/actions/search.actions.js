@@ -77,10 +77,9 @@ export function termUnSelected(facetId, terms) {
         dispatch( {type: searchConstants.FACET_TERM_UNSELECTED, payload: {"facetId": facetId, "terms": terms}});
     };
 }
-
-export function registerFilter(filterDefinition) {
+export function textSearched(facetId, searchText) {
     return dispatch => {
-        dispatch( {type: searchConstants.REGISTER_FILTER, payload: filterDefinition});
+        dispatch( {type: searchConstants.FACET_TEXT_SEARCHED, payload: {"facetId": facetId, "selected": searchText}});
     };
 }
 
@@ -90,6 +89,11 @@ export function changeSort(sort) {
     };
 }
 
+export function registerFilter(filterDefinition) {
+    return dispatch => {
+        dispatch( {type: searchConstants.REGISTER_FILTER, payload: filterDefinition});
+    };
+}
 
 export function clearSort(sort) {
     return dispatch => {

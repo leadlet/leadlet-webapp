@@ -102,7 +102,6 @@ class StageColumn extends Component {
     }
 
     componentDidUpdate(prevProps) {
-
         if (this.getQuery(prevProps) !== this.getQuery()
             || this.getSort(prevProps) !== this.getSort()) {
             this.props.getStageDeals(QueryUtils.addStageFilter(this.getQuery(), this.props.stage.id),

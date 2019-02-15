@@ -18,6 +18,7 @@ import {DragDropContext} from 'react-dnd';
 
 import * as _ from "lodash";
 import StageColumn from "./StageColumn";
+import FreeTextFilter from "../Search/FreeTextFilter";
 
 
 let sortOptions = [
@@ -178,6 +179,12 @@ class DealBoard extends Component {
                 <div className="row stages">
                     {this.state.isSearchMenuVisible &&
                     <div id="deals-search" className="side-search-menu deal-search">
+                        <FreeTextFilter
+                            id="FreeText"
+                            title="Search"
+                            group="deals-page"
+                            index="leadlet-deal"
+                        />
                         <ListFilter
                             id="Products"
                             dataField="products.keyword"

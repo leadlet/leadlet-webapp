@@ -24,6 +24,14 @@ export function filterStore(state = {}, action) {
                 ...state,
                 [facet.id]: facet
             };
+        case searchConstants.FACET_TEXT_SEARCHED:
+            return {
+                ...state,
+                [action.payload.facetId]: {
+                    ...state[action.payload.facetId],
+                    selected: action.payload.selected
+                }
+            };
         case searchConstants.FACET_TERM_SELECTED:
             oldSelectedOptions = [];
             if( !action.payload.clear){
