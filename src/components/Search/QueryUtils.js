@@ -24,6 +24,7 @@ export class QueryUtils {
         let rangeFilters = [];
         let dateRangeFilters = [];
         let pipelineFilterText = "";
+        let freeTextFilter = "";
         let filters;
         let query = "";
 
@@ -51,7 +52,12 @@ export class QueryUtils {
                 .filter(filter => filter.type === "DATERANGE" && filter.selected)
                 .map(filter => filter.dataField + ":[" + filter.selected.min + " TO " + filter.selected.max + "]");
 
-            let searchFilters = [...termFilters, ...rangeFilters, ...dateRangeFilters];
+            freeTextFilter = filters
+                .filter(filter => filter.type === "FREE_TEXT" && filter.selected)
+                .map(filter => "*"+filter.selected+"*");
+
+
+            let searchFilters = [...termFilters, ...rangeFilters, ...dateRangeFilters, ...freeTextFilter];
 
             let pipelineFilter = filters.find(filter => filter.id === "pipeline-selector" && filter.selected);
 
@@ -64,6 +70,7 @@ export class QueryUtils {
 
         }
 
+        console.log(query);
         return query;
     }
 
