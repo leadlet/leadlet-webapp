@@ -18,11 +18,14 @@ class DealDetail extends Component {
 
         this.state = {
             isEditDealModalVisible: false,
+            isEditDealModalForWonVisible: false,
             lastModifiedDate: moment()
         };
 
+        this.openEditDealModalWon = this.openEditDealModalWon.bind(this);
         this.openEditDealModal = this.openEditDealModal.bind(this);
         this.closeEditDealModal = this.closeEditDealModal.bind(this);
+        this.closeEditDealModalWon = this.closeEditDealModalWon.bind(this);
         this.closeLostReasonModal = this.closeLostReasonModal.bind(this);
         this.renderAgent = this.renderAgent.bind(this);
         this.renderLastUpdateDate = this.renderLastUpdateDate.bind(this);
@@ -51,6 +54,13 @@ class DealDetail extends Component {
         });
     }
 
+    closeEditDealModalWon() {
+        this.setState({
+            isEditDealModalForWonVisible: false,
+            lastModifiedDate: moment()
+        });
+    }
+
     closeLostReasonModal() {
         this.setState({
             isLostReasonModalVisible: false
@@ -60,6 +70,12 @@ class DealDetail extends Component {
     openEditDealModal() {
         this.setState({
             isEditDealModalVisible: true
+        });
+    }
+
+    openEditDealModalWon() {
+        this.setState({
+            isEditDealModalForWonVisible: true
         });
     }
 
@@ -114,17 +130,22 @@ class DealDetail extends Component {
                                             <dt>Possible Close:</dt>
                                             <dd>{this.renderPossibleCloseDate()}</dd>
                                             {
-                                                deal.dealStatus === "LOST" &&
-                                                [<dt>Lost Reason:</dt>, <dd>{deal.lostReason.name}</dd>]
+                                                deal.deal_status === "LOST" &&
+                                                [<dt>Lost Reason:</dt>, <dd>{deal.lost_reason && deal.lost_reason.name}</dd>]
                                             }
                                             <dt>Deal Status:</dt>
-                                            <dd>{this.renderDealStatus()}</dd>
+                                            <dd>{deal.deal_status}</dd>
 
                                         </dl>
                                     </div>
                                     <div className="row">
                                         <button onClick={this.openEditDealModal}
                                                 className="btn btn-white btn-xs pull-right">Edit Deal
+                                        </button>
+                                        <button onClick={() => this.openEditDealModalWon()} type="button" className="btn btn-primary btn-xs">WON
+                                        </button>
+                                        <button onClick={() => this.openLostReasonModal()} type="button"
+                                                className="deal-danger-btn btn btn-danger btn-xs">LOST
                                         </button>
                                     </div>
 
@@ -168,11 +189,20 @@ class DealDetail extends Component {
 
                         </div>
 
-
                         {
                             this.state.isEditDealModalVisible &&
                             <CreateEditDeal showModal={this.state.isEditDealModalVisible}
                                             close={this.closeEditDealModal}
+                                            initialValues={deal}
+                                            showPipelineSelection={false}
+
+                            />
+                        }
+
+                        {
+                            this.state.isEditDealModalForWonVisible &&
+                            <CreateEditDeal showModal={this.state.isEditDealModalForWonVisible}
+                                            close={this.closeEditDealModalWon}
                                             initialValues={{...deal, deal_status: "WON"}}
                                             showPipelineSelection={false}
 
@@ -198,7 +228,7 @@ class DealDetail extends Component {
 
         return (
             <p>
-                <button onClick={() => this.openEditDealModal()} type="button" className="btn btn-primary btn-xs">WON
+                <button onClick={() => this.openEditDealModalWon()} type="button" className="btn btn-primary btn-xs">WON
                 </button>
                 <button onClick={() => this.openLostReasonModal()} type="button"
                         className="deal-danger-btn btn btn-danger btn-xs">LOST

@@ -221,6 +221,15 @@ class DealBoard extends Component {
                             group="deals-page"
                             index="leadlet-deal"
                         />
+                        <ListFilter
+                            id="Status"
+                            dataField="deal_status.keyword"
+                            title="Status"
+                            emptyText="No Status"
+                            multi={true}
+                            group="deals-page"
+                            index="leadlet-deal"
+                        />
                     </div>
                     }
                     <div id="deals-board" className="lists">

@@ -66,7 +66,9 @@ class CreateEditDeal extends Component {
             stage_id: _.get(formValues.stage,'id'),
             pipeline_id: _.get(formValues.pipeline,'id'),
             agent_id: _.get(formValues.agent,'id'),
+            lost_reason_id: _.get(formValues.lost_reason,'id'),
             deal_value: formValues.deal_value,
+            deal_status: formValues.deal_status,
             possible_close_date: formValues.possible_close_date && formValues.possible_close_date._d,
             product_ids: (formValues.products && formValues.products.map(p=>p.id)) || [],
             activity_ids: (formValues.activities && formValues.activities.map(p=>p.id)) || [],
@@ -119,11 +121,14 @@ class CreateEditDeal extends Component {
                             component={renderInputField}
                             label="Title"
                             validate={[required, maxLength64]}
+                            readOnly={true}
                         />
                         <Fields
                             label="Potential Value"
                             names={['deal_value.potentialValue', 'deal_value.currency']}
-                            component={renderPriceCurrencyField}/>
+                            component={renderPriceCurrencyField}
+                            readOnly={true}
+                        />
 
 
                         <Fields
@@ -148,6 +153,7 @@ class CreateEditDeal extends Component {
                                 }
 
                             }}
+                            readOnly={true}
                         />
                         {this.props.showContactSelection &&
                         <Field
@@ -173,6 +179,7 @@ class CreateEditDeal extends Component {
                                 }
 
                             }}
+                            readOnly={true}
                         />
                         }
 
@@ -200,6 +207,7 @@ class CreateEditDeal extends Component {
                                 }
 
                             }}
+                            readOnly={true}
                         />
                         }
 
@@ -208,6 +216,7 @@ class CreateEditDeal extends Component {
                             name="possible_close_date"
                             placeholder="Select Possible Close Date"
                             component={renderDatePicker}
+                            readOnly={true}
                         />
 
                         <Field
@@ -239,6 +248,7 @@ class CreateEditDeal extends Component {
 
                                 }
                             }}
+                            readOnly={true}
                         />
                         <Field
                             name="deal_source"
@@ -263,6 +273,7 @@ class CreateEditDeal extends Component {
                                 }
 
                             }}
+                            readOnly={true}
                         />
                         <Field
                             name="deal_channel"
@@ -287,6 +298,7 @@ class CreateEditDeal extends Component {
                                 }
 
                             }}
+                            readOnly={true}
                         />
                     </form>
                     <div>
