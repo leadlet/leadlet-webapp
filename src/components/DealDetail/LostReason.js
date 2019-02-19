@@ -27,6 +27,7 @@ class LostReason extends Component {
             pipeline_id: _.get(formValues.pipeline,'id'),
             agent_id: _.get(formValues.agent,'id'),
             deal_value: formValues.deal_value,
+            deal_status: formValues.deal_status,
             possible_close_date: formValues.possibleCloseDate && formValues.possibleCloseDate._d,
             product_ids: (formValues.products && formValues.products.map(p=>p.id)) || [],
             activity_ids: (formValues.activities && formValues.activities.map(p=>p.id)) || [],
