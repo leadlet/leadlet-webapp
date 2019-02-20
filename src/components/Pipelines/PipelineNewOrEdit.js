@@ -68,7 +68,11 @@ class PipelineNewOrEdit extends React.Component {
                             label="Name"
                             validate={[required, maxLength32]}
                         />
-
+                        <Field name="defaultSelected"
+                               id="defaultSelected"
+                               label="Default"
+                               component={renderField}
+                               type="checkbox"/>
                         <button className="btn btn-sm btn-primary pull-right"
                                 type="submit" disabled={pristine || submitting || !valid}><strong>Submit</strong>
                         </button>
