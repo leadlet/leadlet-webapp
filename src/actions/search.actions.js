@@ -1,6 +1,12 @@
 import {searchConstants} from "../constants/search.constants";
 import {searchService} from "../services/search.service";
 
+export function appendFilter(group, facetId, appendQuery) {
+    return dispatch => {
+        dispatch( {type: searchConstants.FACET_APPEND, payload: {"group": group, "id": facetId, "type": "append", "selected": appendQuery}});
+    };
+}
+
 export function clearFilter(facetId) {
     return dispatch => {
         dispatch( {type: searchConstants.FACET_CLEAR, payload: {"facetId": facetId}});

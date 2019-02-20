@@ -56,8 +56,15 @@ class SelectedFilters extends Component {
                                     id={filter.id} onClick={()=>this.onClearFilter(filter.id)}>{filter.selected} <i className="fa fa-close fa-xs"/></button>);
                 });
 
+            let appendFilter = filters
+                .filter(filter => filter.type === "append" && filter.selected)
+                .map(filter => {
+                    return (<button type="button" className="btn btn-default btn-small"
+                                    key={filter.id}
+                                    id={filter.id} onClick={()=>this.onClearFilter(filter.id)}>{filter.selected} <i className="fa fa-close fa-xs"/></button>);
+                });
 
-            searchFilters = [ ...termFilters, ...rangeFilters, ...dateRangeFilters, ...freeTextFilter];
+            searchFilters = [ ...termFilters, ...rangeFilters, ...dateRangeFilters, ...freeTextFilter, ...appendFilter];
 
             return ( <div className={this.props.className ? this.props.className : " selected-filters"}>{searchFilters}</div>);
         }

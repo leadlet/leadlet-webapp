@@ -8,6 +8,7 @@ import Note from "../Note/Note";
 import moment from "moment";
 import * as _ from "lodash";
 import NewEditContact from "./NewEditContact";
+import Link from "react-router-dom/es/Link";
 
 class ContactDetail extends Component {
 
@@ -105,6 +106,10 @@ class ContactDetail extends Component {
                                     <a onClick={() => this.openDealModal()}
                                        className="btn btn-primary btn-sm m-l-sm">New Deal</a>
                                 </div>
+                                <div className="contact-box-footer">
+                                    <Link to={`/deals?q=contact_id:${this.props.viewedContact.id}`}>Deals</Link>
+                                </div>
+
                             </div>
                         </div>
                         <div className="col-md-8 m-b-lg">
