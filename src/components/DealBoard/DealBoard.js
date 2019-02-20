@@ -11,8 +11,7 @@ import CreateEditDeal from '../DealDetail/CreateEditDeal'
 import ListFilter from "../Search/ListFilter";
 import {getPipelineStages} from "../../actions/stage.actions";
 import SelectedFilters from "../Search/SelectedFilters";
-import DateRangeFilter from "../Search/DateRangeFilter";
-import {pipelineSelected} from "../../actions/search.actions";
+import {appendFilter, pipelineSelected} from "../../actions/search.actions";
 import SortSelector from "../Search/SortSelector";
 import {DragDropContext} from 'react-dnd';
 
@@ -134,6 +133,10 @@ class DealBoard extends Component {
     }
 
     componentDidMount() {
+        if(this.props.location.search) {
+            let appendQuery= this.props.location.search.substring(this.props.location.search.indexOf("=")+1);
+            this.props.appendFilter("deals-page", "param-filter", appendQuery);
+        }
         this.props.getAllPipelines();
     }
 
@@ -298,6 +301,7 @@ export default connect(mapStateToProps, {
     getAllPipelines,
     getPipelineStages,
     deleteDeal,
-    pipelineSelected
+    pipelineSelected,
+    appendFilter
 })(DragDropContext(HTML5Backend)(DealBoard));
 

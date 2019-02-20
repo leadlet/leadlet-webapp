@@ -26,6 +26,7 @@ export class QueryUtils {
         let pipelineFilterText = "";
         let freeTextFilter = "";
         let filters;
+        let appendFilter="";
         let query = "";
 
         if (filterStore) {
@@ -56,8 +57,11 @@ export class QueryUtils {
                 .filter(filter => filter.type === "FREE_TEXT" && filter.selected)
                 .map(filter => "*"+filter.selected+"*");
 
+            appendFilter = filters
+                .filter(filter => filter.type === "append" && filter.selected)
+                .map(filter => filter.selected);
 
-            let searchFilters = [...termFilters, ...rangeFilters, ...dateRangeFilters, ...freeTextFilter];
+            let searchFilters = [...termFilters, ...rangeFilters, ...dateRangeFilters, ...freeTextFilter, ...appendFilter];
 
             let pipelineFilter = filters.find(filter => filter.id === "pipeline-selector" && filter.selected);
 
@@ -69,8 +73,6 @@ export class QueryUtils {
             query = searchFilters.length > 0 ? searchFilters.join(" AND ") : "";
 
         }
-
-        console.log(query);
         return query;
     }
 

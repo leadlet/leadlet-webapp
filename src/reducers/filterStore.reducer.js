@@ -18,6 +18,12 @@ export function filterStore(state = {}, action) {
         case searchConstants.FACET_CLEAR:
             return _.omit(state, [`${action.payload.facetId}.selected`]);
 
+        case searchConstants.FACET_APPEND:
+            return {
+                ...state,
+                [action.payload.id]: action.payload
+            };
+
         case searchConstants.FACET_GET_SUCCESS:
             var facet = Object.assign(action.payload, action.filter);
             return {
