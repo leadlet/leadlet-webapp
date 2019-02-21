@@ -12,7 +12,7 @@ export const PrivateRoute = ({component: Component, ...rest}) => {
 
         );
     }else{
-        if (isAuthorized(rest.authorize)) {
+        if (isAuthorized(rest.allowedAuthorities)) {
             return (
                 <Route {...rest} render={props => {
 

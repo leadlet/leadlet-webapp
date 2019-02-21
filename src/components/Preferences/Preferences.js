@@ -6,6 +6,7 @@ import AccountPreferences from "./AccountPreferences";
 import Products from "./ProductList";
 import Channels from "./ChannelList";
 import Sources from "./SourceList";
+import {isAuthorized} from "../../helpers/auth-check";
 
 
 class Preferences extends Component {
@@ -24,24 +25,29 @@ class Preferences extends Component {
                             <div className="ibox-content">
                                 <div className="row">
                                     <Tabs defaultActiveKey={1} animation={false} id="pipeline-tabs">
-                                        <Tab eventKey={1} title="Account">
-                                            <AccountPreferences/>
-                                        </Tab>
-                                        <Tab eventKey={2} title="Profile">
+                                        <Tab eventKey={1} title="Profile">
                                             <Profile/>
                                         </Tab>
-                                        <Tab eventKey={3} title="Pipelines">
-                                            <Pipelines/>
-                                        </Tab>
-                                        <Tab eventKey={4} title="Products">
-                                            <Products/>
-                                        </Tab>
-                                        <Tab eventKey={5} title="Channels">
-                                            <Channels/>
-                                        </Tab>
-                                        <Tab eventKey={6} title="Sources">
-                                            <Sources/>
-                                        </Tab>
+                                        {
+                                            isAuthorized("ROLE_MANAGER") &&
+                                            [
+                                                <Tab eventKey={2} title="Account">
+                                                    <AccountPreferences/>
+                                                </Tab>,
+                                                <Tab eventKey={3} title="Pipelines">
+                                                    <Pipelines/>
+                                                </Tab>,
+                                                < Tab eventKey={4} title="Products">
+                                                    <Products/>
+                                                </Tab>,
+                                                <Tab eventKey={5} title="Channels">
+                                                    <Channels/>
+                                                </Tab>,
+                                                <Tab eventKey={6} title="Sources">
+                                                    <Sources/>
+                                                </Tab>
+                                            ]
+                                        }
                                     </Tabs>
                                 </div>
                             </div>

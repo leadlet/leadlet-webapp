@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Field, reduxForm} from 'redux-form';
 import {updateUser, getUser} from '../../actions/user.actions';
 import {connect} from "react-redux";
+import InputMask from 'react-input-mask';
 
 const renderField = ({
                          input,
@@ -18,7 +19,25 @@ const renderField = ({
                 </span>
         </div>
     </div>
-)
+);
+
+const renderPhoneField = ({
+                              input,
+                              label,
+                              type,
+                              meta: {error}
+                          }) => (
+    <div className="form-group">
+        <label className="col-sm-2 control-label">{label}</label>
+        <div className="col-sm-4">
+            <InputMask {...input} type={type} className="form-control" mask="+99 999 999 99 99"/>
+            <span style={{color: "red"}} className="help-block m-b-none">
+                    {error && <span>{error}</span>}
+                </span>
+
+        </div>
+    </div>
+);
 
 class Profile extends Component {
 
@@ -39,6 +58,7 @@ class Profile extends Component {
         profile.firstName = formValue.firstName;
         profile.lastName = formValue.lastName;
         profile.password = formValue.newPassword;
+        profile.phone = formValue.phone;
 
         this.props.updateUser(profile);
     }
@@ -63,6 +83,12 @@ class Profile extends Component {
                         type="text"
                         component={renderField}
                         label="Last Name"
+                    />
+                    <Field
+                        name="phone"
+                        type="text"
+                        component={renderPhoneField}
+                        label="Phone"
                     />
                     <Field
                         name="newPassword"
