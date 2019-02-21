@@ -34,12 +34,12 @@ class TopMenuLayout extends Component {
                                 <PrivateRoute path="/deal/:dealId" component={DealDetail}/>
                                 <PrivateRoute path="/user/:userId" component={AgentDetail}/>
                                 <PrivateRoute path="/deals" component={Deals}/>
-                                <PrivateRoute path="/pipelines" component={PipelinesPage}/>
+                                <PrivateRoute path="/pipelines" component={PipelinesPage} allowedAuthorities={["ROLE_MANAGER"]}/>
                                 <PrivateRoute path="/activities" component={Activities}/>
                                 <PrivateRoute path="/preferences" component={Preferences}/>
-                                <PrivateRoute path="/products" component={Products}/>
-                                <PrivateRoute path="/channels" component={Channels}/>
-                                <PrivateRoute path="/sources" component={Sources}/>
+                                <PrivateRoute path="/products" component={Products} allowedAuthorities={["ROLE_MANAGER"]}/>
+                                <PrivateRoute path="/channels" component={Channels} allowedAuthorities={["ROLE_MANAGER"]}/>
+                                <PrivateRoute path="/sources" component={Sources} allowedAuthorities={["ROLE_MANAGER"]}/>
                                 <Route component={NotFound} />
                             </Switch>
                         </div>
