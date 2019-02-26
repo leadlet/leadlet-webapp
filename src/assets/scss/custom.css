@@ -13,9 +13,16 @@
     padding: 0 20%; }
     .login-wrapper .login-left .welcome-area .logo {
       display: table;
-      margin: 0 auto 50px; }
+      margin: 0 auto 45px; }
       .login-wrapper .login-left .welcome-area .logo img {
         max-width: 150px; }
+    .login-wrapper .login-left .welcome-area .headline {
+      margin-bottom: 60px; }
+      .login-wrapper .login-left .welcome-area .headline h3 {
+        text-align: center;
+        font-size: 25px;
+        font-weight: 500;
+        color: #212529; }
   .login-wrapper .login-left .form-control {
     height: 46px;
     border-radius: 0;

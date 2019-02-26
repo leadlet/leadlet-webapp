@@ -47,6 +47,9 @@ class LoginPage extends React.Component {
                                 <div className="logo">
                                     <img src="img/theme/logo-dark.png" alt="Leadonly Logo" />
                                 </div>
+                                <div className="headline">
+                                    <h3>Sign In To Panel</h3>
+                                </div>
                                 <form className="login-form" onSubmit={this.handleSubmit}>
                                     <div className="form-group">
                                         <input type="email" className="form-control" placeholder="Username" name="username" required="" onChange={this.handleChange} />
