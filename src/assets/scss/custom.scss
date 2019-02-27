@@ -133,3 +133,26 @@
         border-color: #7c0acd;
     }
 }
+
+.deal-board {
+    .deal-search {
+        background-color: #fff;
+        margin: 20px -15px 15px -5px;
+        padding: 20px 0;
+    
+        .filter-name {
+            font-size: 12px;
+            font-weight: 500;
+        }
+    
+        .filter-items {
+            .form-check {
+                .form-check-label {
+                    margin: 0 0 5px 5px;
+                    font-weight: 400;
+                    font-size: 13px;
+                }
+            }
+        }
+    }
+}

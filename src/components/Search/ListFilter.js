@@ -71,9 +71,9 @@ class ListFilter extends Component {
                 return (
                     <div key={key} className="form-check">
                         <input className="form-check-input" type="checkbox"
-                               value={key} id={key} onChange={this.inputChanged}
+                               value={key} name={key} id={key} onChange={this.inputChanged}
                                checked={filter.selected && filter.selected.options.includes(key)}/>
-                        <label className="form-check-label item-name">
+                        <label className="form-check-label item-name" htmlFor={key}>
                             {keyText }  <span className="item-count">({terms[key]})</span>
                         </label>
                     </div>

@@ -44,8 +44,8 @@ class FreeTextFilter extends Component {
     render(){
         return (<div className="list-filter">
                     <h6 className="filter-name">{this.props.title}</h6>
-                    <div className="filter-items">
-                        <input type="text" className="input"
+                    <div className="filter-items form-group">
+                        <input type="text" className="input form-control"
                                placeholder="Search..."
                                onChange={this.handleChange}/>
                     </div>
