@@ -42,8 +42,8 @@ class FreeTextFilter extends Component {
 
 
     render(){
-        return (<div className="list-filter">
-                    <h6 className="filter-name">{this.props.title}</h6>
+        return (<div className="list-filter" id={this.props.id}>
+                    {this.props.title == null ? null : <h6 className="filter-name">{this.props.title}</h6>}
                     <div className="filter-items form-group">
                         <input type="text" className="input form-control"
                                placeholder="Search..."

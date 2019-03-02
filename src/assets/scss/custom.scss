@@ -155,4 +155,47 @@
             }
         }
     }
+    .toolbar {
+        .Select-control {
+            height: 34px !important;
+        }
+        .Select-placeholder {
+            line-height: 32px !important;
+        }
+    }
+
+    .filter-button {
+        height: 36px;
+    }
+
+    .new-deal {
+        margin: 15px 0;
+        height: 36px;
+        min-width: 100px;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .top-filter-area-right {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+}
+
+#searchArea {
+    float: left;
+    .form-group {
+        margin: 0 5px;
+
+        input {
+            border-color: #d9d9d9 #ccc #b3b3b3;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            height: 36px;
+        }
+    }
+}
+
+.p-0 {
+    padding: 0 !important;
 }

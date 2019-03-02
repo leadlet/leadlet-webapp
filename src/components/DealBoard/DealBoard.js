@@ -159,93 +159,103 @@ class DealBoard extends Component {
     render() {
         return (
             <div className="wrapper deal-board">
-                <div className="row toolbar">
-                    <SelectedFilters group="deals-page" index="leadlet-deal" />
-                    <SortSelector
-                        className="m-l-xs sort-selector"
-                        group="deals-page"
-                        id="deal-sort-selector"
-                        options={sortOptions}
-                    />
-                    <PipelineSelector className="m-l-xs pipeline-selector"
-                        pipelineStore={this.props.pipelineStore}
-                        onChange={this.pipelineChanged}
-                        value={this.state.selectedPipeline}
-                    />
+                <div className="row">
 
-                    <Button bsStyle="primary" bsSize="small" className="m-l-xs" onClick={this.toggleNewDealModal}>New
-                        Deal</Button>
-                    <Button bsStyle="primary" bsSize="small" className="m-l-xs" onClick={this.toggleSearchMenu}><i
-                        className="fa fa-filter fa-xs" /></Button>
+                    <div className="col-md-2 top-filter-area-left">
+                        <Button bsStyle="primary" bsSize="small" className="new-deal" onClick={this.toggleNewDealModal}>New
+                            Deal</Button>
+                    </div>
+
+                    <div className="col-md-8 col-md-offset-2 top-filter-area-right">
+                        <div className="col-md-5 p-0">
+                            <SelectedFilters group="deals-page" index="leadlet-deal" />
+                        </div>
+                        <div className="col-md-2 p-0">
+                            <SortSelector
+                                className="m-l-xs sort-selector"
+                                group="deals-page"
+                                id="deal-sort-selector"
+                                options={sortOptions}
+                            />
+                        </div>
+                        <div className="col-md-2 p-0">
+                            <PipelineSelector className="m-l-xs pipeline-selector"
+                                pipelineStore={this.props.pipelineStore}
+                                onChange={this.pipelineChanged}
+                                value={this.state.selectedPipeline}
+                            />
+                        </div>
+                        <div className="col-md-3 p-0">
+                            <FreeTextFilter
+                                id="searchArea"
+                                group="deals-page"
+                                index="leadlet-deal"
+                            />
+                            <Button bsStyle="info" bsSize="small" className="filter-button" onClick={this.toggleSearchMenu}><i
+                                className="fa fa-filter fa-xs" /></Button>
+                        </div>
+                    </div>
                 </div>
 
                 {this.state.isSearchMenuVisible &&
-                        <div id="deals-search" className="row deal-search">
-                            <div className="col-md-2">
-                                <FreeTextFilter
-                                    id="FreeText"
-                                    title="Search"
-                                    group="deals-page"
-                                    index="leadlet-deal"
-                                />
-                            </div>
-                            <div className="col-md-2">
-                                <ListFilter
-                                    id="Products"
-                                    dataField="products.keyword"
-                                    title="Products"
-                                    emptyText="No Product"
-                                    multi={true}
-                                    group="deals-page"
-                                    index="leadlet-deal"
-                                />
-                            </div>
-                            <div className="col-md-2">
-                                <ListFilter
-                                    id="Channels"
-                                    dataField="channel.keyword"
-                                    title="Channels"
-                                    emptyText="No Channel"
-                                    multi={true}
-                                    group="deals-page"
-                                    index="leadlet-deal"
-                                />
-                            </div>
-                            <div className="col-md-2">
-                                <ListFilter
-                                    id="Sources"
-                                    dataField="source.keyword"
-                                    title="Sources"
-                                    emptyText="No Source"
-                                    multi={true}
-                                    group="deals-page"
-                                    index="leadlet-deal"
-                                />
-                            </div>
-                            <div className="col-md-2">
-                                <ListFilter
-                                    id="Agents"
-                                    dataField="agent_name.keyword"
-                                    title="Agents"
-                                    emptyText="No Agent"
-                                    multi={true}
-                                    group="deals-page"
-                                    index="leadlet-deal"
-                                />
-                            </div>
-                            <div className="col-md-2">
-                                <ListFilter
-                                    id="Status"
-                                    dataField="deal_status.keyword"
-                                    title="Status"
-                                    emptyText="No Status"
-                                    multi={true}
-                                    group="deals-page"
-                                    index="leadlet-deal"
-                                />
-                            </div>
+                    <div id="deals-search" className="row deal-search">
+                        <div className="col-md-2">
+                            <ListFilter
+                                id="Products"
+                                dataField="products.keyword"
+                                title="Products"
+                                emptyText="No Product"
+                                multi={true}
+                                group="deals-page"
+                                index="leadlet-deal"
+                            />
                         </div>
-                    }
+                        <div className="col-md-2">
+                            <ListFilter
+                                id="Channels"
+                                dataField="channel.keyword"
+                                title="Channels"
+                                emptyText="No Channel"
+                                multi={true}
+                                group="deals-page"
+                                index="leadlet-deal"
+                            />
+                        </div>
+                        <div className="col-md-2">
+                            <ListFilter
+                                id="Sources"
+                                dataField="source.keyword"
+                                title="Sources"
+                                emptyText="No Source"
+                                multi={true}
+                                group="deals-page"
+                                index="leadlet-deal"
+                            />
+                        </div>
+                        <div className="col-md-2">
+                            <ListFilter
+                                id="Agents"
+                                dataField="agent_name.keyword"
+                                title="Agents"
+                                emptyText="No Agent"
+                                multi={true}
+                                group="deals-page"
+                                index="leadlet-deal"
+                            />
+                        </div>
+                        <div className="col-md-2">
+                            <ListFilter
+                                id="Status"
+                                dataField="deal_status.keyword"
+                                title="Status"
+                                emptyText="No Status"
+                                multi={true}
+                                group="deals-page"
+                                index="leadlet-deal"
+                            />
+                        </div>
+                    </div>
+                }
 
                 <div className="row stages">
 
