@@ -37,7 +37,7 @@ class TopHeader extends React.Component {
                         <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" className="navbar-toggle collapsed" type="button">
                             <i className="fa fa-reorder"/>
                         </button>
-                        <Link to="/" className="navbar-brand">Leadlet</Link>
+                        <Link to="/" className="navbar-brand"><img alt="Logo" className="logo" src="/img/theme/logo.png"/></Link>
                     </div>
                     <div className="navbar-collapse collapse" id="navbar">
                         <ul className="nav navbar-nav">

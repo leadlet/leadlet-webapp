@@ -5,7 +5,7 @@ class Footer extends React.Component {
         return (
             <div className="footer">
                 <div>
-                    <strong>Leadlet</strong>
+                    <strong>Leadonly</strong>
                 </div>
             </div>
         )
