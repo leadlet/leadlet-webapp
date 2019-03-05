@@ -40,7 +40,7 @@ class LoginPage extends React.Component {
         return (
             <div className="container-fluid login-wrapper">
                 <div className="row full-height">
-                    <div className="col-md-6 full-height no-padding">
+                    <div className="col-md-5 full-height no-padding">
                         <div className="login-left full-height no-padding">
 
                             <div className="welcome-area center-center ">
@@ -68,11 +68,11 @@ class LoginPage extends React.Component {
                                 </form>
                             </div>
                             <div className="login-bottom">
-                                <p>Don't have an account yet? <a href="/register">Sign Up</a></p>
+                                <p>Don't have an account yet? <a href="https://merchant.leadonly.co/#/login?action=signup">Sign Up</a></p>
                             </div>
                         </div>
                     </div>
-                    <div className="col-md-6 full-height no-padding">
+                    <div className="col-md-7 full-height no-padding">
                         <div className="login-right full-height no-padding">
                             <div className="login-text">
                                 <h3>Your Lead Management Partner</h3>
