@@ -122,7 +122,7 @@ Profile = reduxForm({
 // You have to connect() to any reducers that you wish to connect to yourself
 Profile = connect(
     state => ({
-        initialValues: state.authentication.authenticatedUser // pull initial values from account reducer
+        initialValues: state.authentication.user // pull initial values from account reducer
     }),
     {
         updateUser, getUser

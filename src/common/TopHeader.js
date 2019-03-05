@@ -4,6 +4,7 @@ import $ from 'jquery';
 import {userActions} from "../actions/user.actions";
 import { connect } from 'react-redux';
 import {Link, NavLink} from "react-router-dom";
+import * as _ from "lodash";
 
 class TopHeader extends React.Component {
 
@@ -37,7 +38,7 @@ class TopHeader extends React.Component {
                         <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" className="navbar-toggle collapsed" type="button">
                             <i className="fa fa-reorder"/>
                         </button>
-                        <Link to="/" className="navbar-brand"><img alt="Logo" className="logo" src="/img/theme/logo.png"/></Link>
+                        <Link to="/" className="navbar-brand"><img alt="Logo" className="logo" src={_.get(this,"props.authentication.user.appAccount.logo")||"/img/theme/logo.png"}/></Link>
                     </div>
                     <div className="navbar-collapse collapse" id="navbar">
                         <ul className="nav navbar-nav">
@@ -72,7 +73,7 @@ class TopHeader extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        authorization: state.authorization,
+        authentication: state.authentication,
     };
 }
 

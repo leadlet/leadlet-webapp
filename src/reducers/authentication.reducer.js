@@ -28,7 +28,7 @@ export function authentication(state = initialState, action) {
         case userConstants.GET_SUCCESS:
             return {
                 ...state,
-                authenticatedUser: action.user
+                user: action.user
             };
         case userConstants.GET_FAILURE:
             return {

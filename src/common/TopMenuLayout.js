@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import {TopHeader} from "./TopHeader";
-import Footer from "./Footer";
+import {Footer} from "./Footer";
 import Contacts from "../components/Contacts/Contacts";
-import Dashboard from "../components/Dashboard/Dashboard";
 import Deals from "../components/DealBoard/DealBoard";
 import Switch from "react-router-dom/es/Switch";
 import PipelinesPage from "../components/Pipelines/Pipelines";

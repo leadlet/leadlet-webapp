@@ -49,7 +49,7 @@ class RegisterPage extends React.Component {
                         <div className="login-left full-height no-padding">
                             <div className="welcome-area center-center ">
                                 <div className="logo">
-                                    <img src="img/theme/logo-dark.png" alt="Leadonly Logo" />
+                                    <img src="img/theme/logo-dark.png" alt="Company Logo" />
                                 </div>
                                 <div className="headline">
                                     <h3>Sign Up To Panel</h3>
