@@ -3,7 +3,7 @@ import { smoothlyMenu } from './Helpers';
 import $ from 'jquery';
 import {userActions} from "../actions/user.actions";
 import { connect } from 'react-redux';
-import {Link} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 
 class TopHeader extends React.Component {
 
@@ -42,20 +42,20 @@ class TopHeader extends React.Component {
                     <div className="navbar-collapse collapse" id="navbar">
                         <ul className="nav navbar-nav">
                             <li>
-                                <Link aria-expanded="false" role="button" to="/deals">Deals</Link>
+                                <NavLink activeClassName="active" role="button" to="/deals">Deals</NavLink>
                             </li>
                             <li>
-                                <Link aria-expanded="false" role="button" to="/contacts">Contacts</Link>
+                                <NavLink activeClassName="active" role="button" to="/contacts">Contacts</NavLink>
                             </li>
                             <li>
-                                <Link aria-expanded="false" role="button" to="/activities">Activities</Link>
+                                <NavLink activeClassName="active" role="button" to="/activities">Activities</NavLink>
                             </li>
                         </ul>
                         <ul className="nav navbar-nav navbar-right">
                             <li>
-                                <Link aria-expanded="false" role="button" to="/preferences">
+                                <NavLink activeClassName="active" role="button" to="/preferences">
                                     <i className="fa fa-cog"/> Settings
-                                </Link>
+                                </NavLink>
                             </li>
                             <li>
                                 <Link to="#" onClick={this.handleLogOut}>

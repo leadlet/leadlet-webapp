@@ -148,6 +148,8 @@
 
 .top-navigation .nav > li > a {
   color: #6c6e86; }
+  .top-navigation .nav > li > a.active {
+    color: #fff; }
   .top-navigation .nav > li > a:hover, .top-navigation .nav > li > a:focus {
     color: #fff;
     background: #2c2d3a;
