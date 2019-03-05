@@ -57,7 +57,6 @@ const DealCard = (props) => {
                         <span className="second">{dealChannelName}</span>
                     </div>
                     <span className="lead-time">{formattedDate}</span>
-                    <span className="lead-score"><span className="score high orange"/></span>
                 </div>
             </Link>
         </li>

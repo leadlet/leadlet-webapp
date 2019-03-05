@@ -8495,7 +8495,7 @@ body.md-skin {
 /* General CSS Setup */
 body {
   background-color: #f3f3f4;
-  font-family: "Ubuntu-Italic", "Lucida Sans", helvetica, sans; }
+  font-family: "Roboto", "Open Sans", helvetica, sans; }
 
 /* CSS talk bubble */
 .talk-bubble {
@@ -8811,6 +8811,175 @@ body {
 .deal-danger-btn {
   margin-left: 5px; }
 
+.login-wrapper {
+  height: 100%;
+  background: #fff; }
+  .login-wrapper .center-center {
+    position: relative;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%); }
+  .login-wrapper .full-height {
+    position: relative;
+    height: 100%; }
+  .login-wrapper .login-left .welcome-area {
+    padding: 0 20%; }
+    .login-wrapper .login-left .welcome-area .logo {
+      display: table;
+      margin: 0 auto 45px; }
+      .login-wrapper .login-left .welcome-area .logo img {
+        max-width: 150px; }
+    .login-wrapper .login-left .welcome-area .headline {
+      margin-bottom: 60px; }
+      .login-wrapper .login-left .welcome-area .headline h3 {
+        text-align: center;
+        font-size: 25px;
+        font-weight: 500;
+        color: #212529; }
+  .login-wrapper .login-left .form-control {
+    height: 46px;
+    border-radius: 0;
+    border: 0;
+    border-bottom: 1px solid #ebedf2;
+    padding: 1rem 0;
+    margin-top: .1rem; }
+  .login-wrapper .login-left .btn {
+    text-align: center;
+    padding: 1.2rem 3rem;
+    display: table;
+    margin: 30px auto 0; }
+  .login-wrapper .login-left .login-bottom {
+    bottom: 30px;
+    position: absolute;
+    width: 100%;
+    text-align: center; }
+    .login-wrapper .login-left .login-bottom p {
+      font-size: 16px;
+      font-weight: 300; }
+    .login-wrapper .login-left .login-bottom a {
+      font-weight: 500;
+      color: #9816f4;
+      padding-left: 5px; }
+  .login-wrapper .login-right {
+    background: url("./assets/img/theme/login-background-2.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover; }
+    .login-wrapper .login-right .login-text {
+      position: absolute;
+      top: 50%;
+      width: 60%;
+      left: 20%;
+      transform: translateY(-50%); }
+      .login-wrapper .login-right .login-text h3 {
+        color: #fff;
+        font-size: 55px;
+        font-weight: 500;
+        margin-bottom: 2rem; }
+      .login-wrapper .login-right .login-text p {
+        color: #fff;
+        font-size: 15px;
+        font-weight: 200;
+        line-height: 26px; }
+
+.no-padding {
+  padding: 0 !important; }
+
+.btn-air {
+  -webkit-box-shadow: 0 5px 10px 2px rgba(152, 22, 244, 0.19) !important;
+  -moz-box-shadow: 0 5px 10px 2px rgba(152, 22, 244, 0.19) !important;
+  box-shadow: 0 5px 10px 2px rgba(152, 22, 244, 0.19) !important; }
+
+.btn-pill {
+  -webkit-border-radius: 60px;
+  -moz-border-radius: 60px;
+  -ms-border-radius: 60px;
+  -o-border-radius: 60px;
+  border-radius: 60px; }
+
+.btn-purple {
+  color: #fff;
+  background-color: #9816f4;
+  border-color: #9816f4; }
+  .btn-purple:hover {
+    color: #fff;
+    background-color: #840ad9;
+    border-color: #7c0acd; }
+
+.deal-board .deal-search {
+  background-color: #fff;
+  margin: 20px -15px 15px -5px;
+  padding: 20px 0; }
+  .deal-board .deal-search .filter-name {
+    font-size: 12px;
+    font-weight: 500; }
+  .deal-board .deal-search .filter-items .form-check .form-check-label {
+    margin: 0 0 5px 5px;
+    font-weight: 400;
+    font-size: 13px; }
+
+.deal-board .toolbar .Select-control {
+  height: 34px !important; }
+
+.deal-board .toolbar .Select-placeholder {
+  line-height: 32px !important; }
+
+.deal-board .filter-button {
+  height: 36px; }
+
+.deal-board .new-deal {
+  margin: 15px 0;
+  height: 36px;
+  min-width: 100px;
+  font-size: 13px;
+  font-weight: 500; }
+
+.deal-board .top-filter-area-right {
+  margin-top: 15px;
+  margin-bottom: 15px; }
+
+#searchArea {
+  float: left; }
+  #searchArea .form-group {
+    margin: 0 5px; }
+    #searchArea .form-group input {
+      border-color: #d9d9d9 #ccc #b3b3b3;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      height: 36px; }
+
+.p-0 {
+  padding: 0 !important; }
+
+#navbar {
+  background: #2c2d3a; }
+
+.top-navigation .navbar-brand {
+  background: #2c2d3a; }
+  .top-navigation .navbar-brand .logo {
+    height: 22px; }
+
+.top-navigation .nav > li > a {
+  color: #6c6e86; }
+  .top-navigation .nav > li > a.active {
+    color: #fff; }
+  .top-navigation .nav > li > a:hover, .top-navigation .nav > li > a:focus {
+    color: #fff;
+    background: #2c2d3a;
+    outline: none; }
+
+.btn-primary {
+  color: #fff;
+  background-color: #34bfa3;
+  border-color: #34bfa3; }
+
+.btn-primary:hover {
+  background-color: #2ca189;
+  border-color: #299781; }
+
+.footer {
+  position: fixed; }
+
 @font-face {
   font-family: 'icomoon';
   src: url("./assets/fonts/icomoon.eot?wdsxm3");
@@ -9039,7 +9208,8 @@ body {
     position: relative;
     min-height: 87px;
     font-family: 'Montserrat', sans-serif;
-    color: #232323; }
+    color: #232323;
+    border-bottom: 2px solid #ddd; }
     .deal-board .lead-card .lead-photo {
       display: inline-block;
       border-radius: 8px;
