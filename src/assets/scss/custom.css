@@ -112,7 +112,8 @@
   line-height: 32px !important; }
 
 .deal-board .filter-button {
-  height: 36px; }
+  height: 36px;
+  width: 17%; }
 
 .deal-board .new-deal {
   margin: 15px 0;
@@ -126,7 +127,8 @@
   margin-bottom: 15px; }
 
 #searchArea {
-  float: left; }
+  float: left;
+  width: 80%; }
   #searchArea .form-group {
     margin: 0 5px; }
     #searchArea .form-group input {

@@ -168,7 +168,7 @@ class DealBoard extends Component {
 
                     <div className="col-md-8 col-md-offset-2 top-filter-area-right">
                         <div className="col-md-5 p-0">
-                            <SelectedFilters group="deals-page" index="leadlet-deal" />
+                            
                         </div>
                         <div className="col-md-2 p-0">
                             <SortSelector
@@ -199,6 +199,9 @@ class DealBoard extends Component {
 
                 {this.state.isSearchMenuVisible &&
                     <div id="deals-search" className="row deal-search">
+                        <div className="col-md-12">
+                            <SelectedFilters group="deals-page" index="leadlet-deal" />
+                        </div>
                         <div className="col-md-2">
                             <ListFilter
                                 id="Products"
