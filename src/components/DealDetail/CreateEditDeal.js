@@ -77,28 +77,13 @@ class CreateEditDeal extends Component {
             created_date: formValues.created_date
         };
 
-        function difference(object, base) {
-            function changes(object, base) {
-                return _.transform(object, function(result, value, key) {
-                    if (!_.isEqual(value, base[key])) {
-                        result[key] = (_.isObject(value) && _.isObject(base[key])) ? changes(value, base[key]) : value;
-                    }
-                });
-            }
-            return changes(object, base);
-        }
-
-        let diff = difference(deal, this.props.initialValues);
-
-        let modifiedFileds = Object.keys(diff)
-
         if (deal.id) {
-            this.props.updateDeal(deal, modifiedFileds);
+            this.props.updateDeal(deal);
         } else {
             this.props.createDeal(deal);
         }
         this.props.close();
-    }
+    };
 
     onClose() {
         this.props.reset();

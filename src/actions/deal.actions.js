@@ -76,11 +76,11 @@ export function patchDeal(deal) {
     function failure(error) { return { type: dealConstants.UPDATE_FAILURE, error } }
 }
 
-export function updateDeal(deal, modifiedFileds) {
+export function updateDeal(deal) {
     return dispatch => {
         dispatch(request());
 
-        return dealService.update(deal, modifiedFileds)
+        return dealService.update(deal)
             .then(
                 payload => {
                     dispatch(success(payload));
