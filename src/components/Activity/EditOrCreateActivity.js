@@ -8,7 +8,6 @@ import SweetAlert from 'sweetalert-react';
 import ToggleButtonGroup from "react-bootstrap/es/ToggleButtonGroup";
 import ToggleButton from "react-bootstrap/es/ToggleButton";
 import formValueSelector from "redux-form/es/formValueSelector";
-import renderDateTimePicker from "../../formUtils/renderDateTimePicker";
 import renderInputField from "../../formUtils/renderInputField";
 import renderAsyncSelectField from "../../formUtils/renderAsyncSelectField";
 import renderInputFieldRow from "../../formUtils/renderInputFieldRow";
@@ -18,6 +17,9 @@ import moment from 'moment';
 import {getAllActivityTypes} from "../../actions/activityType.actions";
 import {required} from "../../formValidations/form.validations";
 import {maxLength64} from "../../formValidations/form.validations";
+import renderDatePicker from "../../formUtils/renderDatePicker";
+import renderSelectField from "../../formUtils/renderSelectField";
+import renderDateTimePicker from "../../formUtils/renderDateTimePicker";
 
 
 const renderTypeField = (props) => (
@@ -39,6 +41,12 @@ const renderTypeField = (props) => (
     </div>
 )
 
+const durationOptions = [
+    {value: 15, label: '15 mins'},
+    {value: 30, label: '30 mins'},
+    {value: 45, label: '45 mins'},
+    {value: 60, label: '60 mins'}
+];
 
 class EditOrCreateActivity extends Component {
 
@@ -83,11 +91,16 @@ class EditOrCreateActivity extends Component {
 
     onSubmit = (formValues) => {
 
+        var date = moment(formValues.start, "YYYY-MM-DDTHH:mm:ss[Z]");
+
+        var endDate = date.add(formValues.duration, 'm');
+        var endDateStr = endDate.format("YYYY-MM-DDTHH:mm:ss[Z]");
+
         let activity = {
             ...formValues,
             id: formValues.id,
             start: formValues.start,
-            end: formValues.end,
+            end: endDateStr,
             memo: formValues.memo,
             type: formValues.type,
             title: formValues.title,
@@ -143,13 +156,13 @@ class EditOrCreateActivity extends Component {
                                 parse={(value) => {
                                     if (value) {
                                         return {
-                                            'id': parseInt(value,0)
+                                            'id': parseInt(value, 0)
                                         };
                                     }
                                 }}
                                 format={(value) => {
                                     if (value) {
-                                        return parseInt(value.id,0);
+                                        return parseInt(value.id, 0);
                                     }
 
                                 }}
@@ -169,25 +182,23 @@ class EditOrCreateActivity extends Component {
                                 label="Description"
                                 rows="3"
                             />
-                            <div className="form-horizontal">
-                                <div className="form-group">
-                                    <Field
-                                        label="Start Date"
-                                        name="start"
-                                        maximumDate={moment(this.props.end)}
-                                        component={renderDateTimePicker}
-                                        validate={[required]}
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <Field
-                                        label="End Date"
-                                        name="end"
-                                        minimumDate={moment(this.props.start)}
-                                        component={renderDateTimePicker}
-                                        validate={[required]}
-                                    />
-                                </div>
+                            <div className="form-group">
+                                <Field
+                                    label="Date & Time"
+                                    name="start"
+                                    maximumDate={moment(this.props.end)}
+                                    component={renderDateTimePicker}
+                                    validate={[required]}
+                                />
+                                <Field
+                                    label="Duration"
+                                    name="duration"
+                                    component={renderSelectField}
+                                    validate={[required]}
+                                    options={durationOptions}
+                                    startDate={moment(this.props.start)}
+                                    endDate={moment(this.props.end)}
+                                />
                             </div>
 
                             {this.props.showDealSelection &&
@@ -303,7 +314,7 @@ class EditOrCreateActivity extends Component {
                             <div className="pull-right activity-detail-submit">
                                 <button className="btn btn-sm btn-default" onClick={this.props.close}>Cancel</button>
                                 <button className="btn btn-sm btn-primary"
-                                        disabled={pristine || submitting || !valid}
+                                        disabled={pristine || submitting}
                                         onClick={handleSubmit(this.onSubmit)}>
                                     <strong>Submit</strong></button>
                             </div>
