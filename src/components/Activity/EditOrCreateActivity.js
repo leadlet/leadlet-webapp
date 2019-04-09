@@ -17,7 +17,6 @@ import moment from 'moment';
 import {getAllActivityTypes} from "../../actions/activityType.actions";
 import {required} from "../../formValidations/form.validations";
 import {maxLength64} from "../../formValidations/form.validations";
-import renderDatePicker from "../../formUtils/renderDatePicker";
 import renderSelectField from "../../formUtils/renderSelectField";
 import renderDateTimePicker from "../../formUtils/renderDateTimePicker";
 
