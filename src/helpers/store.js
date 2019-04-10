@@ -5,10 +5,11 @@ import rootReducer from '../reducers';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 //const loggerMiddleware = createLogger();
-
+//TODO kancer
 export const store = createStore(
     rootReducer, composeWithDevTools(
     applyMiddleware(
+        //TODO kancer
         thunkMiddleware,
 //        loggerMiddleware
     ))

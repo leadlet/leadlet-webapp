@@ -147,7 +147,8 @@ class StageColumn extends Component {
         return connectDropTarget(
             <div key={stage.id} className={styles}>
                 <div className="stage-header">
-                    <div className="stage-name">{stage.name}</div>
+                    <div className="stage-name">{stage.name} <span className="badge badge-light">{this.props.stageStore.items[stage.id].maxDealCount}</span>
+                    </div>
                 </div>
                 <ul>
                     {cardList}
