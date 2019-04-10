@@ -121,7 +121,12 @@ class renderDateTimePicker extends React.Component {
     }
 
     handleDateChange(date) {
-        const newDate = moment(this.props.input.value, TIME_FORMAT);
+
+        let newDate = moment();
+        if(this.props.input.value){
+            newDate = moment(this.props.input.value, TIME_FORMAT);
+        }
+
         newDate.year(date.year()).month(date.month()).date(date.date());
         this.props.input.onChange(newDate.format(TIME_FORMAT));
     }

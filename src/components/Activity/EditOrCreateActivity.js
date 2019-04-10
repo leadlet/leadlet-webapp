@@ -185,7 +185,6 @@ class EditOrCreateActivity extends Component {
                                 <Field
                                     label="Date & Time"
                                     name="start"
-                                    maximumDate={moment(this.props.end)}
                                     component={renderDateTimePicker}
                                     validate={[required]}
                                 />
