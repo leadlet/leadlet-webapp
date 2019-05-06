@@ -162,12 +162,6 @@ class NewEditContact extends React.Component {
                             validate={[required]}
                         />
                         <Field
-                            name="login"
-                            type="text"
-                            component={renderField}
-                            label="Login"
-                        />
-                        <Field
                             name="gender"
                             type="text"
                             component={renderGenderField}
