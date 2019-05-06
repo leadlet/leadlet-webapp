@@ -50,7 +50,6 @@ class Profile extends Component {
     }
 
     onSubmit = (formValue) => {
-        console.log(formValue);
 
         let profile = {};
         profile.id = formValue.id;
@@ -116,7 +115,8 @@ class Profile extends Component {
 
 // Decorate with reduxForm(). It will read the initialValues prop provided by connect()
 Profile = reduxForm({
-    form: 'profileForm'  // a unique identifier for this form
+    form: 'profileForm',  // a unique identifier for this form
+    enableReinitialize: true
 })(Profile)
 
 // You have to connect() to any reducers that you wish to connect to yourself

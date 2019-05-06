@@ -211,7 +211,8 @@ function mapStateToProps(state) {
 }
 
 export default reduxForm({
-    form: 'contactForm' // a unique identifier for this form
+    form: 'contactForm', // a unique identifier for this form
+    enableReinitialize: true
 })(
     connect(mapStateToProps, {updateContact, createContact, getById})(NewEditContact)
 );
