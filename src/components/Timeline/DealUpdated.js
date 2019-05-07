@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from "moment";
+import * as _ from "lodash";
 
 const DealUpdated = (props) => (
     <div className="tracking-item" key={props.item.id}>
@@ -28,8 +29,8 @@ const renderFieldChange = (changedField) => {
             <b>"{changedField.newValue.name}"</b></li>);
     } else if(changedField.fieldName === "contact"){
         return (<li><b>Contact</b> changed from&nbsp;
-            <b>"{changedField.oldValue.name}"</b>&nbsp;to&nbsp;
-            <b>"{changedField.newValue.name}"</b></li>);
+            <b>"{ _.get(changedField, "oldValue.name", "-") }"</b>&nbsp;to&nbsp;
+            <b>"{ _.get(changedField, "newValue.name", "-") }"</b></li>);
     } else if(changedField.fieldName === "agent"){
         return (<li><b>Agent</b> changed from&nbsp;
             <b>"{changedField.oldValue.firstName} {changedField.oldValue.lastName}"</b>&nbsp;to
@@ -44,7 +45,7 @@ const renderFieldChange = (changedField) => {
             <b>"{changedField.newValue? changedField.newValue.name: '-'}"</b></li>);
     } else if(changedField.fieldName === "deal_channel"){
         return (<li><b>Channel</b> changed from&nbsp;
-            <b>"{changedField.oldValue? changedField.oldValue.name: '-'}"</b>&nbsp;to&nbsp;
+            <b>"{ _.get(changedField, "oldValue.name", '-') }"</b>&nbsp;to&nbsp;
             <b>"{changedField.newValue? changedField.newValue.name: '-'}"</b></li>);
     } else if(changedField.fieldName === "products"){
         return (<li><b>Products</b> updated</li>);

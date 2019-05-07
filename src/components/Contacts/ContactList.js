@@ -30,13 +30,14 @@ export const ContactList = function (props) {
 
     function phonesFormatter(cell, row) {
         if(row.phones && row.phones.length !== 0) {
-            return row.phones.reduce(function (result, cur) {
-                if (result.length > 0) {
-                    return result + ";" + cur.phone;
-                } else {
-                    return cur.phone;
-                }
-            }, "");
+            return row.phones.filter(phoneRecord => phoneRecord.phone !== null)
+                .reduce( (resultString, cur) => {
+                    if (resultString.length > 0) {
+                        return resultString + ";" + cur.phone;
+                    } else {
+                        return cur.phone;
+                    }
+                }, "");
         }
     }
 
