@@ -8,9 +8,7 @@ import CustomDragLayer from "./CustomDragLayer";
 import { deleteDeal } from "../../actions/deal.actions";
 import SweetAlert from 'sweetalert-react';
 import CreateEditDeal from '../DealDetail/CreateEditDeal'
-import ListFilter from "../Search/ListFilter";
 import { getPipelineStages } from "../../actions/stage.actions";
-import SelectedFilters from "../Search/SelectedFilters";
 import { appendFilter, pipelineSelected } from "../../actions/search.actions";
 import SortSelector from "../Search/SortSelector";
 import { DragDropContext } from 'react-dnd';
@@ -18,6 +16,7 @@ import { DragDropContext } from 'react-dnd';
 import * as _ from "lodash";
 import StageColumn from "./StageColumn";
 import FreeTextFilter from "../Search/FreeTextFilter";
+import FilterContainer from "../Search/FilterContainer";
 
 
 let sortOptions = [
@@ -49,7 +48,8 @@ class DealBoard extends Component {
             showDeleteDealDialog: false,
             deletingDeal: null,
             selectedPipeline: null,
-            sidebarOpen: true
+            sidebarOpen: true,
+            query:""
         };
 
         this.toggleNewDealModal = this.toggleNewDealModal.bind(this);
@@ -60,9 +60,12 @@ class DealBoard extends Component {
         this.startScrolling = this.startScrolling.bind(this);
         this.onDeleteDeal = this.onDeleteDeal.bind(this);
         this.pipelineChanged = this.pipelineChanged.bind(this);
+        this.setQuery = this.setQuery.bind(this);
 
     }
-
+    setQuery(query) {
+        this.setState({query: query});
+    }
     cancelDeleteDeal() {
         this.setState({
             deletingDeal: null,
@@ -199,64 +202,45 @@ class DealBoard extends Component {
 
                 {this.state.isSearchMenuVisible &&
                     <div id="deals-search" className="row deal-search">
-                        <div className="col-md-12">
-                            <SelectedFilters group="deals-page" index="leadlet-deal" />
-                        </div>
-                        <div className="col-md-2">
-                            <ListFilter
-                                id="Products"
-                                dataField="products.keyword"
-                                title="Products"
-                                emptyText="No Product"
-                                multi={true}
-                                group="deals-page"
-                                index="leadlet-deal"
-                            />
-                        </div>
-                        <div className="col-md-2">
-                            <ListFilter
-                                id="Channels"
-                                dataField="channel.keyword"
-                                title="Channels"
-                                emptyText="No Channel"
-                                multi={true}
-                                group="deals-page"
-                                index="leadlet-deal"
-                            />
-                        </div>
-                        <div className="col-md-2">
-                            <ListFilter
-                                id="Sources"
-                                dataField="source.keyword"
-                                title="Sources"
-                                emptyText="No Source"
-                                multi={true}
-                                group="deals-page"
-                                index="leadlet-deal"
-                            />
-                        </div>
-                        <div className="col-md-2">
-                            <ListFilter
-                                id="Agents"
-                                dataField="agent_name.keyword"
-                                title="Agents"
-                                emptyText="No Agent"
-                                multi={true}
-                                group="deals-page"
-                                index="leadlet-deal"
-                            />
-                        </div>
-                        <div className="col-md-2">
-                            <ListFilter
-                                id="Status"
-                                dataField="deal_status.keyword"
-                                title="Status"
-                                emptyText="No Status"
-                                multi={true}
-                                group="deals-page"
-                                index="leadlet-deal"
-                            />
-                        </div>
+                        <FilterContainer
+                            key="deal"
+                            container="deal"
+                            filters={[
+                                {
+                                    id: 'products',
+                                    title: 'Products',
+                                    field: 'products.keyword',
+                                    type: 'list'
+                                },
+                                {
+                                    id: 'channels',
+                                    title: 'Channels',
+                                    field: 'channel.keyword',
+                                    type: 'list'
+                                },
+                                {
+                                    id: 'sources',
+                                    title: 'Sources',
+                                    field: 'source.keyword',
+                                    type: 'list'
+                                },
+                                {
+                                    id: 'agents',
+                                    title: 'Agents',
+                                    field: 'agent_name.keyword',
+                                    type: 'list'
+                                },
+                                {
+                                    id: 'status',
+                                    title: 'Status',
+                                    field: 'deal_status.keyword',
+                                    type: 'list'
+                                }
+                            ]
+                            }
+                            onQueryChange={this.setQuery}
+
+                        />
                     </div>
                 }
 
@@ -305,6 +289,7 @@ class DealBoard extends Component {
                 .filter(stage => stage.pipelineId === this.state.selectedPipeline.id)
                 .map(stage =>
                     <StageColumn
+                        query={this.state.query}
                         key={stage.id}
                         stage={stage}
                         startScrolling={this.startScrolling}

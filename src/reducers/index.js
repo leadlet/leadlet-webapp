@@ -18,6 +18,8 @@ import {sortStore} from "./sortStore.reducer";
 import {activityTypes} from "./activityType.reducer";
 import {channels} from "./channel.reducer";
 import {sources} from "./source.reducer";
+import {filterStore2} from "./filterStore2.reducer";
+import {queryStore} from "./queryStore.reducer";
 
 const rootReducer = combineReducers({
     authentication,
@@ -34,6 +36,8 @@ const rootReducer = combineReducers({
     stageStore,
     timeLineStore,
     filterStore,
+    filterStore2,
+    queryStore,
     sortStore,
     activityTypes,
     channels,

@@ -1,3 +1,4 @@
+import * as _ from "lodash";
 
 export class QueryUtils {
 
@@ -76,5 +77,25 @@ export class QueryUtils {
         return query;
     }
 
+    static prepareQuery(filterDefinitions, newQueryForContainer) {
+
+        if(!newQueryForContainer){
+            return "";
+        }
+        let query = Object.keys(newQueryForContainer).map(filter => {
+
+            let filterType = filterDefinitions[filter].type;
+            let filterField = filterDefinitions[filter].field;
+
+            if( filterType === "list"
+                && _.get(newQueryForContainer, [filter,"selectedOptions","length"], 0) > 0){
+                return filterField + ":(" + newQueryForContainer[filter].selectedOptions.map(option => "\"" + option + "\"").join(" OR ") + ")"
+            }
+        }).filter(item => typeof item ==='string');
+
+        let result = query.length > 0 ? query.join(" AND ") : "";
+
+        return result;
+    }
 }
 
