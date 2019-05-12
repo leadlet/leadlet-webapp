@@ -9,7 +9,7 @@ import { deleteDeal } from "../../actions/deal.actions";
 import SweetAlert from 'sweetalert-react';
 import CreateEditDeal from '../DealDetail/CreateEditDeal'
 import { getPipelineStages } from "../../actions/stage.actions";
-import { appendFilter, pipelineSelected } from "../../actions/search.actions";
+import {appendFilter, pipelineSelected, termSelected2} from "../../actions/search.actions";
 import SortSelector from "../Search/SortSelector";
 import { DragDropContext } from 'react-dnd';
 
@@ -151,12 +151,7 @@ class DealBoard extends Component {
 
     pipelineChanged(pipeline) {
         this.props.getPipelineStages(pipeline.id);
-        this.setState({ selectedPipeline: pipeline },
-            () => this.props.pipelineSelected({
-                pipeline: pipeline,
-                group: "deals-page",
-                id: "pipeline-selector"
-            }));
+        this.setState({ selectedPipeline: pipeline });
     }
 
     render() {
@@ -205,6 +200,16 @@ class DealBoard extends Component {
                         <FilterContainer
                             key="deal"
                             container="deal"
+                            filterStyle="col-md-2"
+                            defaultFilters={[
+                                {
+                                    id: 'pipeline',
+                                    title: 'Pipeline',
+                                    field: 'pipeline_id',
+                                    value: this.state.selectedPipeline.id,
+                                }
+                                ]
+                            }
                             filters={[
                                 {
                                     id: 'products',
@@ -228,7 +233,8 @@ class DealBoard extends Component {
                                     id: 'agents',
                                     title: 'Agents',
                                     field: 'agent_name.keyword',
-                                    type: 'list'
+                                    type: 'list',
+                                    defaultSelected: [_.get(this.props.auth, ["user",  "id"])],
                                 },
                                 {
                                     id: 'status',
@@ -305,7 +311,8 @@ class DealBoard extends Component {
 function mapStateToProps(state) {
     return {
         pipelineStore: state.pipelineStore,
-        stageStore: state.stageStore
+        stageStore: state.stageStore,
+        auth: state.authentication
     }
 }
 
@@ -313,7 +320,7 @@ export default connect(mapStateToProps, {
     getAllPipelines,
     getPipelineStages,
     deleteDeal,
-    pipelineSelected,
-    appendFilter
+    appendFilter,
+    termSelected2
 })(DragDropContext(HTML5Backend)(DealBoard));
 

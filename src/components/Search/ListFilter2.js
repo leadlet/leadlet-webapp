@@ -40,6 +40,7 @@ class ListFilter2 extends React.Component {
             if( keyText && keyText.length > 20) {
                 keyText = keyText.substring(0,20) + "...";
             }
+
             return (
                 <div key={key} className="form-check">
                     <input className="form-check-input" type="checkbox"
@@ -72,6 +73,7 @@ ListFilter2.propTypes = {
     selectedOptions: PropTypes.array.isRequired,
     onTermSelect: PropTypes.func.isRequired,
     onTermUnSelect: PropTypes.func.isRequired,
+    defaultSelected: PropTypes.array.isRequired,
 };
 
 export default ListFilter2;

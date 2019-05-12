@@ -22,21 +22,29 @@ class FilterContainer extends Component {
         let newQueryForContainer = this.props.queryStore[ this.props.container];
         let filterDefinitions = _.get(this.props.filterStore2, [ this.props.container]);
 
-        if( oldQueryForContainer !== newQueryForContainer){
-            let filterQuery = QueryUtils.prepareQuery(filterDefinitions, newQueryForContainer);
-            this.props.onQueryChange(filterQuery);
-            this.props.getFilterOptions( this.props.container, this.props.filters, filterQuery );
+        let oldFilterQuery = QueryUtils.prepareQuery(filterDefinitions, oldQueryForContainer, prevProps.defaultFilters);
+        let newFilterQuery = QueryUtils.prepareQuery(filterDefinitions, newQueryForContainer, this.props.defaultFilters);
+
+        if( oldFilterQuery !== newFilterQuery){
+            this.props.onQueryChange(newFilterQuery);
+            this.props.getFilterOptions( this.props.container, this.props.filters, newFilterQuery );
         }
     }
     componentDidMount(){
-        this.props.getFilterOptions( this.props.container, this.props.filters );
+        let newQueryForContainer = this.props.queryStore[ this.props.container];
+        let filterDefinitions = _.get(this.props.filterStore2, [ this.props.container]);
+
+        let newFilterQuery = QueryUtils.prepareQuery(filterDefinitions, newQueryForContainer, this.props.defaultFilters);
+
+        this.props.getFilterOptions( this.props.container, this.props.filters, newFilterQuery);
     }
 
     renderSingleFilter(container, filterDefinition) {
         let filter = _.get(this.props.filterStore2, [container,filterDefinition.id]);
-        if( filter && filter.type === 'list') {
+        if( filter && filter.type === 'list' && filter.id !== "pipeline") {
             let selectedQueryOptions = _.get(this.props.queryStore, [container, filterDefinition.id, "selectedOptions"], []);
             return (
+                <div className={this.props.filterStyle}>
                 <ListFilter2
                     key={filter.id}
                     container={this.props.container}
@@ -44,9 +52,12 @@ class FilterContainer extends Component {
                     title={filterDefinition.title}
                     options={filter.options}
                     selectedOptions={selectedQueryOptions}
+                    defaultSelected={filterDefinition.defaultSelected}
                     onTermSelect={this.props.termSelected2}
                     onTermUnSelect={this.props.termUnSelected2}
-                />);
+                />
+                </div>
+            );
         }
     }
 }
@@ -64,11 +75,14 @@ FilterContainer.propTypes = {
         type: PropTypes.string.isRequired,
         id: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
-        field: PropTypes.string.isRequired
+        field: PropTypes.string.isRequired,
+        visible: PropTypes.bool,
     })).isRequired,
     termSelected2: PropTypes.func.isRequired,
     termUnSelected2: PropTypes.func.isRequired,
     onQueryChange: PropTypes.func.isRequired,
+    filterStyle: PropTypes.string.isRequired,
+    defaultFilters: PropTypes.array,
 };
 
 export default connect(mapStateToProps, {termSelected2,termUnSelected2,getFilterOptions})(FilterContainer);

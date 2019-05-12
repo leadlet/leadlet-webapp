@@ -8,7 +8,11 @@ import * as _ from "lodash";
             var container = action.payload.container;
             var filter = action.payload.filter;
             var selectedTerm = action.payload.term;
-            var oldSelectedOptions = _.get(state, [container, filter,"selectedOptions" ], []);
+            var isClear = action.payload.clear;
+            var oldSelectedOptions = [];
+            if(!isClear){
+                oldSelectedOptions = _.get(state, [container, filter,"selectedOptions" ], []);
+            }
 
             return {
                 ...state,

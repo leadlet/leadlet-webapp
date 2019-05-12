@@ -77,12 +77,9 @@ export class QueryUtils {
         return query;
     }
 
-    static prepareQuery(filterDefinitions, newQueryForContainer) {
+    static prepareQuery(filterDefinitions, newQueryForContainer, defaultFilters) {
 
-        if(!newQueryForContainer){
-            return "";
-        }
-        let query = Object.keys(newQueryForContainer).map(filter => {
+        let query = newQueryForContainer && Object.keys(newQueryForContainer).map(filter => {
 
             let filterType = filterDefinitions[filter].type;
             let filterField = filterDefinitions[filter].field;
@@ -91,8 +88,23 @@ export class QueryUtils {
                 && _.get(newQueryForContainer, [filter,"selectedOptions","length"], 0) > 0){
                 return filterField + ":(" + newQueryForContainer[filter].selectedOptions.map(option => "\"" + option + "\"").join(" OR ") + ")"
             }
+            else if( filterType === "term"
+                && _.get(newQueryForContainer, [filter,"selectedOptions","length"], 0) > 0){
+                return filterField + ":" + "\"" + newQueryForContainer[filter].selectedOptions + "\""
+            }
         }).filter(item => typeof item ==='string');
 
+        query = query || [];
+
+
+        let defaultQuery = defaultFilters && defaultFilters.map(filter => {
+            let filterField = filter.field;
+            let filterValue = filter.value;
+            return filterField + ":" + "\"" + filterValue + "\"";
+        });
+        defaultQuery = defaultQuery || [];
+
+        query = [...query, ...defaultQuery];
         let result = query.length > 0 ? query.join(" AND ") : "";
 
         return result;

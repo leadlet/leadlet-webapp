@@ -91,9 +91,9 @@ export function getFilterOptions( container, filters, query="") {
     }
 }
 
-export function pipelineSelected( pipelineFilter ) {
+export function pipelineSelected( containerId, filterId, term ) {
     return dispatch => {
-        dispatch( {type: searchConstants.FACET_PIPELINE_SELECTED, payload: pipelineFilter});
+        dispatch( {type: searchConstants.FILTER_PIPELINE_SELECTED, payload: {"container": containerId, "filter": filterId, "term": term}});
     };
 }
 export function termSelected2(containerId, filterId, term, clear=false) {
