@@ -15,19 +15,22 @@ class FilterContainer extends Component {
 
     render(){
         const  {container, filters} = this.props;
-        return filters.map(definition => this.renderSingleFilter(container,definition));
+        return this.props.visible && filters.map(definition => this.renderSingleFilter(container,definition));
     }
     componentDidUpdate(prevProps) {
         let oldQueryForContainer = prevProps.queryStore[ this.props.container];
         let newQueryForContainer = this.props.queryStore[ this.props.container];
         let filterDefinitions = _.get(this.props.filterStore2, [ this.props.container]);
 
-        let oldFilterQuery = QueryUtils.prepareQuery(filterDefinitions, oldQueryForContainer, prevProps.defaultFilters);
-        let newFilterQuery = QueryUtils.prepareQuery(filterDefinitions, newQueryForContainer, this.props.defaultFilters);
+        if(filterDefinitions && oldQueryForContainer && newQueryForContainer){
+            let oldFilterQuery = QueryUtils.prepareQuery(filterDefinitions, oldQueryForContainer, prevProps.defaultFilters);
+            let newFilterQuery = QueryUtils.prepareQuery(filterDefinitions, newQueryForContainer, this.props.defaultFilters);
 
-        if( oldFilterQuery !== newFilterQuery){
-            this.props.onQueryChange(newFilterQuery);
-            this.props.getFilterOptions( this.props.container, this.props.filters, newFilterQuery );
+            if( oldFilterQuery !== newFilterQuery){
+                this.props.onQueryChange(newFilterQuery);
+                this.props.getFilterOptions( this.props.container, this.props.filters, newFilterQuery );
+            }
+
         }
     }
     componentDidMount(){
@@ -35,8 +38,12 @@ class FilterContainer extends Component {
         let filterDefinitions = _.get(this.props.filterStore2, [ this.props.container]);
 
         let newFilterQuery = QueryUtils.prepareQuery(filterDefinitions, newQueryForContainer, this.props.defaultFilters);
-
+        this.props.onQueryChange(newFilterQuery);
         this.props.getFilterOptions( this.props.container, this.props.filters, newFilterQuery);
+
+        this.props.filters
+            .filter(filter => filter.defaultSelected !== undefined)
+            .forEach(filter => this.props.termSelected2(this.props.container, filter.id, filter.defaultSelected[0]));
     }
 
     renderSingleFilter(container, filterDefinition) {
@@ -83,6 +90,7 @@ FilterContainer.propTypes = {
     onQueryChange: PropTypes.func.isRequired,
     filterStyle: PropTypes.string.isRequired,
     defaultFilters: PropTypes.array,
+    visible: PropTypes.bool,
 };
 
 export default connect(mapStateToProps, {termSelected2,termUnSelected2,getFilterOptions})(FilterContainer);
