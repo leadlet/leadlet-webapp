@@ -1,3 +1,4 @@
+import * as _ from "lodash";
 
 export class QueryUtils {
 
@@ -18,63 +19,46 @@ export class QueryUtils {
         return sort;
     }
 
+    static prepareQuery(filterDefinitions, newQueryForContainer, defaultFilters) {
 
-    static getQuery(filterStore, options) {
-        let termFilters = [];
-        let rangeFilters = [];
-        let dateRangeFilters = [];
-        let pipelineFilterText = "";
-        let freeTextFilter = "";
-        let filters;
-        let appendFilter="";
-        let query = "";
+        let query = newQueryForContainer && Object.keys(newQueryForContainer).map(filter => {
 
-        if (filterStore) {
-            filters = Object.keys(filterStore)
-                .filter(filterId => filterStore[filterId].group === options.group)
-                .map(filterId => filterStore[filterId]);
-        }
+            let filterType = filterDefinitions[filter].type;
+            let filterField = filterDefinitions[filter].field;
 
-        if (filters) {
-
-            if (options.excludeMe) {
-                filters = filters.filter(filter => filter.id !== options.excludeMe);
+            if( filterType === "list"
+                && _.get(newQueryForContainer, [filter,"selectedOptions","length"], 0) > 0){
+                return filterField + ":(" + newQueryForContainer[filter].selectedOptions.map(option => "\"" + option + "\"").join(" OR ") + ")"
             }
-
-            termFilters = filters
-                .filter(filter => filter.type === "TERMS" && filter.selected && filter.selected.options && filter.selected.options.length > 0)
-                .map(filter => filter.dataField + ":(" + filter.selected.options.map(option => "\"" + option + "\"").join(" OR ") + ")");
-
-            rangeFilters = filters
-                .filter(filter => filter.type === "RANGE" && filter.selected)
-                .map(filter => filter.dataField + ":[" + filter.selected.min + " TO " + filter.selected.max + "]");
-
-            dateRangeFilters = filters
-                .filter(filter => filter.type === "DATERANGE" && filter.selected)
-                .map(filter => filter.dataField + ":[" + filter.selected.min + " TO " + filter.selected.max + "]");
-
-            freeTextFilter = filters
-                .filter(filter => filter.type === "FREE_TEXT" && filter.selected)
-                .map(filter => "*"+filter.selected+"*");
-
-            appendFilter = filters
-                .filter(filter => filter.type === "append" && filter.selected)
-                .map(filter => filter.selected);
-
-            let searchFilters = [...termFilters, ...rangeFilters, ...dateRangeFilters, ...freeTextFilter, ...appendFilter];
-
-            let pipelineFilter = filters.find(filter => filter.id === "pipeline-selector" && filter.selected);
-
-            if (pipelineFilter) {
-                pipelineFilterText = `pipeline_id:${pipelineFilter.selected.pipeline.id}`;
-                searchFilters.push(pipelineFilterText);
+            else if( filterType === "term"
+                && _.get(newQueryForContainer, [filter,"selectedOptions","length"], 0) > 0){
+                return filterField + ":" + "\"" + newQueryForContainer[filter].selectedOptions + "\""
             }
+        }).filter(item => typeof item ==='string');
 
-            query = searchFilters.length > 0 ? searchFilters.join(" AND ") : "";
+        query = query || [];
 
-        }
-        return query;
+
+        let defaultQuery = defaultFilters && defaultFilters
+            .filter(filter => filter.value)
+            .map(filter => {
+                let filterField = filter.field;
+                let filterValue = filter.value;
+                let filterType = filter.type;
+
+                if( filterType === "term"){
+                    return filterField + ":" + "\"" + filterValue + "\"";
+                }
+                else if( filterType === "freetext"){
+                    return "*" + filterValue + "*";
+                }
+            });
+        defaultQuery = defaultQuery || [];
+
+        query = [...query, ...defaultQuery];
+        let result = query.length > 0 ? query.join(" AND ") : "";
+
+        return result;
     }
-
 }
 

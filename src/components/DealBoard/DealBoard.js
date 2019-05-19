@@ -8,16 +8,14 @@ import CustomDragLayer from "./CustomDragLayer";
 import { deleteDeal } from "../../actions/deal.actions";
 import SweetAlert from 'sweetalert-react';
 import CreateEditDeal from '../DealDetail/CreateEditDeal'
-import ListFilter from "../Search/ListFilter";
 import { getPipelineStages } from "../../actions/stage.actions";
-import SelectedFilters from "../Search/SelectedFilters";
-import { appendFilter, pipelineSelected } from "../../actions/search.actions";
+import { appendFilter } from "../../actions/search.actions";
 import SortSelector from "../Search/SortSelector";
 import { DragDropContext } from 'react-dnd';
 
 import * as _ from "lodash";
 import StageColumn from "./StageColumn";
-import FreeTextFilter from "../Search/FreeTextFilter";
+import FilterContainer from "../Search/FilterContainer";
 
 
 let sortOptions = [
@@ -49,7 +47,9 @@ class DealBoard extends Component {
             showDeleteDealDialog: false,
             deletingDeal: null,
             selectedPipeline: null,
-            sidebarOpen: true
+            sidebarOpen: true,
+            query:"",
+            searchText:"",
         };
 
         this.toggleNewDealModal = this.toggleNewDealModal.bind(this);
@@ -60,9 +60,16 @@ class DealBoard extends Component {
         this.startScrolling = this.startScrolling.bind(this);
         this.onDeleteDeal = this.onDeleteDeal.bind(this);
         this.pipelineChanged = this.pipelineChanged.bind(this);
+        this.setQuery = this.setQuery.bind(this);
+        this.setSearchText = this.setSearchText.bind(this);
 
     }
-
+    setSearchText(event) {
+        this.setState({searchText: event.target.value});
+    }
+    setQuery(query) {
+        this.setState({query: query});
+    }
     cancelDeleteDeal() {
         this.setState({
             deletingDeal: null,
@@ -148,12 +155,7 @@ class DealBoard extends Component {
 
     pipelineChanged(pipeline) {
         this.props.getPipelineStages(pipeline.id);
-        this.setState({ selectedPipeline: pipeline },
-            () => this.props.pipelineSelected({
-                pipeline: pipeline,
-                group: "deals-page",
-                id: "pipeline-selector"
-            }));
+        this.setState({ selectedPipeline: pipeline });
     }
 
     render() {
@@ -186,79 +188,78 @@ class DealBoard extends Component {
                             />
                         </div>
                         <div className="col-md-3 p-0">
-                            <FreeTextFilter
-                                id="searchArea"
-                                group="deals-page"
-                                index="leadlet-deal"
-                            />
-                            <Button bsStyle="info" bsSize="small" className="filter-button" onClick={this.toggleSearchMenu}><i
-                                className="fa fa-filter fa-xs" /></Button>
+                            <div className="col-md-10 p-0">
+                                <input type="text" className="input form-control"
+                                 placeholder="Search..."
+                                 value={this.state.searchText}
+                                 onChange={this.setSearchText}/>
+                            </div>
+                            <div className="col-md-2 p-0">
+                                <Button bsStyle="info" bsSize="small" onClick={this.toggleSearchMenu}><i
+                                    className="fa fa-filter fa-xs" /></Button>
+                            </div>
                         </div>
                     </div>
                 </div>
+                 <div id="deals-search" className="row deal-search">
+                    <FilterContainer
+                        visible={this.state.isSearchMenuVisible}
+                        key="deal"
+                        container="deal"
+                        filterStyle="col-md-2"
+                        defaultFilters={[
+                            {
+                                id: 'pipeline',
+                                title: 'Pipeline',
+                                field: 'pipeline_id',
+                                type: 'term',
+                                value: this.state.selectedPipeline && this.state.selectedPipeline.id,
+                            },
+                            {
+                                id: 'freetext',
+                                type: 'freetext',
+                                value: this.state.searchText,
+                            }
+                            ]
+                        }
+                        filters={[
+                            {
+                                id: 'products',
+                                title: 'Products',
+                                field: 'products.keyword',
+                                type: 'list'
+                            },
+                            {
+                                id: 'channels',
+                                title: 'Channels',
+                                field: 'channel.keyword',
+                                type: 'list'
+                            },
+                            {
+                                id: 'sources',
+                                title: 'Sources',
+                                field: 'source.keyword',
+                                type: 'list'
+                            },
+                            {
+                                id: 'agents',
+                                title: 'Agents',
+                                field: 'agent_name.keyword',
+                                type: 'list',
+                                defaultSelected: [_.get(this.props.auth, "user.firstName")+_.get(this.props.auth, "user.lastName")],
+                            },
+                            {
+                                id: 'status',
+                                title: 'Status',
+                                field: 'deal_status.keyword',
+                                type: 'list'
+                            }
+                        ]
+                        }
+                        onQueryChange={this.setQuery}
 
-                {this.state.isSearchMenuVisible &&
-                    <div id="deals-search" className="row deal-search">
-                        <div className="col-md-12">
-                            <SelectedFilters group="deals-page" index="leadlet-deal" />
-                        </div>
-                        <div className="col-md-2">
-                            <ListFilter
-                                id="Products"
-                                dataField="products.keyword"
-                                title="Products"
-                                emptyText="No Product"
-                                multi={true}
-                                group="deals-page"
-                                index="leadlet-deal"
-                            />
-                        </div>
-                        <div className="col-md-2">
-                            <ListFilter
-                                id="Channels"
-                                dataField="channel.keyword"
-                                title="Channels"
-                                emptyText="No Channel"
-                                multi={true}
-                                group="deals-page"
-                                index="leadlet-deal"
-                            />
-                        </div>
-                        <div className="col-md-2">
-                            <ListFilter
-                                id="Sources"
-                                dataField="source.keyword"
-                                title="Sources"
-                                emptyText="No Source"
-                                multi={true}
-                                group="deals-page"
-                                index="leadlet-deal"
-                            />
-                        </div>
-                        <div className="col-md-2">
-                            <ListFilter
-                                id="Agents"
-                                dataField="agent_name.keyword"
-                                title="Agents"
-                                emptyText="No Agent"
-                                multi={true}
-                                group="deals-page"
-                                index="leadlet-deal"
-                            />
-                        </div>
-                        <div className="col-md-2">
-                            <ListFilter
-                                id="Status"
-                                dataField="deal_status.keyword"
-                                title="Status"
-                                emptyText="No Status"
-                                multi={true}
-                                group="deals-page"
-                                index="leadlet-deal"
-                            />
-                        </div>
-                    </div>
-                }
+                    />
+                </div>
 
                 <div className="row stages">
 
@@ -305,6 +306,7 @@ class DealBoard extends Component {
                 .filter(stage => stage.pipelineId === this.state.selectedPipeline.id)
                 .map(stage =>
                     <StageColumn
+                        query={this.state.query}
                         key={stage.id}
                         stage={stage}
                         startScrolling={this.startScrolling}
@@ -320,7 +322,8 @@ class DealBoard extends Component {
 function mapStateToProps(state) {
     return {
         pipelineStore: state.pipelineStore,
-        stageStore: state.stageStore
+        stageStore: state.stageStore,
+        auth: state.authentication
     }
 }
 
@@ -328,7 +331,6 @@ export default connect(mapStateToProps, {
     getAllPipelines,
     getPipelineStages,
     deleteDeal,
-    pipelineSelected,
     appendFilter
 })(DragDropContext(HTML5Backend)(DealBoard));
 

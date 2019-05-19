@@ -3,13 +3,12 @@ import {connect} from 'react-redux';
 import {getActivities, update} from "../../actions/activity.actions";
 import '../../../node_modules/fullcalendar/dist/fullcalendar.css';
 import * as _ from "lodash";
-import ListFilter from "../Search/ListFilter";
-import SelectedFilters from "../Search/SelectedFilters";
 import moment from "moment";
 import Button from "react-bootstrap/es/Button";
 import ColumnSorter from "../Search/ColumnSorter";
 import EditOrCreateActivity from "./EditOrCreateActivity";
 import {QueryUtils} from "../Search/QueryUtils";
+import FilterContainer from "../Search/FilterContainer";
 
 let VisibilitySensor = require('react-visibility-sensor');
 
@@ -22,7 +21,8 @@ class Activities extends Component {
             showModal: false,
             activitySelectedForEdit: null,
             selectedType: null,
-            currentPage: 0
+            currentPage: 0,
+            query:""
         };
 
         this.openActivityModal = this.openActivityModal.bind(this);
@@ -30,12 +30,16 @@ class Activities extends Component {
         this.renderActivityRows = this.renderActivityRows.bind(this);
         this.loadMoreDeal = this.loadMoreDeal.bind(this);
         this.hasMoreItem = this.hasMoreItem.bind(this);
-        this.getQuery = this.getQuery.bind(this);
         this.getSort = this.getSort.bind(this);
+        this.setQuery = this.setQuery.bind(this);
     }
 
     getSort(props = this.props) {
         return QueryUtils.getSort(props.sortStore, {group: "activities-page"})
+    }
+
+    setQuery(query) {
+        this.setState({query: query});
     }
 
     openActivityModal(activity) {
@@ -48,14 +52,13 @@ class Activities extends Component {
     }
 
     componentDidMount() {
-        this.props.getActivities(this.getQuery());
+        this.props.getActivities(this.state.query);
     }
 
-    componentDidUpdate(prevProps) {
-        if ((this.getQuery() !== this.getQuery(prevProps))
-            || (this.getSort() !== this.getSort(prevProps))) {
+    componentDidUpdate(prevProps, prevState) {
+        if( this.state.query !== prevState.query){
             this.setState({currentPage: 0},
-                () => this.props.getActivities(this.getQuery(), this.getSort(),
+                () => this.props.getActivities(this.state.query, this.getSort(),
                     this.state.currentPage,
                     false));
         }
@@ -91,9 +94,6 @@ class Activities extends Component {
         return (
             <div className="wrapper activities">
                 <div className="row activities-toolbar">
-                    <SelectedFilters
-                        group="activities-page"
-                        index="leadlet-activity"/>
                     <Button bsStyle="primary" bsSize="small" className="m-l-sm" onClick={this.openActivityModal}>New
                         Activity</Button>
 
@@ -102,25 +102,27 @@ class Activities extends Component {
                     <div className="col-lg-2">
                         <div className="ibox float-e-margins">
                             <div className="ibox-content side-search-menu">
+                                <FilterContainer
+                                    key="activity"
+                                    container="activity"
+                                    visible="true"
+                                    filters={[
+                                        {
+                                            id: 'type',
+                                            title: 'Types',
+                                            field: 'activity_type.keyword',
+                                            type: 'list'
+                                        },
+                                        {
+                                            id: 'status',
+                                            title: 'Status',
+                                            field: 'is_done',
+                                            type: 'list'
+                                        }
+                                    ]
+                                    }
+                                    onQueryChange={this.setQuery}
 
-                                <ListFilter
-                                    id="types"
-                                    dataField="activity_type.keyword"
-                                    title="Types"
-                                    emptyText="No Product"
-                                    multi={true}
-                                    group="activities-page"
-                                    index="leadlet-activity"
-                                />
-                                <ListFilter
-                                    id="status"
-                                    dataField="is_done"
-                                    title="Status"
-                                    emptyText="No Product"
-                                    multi={false}
-                                    group="activities-page"
-                                    index="leadlet-activity"
-                                    keyMapper={(key) => (key === "true" ? "Done" : "Not Done")}
                                 />
                             </div>
                         </div>
@@ -164,7 +166,7 @@ class Activities extends Component {
     loadMoreDeal(isVisible) {
         if (isVisible && this.hasMoreItem()) {
             this.setState({currentPage: this.state.currentPage + 1},
-                () => this.props.getActivities(this.getQuery(), this.getSort(),
+                () => this.props.getActivities(this.state.query, this.getSort(),
                     this.state.currentPage,
                     true));
         }
@@ -175,17 +177,11 @@ class Activities extends Component {
             _.get(this, ["props", "activityStore", "ids", "length"], 0);
     }
 
-    getQuery(props = this.props) {
-        return QueryUtils.getQuery(props.filterStore, {group: "activities-page"})
-    }
-
-
 }
 
 function mapStateToProps(state) {
     return {
         activityStore: state.activityStore,
-        filterStore: state.filterStore,
         sortStore: state.sortStore
     }
 }

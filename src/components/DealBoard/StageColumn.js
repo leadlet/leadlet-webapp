@@ -75,7 +75,7 @@ class StageColumn extends Component {
         startScrolling: PropTypes.func,
         stopScrolling: PropTypes.func,
         isScrolling: PropTypes.bool
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -89,29 +89,23 @@ class StageColumn extends Component {
 
         this.loadMoreDeal = this.loadMoreDeal.bind(this);
         this.hasMoreItem = this.hasMoreItem.bind(this);
-        this.getQuery = this.getQuery.bind(this);
-
     }
 
     getSort(props = this.props) {
         return QueryUtils.getSort(props.sortStore, {group: "deals-page"})
     }
 
-    getQuery(props = this.props) {
-        return QueryUtils.getQuery(props.filterStore, {group: "deals-page"})
-    }
-
     componentDidUpdate(prevProps) {
-        if (this.getQuery(prevProps) !== this.getQuery()
+        if (this.props.query !== prevProps.query
             || this.getSort(prevProps) !== this.getSort()) {
-            this.props.getStageDeals(QueryUtils.addStageFilter(this.getQuery(), this.props.stage.id),
+            this.props.getStageDeals(QueryUtils.addStageFilter(this.props.query, this.props.stage.id),
                 this.getSort(), this.props.stage.id);
         }
     }
 
     componentDidMount() {
         if (this.props.stage) {
-            this.props.getStageDeals(QueryUtils.addStageFilter(this.getQuery(), this.props.stage.id), this.getSort(), this.props.stage.id);
+            this.props.getStageDeals(QueryUtils.addStageFilter(this.props.query, this.props.stage.id), this.getSort(), this.props.stage.id);
         }
     }
 
@@ -161,7 +155,7 @@ class StageColumn extends Component {
     loadMoreDeal(isVisible) {
         if (isVisible && this.hasMoreItem()) {
             this.setState({currentPage: this.state.currentPage + 1},
-                () => this.props.getStageDeals(QueryUtils.addStageFilter(this.getQuery(), this.props.stage.id),
+                () => this.props.getStageDeals(QueryUtils.addStageFilter(this.props.query, this.props.stage.id),
                     this.props.sort,
                     this.props.stage.id,
                     this.state.currentPage,
@@ -187,7 +181,6 @@ class StageColumn extends Component {
 function mapStateToProps(state, props) {
     return {
         dealStore: state.dealStore,
-        filterStore: state.filterStore,
         sortStore: state.sortStore,
         stageStore: state.stageStore
 
