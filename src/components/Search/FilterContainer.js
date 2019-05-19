@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import PropTypes from 'prop-types';
 import * as _ from "lodash";
-import ListFilter2 from "./ListFilter2";
+import ListFilter from "./ListFilter";
 import {getFilterOptions, termSelected2, termUnSelected2} from "../../actions/search.actions";
 import {QueryUtils} from "./QueryUtils";
 
@@ -20,7 +20,7 @@ class FilterContainer extends Component {
     componentDidUpdate(prevProps) {
         let oldQueryForContainer = prevProps.queryStore[ this.props.container];
         let newQueryForContainer = this.props.queryStore[ this.props.container];
-        let filterDefinitions = _.get(this.props.filterStore2, [ this.props.container]);
+        let filterDefinitions = _.get(this.props.filterStore, [ this.props.container]);
 
         if(filterDefinitions && oldQueryForContainer && newQueryForContainer){
             let oldFilterQuery = QueryUtils.prepareQuery(filterDefinitions, oldQueryForContainer, prevProps.defaultFilters);
@@ -35,7 +35,7 @@ class FilterContainer extends Component {
     }
     componentDidMount(){
         let newQueryForContainer = this.props.queryStore[ this.props.container];
-        let filterDefinitions = _.get(this.props.filterStore2, [ this.props.container]);
+        let filterDefinitions = _.get(this.props.filterStore, [ this.props.container]);
 
         let newFilterQuery = QueryUtils.prepareQuery(filterDefinitions, newQueryForContainer, this.props.defaultFilters);
         this.props.onQueryChange(newFilterQuery);
@@ -47,22 +47,21 @@ class FilterContainer extends Component {
     }
 
     renderSingleFilter(container, filterDefinition) {
-        let filter = _.get(this.props.filterStore2, [container,filterDefinition.id]);
+        let filter = _.get(this.props.filterStore, [container,filterDefinition.id]);
         if( filter && filter.type === 'list' && filter.id !== "pipeline") {
             let selectedQueryOptions = _.get(this.props.queryStore, [container, filterDefinition.id, "selectedOptions"], []);
             return (
-                <div className={this.props.filterStyle}>
-                <ListFilter2
-                    key={filter.id}
-                    container={this.props.container}
-                    id={filter.id}
-                    title={filterDefinition.title}
-                    options={filter.options}
-                    selectedOptions={selectedQueryOptions}
-                    defaultSelected={filterDefinition.defaultSelected}
-                    onTermSelect={this.props.termSelected2}
-                    onTermUnSelect={this.props.termUnSelected2}
-                />
+                <div key={filter.id} className={this.props.filterStyle}>
+                    <ListFilter
+                        container={this.props.container}
+                        id={filter.id}
+                        title={filterDefinition.title}
+                        options={filter.options}
+                        selectedOptions={selectedQueryOptions}
+                        defaultSelected={filterDefinition.defaultSelected}
+                        onTermSelect={this.props.termSelected2}
+                        onTermUnSelect={this.props.termUnSelected2}
+                    />
                 </div>
             );
         }
@@ -71,7 +70,7 @@ class FilterContainer extends Component {
 
 function mapStateToProps(state, props) {
     return {
-        filterStore2: state.filterStore2,
+        filterStore: state.filterStore,
         queryStore: state.queryStore
     };
 }

@@ -9,13 +9,12 @@ import { deleteDeal } from "../../actions/deal.actions";
 import SweetAlert from 'sweetalert-react';
 import CreateEditDeal from '../DealDetail/CreateEditDeal'
 import { getPipelineStages } from "../../actions/stage.actions";
-import {appendFilter, pipelineSelected, termSelected2} from "../../actions/search.actions";
+import { appendFilter } from "../../actions/search.actions";
 import SortSelector from "../Search/SortSelector";
 import { DragDropContext } from 'react-dnd';
 
 import * as _ from "lodash";
 import StageColumn from "./StageColumn";
-import FreeTextFilter from "../Search/FreeTextFilter";
 import FilterContainer from "../Search/FilterContainer";
 
 
@@ -49,7 +48,8 @@ class DealBoard extends Component {
             deletingDeal: null,
             selectedPipeline: null,
             sidebarOpen: true,
-            query:""
+            query:"",
+            searchText:"",
         };
 
         this.toggleNewDealModal = this.toggleNewDealModal.bind(this);
@@ -61,7 +61,11 @@ class DealBoard extends Component {
         this.onDeleteDeal = this.onDeleteDeal.bind(this);
         this.pipelineChanged = this.pipelineChanged.bind(this);
         this.setQuery = this.setQuery.bind(this);
+        this.setSearchText = this.setSearchText.bind(this);
 
+    }
+    setSearchText(event) {
+        this.setState({searchText: event.target.value});
     }
     setQuery(query) {
         this.setState({query: query});
@@ -184,13 +188,16 @@ class DealBoard extends Component {
                             />
                         </div>
                         <div className="col-md-3 p-0">
-                            <FreeTextFilter
-                                id="searchArea"
-                                group="deals-page"
-                                index="leadlet-deal"
-                            />
-                            <Button bsStyle="info" bsSize="small" className="filter-button" onClick={this.toggleSearchMenu}><i
-                                className="fa fa-filter fa-xs" /></Button>
+                            <div className="col-md-10 p-0">
+                                <input type="text" className="input form-control"
+                                 placeholder="Search..."
+                                 value={this.state.searchText}
+                                 onChange={this.setSearchText}/>
+                            </div>
+                            <div className="col-md-2 p-0">
+                                <Button bsStyle="info" bsSize="small" onClick={this.toggleSearchMenu}><i
+                                    className="fa fa-filter fa-xs" /></Button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -205,7 +212,13 @@ class DealBoard extends Component {
                                 id: 'pipeline',
                                 title: 'Pipeline',
                                 field: 'pipeline_id',
+                                type: 'term',
                                 value: this.state.selectedPipeline && this.state.selectedPipeline.id,
+                            },
+                            {
+                                id: 'freetext',
+                                type: 'freetext',
+                                value: this.state.searchText,
                             }
                             ]
                         }
@@ -318,7 +331,6 @@ export default connect(mapStateToProps, {
     getAllPipelines,
     getPipelineStages,
     deleteDeal,
-    appendFilter,
-    termSelected2
+    appendFilter
 })(DragDropContext(HTML5Backend)(DealBoard));
 

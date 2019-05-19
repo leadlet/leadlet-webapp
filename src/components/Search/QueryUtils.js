@@ -19,64 +19,6 @@ export class QueryUtils {
         return sort;
     }
 
-
-    static getQuery(filterStore, options) {
-        let termFilters = [];
-        let rangeFilters = [];
-        let dateRangeFilters = [];
-        let pipelineFilterText = "";
-        let freeTextFilter = "";
-        let filters;
-        let appendFilter="";
-        let query = "";
-
-        if (filterStore) {
-            filters = Object.keys(filterStore)
-                .filter(filterId => filterStore[filterId].group === options.group)
-                .map(filterId => filterStore[filterId]);
-        }
-
-        if (filters) {
-
-            if (options.excludeMe) {
-                filters = filters.filter(filter => filter.id !== options.excludeMe);
-            }
-
-            termFilters = filters
-                .filter(filter => filter.type === "TERMS" && filter.selected && filter.selected.options && filter.selected.options.length > 0)
-                .map(filter => filter.dataField + ":(" + filter.selected.options.map(option => "\"" + option + "\"").join(" OR ") + ")");
-
-            rangeFilters = filters
-                .filter(filter => filter.type === "RANGE" && filter.selected)
-                .map(filter => filter.dataField + ":[" + filter.selected.min + " TO " + filter.selected.max + "]");
-
-            dateRangeFilters = filters
-                .filter(filter => filter.type === "DATERANGE" && filter.selected)
-                .map(filter => filter.dataField + ":[" + filter.selected.min + " TO " + filter.selected.max + "]");
-
-            freeTextFilter = filters
-                .filter(filter => filter.type === "FREE_TEXT" && filter.selected)
-                .map(filter => "*"+filter.selected+"*");
-
-            appendFilter = filters
-                .filter(filter => filter.type === "append" && filter.selected)
-                .map(filter => filter.selected);
-
-            let searchFilters = [...termFilters, ...rangeFilters, ...dateRangeFilters, ...freeTextFilter, ...appendFilter];
-
-            let pipelineFilter = filters.find(filter => filter.id === "pipeline-selector" && filter.selected);
-
-            if (pipelineFilter) {
-                pipelineFilterText = `pipeline_id:${pipelineFilter.selected.pipeline.id}`;
-                searchFilters.push(pipelineFilterText);
-            }
-
-            query = searchFilters.length > 0 ? searchFilters.join(" AND ") : "";
-
-        }
-        return query;
-    }
-
     static prepareQuery(filterDefinitions, newQueryForContainer, defaultFilters) {
 
         let query = newQueryForContainer && Object.keys(newQueryForContainer).map(filter => {
@@ -97,11 +39,20 @@ export class QueryUtils {
         query = query || [];
 
 
-        let defaultQuery = defaultFilters && defaultFilters.map(filter => {
-            let filterField = filter.field;
-            let filterValue = filter.value;
-            return filterField + ":" + "\"" + filterValue + "\"";
-        });
+        let defaultQuery = defaultFilters && defaultFilters
+            .filter(filter => filter.value)
+            .map(filter => {
+                let filterField = filter.field;
+                let filterValue = filter.value;
+                let filterType = filter.type;
+
+                if( filterType === "term"){
+                    return filterField + ":" + "\"" + filterValue + "\"";
+                }
+                else if( filterType === "freetext"){
+                    return "*" + filterValue + "*";
+                }
+            });
         defaultQuery = defaultQuery || [];
 
         query = [...query, ...defaultQuery];

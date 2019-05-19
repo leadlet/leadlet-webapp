@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {getActivities, update} from "../../actions/activity.actions";
 import '../../../node_modules/fullcalendar/dist/fullcalendar.css';
 import * as _ from "lodash";
-import SelectedFilters from "../Search/SelectedFilters";
 import moment from "moment";
 import Button from "react-bootstrap/es/Button";
 import ColumnSorter from "../Search/ColumnSorter";
@@ -95,9 +94,6 @@ class Activities extends Component {
         return (
             <div className="wrapper activities">
                 <div className="row activities-toolbar">
-                    <SelectedFilters
-                        group="activities-page"
-                        index="leadlet-activity"/>
                     <Button bsStyle="primary" bsSize="small" className="m-l-sm" onClick={this.openActivityModal}>New
                         Activity</Button>
 
@@ -109,6 +105,7 @@ class Activities extends Component {
                                 <FilterContainer
                                     key="activity"
                                     container="activity"
+                                    visible="true"
                                     filters={[
                                         {
                                             id: 'type',
