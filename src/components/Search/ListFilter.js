@@ -19,6 +19,18 @@ class ListFilter extends React.Component {
         }
     }
 
+    componentDidMount() {
+        if(this.props.options && this.props.defaultSelected) {
+            for (const option of this.props.defaultSelected)
+            {
+                if(this.props.options[option]){
+                    this.props.onTermSelect(this.props.container, this.props.id, option);
+
+                }
+            }
+        }
+    }
+
     getKeyText(key){
         if(key){
             if(this.props.keyMapper){

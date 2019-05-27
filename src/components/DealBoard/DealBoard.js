@@ -202,63 +202,66 @@ class DealBoard extends Component {
                     </div>
                 </div>
                  <div id="deals-search" className="row deal-search">
-                    <FilterContainer
-                        visible={this.state.isSearchMenuVisible}
-                        key="deal"
-                        container="deal"
-                        filterStyle="col-md-2"
-                        defaultFilters={[
-                            {
-                                id: 'pipeline',
-                                title: 'Pipeline',
-                                field: 'pipeline_id',
-                                type: 'term',
-                                value: this.state.selectedPipeline && this.state.selectedPipeline.id,
+                     {
+                         this.state.selectedPipeline &&
+                         <FilterContainer
+                             visible={this.state.isSearchMenuVisible}
+                             key="deal"
+                             container="deal"
+                             filterStyle="col-md-2"
+                             defaultFilters={[
+                                 {
+                                     id: 'pipeline',
+                                     title: 'Pipeline',
+                                     field: 'pipeline_id',
+                                     type: 'term',
+                                     value: this.state.selectedPipeline.id,
+                                 },
+                                 {
+                                     id: 'freetext',
+                                     type: 'freetext',
+                                     value: this.state.searchText,
+                                 }
+                             ]
+                             }
+                             filters={[
+                                 {
+                                     id: 'products',
+                                     title: 'Products',
+                                     field: 'products.keyword',
+                                     type: 'list'
+                                 },
+                                 {
+                                     id: 'channels',
+                                     title: 'Channels',
+                                     field: 'channel.keyword',
+                                     type: 'list'
+                                 },
+                                 {
+                                     id: 'sources',
+                                     title: 'Sources',
+                                     field: 'source.keyword',
+                                     type: 'list'
+                                 },
+                                 {
+                                     id: 'agents',
+                                     title: 'Agents',
+                                     field: 'agent_name.keyword',
+                                     type: 'list',
+                                     defaultSelected: [_.get(this.props.auth, "user.firstName")+" "+_.get(this.props.auth, "user.lastName")],
                             },
-                            {
-                                id: 'freetext',
-                                type: 'freetext',
-                                value: this.state.searchText,
-                            }
-                            ]
-                        }
-                        filters={[
-                            {
-                                id: 'products',
-                                title: 'Products',
-                                field: 'products.keyword',
-                                type: 'list'
-                            },
-                            {
-                                id: 'channels',
-                                title: 'Channels',
-                                field: 'channel.keyword',
-                                type: 'list'
-                            },
-                            {
-                                id: 'sources',
-                                title: 'Sources',
-                                field: 'source.keyword',
-                                type: 'list'
-                            },
-                            {
-                                id: 'agents',
-                                title: 'Agents',
-                                field: 'agent_name.keyword',
-                                type: 'list',
-                                defaultSelected: [_.get(this.props.auth, "user.firstName")+_.get(this.props.auth, "user.lastName")],
-                            },
-                            {
-                                id: 'status',
-                                title: 'Status',
-                                field: 'deal_status.keyword',
-                                type: 'list'
-                            }
-                        ]
-                        }
-                        onQueryChange={this.setQuery}
+                                 {
+                                     id: 'status',
+                                     title: 'Status',
+                                     field: 'deal_status.keyword',
+                                     type: 'list'
+                                 }
+                             ]
+                             }
+                             onQueryChange={this.setQuery}
 
-                    />
+                         />
+                     }
                 </div>
 
                 <div className="row stages">

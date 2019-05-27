@@ -22,7 +22,7 @@ class FilterContainer extends Component {
         let newQueryForContainer = this.props.queryStore[ this.props.container];
         let filterDefinitions = _.get(this.props.filterStore, [ this.props.container]);
 
-        if(filterDefinitions && oldQueryForContainer && newQueryForContainer){
+        if(filterDefinitions ){
             let oldFilterQuery = QueryUtils.prepareQuery(filterDefinitions, oldQueryForContainer, prevProps.defaultFilters);
             let newFilterQuery = QueryUtils.prepareQuery(filterDefinitions, newQueryForContainer, this.props.defaultFilters);
 
@@ -41,9 +41,6 @@ class FilterContainer extends Component {
         this.props.onQueryChange(newFilterQuery);
         this.props.getFilterOptions( this.props.container, this.props.filters, newFilterQuery);
 
-        this.props.filters
-            .filter(filter => filter.defaultSelected !== undefined)
-            .forEach(filter => this.props.termSelected2(this.props.container, filter.id, filter.defaultSelected[0]));
     }
 
     renderSingleFilter(container, filterDefinition) {
