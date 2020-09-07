@@ -11,7 +11,7 @@
     "@babel/core": "^7.1.6",
     "animate.css": "^3.5.2",
     "babel-core": "^6.26.3",
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^3.4.1",
     "es6-shim": "^0.35.3",
     "faker": "^3.1.0",
     "fullcalendar": "^3.9.0",
