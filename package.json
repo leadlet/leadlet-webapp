@@ -18,7 +18,7 @@
     "history": "^4.6.3",
     "immutable": "^3.8.2",
     "jquery": "^3.5.0",
-    "jquery-ui": "^1.12.1",
+    "jquery-ui": "^1.13.0",
     "lodash": "^4.17.19",
     "metismenu": "^2.7.0",
     "moment": "^2.22.2",
